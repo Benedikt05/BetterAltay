@@ -1,0 +1,14 @@
+import:
+  - pmmp/PocketMine-MP:tests/travis/setup-php.yml@stable
+
+script:
+ - COMPOSER=phpstan-composer.json composer install --prefer-dist
+ - ./vendor/bin/phpstan analyze --no-progress --memory-limit=2G
+
+cache:
+ directories:
+  - $HOME/.composer/cache/files
+  - $HOME/.composer/cache/vcs
+
+notifications:
+ email: false

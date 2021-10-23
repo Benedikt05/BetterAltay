@@ -1,0 +1,10 @@
+parameters:
+	level: 8
+	paths:
+		- src
+	ignoreErrors:
+		-
+			#this would only happen if the regex was broken
+			message: "#^Method pocketmine\\\\utils\\\\Binary\\:\\:printFloat\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Binary.php

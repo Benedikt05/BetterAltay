@@ -1,0 +1,98 @@
+#! /bin/sh
+
+SED="/bin/sed"
+prefix="/home/vsts/work/1/s/bin/php7"
+datarootdir="/home/vsts/work/1/s/bin/php7/php"
+exec_prefix="/home/vsts/work/1/s/bin/php7"
+version="7.4.22"
+vernum="70422"
+include_dir="${prefix}/include/php"
+includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
+ldflags=" -L/home/vsts/work/1/s/bin/php7/lib"
+libs="-lcrypt   -lyaml -lresolv -lcrypt -lrt -lleveldb -lgmp -lrt -lm -ldl  -lpthread -lxml2 -lssl -lcrypto -lsqlite3 -lz -lssl -lcrypto -lcurl -lxml2 -lssl -lcrypto -lz -lpng16 -lz -ljpeg -lsqlite3 -lxml2 -lcrypt -lxml2 -lxml2 -lxml2 -lzip -lz -lssl -lcrypto -lcrypt "
+extension_dir='/home/vsts/work/1/s/bin/php7/lib/php/extensions/no-debug-zts-20190902'
+man_dir=`eval echo ${datarootdir}/man`
+program_prefix=""
+program_suffix=""
+exe_extension=""
+php_cli_binary=NONE
+php_cgi_binary=NONE
+configure_options=" '--enable-inline-optimization' '--prefix=/home/vsts/work/1/s/bin/php7' '--exec-prefix=/home/vsts/work/1/s/bin/php7' '--with-curl' '--with-zlib' '--with-gmp' '--with-yaml' '--with-openssl' '--with-zip' '--with-jpeg' '--enable-gd' '--without-readline' '--with-leveldb=/home/vsts/work/1/s/bin/php7' '--disable-debug' '--enable-pocketmine-chunkutils' '--enable-mbstring' '--disable-mbregex' '--enable-calendar' '--enable-pthreads' '--disable-fileinfo' '--with-libxml' '--enable-xml' '--enable-dom' '--enable-simplexml' '--enable-xmlreader' '--enable-xmlwriter' '--disable-cgi' '--disable-phpdbg' '--disable-session' '--without-pear' '--without-iconv' '--with-pdo-sqlite' '--with-pdo-mysql' '--with-pic' '--enable-phar' '--enable-ctype' '--enable-sockets' '--enable-shared=no' '--enable-static=yes' '--enable-shmop' '--enable-maintainer-zts' '--disable-short-tags' '--enable-pcntl' '--enable-mysqlnd' '--with-mysqli=mysqlnd' '--enable-bcmath' '--enable-cli' '--enable-ftp' '--enable-opcache=yes' '--enable-igbinary' '--with-crypto' '--enable-recursionguard' '--without-valgrind' 'PKG_CONFIG_PATH=/home/vsts/work/1/s/bin/php7/lib/pkgconfig' 'CFLAGS=-O2 -fPIC -march=x86-64 -mtune=nocona -fno-gcse -m64 -O2 -ffast-math -ftree-vectorize -fomit-frame-pointer -funswitch-loops -fivopts -funsafe-loop-optimizations -fpredictive-commoning -ftracer -ftree-loop-im -frename-registers -fcx-limited-range ' 'LDFLAGS=-Wl,-rpath='"
+php_sapis=" cli"
+ini_dir=""
+ini_path="/home/vsts/work/1/s/bin/php7/lib"
+
+# Set php_cli_binary and php_cgi_binary if available
+for sapi in $php_sapis; do
+  case $sapi in
+  cli)
+    php_cli_binary="${exec_prefix}/bin/${program_prefix}php${program_suffix}${exe_extension}"
+    ;;
+  cgi)
+    php_cgi_binary="${exec_prefix}/bin/${program_prefix}php-cgi${program_suffix}${exe_extension}"
+    ;;
+  esac
+done
+
+# Determine which (if any) php binary is available
+if test "$php_cli_binary" != "NONE"; then
+  php_binary="$php_cli_binary"
+else
+  php_binary="$php_cgi_binary"
+fi
+
+# Remove quotes
+configure_options=`echo $configure_options | $SED -e "s#'##g"`
+
+case "$1" in
+--prefix)
+  echo $prefix;;
+--includes)
+  echo $includes;;
+--ldflags)
+  echo $ldflags;;
+--libs)
+  echo $libs;;
+--extension-dir)
+  echo $extension_dir;;
+--include-dir)
+  echo $include_dir;;
+--php-binary)
+  echo $php_binary;;
+--php-sapis)
+  echo $php_sapis;;
+--configure-options)
+  echo $configure_options;;
+--man-dir)
+  echo $man_dir;;
+--ini-path)
+  echo $ini_path;;
+--ini-dir)
+  echo $ini_dir;;
+--version)
+  echo $version;;
+--vernum)
+  echo $vernum;;
+*)
+  cat << EOF
+Usage: $0 [OPTION]
+Options:
+  --prefix            [$prefix]
+  --includes          [$includes]
+  --ldflags           [$ldflags]
+  --libs              [$libs]
+  --extension-dir     [$extension_dir]
+  --include-dir       [$include_dir]
+  --man-dir           [$man_dir]
+  --php-binary        [$php_binary]
+  --php-sapis         [$php_sapis]
+  --ini-path          [$ini_path]
+  --ini-dir           [$ini_dir]
+  --configure-options [$configure_options]
+  --version           [$version]
+  --vernum            [$vernum]
+EOF
+  exit 1;;
+esac
+
+exit 0

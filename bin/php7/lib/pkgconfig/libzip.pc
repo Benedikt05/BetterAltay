@@ -1,0 +1,15 @@
+prefix=/home/vsts/work/1/s/bin/php7
+exec_prefix=${prefix}
+bindir=/home/vsts/work/1/s/bin/php7/bin
+libdir=/home/vsts/work/1/s/bin/php7/lib
+includedir=/home/vsts/work/1/s/bin/php7/include
+
+zipcmp=/home/vsts/work/1/s/bin/php7/bin/zipcmp
+
+Name: libzip
+Description: library for handling zip archives
+Version: 1.8.0
+Libs:  -L${libdir} -lzip
+Libs.private:  -lssl -lcrypto -lz
+Cflags: -I${includedir}
+

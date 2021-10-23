@@ -1,0 +1,86 @@
+jobs:
+- job: Linux
+  pool:
+    name: Hosted Ubuntu 1604
+  steps:
+  - bash: |
+      # Used "set -ex" instead of hashbang since script isn't executed with hashbang
+      set -ex
+
+      trap "exit 1" ERR
+
+      sudo apt-get update
+      sudo apt-get install make autoconf automake libtool libtool-bin m4 wget libc-bin gzip bzip2 bison g++ git
+
+      echo $PWD
+      ls
+      chmod +x compile.sh
+      echo | ./compile.sh -t linux64 -j 4 -f -u -g -l
+      tar -czf ./PHP_Linux-x86_64.tar.gz bin
+    displayName: Bash Script
+  - bash: |
+      pwd
+      cd $BUILD_SOURCESDIRECTORY
+      pwd
+      cp PHP_Linux-x86_64.tar.gz $BUILD_ARTIFACTSTAGINGDIRECTORY
+      cp install.log $BUILD_ARTIFACTSTAGINGDIRECTORY
+    displayName: Copy Artifacts
+    condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Linux'
+    inputs:
+      ArtifactName: Linux
+    condition: succeededOrFailed()
+- job: Windows
+  pool:
+    name: Hosted VS2017
+  steps:
+  - script: |
+      choco install wget --no-progress
+      windows-compile-vs.bat
+    displayName: Build PHP
+    env:
+      VS_EDITION: Enterprise
+      SOURCES_PATH: $(Build.SourcesDirectory)\pocketmine-php-sdk
+  - script: |
+      dir
+      cd %BUILD_SOURCESDIRECTORY%
+      dir
+      cp php-*.zip %BUILD_ARTIFACTSTAGINGDIRECTORY%
+      cp compile.log %BUILD_ARTIFACTSTAGINGDIRECTORY%
+    displayName: Copy Artifacts
+    condition: succeededOrFailed()
+  - script: type compile.log
+    displayName: Show Build Log
+    condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Windows'
+    inputs:
+      ArtifactName: Windows
+    condition: succeededOrFailed()
+- job: MacOS
+  pool:
+    name: Hosted macOS
+  steps:
+  - bash: |
+      set -ex
+      trap "exit 1" ERR
+
+      brew install libtool autoconf automake
+
+      ./compile.sh -t mac64 -j4 -f -u -g -l
+      tar -czf ./PHP_MacOS-x86_64.tar.gz bin
+    displayName: Bash Script
+  - bash: |
+      pwd
+      cd $BUILD_SOURCESDIRECTORY
+      pwd
+      cp PHP_MacOS-x86_64.tar.gz $BUILD_ARTIFACTSTAGINGDIRECTORY
+      cp install.log $BUILD_ARTIFACTSTAGINGDIRECTORY
+    displayName: Copy Artifacts
+    condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Mac'
+    inputs:
+      ArtifactName: Mac
+    condition: succeededOrFailed()

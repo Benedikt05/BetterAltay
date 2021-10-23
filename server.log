@@ -1,0 +1,290 @@
+2021-09-23 20:10:09 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-09-23 20:10:25 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-09-23 20:10:40 Server|INFO > Loading pocketmine.yml...
+2021-09-23 20:10:40 Server|INFO > Loading altay.yml...
+2021-09-23 20:10:40 Server|INFO > Loading server properties...
+2021-09-23 20:10:40 Server|INFO > Selected English (eng) as the base language
+2021-09-23 20:10:40 Server|EMERGENCY > You are running a Altay DEVELOPMENT build, but your configuration does not permit running development builds.
+2021-09-23 20:10:40 Server|EMERGENCY > Development builds might have unexpected bugs, crash, break your plugins, corrupt all your data and more.
+2021-09-23 20:10:40 Server|EMERGENCY > Unless you're a developer and know what you're doing, please AVOID using development builds.
+2021-09-23 20:10:40 Server|EMERGENCY > To use this build anyway, set "settings.enable-dev-builds" to "true" in your pocketmine.yml.
+2021-09-23 20:10:40 Server|EMERGENCY > To download a stable build instead, visit https://github.com/pmmp/PocketMine-MP/releases.
+2021-09-23 20:10:40 Server|INFO > Stopping other threads
+2021-09-23 20:11:48 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-09-23 20:11:48 Server|INFO > Loading pocketmine.yml...
+2021-09-23 20:11:48 Server|INFO > Loading altay.yml...
+2021-09-23 20:11:48 Server|INFO > Loading server properties...
+2021-09-23 20:11:48 Server|INFO > Selected English (eng) as the base language
+2021-09-23 20:11:48 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.30
+2021-09-23 20:11:48 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-09-23 20:11:48 Server|INFO > Opening server on 0.0.0.0:19138
+2021-09-23 20:11:48 Server|INFO > This server is running Altay version 3.23.2+dev
+2021-09-23 20:11:48 Server|INFO > Altay is distributed under the LGPL License
+2021-09-23 20:11:49 Server|INFO > Loading resource packs...
+2021-09-23 20:11:49 Server|NOTICE > World "world" not found
+2021-09-23 20:11:49 Server|INFO > Preparing world "world"
+2021-09-23 20:11:49 Server|NOTICE > Spawn terrain for world "world" is being generated in the background
+2021-09-23 20:11:49 Server|NOTICE > World "nether" not found
+2021-09-23 20:11:49 Server|INFO > Preparing world "nether"
+2021-09-23 20:11:49 Server|NOTICE > Spawn terrain for world "nether" is being generated in the background
+2021-09-23 20:11:49 Server|NOTICE > World "end" not found
+2021-09-23 20:11:49 Server|INFO > Preparing world "end"
+2021-09-23 20:11:49 Server|NOTICE > Spawn terrain for world "end" is being generated in the background
+2021-09-23 20:11:49 Server|INFO > Starting GS4 status listener
+2021-09-23 20:11:49 Server|INFO > Setting query port to 19138
+2021-09-23 20:11:49 Server|INFO > Query running on 0.0.0.0:19138
+2021-09-23 20:11:49 Server|INFO > Default game type: Survival Mode
+2021-09-23 20:11:49 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-09-23 20:11:49 Server|INFO > Done (1.115s)! For help, type "help" or "?"
+2021-09-23 20:11:55 Server|INFO > This server is running Altay 3.23.2+dev for Minecraft: Bedrock Edition v1.17.30 (protocol version 465)
+2021-09-23 20:15:36 Server|NOTICE > Player data not found for "soaringgalaxy78", creating new profile
+2021-09-23 20:15:37 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged in with entity id 1 at (world, 256, 69, 256)
+2021-09-23 20:15:47 Server|INFO > SoaringGalaxy78 joined the game
+2021-09-23 20:16:30 Server|INFO > SoaringGalaxy78 was pricked to death
+2021-09-23 20:17:54 Server|INFO > SoaringGalaxy78 left the game
+2021-09-23 20:17:54 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged out due to timeout
+2021-09-23 20:18:48 Server|INFO > [CONSOLE: Stopping the server]
+2021-09-23 20:18:48 Server|INFO > Unloading world "world"
+2021-09-23 20:18:48 Server|INFO > Unloading world "nether"
+2021-09-23 20:18:48 Server|INFO > Unloading world "end"
+2021-09-23 20:18:48 Server|INFO > Stopping other threads
+2021-09-23 20:18:49 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-09-23 20:18:49 Server|INFO > Loading pocketmine.yml...
+2021-09-23 20:18:49 Server|INFO > Loading altay.yml...
+2021-09-23 20:18:49 Server|INFO > Loading server properties...
+2021-09-23 20:18:49 Server|INFO > Selected English (eng) as the base language
+2021-09-23 20:18:49 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.30
+2021-09-23 20:18:49 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-09-23 20:18:49 Server|INFO > Opening server on 0.0.0.0:19138
+2021-09-23 20:18:50 Server|INFO > This server is running Altay version 3.23.2+dev
+2021-09-23 20:18:50 Server|INFO > Altay is distributed under the LGPL License
+2021-09-23 20:18:50 Server|INFO > Loading resource packs...
+2021-09-23 20:18:50 Server|INFO > Preparing world "world"
+2021-09-23 20:18:50 Server|INFO > Preparing world "nether"
+2021-09-23 20:18:50 Server|INFO > Preparing world "end"
+2021-09-23 20:18:50 Server|INFO > Starting GS4 status listener
+2021-09-23 20:18:50 Server|INFO > Setting query port to 19138
+2021-09-23 20:18:50 Server|INFO > Query running on 0.0.0.0:19138
+2021-09-23 20:18:50 Server|INFO > Default game type: Survival Mode
+2021-09-23 20:18:50 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-09-23 20:18:50 Server|INFO > Done (0.933s)! For help, type "help" or "?"
+2021-09-23 20:18:59 Server|INFO > [CONSOLE: Stopping the server]
+2021-09-23 20:18:59 Server|INFO > Unloading world "world"
+2021-09-23 20:18:59 Server|INFO > Unloading world "nether"
+2021-09-23 20:18:59 Server|INFO > Unloading world "end"
+2021-09-23 20:18:59 Server|INFO > Stopping other threads
+2021-09-23 20:19:16 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-09-23 20:19:16 Server|INFO > Loading pocketmine.yml...
+2021-09-23 20:19:16 Server|INFO > Loading altay.yml...
+2021-09-23 20:19:16 Server|INFO > Loading server properties...
+2021-09-23 20:19:16 Server|INFO > Selected English (eng) as the base language
+2021-09-23 20:19:16 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.30
+2021-09-23 20:19:16 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-09-23 20:19:16 Server|INFO > Opening server on 0.0.0.0:19138
+2021-09-23 20:19:16 Server|INFO > This server is running Altay version 3.23.2+dev
+2021-09-23 20:19:16 Server|INFO > Altay is distributed under the LGPL License
+2021-09-23 20:19:17 Server|INFO > Loading resource packs...
+2021-09-23 20:19:17 Server|INFO > Preparing world "world"
+2021-09-23 20:19:17 Server|INFO > Preparing world "nether"
+2021-09-23 20:19:17 Server|INFO > Preparing world "end"
+2021-09-23 20:19:17 Server|INFO > Starting GS4 status listener
+2021-09-23 20:19:17 Server|INFO > Setting query port to 19138
+2021-09-23 20:19:17 Server|INFO > Query running on 0.0.0.0:19138
+2021-09-23 20:19:17 Server|INFO > Default game type: Survival Mode
+2021-09-23 20:19:17 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-09-23 20:19:17 Server|INFO > Done (0.862s)! For help, type "help" or "?"
+2021-09-23 20:20:03 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged in with entity id 1 at (world, 256.5, 69, 256.5)
+2021-09-23 20:20:14 Server|INFO > SoaringGalaxy78 joined the game
+2021-09-23 20:22:34 Server|INFO > SoaringGalaxy78 left the game
+2021-09-23 20:22:34 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged out due to client disconnect
+2021-09-23 20:22:52 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged in with entity id 28 at (world, 230.6574, 67, 240.6477)
+2021-09-23 20:23:03 Server|INFO > SoaringGalaxy78 joined the game
+2021-09-23 20:23:37 Server|INFO > <SoaringGalaxy78> _
+2021-09-23 20:23:38 Server|INFO > <SoaringGalaxy78> a
+2021-09-23 20:23:42 Server|INFO > SoaringGalaxy78 left the game
+2021-09-23 20:23:42 Server|INFO > SoaringGalaxy78[/93.210.88.242:60852] logged out due to client disconnect
+2021-09-23 20:23:50 Server|INFO > [CONSOLE: Stopping the server]
+2021-09-23 20:23:50 Server|INFO > Unloading world "world"
+2021-09-23 20:23:50 Server|INFO > Unloading world "nether"
+2021-09-23 20:23:50 Server|INFO > Unloading world "end"
+2021-09-23 20:23:51 Server|INFO > Stopping other threads
+2021-10-19 22:31:40 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-10-19 22:31:40 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:31:40 Server|INFO > Loading altay.yml...
+2021-10-19 22:31:40 Server|INFO > Loading server properties...
+2021-10-19 22:31:40 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:31:40 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:31:40 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:31:40 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:31:40 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:31:40 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:31:41 Server|INFO > Loading resource packs...
+2021-10-19 22:31:41 Server|INFO > Preparing world "world"
+2021-10-19 22:31:41 Server|INFO > Preparing world "nether"
+2021-10-19 22:31:41 Server|INFO > Preparing world "end"
+2021-10-19 22:31:41 Server|INFO > Starting GS4 status listener
+2021-10-19 22:31:41 Server|INFO > Setting query port to 19138
+2021-10-19 22:31:41 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:31:41 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:31:41 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:31:41 Server|INFO > Done (1.303s)! For help, type "help" or "?"
+2021-10-19 22:31:56 Server|INFO > This server is running Altay 3.25.0 for Minecraft: Bedrock Edition v1.17.40 (protocol version 471)
+2021-10-19 22:33:48 Server|NOTICE > Player data not found for "banibenedikt", creating new profile
+2021-10-19 22:33:49 Server|INFO > BanIBenedikt[/93.210.77.89:37577] logged in with entity id 1 at (world, 256, 69, 256)
+2021-10-19 22:33:54 Server|INFO > BanIBenedikt joined the game
+2021-10-19 22:34:00 Server|INFO > BanIBenedikt left the game
+2021-10-19 22:34:00 Server|INFO > BanIBenedikt[/93.210.77.89:37577] logged out due to client disconnect
+2021-10-19 22:34:20 Server|INFO > [CONSOLE: Opped banibenedikt]
+2021-10-19 22:34:34 Server|INFO > BanIBenedikt[/93.210.77.89:37577] logged in with entity id 23 at (world, 254.3995, 69, 256.7)
+2021-10-19 22:34:40 Server|INFO > BanIBenedikt joined the game
+2021-10-19 22:35:01 Server|INFO > [BanIBenedikt: Set own game mode to Creative Mode]
+2021-10-19 22:35:06 Server|INFO > BanIBenedikt left the game
+2021-10-19 22:35:06 Server|INFO > BanIBenedikt[/93.210.77.89:37577] logged out due to client disconnect
+2021-10-19 22:38:30 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-19 22:38:30 Server|INFO > Unloading world "world"
+2021-10-19 22:38:30 Server|INFO > Unloading world "nether"
+2021-10-19 22:38:30 Server|INFO > Unloading world "end"
+2021-10-19 22:38:30 Server|INFO > Stopping other threads
+2021-10-19 22:38:31 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-10-19 22:38:31 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:38:31 Server|INFO > Loading altay.yml...
+2021-10-19 22:38:31 Server|INFO > Loading server properties...
+2021-10-19 22:38:31 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:38:31 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:38:31 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:38:31 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:38:31 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:38:31 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:38:32 Server|INFO > Loading resource packs...
+2021-10-19 22:38:32 Server|INFO > Preparing world "world"
+2021-10-19 22:38:32 Server|INFO > Preparing world "nether"
+2021-10-19 22:38:32 Server|INFO > Preparing world "end"
+2021-10-19 22:38:32 Server|INFO > Starting GS4 status listener
+2021-10-19 22:38:32 Server|INFO > Setting query port to 19138
+2021-10-19 22:38:32 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:38:32 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:38:32 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:38:32 Server|INFO > Done (0.844s)! For help, type "help" or "?"
+2021-10-19 22:40:25 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged in with entity id 1 at (world, 254.3995, 69, 256.7)
+2021-10-19 22:40:31 Server|INFO > BanIBenedikt joined the game
+2021-10-19 22:41:11 Server|INFO > BanIBenedikt left the game
+2021-10-19 22:41:11 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged out due to client disconnect
+2021-10-19 22:41:24 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-19 22:41:24 Server|INFO > Unloading world "world"
+2021-10-19 22:41:24 Server|INFO > Unloading world "nether"
+2021-10-19 22:41:24 Server|INFO > Unloading world "end"
+2021-10-19 22:41:24 Server|INFO > Stopping other threads
+2021-10-19 22:41:41 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-10-19 22:41:41 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:41:41 Server|INFO > Loading altay.yml...
+2021-10-19 22:41:41 Server|INFO > Loading server properties...
+2021-10-19 22:41:41 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:41:41 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:41:41 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:41:41 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:41:41 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:41:41 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:41:42 Server|INFO > Loading resource packs...
+2021-10-19 22:41:42 Server|INFO > Preparing world "world"
+2021-10-19 22:41:42 Server|INFO > Preparing world "nether"
+2021-10-19 22:41:42 Server|INFO > Preparing world "end"
+2021-10-19 22:41:42 Server|INFO > Starting GS4 status listener
+2021-10-19 22:41:42 Server|INFO > Setting query port to 19138
+2021-10-19 22:41:42 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:41:42 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:41:42 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:41:42 Server|INFO > Done (0.925s)! For help, type "help" or "?"
+2021-10-19 22:42:52 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-19 22:42:52 Server|INFO > Unloading world "world"
+2021-10-19 22:42:52 Server|INFO > Unloading world "nether"
+2021-10-19 22:42:52 Server|INFO > Unloading world "end"
+2021-10-19 22:42:52 Server|INFO > Stopping other threads
+2021-10-19 22:43:17 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-10-19 22:43:17 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:43:17 Server|INFO > Loading altay.yml...
+2021-10-19 22:43:17 Server|INFO > Loading server properties...
+2021-10-19 22:43:17 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:43:17 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:43:17 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:43:17 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:43:17 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:43:17 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:43:18 Server|INFO > Loading resource packs...
+2021-10-19 22:43:18 Server|INFO > Preparing world "world"
+2021-10-19 22:43:18 Server|INFO > Preparing world "nether"
+2021-10-19 22:43:18 Server|INFO > Preparing world "end"
+2021-10-19 22:43:18 Server|INFO > Starting GS4 status listener
+2021-10-19 22:43:18 Server|INFO > Setting query port to 19138
+2021-10-19 22:43:18 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:43:18 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:43:18 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:43:18 Server|INFO > Done (0.838s)! For help, type "help" or "?"
+2021-10-19 22:43:36 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-19 22:43:36 Server|INFO > Unloading world "world"
+2021-10-19 22:43:36 Server|INFO > Unloading world "nether"
+2021-10-19 22:43:36 Server|INFO > Unloading world "end"
+2021-10-19 22:43:36 Server|INFO > Stopping other threads
+2021-10-19 22:43:48 Server|WARNING > Non-packaged installation detected. This will degrade autoloading speed and make startup times longer.
+2021-10-19 22:43:48 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:43:48 Server|INFO > Loading altay.yml...
+2021-10-19 22:43:48 Server|INFO > Loading server properties...
+2021-10-19 22:43:48 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:43:48 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:43:48 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:43:48 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:43:48 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:43:48 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:43:49 Server|INFO > Loading resource packs...
+2021-10-19 22:43:49 Server|INFO > Preparing world "world"
+2021-10-19 22:43:49 Server|INFO > Preparing world "nether"
+2021-10-19 22:43:49 Server|INFO > Preparing world "end"
+2021-10-19 22:43:49 Server|INFO > Starting GS4 status listener
+2021-10-19 22:43:49 Server|INFO > Setting query port to 19138
+2021-10-19 22:43:49 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:43:49 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:43:49 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:43:49 Server|INFO > Done (0.818s)! For help, type "help" or "?"
+2021-10-19 22:44:26 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-19 22:44:26 Server|INFO > Unloading world "world"
+2021-10-19 22:44:26 Server|INFO > Unloading world "nether"
+2021-10-19 22:44:26 Server|INFO > Unloading world "end"
+2021-10-19 22:44:26 Server|INFO > Stopping other threads
+2021-10-19 22:44:34 Server|INFO > Loading pocketmine.yml...
+2021-10-19 22:44:34 Server|INFO > Loading altay.yml...
+2021-10-19 22:44:34 Server|INFO > Loading server properties...
+2021-10-19 22:44:34 Server|INFO > Selected English (eng) as the base language
+2021-10-19 22:44:34 Server|INFO > Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-10-19 22:44:34 Server|INFO > Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-10-19 22:44:34 Server|INFO > Opening server on 0.0.0.0:19138
+2021-10-19 22:44:34 Server|INFO > This server is running Altay version 3.25.0
+2021-10-19 22:44:34 Server|INFO > Altay is distributed under the LGPL License
+2021-10-19 22:44:34 Server|INFO > Loading resource packs...
+2021-10-19 22:44:34 Server|INFO > Preparing world "world"
+2021-10-19 22:44:34 Server|INFO > Preparing world "nether"
+2021-10-19 22:44:34 Server|INFO > Preparing world "end"
+2021-10-19 22:44:34 Server|INFO > Starting GS4 status listener
+2021-10-19 22:44:34 Server|INFO > Setting query port to 19138
+2021-10-19 22:44:34 Server|INFO > Query running on 0.0.0.0:19138
+2021-10-19 22:44:34 Server|INFO > Default game type: Survival Mode
+2021-10-19 22:44:34 Server|INFO > If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-10-19 22:44:34 Server|INFO > Done (0.953s)! For help, type "help" or "?"
+2021-10-19 22:44:41 Server|INFO > This server is running Altay 3.25.0 for Minecraft: Bedrock Edition v1.17.40 (protocol version 471)
+2021-10-19 22:46:13 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged in with entity id 1 at (world, 231.4783, 72.2227, 259.7914)
+2021-10-19 22:46:18 Server|INFO > BanIBenedikt joined the game
+2021-10-19 22:46:32 Server|INFO > [BanIBenedikt: Set own game mode to Creative Mode]
+2021-10-19 22:47:13 Server|INFO > BanIBenedikt left the game
+2021-10-19 22:47:13 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged out due to client disconnect
+2021-10-19 22:57:13 Server|INFO > This server is running Altay 3.25.0 for Minecraft: Bedrock Edition v1.17.40 (protocol version 471)
+2021-10-19 22:57:45 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged in with entity id 19 at (world, 240.7031, 70, 259.1307)
+2021-10-19 22:57:50 Server|INFO > BanIBenedikt joined the game
+2021-10-19 22:58:57 Server|INFO > BanIBenedikt left the game
+2021-10-19 22:58:57 Server|INFO > BanIBenedikt[/93.210.77.89:38493] logged out due to client disconnect
+2021-10-19 23:04:33 Server|INFO > BanIBenedikt[/93.210.77.89:42029] logged in with entity id 51 at (world, 197.8818, 74.5151, 173.2025)
+2021-10-19 23:04:39 Server|INFO > BanIBenedikt joined the game
+2021-10-19 23:04:59 Server|INFO > BanIBenedikt left the game
+2021-10-19 23:04:59 Server|INFO > BanIBenedikt[/93.210.77.89:42029] logged out due to client disconnect
+2021-10-20 00:30:36 Server|INFO > [CONSOLE: Stopping the server]
+2021-10-20 00:30:36 Server|INFO > Unloading world "world"
+2021-10-20 00:30:36 Server|INFO > Unloading world "nether"
+2021-10-20 00:30:36 Server|INFO > Unloading world "end"
+2021-10-20 00:30:37 Server|INFO > Stopping other threads

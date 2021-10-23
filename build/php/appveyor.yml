@@ -1,0 +1,13 @@
+image: Visual Studio 2017
+version: php-7.3-appveyor{build}
+clone_folder: c:\pmmp\windows-php
+build_script:
+- ps: >-
+    .\windows-compile-vs.bat
+
+    Push-AppveyorArtifact 'compile.log'
+
+    rm -r -Force bin
+artifacts:
+- path: '*php-*.zip'
+- path: 'compile.log'

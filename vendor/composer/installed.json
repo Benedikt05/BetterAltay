@@ -1,0 +1,519 @@
+{
+    "packages": [
+        {
+            "name": "adhocore/json-comment",
+            "version": "1.1.2",
+            "version_normalized": "1.1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adhocore/php-json-comment.git",
+                "reference": "fc2f76979f0a44a5f5bc2a2b600d0762fe0e78e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adhocore/php-json-comment/zipball/fc2f76979f0a44a5f5bc2a2b600d0762fe0e78e7",
+                "reference": "fc2f76979f0a44a5f5bc2a2b600d0762fe0e78e7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5"
+            },
+            "time": "2021-04-09T03:06:06+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Ahc\\Json\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jitendra Adhikari",
+                    "email": "jiten.adhikary@gmail.com"
+                }
+            ],
+            "description": "Lightweight JSON comment stripper library for PHP",
+            "keywords": [
+                "comment",
+                "json",
+                "strip-comment"
+            ],
+            "support": {
+                "issues": "https://github.com/adhocore/php-json-comment/issues",
+                "source": "https://github.com/adhocore/php-json-comment/tree/1.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/ji10",
+                    "type": "custom"
+                }
+            ],
+            "install-path": "../adhocore/json-comment"
+        },
+        {
+            "name": "pocketmine/binaryutils",
+            "version": "0.1.13",
+            "version_normalized": "0.1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BinaryUtils.git",
+                "reference": "0abee38d4e2861621f262c79a2a3d699d8a697f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/0abee38d4e2861621f262c79a2a3d699d8a697f4",
+                "reference": "0abee38d4e2861621f262c79a2a3d699d8a697f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "php-64bit": "*"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.67",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-01-15T14:19:13+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Classes and methods for conveniently handling binary data",
+            "support": {
+                "issues": "https://github.com/pmmp/BinaryUtils/issues",
+                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.13"
+            },
+            "install-path": "../pocketmine/binaryutils"
+        },
+        {
+            "name": "pocketmine/callback-validator",
+            "version": "1.0.3",
+            "version_normalized": "1.0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/CallbackValidator.git",
+                "reference": "64787469766bcaa7e5885242e85c23c25e8c55a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/CallbackValidator/zipball/64787469766bcaa7e5885242e85c23c25e8c55a2",
+                "reference": "64787469766bcaa7e5885242e85c23c25e8c55a2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-reflection": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "replace": {
+                "daverandom/callback-validator": "*"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.59",
+                "phpstan/phpstan-strict-rules": "^0.12.4",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
+            },
+            "time": "2020-12-11T01:45:37+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "DaveRandom\\CallbackValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Wright",
+                    "email": "cw@daverandom.com"
+                }
+            ],
+            "description": "Fork of daverandom/callback-validator - Tools for validating callback signatures",
+            "support": {
+                "issues": "https://github.com/pmmp/CallbackValidator/issues",
+                "source": "https://github.com/pmmp/CallbackValidator/tree/1.0.3"
+            },
+            "install-path": "../pocketmine/callback-validator"
+        },
+        {
+            "name": "pocketmine/classloader",
+            "version": "0.1.2",
+            "version_normalized": "0.1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/ClassLoader.git",
+                "reference": "9757928424652393b178a3760073113aa7c9911b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/ClassLoader/zipball/9757928424652393b178a3760073113aa7c9911b",
+                "reference": "9757928424652393b178a3760073113aa7c9911b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": "~3.2.0",
+                "ext-reflection": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "conflict": {
+                "pocketmine/spl": "<0.4"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.66",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-01-15T00:40:47+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "./src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Ad-hoc autoloading components used by PocketMine-MP",
+            "support": {
+                "issues": "https://github.com/pmmp/ClassLoader/issues",
+                "source": "https://github.com/pmmp/ClassLoader/tree/0.1.2"
+            },
+            "install-path": "../pocketmine/classloader"
+        },
+        {
+            "name": "pocketmine/log",
+            "version": "0.2.1",
+            "version_normalized": "0.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/Log.git",
+                "reference": "830b44a2cf96ef703c550abe64302f230231ca49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/Log/zipball/830b44a2cf96ef703c550abe64302f230231ca49",
+                "reference": "830b44a2cf96ef703c550abe64302f230231ca49",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "conflict": {
+                "pocketmine/spl": "<0.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "0.12.67",
+                "phpstan/phpstan-strict-rules": "^0.12.2"
+            },
+            "time": "2021-01-15T14:32:41+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "./src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Logging components used by PocketMine-MP and related projects",
+            "support": {
+                "issues": "https://github.com/pmmp/Log/issues",
+                "source": "https://github.com/pmmp/Log/tree/0.2.1"
+            },
+            "install-path": "../pocketmine/log"
+        },
+        {
+            "name": "pocketmine/log-pthreads",
+            "version": "0.1.3",
+            "version_normalized": "0.1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/LogPthreads.git",
+                "reference": "e477ecf6ec214fdd4415ea1da3fdd9d73bf699ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/LogPthreads/zipball/e477ecf6ec214fdd4415ea1da3fdd9d73bf699ea",
+                "reference": "e477ecf6ec214fdd4415ea1da3fdd9d73bf699ea",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": "~3.2.0",
+                "php": "^7.2 || ^8.0",
+                "pocketmine/log": "^0.2.0"
+            },
+            "conflict": {
+                "pocketmine/spl": "<0.4"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.66",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-01-15T00:35:49+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "./src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Logging components specialized for pthreads used by PocketMine-MP and related projects",
+            "support": {
+                "issues": "https://github.com/pmmp/LogPthreads/issues",
+                "source": "https://github.com/pmmp/LogPthreads/tree/0.1.3"
+            },
+            "install-path": "../pocketmine/log-pthreads"
+        },
+        {
+            "name": "pocketmine/math",
+            "version": "0.2.6",
+            "version_normalized": "0.2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/Math.git",
+                "reference": "43057cb8c179a9859677b496a788db922fd5cfc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/Math/zipball/43057cb8c179a9859677b496a788db922fd5cfc3",
+                "reference": "43057cb8c179a9859677b496a788db922fd5cfc3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "php-64bit": "*"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.67",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-01-15T14:25:11+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "PHP library containing math related code used in PocketMine-MP",
+            "support": {
+                "issues": "https://github.com/pmmp/Math/issues",
+                "source": "https://github.com/pmmp/Math/tree/0.2.6"
+            },
+            "install-path": "../pocketmine/math"
+        },
+        {
+            "name": "pocketmine/nbt",
+            "version": "0.2.18",
+            "version_normalized": "0.2.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/NBT.git",
+                "reference": "9f82ca4d7f97fcd9a566e44b63c4f18a7657ae82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/NBT/zipball/9f82ca4d7f97fcd9a566e44b63c4f18a7657ae82",
+                "reference": "9f82ca4d7f97fcd9a566e44b63c4f18a7657ae82",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": "^7.2 || ^8.0",
+                "php-64bit": "*",
+                "pocketmine/binaryutils": "^0.1.9"
+            },
+            "require-dev": {
+                "irstea/phpunit-shim": "^7.5 || ^8.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.80",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-03-11T00:09:04+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\nbt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "PHP library for working with Named Binary Tags",
+            "support": {
+                "issues": "https://github.com/pmmp/NBT/issues",
+                "source": "https://github.com/pmmp/NBT/tree/0.2.18"
+            },
+            "install-path": "../pocketmine/nbt"
+        },
+        {
+            "name": "pocketmine/raklib",
+            "version": "0.12.11",
+            "version_normalized": "0.12.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/RakLib.git",
+                "reference": "9cce458b8bfde3e4dfdbf70c659fc7b7fe26b5c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/9cce458b8bfde3e4dfdbf70c659fc7b7fe26b5c4",
+                "reference": "9cce458b8bfde3e4dfdbf70c659fc7b7fe26b5c4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": "~3.2.0",
+                "ext-sockets": "*",
+                "php": "^7.2 || ^8.0",
+                "php-64bit": "*",
+                "php-ipv6": "*",
+                "pocketmine/binaryutils": "^0.1.9",
+                "pocketmine/log": "^0.2.0",
+                "pocketmine/log-pthreads": "^0.1.0",
+                "pocketmine/snooze": "^0.1.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "0.12.76",
+                "phpstan/phpstan-strict-rules": "^0.12.2"
+            },
+            "time": "2021-02-15T11:21:05+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "raklib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "A RakNet server implementation written in PHP",
+            "support": {
+                "issues": "https://github.com/pmmp/RakLib/issues",
+                "source": "https://github.com/pmmp/RakLib/tree/0.12.11"
+            },
+            "install-path": "../pocketmine/raklib"
+        },
+        {
+            "name": "pocketmine/snooze",
+            "version": "0.1.5",
+            "version_normalized": "0.1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/Snooze.git",
+                "reference": "70b5e7937a06878dd321a3182ceb76d56298f2cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/Snooze/zipball/70b5e7937a06878dd321a3182ceb76d56298f2cd",
+                "reference": "70b5e7937a06878dd321a3182ceb76d56298f2cd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": ">=3.1.7dev",
+                "php-64bit": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.76",
+                "phpstan/phpstan-strict-rules": "^0.12.4"
+            },
+            "time": "2021-02-22T16:16:12+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\snooze\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Thread notification management library for code using the pthreads extension",
+            "support": {
+                "issues": "https://github.com/pmmp/Snooze/issues",
+                "source": "https://github.com/pmmp/Snooze/tree/0.1.5"
+            },
+            "install-path": "../pocketmine/snooze"
+        },
+        {
+            "name": "pocketmine/spl",
+            "version": "0.4.2",
+            "version_normalized": "0.4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/SPL.git",
+                "reference": "6b08b7cf8c4afa17139c9a1b3bf1b408531de161"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/SPL/zipball/6b08b7cf8c4afa17139c9a1b3bf1b408531de161",
+                "reference": "6b08b7cf8c4afa17139c9a1b3bf1b408531de161",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.8"
+            },
+            "time": "2021-01-15T15:15:23+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "./src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Standard library files required by PocketMine-MP and related projects",
+            "support": {
+                "issues": "https://github.com/pmmp/SPL/issues",
+                "source": "https://github.com/pmmp/SPL/tree/0.4.2"
+            },
+            "install-path": "../pocketmine/spl"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

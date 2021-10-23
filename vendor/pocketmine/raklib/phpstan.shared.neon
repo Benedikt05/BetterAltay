@@ -1,0 +1,15 @@
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+	level: 7
+	paths:
+		- src
+	reportUnmatchedIgnoredErrors: false #enabling this makes build results too volatile when phpstan bugs get fixed
+	stubFiles:
+		- tests/phpstan/stubs/pthreads.stub
+	ignoreErrors:
+		-
+			message: "#^Call to function assert\\(\\) with false and 'received packet…' will always evaluate to false\\.$#"
+			count: 1
+			path: src/server/Session.php

@@ -1,0 +1,320 @@
+{
+    "border": {
+        "type": "shaped",
+        "id": "bo",
+        "dye_arrangement": [
+            "###",
+            "# #",
+            "###"
+        ]
+    },
+    "bricks": {
+        "type": "shapeless",
+        "id": "bri",
+        "requires": "bricks"
+    },
+    "circle": {
+        "type": "shaped",
+        "id": "mc",
+        "dye_arrangement": [
+            "   ",
+            " # ",
+            "   "
+        ]
+    },
+    "creeper": {
+        "type": "shapeless",
+        "id": "cre",
+        "requires": "creeper_head"
+    },
+    "cross": {
+        "type": "shaped",
+        "id": "cr",
+        "dye_arrangement": [
+            "# #",
+            " # ",
+            "# #"
+        ]
+    },
+    "curly_border": {
+        "type": "shapeless",
+        "id": "cbo",
+        "requires": "vines"
+    },
+    "diagonal_left": {
+        "type": "shaped",
+        "id": "lud",
+        "dye_arrangement": [
+            "   ",
+            "#  ",
+            "## "
+        ]
+    },
+    "diagonal_right": {
+        "type": "shaped",
+        "id": "rd",
+        "dye_arrangement": [
+            "   ",
+            "  #",
+            " ##"
+        ]
+    },
+    "diagonal_up_left": {
+        "type": "shaped",
+        "id": "ld",
+        "dye_arrangement": [
+            "## ",
+            "#  ",
+            "   "
+        ]
+    },
+    "diagonal_up_right": {
+        "type": "shaped",
+        "id": "rud",
+        "dye_arrangement": [
+            " ##",
+            "  #",
+            "   "
+        ]
+    },
+    "flower": {
+        "type": "shapeless",
+        "id": "flo",
+        "requires": "oxeye_daisy"
+    },
+    "gradient": {
+        "type": "shaped",
+        "id": "gra",
+        "dye_arrangement": [
+            "# #",
+            " # ",
+            " # "
+        ]
+    },
+    "gradient_up": {
+        "type": "shaped",
+        "id": "gru",
+        "dye_arrangement": [
+            " # ",
+            " # ",
+            "# #"
+        ]
+    },
+    "half_horizontal": {
+        "type": "shaped",
+        "id": "hh",
+        "dye_arrangement": [
+            "###",
+            "###",
+            "   "
+        ]
+    },
+    "half_horizontal_bottom": {
+        "type": "shaped",
+        "id": "hhb",
+        "dye_arrangement": [
+            "   ",
+            "###",
+            "###"
+        ]
+    },
+    "half_vertical": {
+        "type": "shaped",
+        "id": "vh",
+        "dye_arrangement": [
+            "## ",
+            "## ",
+            "## "
+        ]
+    },
+    "half_vertical_right": {
+        "type": "shaped",
+        "id": "vhr",
+        "dye_arrangement": [
+            " ##",
+            " ##",
+            " ##"
+        ]
+    },
+    "mojang": {
+        "type": "shapeless",
+        "id": "moj",
+        "requires": "enchanted_golden_apple"
+    },
+    "rhombus": {
+        "type": "shaped",
+        "id": "mr",
+        "dye_arrangement": [
+            " # ",
+            "# #",
+            " # "
+        ]
+    },
+    "skull": {
+        "type": "shapeless",
+        "id": "sku",
+        "requires": "wither_skeleton_skull"
+    },
+    "small_stripes": {
+        "type": "shaped",
+        "id": "ss",
+        "dye_arrangement": [
+            "# #",
+            "# #",
+            "   "
+        ]
+    },
+    "square_bottom_left": {
+        "type": "shaped",
+        "id": "bl",
+        "dye_arrangement": [
+            "   ",
+            "   ",
+            "#  "
+        ]
+    },
+    "square_bottom_right": {
+        "type": "shaped",
+        "id": "br",
+        "dye_arrangement": [
+            "   ",
+            "   ",
+            "  #"
+        ]
+    },
+    "square_top_left": {
+        "type": "shaped",
+        "id": "tl",
+        "dye_arrangement": [
+            "#  ",
+            "   ",
+            "   "
+        ]
+    },
+    "square_top_right": {
+        "type": "shaped",
+        "id": "tr",
+        "dye_arrangement": [
+            "  #",
+            "   ",
+            "   "
+        ]
+    },
+    "straight_cross": {
+        "type": "shaped",
+        "id": "sc",
+        "dye_arrangement": [
+            " # ",
+            "###",
+            " # "
+        ]
+    },
+    "stripe_bottom": {
+        "type": "shaped",
+        "id": "bs",
+        "dye_arrangement": [
+            "   ",
+            "   ",
+            "###"
+        ]
+    },
+    "stripe_center": {
+        "type": "shaped",
+        "id": "cs",
+        "dye_arrangement": [
+            " # ",
+            " # ",
+            " # "
+        ]
+    },
+    "stripe_downleft": {
+        "type": "shaped",
+        "id": "dls",
+        "dye_arrangement": [
+            "  #",
+            " # ",
+            "#  "
+        ]
+    },
+    "stripe_downright": {
+        "type": "shaped",
+        "id": "drs",
+        "dye_arrangement": [
+            "#  ",
+            " # ",
+            "  #"
+        ]
+    },
+    "stripe_left": {
+        "type": "shaped",
+        "id": "ls",
+        "dye_arrangement": [
+            "#  ",
+            "#  ",
+            "#  "
+        ]
+    },
+    "stripe_middle": {
+        "type": "shaped",
+        "id": "ms",
+        "dye_arrangement": [
+            "   ",
+            "###",
+            "   "
+        ]
+    },
+    "stripe_right": {
+        "type": "shaped",
+        "id": "rs",
+        "dye_arrangement": [
+            "  #",
+            "  #",
+            "  #"
+        ]
+    },
+    "stripe_top": {
+        "type": "shaped",
+        "id": "ts",
+        "dye_arrangement": [
+            "###",
+            "   ",
+            "   "
+        ]
+    },
+    "triangle_bottom": {
+        "type": "shaped",
+        "id": "bt",
+        "dye_arrangement": [
+            "   ",
+            " # ",
+            "# #"
+        ]
+    },
+    "triangle_top": {
+        "type": "shaped",
+        "id": "tt",
+        "dye_arrangement": [
+            "# #",
+            " # ",
+            "   "
+        ]
+    },
+    "triangles_bottom": {
+        "type": "shaped",
+        "id": "bts",
+        "dye_arrangement": [
+            "   ",
+            "# #",
+            " # "
+        ]
+    },
+    "triangles_top": {
+        "type": "shaped",
+        "id": "tts",
+        "dye_arrangement": [
+            " # ",
+            "# #",
+            "   "
+        ]
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "pocketmine/callback-validator",
+  "description": "Fork of daverandom/callback-validator - Tools for validating callback signatures",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Chris Wright",
+      "email": "cw@daverandom.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1 || ^8.0",
+    "ext-reflection": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0",
+    "phpstan/phpstan": "0.12.59",
+    "phpstan/extension-installer": "^1.0",
+    "phpstan/phpstan-strict-rules": "^0.12.4"
+  },
+  "replace": {
+    "daverandom/callback-validator": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "DaveRandom\\CallbackValidator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DaveRandom\\CallbackValidator\\Test\\": "tests/"
+    }
+  }
+}

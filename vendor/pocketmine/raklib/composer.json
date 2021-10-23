@@ -1,0 +1,26 @@
+{
+	"name": "pocketmine/raklib",
+	"description": "A RakNet server implementation written in PHP",
+	"type": "library",
+	"license": "GPL-3.0",
+	"require": {
+		"php": "^7.2 || ^8.0",
+		"php-ipv6": "*",
+		"php-64bit": "*",
+		"ext-pthreads": "~3.2.0",
+		"ext-sockets": "*",
+		"pocketmine/log": "^0.2.0",
+		"pocketmine/log-pthreads": "^0.1.0",
+		"pocketmine/binaryutils": "^0.1.9",
+		"pocketmine/snooze": "^0.1.0"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "0.12.76",
+		"phpstan/phpstan-strict-rules": "^0.12.2"
+	},
+	"autoload": {
+		"psr-4": {
+			"raklib\\": "src/"
+		}
+	}
+}

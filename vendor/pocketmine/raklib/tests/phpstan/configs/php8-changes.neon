@@ -1,0 +1,12 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to function assert\\(\\) with true will always evaluate to true\\.$#"
+			count: 1
+			path: ../../../src/server/Session.php
+
+		-
+			message: "#^Strict comparison using \\!\\=\\= between array\\<int, string\\> and false will always evaluate to true\\.$#"
+			count: 1
+			path: ../../../src/server/Session.php
+

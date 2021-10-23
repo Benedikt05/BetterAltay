@@ -1,0 +1,22 @@
+{
+    "name": "pocketmine/log-pthreads",
+    "description": "Logging components specialized for pthreads used by PocketMine-MP and related projects",
+    "type": "library",
+    "license": "LGPL-3.0",
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "ext-pthreads": "~3.2.0",
+        "pocketmine/log": "^0.2.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "0.12.66",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan-strict-rules": "^0.12.4"
+    },
+    "conflict": {
+        "pocketmine/spl": "<0.4"
+    },
+    "autoload": {
+        "classmap": ["./src"]
+    }
+}
