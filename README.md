@@ -1,6 +1,6 @@
 <p align="center">
 	<img src="https://github.com/TuranicTeam/Altay/blob/stable/.github/logo.png"></img><br>
-	<b>A feature-rich server software for Minecraft: BE. This is a SPOON of </b><a href="https://github.com/pmmp/PocketMine-MP">PocketMine-MP</a> and href="https://github.com/TuranicTeam/Altay"</a>
+	<b>A feature-rich server software for Minecraft: BE. This is a SPOON of </b><a href="https://github.com/pmmp/PocketMine-MP">PocketMine-MP</a> and "https://github.com/TuranicTeam/Altay"</a>
 </p>
 <p align="center">
 	<img src="https://github.com/TuranicTeam/Altay/workflows/CI/badge.svg" alt="CI" />
