@@ -34,6 +34,6 @@ const _VERSION_INFO_INCLUDED = true;
 
 const NAME = "BetterAltay";
 const BASE_VERSION = "3.25.0";
-const IS_DEVELOPMENT_BUILD = false;
+const IS_DEVELOPMENT_BUILD = true;
 const BUILD_NUMBER = 0;
 const BUILD_CHANNEL = "";
