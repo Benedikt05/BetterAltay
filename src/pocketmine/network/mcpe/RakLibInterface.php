@@ -162,7 +162,6 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		if(isset($this->players[$identifier])){
 			//get this now for blocking in case the player was closed before the exception was raised
 			$player = $this->players[$identifier];
-			$address = $player->getAddress();
 			try{
 				if($packet->buffer !== ""){
 					$pk = new BatchPacket($packet->buffer);
@@ -173,8 +172,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$logger->debug("Packet " . (isset($pk) ? get_class($pk) : "unknown") . ": " . base64_encode($packet->buffer));
 				$logger->logException($e);
 
-				$player->close($player->getLeaveMessage(), "Internal server error");
-				$this->interface->blockAddress($address, 5);
+				$player->sendMessage("Internal server error");
 			}
 		}
 	}
