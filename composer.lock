@@ -153,20 +153,20 @@
         },
         {
             "name": "pocketmine/classloader",
-            "version": "0.1.2",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/ClassLoader.git",
-                "reference": "9757928424652393b178a3760073113aa7c9911b"
+                "reference": "3c484a27787f7732ce842ed694928a29ba340961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/ClassLoader/zipball/9757928424652393b178a3760073113aa7c9911b",
-                "reference": "9757928424652393b178a3760073113aa7c9911b",
+                "url": "https://api.github.com/repos/pmmp/ClassLoader/zipball/3c484a27787f7732ce842ed694928a29ba340961",
+                "reference": "3c484a27787f7732ce842ed694928a29ba340961",
                 "shasum": ""
             },
             "require": {
-                "ext-pthreads": "~3.2.0",
+                "ext-pthreads": "~3.2.0 || ^4.0",
                 "ext-reflection": "*",
                 "php": "^7.2 || ^8.0"
             },
@@ -175,7 +175,7 @@
             },
             "require-dev": {
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "0.12.66",
+                "phpstan/phpstan": "0.12.99",
                 "phpstan/phpstan-strict-rules": "^0.12.4"
             },
             "type": "library",
@@ -191,9 +191,9 @@
             "description": "Ad-hoc autoloading components used by PocketMine-MP",
             "support": {
                 "issues": "https://github.com/pmmp/ClassLoader/issues",
-                "source": "https://github.com/pmmp/ClassLoader/tree/0.1.2"
+                "source": "https://github.com/pmmp/ClassLoader/tree/0.1.3"
             },
-            "time": "2021-01-15T00:40:47+00:00"
+            "time": "2021-11-01T20:13:55+00:00"
         },
         {
             "name": "pocketmine/log",
