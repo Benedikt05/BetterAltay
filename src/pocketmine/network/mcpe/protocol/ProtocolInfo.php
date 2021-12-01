@@ -62,7 +62,7 @@ interface ProtocolInfo{
 	public const TAKE_ITEM_ACTOR_PACKET = 0x11;
 	public const MOVE_ACTOR_ABSOLUTE_PACKET = 0x12;
 	public const MOVE_PLAYER_PACKET = 0x13;
-	public const RIDER_JUMP_PACKET = 0x14;
+	public const PASSENGER_JUMP_PACKET = 0x14;
 	public const UPDATE_BLOCK_PACKET = 0x15;
 	public const ADD_PAINTING_PACKET = 0x16;
 	public const TICK_SYNC_PACKET = 0x17;
@@ -216,5 +216,7 @@ interface ProtocolInfo{
 	public const CREATE_PHOTO_PACKET = 0xab;
 	public const UPDATE_SUB_CHUNK_BLOCKS_PACKET = 0xac;
 	public const PHOTO_INFO_REQUEST_PACKET = 0xad;
+	public const SUB_CHUNK_PACKET = 0xae;
+	public const SUB_CHUNK_REQUEST_PACKET = 0xaf;
 
 }
