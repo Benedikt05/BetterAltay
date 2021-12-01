@@ -1,25 +1,34 @@
 @echo off
-TITLE Altay server software for Minecraft: Bedrock Edition
+TITLE BetterAltay server software for Minecraft: Bedrock Edition
 cd /d %~dp0
 
-if exist bin\php\php.exe (
-	set PHPRC=""
-	set PHP_BINARY=bin\php\php.exe
-) else (
+set PHP_BINARY=
+
+where /q php.exe
+if %ERRORLEVEL%==0 (
 	set PHP_BINARY=php
 )
 
-if exist Altay.phar (
-	set POCKETMINE_FILE=Altay.phar
+if exist bin\php\php.exe (
+	rem always use the local PHP binary if it exists
+	set PHPRC=""
+	set PHP_BINARY=bin\php\php.exe
+)
+
+if "%PHP_BINARY%"=="" (
+	echo Couldn't find a PHP binary in system PATH or %~dp0\bin\php
+	echo Please refer to the installation instructions at https://doc.pmmp.io/en/rtfd/installation.html
+	pause
+	exit 1
+)
+
+if exist BetterAltay.phar (
+	set POCKETMINE_FILE=BetterAltay.phar
 ) else (
-	if exist src\pocketmine\PocketMine.php (
-		set POCKETMINE_FILE=src\pocketmine\PocketMine.php
-	) else (
-		echo Altay.phar not found
-		echo Downloads can be found at https://github.com/TuranicTeam/Altay/releases
-		pause
-		exit 1
-	)
+	echo BetterAltay.phar not found
+	echo Downloads can be found at https://github.com/Benedikt05/BetterAltay/releases
+	pause
+	exit 1
 )
 
 if exist bin\mintty.exe (
