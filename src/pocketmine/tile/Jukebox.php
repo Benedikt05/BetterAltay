@@ -62,7 +62,7 @@ class Jukebox extends Spawnable{
 						"record", "."
 					], [
 						"", ""
-					], $this->getRecordItem()->getSoundId()))
+					], (string)$this->getRecordItem()->getSoundId()))
 				];
 				$player->sendDataPacket($pk);
 			}
