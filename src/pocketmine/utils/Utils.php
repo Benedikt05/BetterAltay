@@ -71,6 +71,7 @@ use function rmdir;
 use function rtrim;
 use function scandir;
 use function sha1;
+use function shell_exec;
 use function spl_object_hash;
 use function str_pad;
 use function str_replace;
@@ -235,7 +236,7 @@ class Utils{
 		}elseif($os === Utils::OS_ANDROID){
 			$machine .= @file_get_contents("/system/build.prop");
 		}elseif($os === Utils::OS_MACOS){
-			$machine .= `system_profiler SPHardwareDataType | grep UUID`;
+			$machine .= shell_exec("system_profiler SPHardwareDataType | grep UUID");
 		}
 		$data = $machine . PHP_MAXPATHLEN;
 		$data .= PHP_INT_MAX;
@@ -358,7 +359,7 @@ class Utils{
 				break;
 			case Utils::OS_BSD:
 			case Utils::OS_MACOS:
-				$processors = (int) `sysctl -n hw.ncpu`;
+				$processors = (int) shell_exec("sysctl -n hw.ncpu");
 				break;
 			case Utils::OS_WINDOWS:
 				$processors = (int) getenv("NUMBER_OF_PROCESSORS");
@@ -454,7 +455,7 @@ class Utils{
 	 * @param callable|null $onSuccess    function to be called if there is no error. Accepts a resource argument as the cURL handle.
 	 * @phpstan-param array<int, mixed>                $extraOpts
 	 * @phpstan-param list<string>                     $extraHeaders
-	 * @phpstan-param (callable(PhpCurlHandle) : void)|null $onSuccess
+	 * @phpstan-param (callable(\CurlHandle) : void)|null $onSuccess
 	 *
 	 * @return array a plain array of three [result body : string, headers : string[][], HTTP response code : int]. Headers are grouped by requests with strtolower(header name) as keys and header value as values
 	 * @phpstan-return array{string, list<array<string, string>>, int}
@@ -642,7 +643,6 @@ class Utils{
 		preg_match_all('/(*ANYCRLF)^[\t ]*(?:\* )?@([a-zA-Z]+)(?:[\t ]+(.+?))?[\t ]*$/m', $rawDocComment, $matches);
 
 		$result = array_combine($matches[1], $matches[2]);
-		if($result === false) throw new AssumptionFailedError("array_combine() doesn't return false with two equal-sized arrays");
 		return $result;
 	}
 

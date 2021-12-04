@@ -1,8 +1,63 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot access offset 'base_version' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'build' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'composer_libraries' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'git' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'is_dev' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'os' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'php' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'php_os' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'protocol' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'uname' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
+			message: "#^Cannot access offset 'zend' on mixed\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/CrashDump.php
+
+		-
 			message: "#^Call to function is_resource\\(\\) with resource will always evaluate to true\\.$#"
-			count: 3
+			count: 2
 			path: ../../../src/pocketmine/command/CommandReader.php
 
 		-
@@ -11,14 +66,14 @@ parameters:
 			path: ../../../src/pocketmine/entity/projectile/Projectile.php
 
 		-
+			message: "#^Dead catch \\- ReflectionException is never thrown in the try block\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/level/format/io/LevelProviderManager.php
+
+		-
 			message: "#^Call to function is_resource\\(\\) with resource will always evaluate to true\\.$#"
 			count: 2
 			path: ../../../src/pocketmine/level/format/io/region/RegionLoader.php
-
-		-
-			message: "#^Parameter \\#2 \\$count of function array_fill expects int\\<0, max\\>, int given\\.$#"
-			count: 2
-			path: ../../../src/pocketmine/level/generator/noise/Noise.php
 
 		-
 			message: "#^Call to function method_exists\\(\\) with pocketmine\\\\network\\\\mcpe\\\\CachedEncapsulatedPacket and '__toString' will always evaluate to true\\.$#"
@@ -26,8 +81,13 @@ parameters:
 			path: ../../../src/pocketmine/network/mcpe/protocol/DataPacket.php
 
 		-
-			message: "#^Parameter \\#1 \\$ of closure expects TMemberType, TMemberType given\\.$#"
+			message: "#^Parameter \\#1 \\$yamlString of class pocketmine\\\\plugin\\\\PluginDescription constructor expects array\\|string, array\\<string\\> given\\.$#"
 			count: 1
+			path: ../../../src/pocketmine/plugin/ScriptPluginLoader.php
+
+		-
+			message: "#^Dead catch \\- ReflectionException is never thrown in the try block\\.$#"
+			count: 2
 			path: ../../../src/pocketmine/utils/Utils.php
 
 		-

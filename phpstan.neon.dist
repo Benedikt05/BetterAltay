@@ -1,14 +1,9 @@
 includes:
 	- tests/phpstan/configs/actual-problems.neon
-	- tests/phpstan/configs/check-explicit-mixed-baseline.neon
 	- tests/phpstan/configs/gc-hacks.neon
-	- tests/phpstan/configs/l7-baseline.neon
-	- tests/phpstan/configs/l8-baseline.neon
-	- tests/phpstan/configs/php74-compat.neon
 	- tests/phpstan/configs/php-bugs.neon
 	- tests/phpstan/configs/phpstan-bugs.neon
 	- tests/phpstan/configs/phpunit-wiring-tests.neon
-	- tests/phpstan/configs/pthreads-bugs.neon
 	- tests/phpstan/configs/runtime-type-checks.neon
 	- tests/phpstan/configs/spl-fixed-array-sucks.neon
 	- vendor/phpstan/phpstan-phpunit/extension.neon
@@ -16,9 +11,9 @@ includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-	level: 8
-	checkExplicitMixed: true
+	level: 9
 	checkMissingCallableSignature: true
+	treatPhpDocTypesAsCertain: false
 	bootstrapFiles:
 		- tests/phpstan/bootstrap.php
 	scanDirectories:
@@ -33,7 +28,11 @@ parameters:
 		- tests/plugins/TesterPlugin
 	excludePaths:
 		analyseAndScan:
+			- build/php
 			- build/preprocessor
+		analyse:
+			- src/pocketmine/block/StoneSlab.php #overrides STONE constant
+			- src/pocketmine/item/Potion.php #overrides WATER constant
 	dynamicConstantNames:
 		- pocketmine\DEBUG
 		- pocketmine\IS_DEVELOPMENT_BUILD
@@ -48,7 +47,5 @@ parameters:
 		#variadics don't work for this - mixed probably shouldn't work either, but for now it does
 		#what we actually need is something that accepts an infinite number of parameters, but in the absence of that,
 		#we'll just fill it with 10 - it's very unlikely to encounter a callable with 10 parameters anyway.
-		anyCallable: 'callable(mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed) : mixed'
-		anyClosure: '\Closure(mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed) : mixed'
-		PhpSocket: '\Socket'
-		PhpCurlHandle: '\CurlHandle'
+		anyCallable: 'callable(never, never, never, never, never, never, never, never, never, never) : mixed'
+		anyClosure: '\Closure(never, never, never, never, never, never, never, never, never, never) : mixed'

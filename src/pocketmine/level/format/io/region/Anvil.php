@@ -31,8 +31,8 @@ use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteArrayTag;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\IntArrayTag;
+use pocketmine\nbt\tag\ListTag;
 use function zlib_decode;
 
 class Anvil extends McRegion{
@@ -136,6 +136,7 @@ class Anvil extends McRegion{
 		$result->setPopulated($chunk->getByte("TerrainPopulated", 0) !== 0);
 		$result->setGenerated();
 		$result->setInhabitedTime($chunk->getLong("InhabitedTime", 0));
+		$result->setChanged(false);
 		return $result;
 	}
 

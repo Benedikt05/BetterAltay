@@ -617,7 +617,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function spawnTo(Player $player) : void{
-		if($this->spawned and $player->spawned and $this->isAlive() and $player->isAlive() and $player->getLevelNonNull() === $this->level and $player->canSee($this) and !$this->isSpectator()){
+		if($this->spawned and $player->spawned and $this->isAlive() and $player->isAlive() and $player->canSee($this) and !$this->isSpectator()){
 			parent::spawnTo($player);
 		}
 	}
@@ -1188,7 +1188,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->spawnToAll();
 
 		if($this->getHealth() <= 0){
-			$this->respawn();
+			$this->actuallyRespawn();
 		}
 	}
 
@@ -2099,7 +2099,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				base64_decode($packet->clientData["CapeData"] ?? "", true)
 			),
 			base64_decode($packet->clientData["SkinGeometryData"] ?? "", true),
-			base64_decode($packet->clientData["SkinGeometryDataEngineVersion"], true),
+			base64_decode($packet->clientData["SkinGeometryDataEngineVersion"] ?? "", true),
 			base64_decode($packet->clientData["SkinAnimationData"] ?? "", true),
 			$packet->clientData["CapeId"] ?? "",
 			null,
@@ -2403,6 +2403,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", \pocketmine\NAME, \pocketmine\VERSION);
+		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
 		$this->dataPacket($pk);
 
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
@@ -3347,10 +3348,22 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$this->removeWindow($this->windowIndex[$packet->windowId]);
 			$this->closingWindowId = null;
 			//removeWindow handles sending the appropriate
-			return true;
+		}else{
+			/*
+			 * TODO: HACK!
+			 * If we told the client to remove a window on our own (e.g. a plugin called removeWindow()), our
+			 * first ContainerClose tricks the client into behaving as if it itself asked for the window to be closed.
+			 * This means that it will send us a ContainerClose of its own, which we must respond to the same way as if
+			 * the client closed the window by itself.
+			 * If we don't, the client will not be able to open any new windows.
+			 */
+			$pk = new ContainerClosePacket();
+			$pk->windowId = $packet->windowId;
+			$pk->server = false;
+			$this->sendDataPacket($pk);
 		}
 
-		return false;
+		return true;
 	}
 
 	public function handleAdventureSettings(AdventureSettingsPacket $packet) : bool{
@@ -4154,6 +4167,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			return;
 		}
 
+		$this->actuallyRespawn();
+	}
+
+	protected function actuallyRespawn() : void{
 		$ev = new PlayerRespawnEvent($this, $this->getSpawn());
 		$ev->call();
 

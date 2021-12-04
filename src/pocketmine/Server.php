@@ -36,8 +36,8 @@ use pocketmine\command\SimpleCommandMap;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
 use pocketmine\event\HandlerList;
-use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\level\LevelInitEvent;
+use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\player\PlayerDataSaveEvent;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\event\server\QueryRegenerateEvent;
@@ -65,11 +65,11 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\CompressBatchedTask;
 use pocketmine\network\mcpe\protocol\BatchPacket;
@@ -102,13 +102,13 @@ use pocketmine\timings\TimingsHandler;
 use pocketmine\updater\AutoUpdater;
 use pocketmine\utils\Color;
 use pocketmine\utils\Config;
+use pocketmine\utils\Internet;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Process;
 use pocketmine\utils\Terminal;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 use pocketmine\utils\UUID;
-use pocketmine\utils\Internet;
 use function array_filter;
 use function array_key_exists;
 use function array_shift;
@@ -904,7 +904,7 @@ class Server{
 			$this->levelDefault = $level;
 		}
 	}
-	
+
 	public function getNetherLevel() : ?Level{
 		return $this->levelNether;
 	}
@@ -919,7 +919,7 @@ class Server{
 			$this->levelNether = $level;
 		}
 	}
-	
+
 	public function getTheEndLevel() : ?Level{
 		return $this->levelTheEnd;
 	}
@@ -934,7 +934,7 @@ class Server{
 			$this->levelTheEnd = $level;
 		}
 	}
-	
+
 	public function isLevelLoaded(string $name) : bool{
 		return $this->getLevelByName($name) instanceof Level;
 	}
@@ -1154,7 +1154,7 @@ class Server{
 
 		return $this->altayPropertyCache[$variable] ?? $defaultValue;
 	}
-	
+
 	public function getConfigString(string $variable, string $defaultValue = "") : string{
 		$v = getopt("", ["$variable::"]);
 		if(isset($v[$variable])){
@@ -1598,7 +1598,7 @@ class Server{
 			$this->queryRegenerateTask = new QueryRegenerateEvent($this);
 
 			$this->updater = new AutoUpdater($this, $this->getProperty("auto-updater.host", "update.pmmp.io"));
-			
+
 			foreach($this->getAdditionalPluginDirs() as $path){
 				$this->pluginManager->loadPlugins($path);
 			}
@@ -1964,11 +1964,11 @@ class Server{
 		$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 		$this->pluginManager->registerInterface(new ScriptPluginLoader());
         $this->pluginManager->loadPlugins($this->pluginPath);
-		
+
 		foreach($this->getAdditionalPluginDirs() as $path){
 			$this->pluginManager->loadPlugins($path);
 		}
-		
+
 		$this->enablePlugins(PluginLoadOrder::STARTUP);
 		$this->enablePlugins(PluginLoadOrder::POSTWORLD);
 		TimingsHandler::reload();
@@ -2562,7 +2562,7 @@ class Server{
 	public function __sleep(){
 		throw new \BadMethodCallException("Cannot serialize Server instance");
 	}
-	
+
 	public function getUpdater() : AutoUpdater{
 		return $this->updater;
 	}
