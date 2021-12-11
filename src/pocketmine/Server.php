@@ -754,11 +754,6 @@ class Server{
 				new DoubleTag("", $spawn->z)
 			], NBT::TAG_Double),
 			new StringTag("Level", $this->getDefaultLevel()->getFolderName()),
-			//new StringTag("SpawnLevel", $this->getDefaultLevel()->getFolderName()),
-			//new IntTag("SpawnX", $spawn->getFloorX()),
-			//new IntTag("SpawnY", $spawn->getFloorY()),
-			//new IntTag("SpawnZ", $spawn->getFloorZ()),
-			//new ByteTag("SpawnForced", 1), //TODO
 			new ListTag("Inventory", [], NBT::TAG_Compound),
 			new ListTag("EnderChestInventory", [], NBT::TAG_Compound),
 			new CompoundTag("Achievements", []),
