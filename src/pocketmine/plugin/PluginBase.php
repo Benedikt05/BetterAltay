@@ -84,6 +84,7 @@ abstract class PluginBase implements Plugin{
 		$this->configFile = $this->dataFolder . "config.yml";
 		$this->logger = new PluginLogger($this);
 		$this->scheduler = new TaskScheduler($this->logger, $this->getFullName());
+		$this->onTick();
 	}
 
 	public function onLoad(){
@@ -95,6 +96,10 @@ abstract class PluginBase implements Plugin{
 	}
 
 	public function onDisable(){
+
+	}
+
+	public function onTick(){
 
 	}
 
