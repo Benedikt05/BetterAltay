@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/TuranicTeam/Altay/blob/stable/.github/logo.png"></img><br>
+	<img src="https://github.com/MCPE357/BetterAltay/blob/master/754ee9333dba1066c9a4433f95734b89.png?raw=true"></img><br>
 	<b>A feature-rich server software for Minecraft: BE. This is a SPOON of </b><a href="https://github.com/pmmp/PocketMine-MP">PocketMine-MP</a><b> and </b><a href="https://github.com/TuranicTeam/Altay">Altay</a>
 </p>
 <p align="center">
