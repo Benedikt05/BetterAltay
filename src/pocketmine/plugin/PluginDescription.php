@@ -114,7 +114,7 @@ class PluginDescription{
 		}
 
 		$this->api = array_map("\strval", (array) ($plugin["api"] = "3.0.0"));
-		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] ?? []));
+		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] = "475"));
 		$this->compatibleOperatingSystems = array_map("\strval", (array) ($plugin["os"] ?? []));
 
 		if(isset($plugin["commands"]) and is_array($plugin["commands"])){
