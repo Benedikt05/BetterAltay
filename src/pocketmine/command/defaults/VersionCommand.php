@@ -35,11 +35,6 @@ use function implode;
 use function stripos;
 use function strtolower;
 
-//NEW
-use pocketmine\utils\VersionString;
-use pocketmine\utils\AssumptionFailedError;
-use pocketmine\utils\Utils;
-
 class VersionCommand extends VanillaCommand{
 
 	public function __construct(string $name){
@@ -54,7 +49,6 @@ class VersionCommand extends VanillaCommand{
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-	        $version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
 	        if(!$sender->hasPermission("pocketmine.command.version1")) {
 			$sender->sendMessage("This server uses PocketMine-MP fork!");
 		   	$sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
