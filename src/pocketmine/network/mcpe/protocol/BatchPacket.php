@@ -100,9 +100,6 @@ class BatchPacket extends DataPacket{
 		$stream = new NetworkBinaryStream($this->payload);
 		$count = 0;
 		while(!$stream->feof()){
-			if($count++ >= 1500){
-				throw new \UnexpectedValueException("Too many packets in a single batch");
-			}
 			yield $stream->getString();
 		}
 	}
