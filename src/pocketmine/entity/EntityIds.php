@@ -24,7 +24,13 @@ declare(strict_types=1);
 namespace pocketmine\entity;
 
 interface EntityIds{
+	
+	//NEW 1.18
+        public const AXOLOTL = 130;
+        public const GLOW_SQUID = 139;
+        public const GOAT = 128;
 
+        //OLD
 	public const CHICKEN = 10;
 	public const COW = 11;
 	public const PIG = 12;
