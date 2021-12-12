@@ -43,6 +43,12 @@ class AddActorPacket extends DataPacket{
 	 * TODO: remove this on 4.0
 	 */
 	public const LEGACY_ID_MAP_BC = [
+		//NEW
+	        EntityIds::AXOLOTL => "minecraft:axolotl",
+		EntityIds::GOAT => "minecraft:goat",
+		EntityIds::GLOW_SQUID => "minecraft:glow_squid",
+		
+		//OLD
 		EntityIds::NPC => "minecraft:npc",
 		EntityIds::PLAYER => "minecraft:player",
 		EntityIds::WITHER_SKELETON => "minecraft:wither_skeleton",
