@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsonSchemaMappingsProjectConfiguration">
+    <state>
+      <map>
+        <entry key="PocketMine plugin.yml">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="PocketMine plugin.yml" />
+              <option name="relativePathToSchema" value="https://json.schemastore.org/pocketmine-plugin.json" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="plugins/test/plugin.yml" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+      </map>
+    </state>
+  </component>
+</project>

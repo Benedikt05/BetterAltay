@@ -761,6 +761,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->perm->addAttachment($plugin, $name, $value);
 	}
 
+
+	public function getNetworkSession(): self{
+		return $this;
+	}
+
 	/**
 	 * @return void
 	 */

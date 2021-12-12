@@ -1,0 +1,19 @@
+<?php
+
+namespace pocketmine\scheduler;
+
+use pocketmine\plugin\Plugin;
+
+abstract class PluginTask extends Task{
+
+	private Plugin $plugin;
+
+	public function __construct(Plugin $plugin){
+		$this->plugin = $plugin;
+	}
+
+	public function getPlugin(): Plugin
+	{
+		return $this->plugin;
+	}
+}
