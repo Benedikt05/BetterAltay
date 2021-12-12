@@ -35,6 +35,11 @@ use function implode;
 use function stripos;
 use function strtolower;
 
+//NEW
+use pocketmine\utils\VersionString;
+use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\Utils;
+
 class VersionCommand extends VanillaCommand{
 
 	public function __construct(string $name){
@@ -49,6 +54,7 @@ class VersionCommand extends VanillaCommand{
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	        $version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
 	        if($sender->hasPermission("pocketmine.command.version1") == true) {
 		if(!$this->testPermission($sender)){
 			return true;
@@ -57,7 +63,7 @@ class VersionCommand extends VanillaCommand{
 		if(count($args) === 0){
 			$sender->sendMessage(new TranslationContainer("pocketmine.server.info.extended", [
 				$sender->getServer()->getName(),
-				$sender->getServer()->getPocketMineVersion(),
+				\pocketmine\PROJECT_VERSION,
 				$sender->getServer()->getVersion(),
 				ProtocolInfo::CURRENT_PROTOCOL
 			]));
