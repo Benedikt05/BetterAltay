@@ -39,6 +39,12 @@ use function substr;
 use function version_compare;
 use function yaml_parse;
 
+//NEW
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\utils\VersionString;
+use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\Utils;
+
 class PluginDescription{
 	/**
 	 * @var mixed[]
@@ -103,6 +109,7 @@ class PluginDescription{
 		$this->map = $plugin;
 
 		$this->name = $plugin["name"];
+		$version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
 		if(preg_match('/^[A-Za-z0-9 _.-]+$/', $this->name) === 0){
 			throw new PluginException("Invalid Plugin name");
 		}
@@ -113,8 +120,8 @@ class PluginDescription{
 			throw new PluginException("Invalid Plugin main, cannot start within the PocketMine namespace");
 		}
 
-		$this->api = array_map("\strval", (array) ($plugin["api"] = "3.0.0"));
-		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] = "475"));
+		$this->api = array_map("\strval", (array) ($plugin["api"] = \pocketmine\BASE_VERSION));
+		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] = ProtocolInfo::CURRENT_PROTOCOL));
 		$this->compatibleOperatingSystems = array_map("\strval", (array) ($plugin["os"] ?? []));
 
 		if(isset($plugin["commands"]) and is_array($plugin["commands"])){
