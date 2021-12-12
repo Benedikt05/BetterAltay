@@ -1,4 +1,3 @@
-vendor/
 banned-ips.txt
 banned-players.txt
 esko.yml
@@ -9,7 +8,9 @@ server.log
 server.properties
 white-list.txt
 bin
+vendor/
 worlds
+resource_packs
 plugins
 plugin_data
 players
