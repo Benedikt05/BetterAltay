@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/MCPE357/EskoBE/blob/master/754ee9333dba1066c9a4433f95734b89.png?raw=true"></img><br>
+	<img src="https://cdn.discordapp.com/attachments/805530984807399484/919448233317634068/logo.png"></img><br>
 	<b>A server software for Minecraft: BE. This is a SPOON of </b><a href="https://github.com/pmmp/PocketMine-MP">PocketMine-MP</a><b> and </b><a href="https://github.com/TuranicTeam/Altay">Altay</a>
 </p>
 <p align="center">
