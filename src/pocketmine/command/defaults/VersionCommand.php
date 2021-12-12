@@ -50,7 +50,7 @@ class VersionCommand extends VanillaCommand{
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 	        if(!$sender->hasPermission("pocketmine.command.version1")) {
-			$sender->sendMessage("This server uses PocketMine-MP fork!");
+			$sender->sendMessage("This server uses EskoBE a PocketMine-MP fork!");
 		   	$sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
 			return false;
 		}
