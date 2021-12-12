@@ -382,8 +382,8 @@ class Server{
 		return $this->isRunning;
 	}
 
-	public function getPocketMineVersion() : string{
-		return \pocketmine\VERSION;
+	public function getEskoVersion() : string{
+		return \pocketmine\PROJECT_VERSION;
 	}
 
 	public function getVersion() : string{
@@ -1536,7 +1536,7 @@ class Server{
 			}
 
 			if(\pocketmine\DEBUG >= 0){
-				@cli_set_process_title($this->getName() . " " . $this->getPocketMineVersion());
+				@cli_set_process_title($this->getName() . " " . $this->getEskoVersion());
 			}
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.networkStart", [$this->getIp(), $this->getPort()]));
@@ -1551,7 +1551,7 @@ class Server{
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.info", [
 				$this->getName(),
-				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getPocketMineVersion() . TextFormat::RESET
+				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getEskoVersion() . TextFormat::RESET
 			]));
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.license", [$this->getName()]));
 
@@ -2207,7 +2207,7 @@ class Server{
 					$postUrlError = "Unknown error";
 					$reply = Internet::postURL($url, [
 						"report" => "yes",
-						"name" => $this->getName() . " " . $this->getPocketMineVersion(),
+						"name" => $this->getName() . " " . $this->getEskoVersion(),
 						"email" => "crash@pocketmine.net",
 						"reportPaste" => base64_encode($dump->getEncodedData())
 					], 10, [], $postUrlError);
@@ -2432,7 +2432,7 @@ class Server{
 		$usage = sprintf("%g/%g/%g/%g MB @ %d threads", round(($u[0] / 1024) / 1024, 2), round(($d[0] / 1024) / 1024, 2), round(($u[1] / 1024) / 1024, 2), round(($u[2] / 1024) / 1024, 2), Process::getThreadCount());
 
 		echo "\x1b]0;" . $this->getName() . " " .
-			$this->getPocketMineVersion() .
+			$this->getEskoVersion() .
 			" | Online " . count($this->players) . "/" . $this->getMaxPlayers() .
 			" | Memory " . $usage .
 			" | U " . round($this->network->getUpload() / 1024, 2) .
