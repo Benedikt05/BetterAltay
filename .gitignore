@@ -1,0 +1,16 @@
+vendor/
+banned-ips.txt
+banned-players.txt
+esko.yml
+eskobe.yml
+ops.txt
+server.lock
+server.log
+server.properties
+white-list.txt
+bin
+worlds
+plugins
+plugin_data
+players
+maps

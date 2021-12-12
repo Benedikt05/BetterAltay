@@ -1375,22 +1375,22 @@ class Server{
 			$this->dataPath = realpath($dataPath) . DIRECTORY_SEPARATOR;
 			$this->pluginPath = realpath($pluginPath) . DIRECTORY_SEPARATOR;
 
-			$this->logger->info("Loading pocketmine.yml...");
-			if(!file_exists($this->dataPath . "pocketmine.yml")){
-				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "pocketmine.yml");
+			$this->logger->info("Loading esko.yml...");
+			if(!file_exists($this->dataPath . "esko.yml")){
+				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "esko.yml");
 				if(\pocketmine\IS_DEVELOPMENT_BUILD){
 					$content = str_replace("preferred-channel: stable", "preferred-channel: beta", $content);
 				}
-				@file_put_contents($this->dataPath . "pocketmine.yml", $content);
+				@file_put_contents($this->dataPath . "esko.yml", $content);
 			}
-			$this->config = new Config($this->dataPath . "pocketmine.yml", Config::YAML, []);
+			$this->config = new Config($this->dataPath . "esko.yml", Config::YAML, []);
 
-			$this->logger->info("Loading altay.yml...");
-			if(!file_exists($this->dataPath . "altay.yml")){
-				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "altay.yml");
-				@file_put_contents($this->dataPath . "altay.yml", $content);
+			$this->logger->info("Loading eskobe.yml...");
+			if(!file_exists($this->dataPath . "eskobe.yml")){
+				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "eskobe.yml");
+				@file_put_contents($this->dataPath . "eskobe.yml", $content);
 			}
-			$this->altayConfig = new Config($this->dataPath . "altay.yml", Config::YAML, []);
+			$this->altayConfig = new Config($this->dataPath . "eskobe.yml", Config::YAML, []);
 			$this->loadAltayConfig();
 
 			$this->logger->info("Loading server properties...");

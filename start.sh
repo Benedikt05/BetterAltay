@@ -33,12 +33,16 @@ if [ "$PHP_BINARY" == "" ]; then
 fi
 
 if [ "$POCKETMINE_FILE" == "" ]; then
-	if [ -f ./BetterAltay.phar ]; then
-		POCKETMINE_FILE="./BetterAltay.phar"
+	if [ -f ./EskoBE.phar ]; then
+		POCKETMINE_FILE="./EskoBE.phar"
 	else
-		echo "BetterAltay.phar not found"
-		echo "Downloads can be found at https://github.com/Benedikt05/BetterAltay/releases"
-		exit 1
+	  if [ -f ./src/pocketmine/PocketMine.php ]; then
+	    POCKETMINE_FILE="./src/pocketmine/PocketMine.php"
+	    else
+	      echo "Couldn't find EskoBE installation"
+	      echo "Downloads can be found at https://github.com/MCPE357/EskoBE/releases"
+	      exit 1
+	  fi
 	fi
 fi
 
@@ -51,12 +55,12 @@ if [ "$DO_LOOP" == "yes" ]; then
 		if [ ${LOOPS} -gt 0 ]; then
 			echo "Restarted $LOOPS times"
 		fi
-		"$PHP_BINARY" "$POCKETMINE_FILE" $@
+		"$PHP_BINARY" "$POCKETMINE_FILE" "$@"
 		echo "To escape the loop, press CTRL+C now. Otherwise, wait 5 seconds for the server to restart."
 		echo ""
 		sleep 5
 		((LOOPS++))
 	done
 else
-	exec "$PHP_BINARY" "$POCKETMINE_FILE" $@
+	exec "$PHP_BINARY" "$POCKETMINE_FILE" "$@"
 fi
