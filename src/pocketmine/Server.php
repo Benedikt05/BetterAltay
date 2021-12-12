@@ -76,6 +76,7 @@ use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\protocol\types\LegacySkinAdapter;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\RakLibInterface;
@@ -1368,8 +1369,8 @@ class Server{
 				mkdir($pluginPath, 0777);
 			}
 
-			if(!file_exists($pluginPath . "Altay/")){
-				mkdir($pluginPath . "Altay/", 0777);
+			if(!is_dir($pluginPath . "Esko/")){
+				mkdir($pluginPath . "Esko/", 0777);
 			}
 
 			$this->dataPath = realpath($dataPath) . DIRECTORY_SEPARATOR;
@@ -1430,7 +1431,7 @@ class Server{
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error2"));
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error3"));
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error4", ["settings.enable-dev-builds"]));
-				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error5", ["https://github.com/pmmp/PocketMine-MP/releases"]));
+				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error5", ["https://github.com/MCPE357/EskoBE/releases"]));
 				$this->forceShutdown();
 				return;
 			}
@@ -1488,6 +1489,8 @@ class Server{
 				Timings::$serverCommandTimer->stopTiming();
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
+
+			SkinAdapterSingleton::set(new LegacySkinAdapter());
 
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
@@ -1976,6 +1979,9 @@ class Server{
 	 */
 	public function shutdown(){
 		$this->isRunning = false;
+		if(SkinAdapterSingleton::get() !== null){
+			SkinAdapterSingleton::set(SkinAdapterSingleton::get());
+		}
 	}
 
 	/**
@@ -2046,6 +2052,9 @@ class Server{
 					$interface->shutdown();
 					$this->network->unregisterInterface($interface);
 				}
+			}
+			if(SkinAdapterSingleton::get() !== null){
+				SkinAdapterSingleton::set(SkinAdapterSingleton::get());
 			}
 		}catch(\Throwable $e){
 			$this->logger->logException($e);
