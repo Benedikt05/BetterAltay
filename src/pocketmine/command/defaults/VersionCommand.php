@@ -55,7 +55,11 @@ class VersionCommand extends VanillaCommand{
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 	        $version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
-	        if($sender->hasPermission("pocketmine.command.version1") == true) {
+	        if(!$sender->hasPermission("pocketmine.command.version1")) {
+			$sender->sendMessage("This server uses PocketMine-MP fork!");
+		   	$sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
+			return false;
+		}
 		if(!$this->testPermission($sender)){
 			return true;
 		}
@@ -89,11 +93,6 @@ class VersionCommand extends VanillaCommand{
 			if(!$found){
 				$sender->sendMessage(new TranslationContainer("pocketmine.command.version.noSuchPlugin"));
 			}
-		}
-		}
-		if($sender->hasPermission("pocketmine.command.version1") == false) {
-		     $sender->sendMessage("This server uses PocketMine-MP fork!");
-		     $sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
 		}
 
 		return true;
