@@ -49,6 +49,7 @@ class VersionCommand extends VanillaCommand{
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	        if($sender->hasPermission("pocketmine.command.version1") == true) {
 		if(!$this->testPermission($sender)){
 			return true;
 		}
@@ -83,11 +84,17 @@ class VersionCommand extends VanillaCommand{
 				$sender->sendMessage(new TranslationContainer("pocketmine.command.version.noSuchPlugin"));
 			}
 		}
+		}
+		if($sender->hasPermission("pocketmine.command.version1") == false) {
+		     $sender->sendMessage("This server uses PocketMine-MP fork!");
+		     $sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
+		}
 
 		return true;
 	}
 
 	private function describeToSender(Plugin $plugin, CommandSender $sender) : void{
+	        if($sender->hasPermission("pocketmine.command.version1") == true) {
 		$desc = $plugin->getDescription();
 		$sender->sendMessage(TextFormat::DARK_GREEN . $desc->getName() . TextFormat::WHITE . " version " . TextFormat::DARK_GREEN . $desc->getVersion());
 
@@ -105,6 +112,10 @@ class VersionCommand extends VanillaCommand{
 			}else{
 				$sender->sendMessage("Authors: " . implode(", ", $authors));
 			}
+		}
+		}
+		if($sender->hasPermission("pocketmine.command.version1") == false) {
+		     $sender->sendMessage("Sorry but we dont want to expose our plugins to strangers!");
 		}
 	}
 }
