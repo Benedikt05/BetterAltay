@@ -27,8 +27,10 @@ use pocketmine\entity\Skin;
 
 class LegacySkinAdapter implements SkinAdapter{
 
+	private array $personaSkins = [];
+
 	public function toSkinData(Skin $skin) : SkinData{
-		return new SkinData(
+		return $this->personaSkins[$skin->getSkinId()] ?? new SkinData(
 			$skin->getSkinId(),
 			"", //TODO: playfab ID
 			$skin->getResourcePatch(),
@@ -39,7 +41,15 @@ class LegacySkinAdapter implements SkinAdapter{
 		);
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function fromSkinData(SkinData $data) : Skin{
+		if ($data->isPersona()) {
+			$id = $data->getSkinId();
+			$this->personaSkins[$id] = $data;
+			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 2048));
+		}
 		return (new Skin(
 			$data->getSkinId(),
 			"",

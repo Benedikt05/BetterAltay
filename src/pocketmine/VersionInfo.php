@@ -34,5 +34,6 @@ const _VERSION_INFO_INCLUDED = true;
 
 const NAME = "BetterAltay";
 const BASE_VERSION = "3.26.1";
+const FORK_VERSION = "1.0.0";
 const IS_DEVELOPMENT_BUILD = false;
 const BUILD_CHANNEL = "stable";
