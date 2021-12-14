@@ -59,7 +59,7 @@ If that's not possible (e.g. for in-game functionality), the code must be tested
 #### Comments and documentation must be written in American English
 English is the shared languages of all current maintainers.
 
-#### Code must be in the MCPE357 style
+#### Code must be in the EskoBE style
 It's your responsibility to ensure your code matches the formatting and styling of the rest of the code.
 If you use PhpStorm, a `Project` code style is provided, which you can use to automatically format new code.
 You can also use [`php-cs-fixer`](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to format your code.
