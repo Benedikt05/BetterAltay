@@ -28,12 +28,10 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\UnknownBlock;
 use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Human;
 use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
 use pocketmine\entity\object\ItemEntity;
@@ -89,7 +87,6 @@ use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\inventory\transaction\TransactionValidationException;
-use pocketmine\IPlayer;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
@@ -100,7 +97,6 @@ use pocketmine\item\WritableBook;
 use pocketmine\item\WrittenBook;
 use pocketmine\lang\TextContainer;
 use pocketmine\lang\TranslationContainer;
-use pocketmine\level\ChunkLoader;
 use pocketmine\level\format\Chunk;
 use pocketmine\level\GameRules;
 use pocketmine\level\Level;
@@ -196,6 +192,7 @@ use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
+use pocketmine\Server;
 use pocketmine\tile\ItemFrame;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
@@ -245,7 +242,7 @@ use const PHP_INT_MAX;
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
  */
-class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
+class Player extends \pocketmine\Player{
 
 	public const SURVIVAL = 0;
 	public const CREATIVE = 1;
@@ -756,8 +753,18 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->perm->addAttachment($plugin, $name, $value);
 	}
 
-	public function getNetworkSession(): self{
+	public function getNetworkSession() : self{
 		return $this;
+	}
+
+	/*public function getPlayerInfo(): self
+	{
+		return $this;
+	}*/ //soon implement
+
+	public function getWorld() : Level
+	{
+		return $this->getLevel();
 	}
 
 	/**

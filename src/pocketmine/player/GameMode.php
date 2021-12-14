@@ -32,8 +32,7 @@ final class GameMode
 			}
 		};
 		match ($str) {
-			"creative", "c", "Creative", "survival", "s", "Survival", "spectator", "v", "view", "Spectator", "adventure", "a", "Adventure" => self::$gamemodeName = $str,
-			default => "MINECRAFTPE"
+			"creative", "c", "Creative", "survival", "s", "Survival", "spectator", "v", "view", "Spectator", "adventure", "a", "Adventure" => self::$gamemodeName = $str
 		};
 		return $gm;
 	}
