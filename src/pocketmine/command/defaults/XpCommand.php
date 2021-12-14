@@ -31,6 +31,11 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function abs;
+use function count;
+use function rtrim;
+use function strcasecmp;
+use function substr;
 
 class XpCommand extends VanillaCommand{
 

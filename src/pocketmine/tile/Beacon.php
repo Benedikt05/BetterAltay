@@ -34,6 +34,8 @@ use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
+use function array_filter;
+use function in_array;
 
 class Beacon extends Spawnable implements Nameable, InventoryHolder{
 	use NameableTrait {
@@ -126,14 +128,14 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 					$duration = 180 + $pyramidLevels * 40;
 					$range = (10 + $pyramidLevels * 10);
 					$effectPrim = new EffectInstance($effectPrim, $duration, $pyramidLevels == 4 && $this->primary == $this->secondary ? 1 : 0);
-					
+
 					$players = array_filter($this->level->getCollidingEntities($this->rangeBox->expandedCopy($range, $range, $range)), function (Entity $player) : bool{
 						return $player instanceof Player and $player->spawned;
 					});
 					/** @var Player $player */
 					foreach($players as $player){
 						$player->addEffect($effectPrim);
-						
+
 						if($pyramidLevels == 4 && $this->primary != $this->secondary){
 							$regen = new EffectInstance(Effect::getEffect(Effect::REGENERATION), $duration);
 							$player->addEffect($regen);
@@ -151,7 +153,7 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 		for($i = 1; $i < 5; $i++){
 			for($x = -$i; $x < $i + 1; $x++){
 				for($z = -$i; $z < $i + 1; $z++){
-					$allMineral = $allMineral && in_array($this->level->getBlockAt($this->x + $x, $this->y - $i, $this->z + $z)->getId(), $this->minerals);
+					$allMineral = $allMineral && in_array($this->level->getBlockAt($this->x + $x, $this->y - $i, $this->z + $z)->getId(), $this->minerals, true);
 					if(!$allMineral) return $i - 1;
 				}
 			}

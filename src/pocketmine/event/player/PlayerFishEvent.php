@@ -27,11 +27,10 @@ namespace pocketmine\event\player;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\event\Cancellable;
-use pocketmine\item\Item;
 use pocketmine\Player;
 
 class PlayerFishEvent extends PlayerEvent implements Cancellable{
-	
+
 	public const STATE_FISHING = 0;
 	public const STATE_CAUGHT_FISH = 1;
 	public const STATE_CAUGHT_ENTITY = 2;
@@ -54,30 +53,18 @@ class PlayerFishEvent extends PlayerEvent implements Cancellable{
 		return $this->hook->getRidingEntity();
 	}
 
-	/**
-	 * @return FishingHook
-	 */
 	public function getHook() : FishingHook{
 		return $this->hook;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getXpDropAmount() : int{
 		return $this->xpDropAmount;
 	}
 
-	/**
-	 * @param int $xpDropAmount
-	 */
 	public function setXpDropAmount(int $xpDropAmount) : void{
 		$this->xpDropAmount = $xpDropAmount;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getState() : int{
 		return $this->state;
 	}

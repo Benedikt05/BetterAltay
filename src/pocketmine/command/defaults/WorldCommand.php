@@ -31,6 +31,7 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\Server;
+use function count;
 
 class WorldCommand extends VanillaCommand{
 

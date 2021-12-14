@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use function is_string;
 
 class CommandParameter{
 	public const FLAG_FORCE_COLLAPSE_ENUM = 0x1;

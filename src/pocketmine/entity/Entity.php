@@ -47,11 +47,11 @@ use pocketmine\entity\object\EnderCrystal;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\entity\object\FireworksRocket;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\object\LeashKnot;
 use pocketmine\entity\object\Painting;
 use pocketmine\entity\object\PaintingMotive;
 use pocketmine\entity\object\PrimedTNT;
-use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\passive\Cat;
 use pocketmine\entity\passive\Chicken;
 use pocketmine\entity\passive\Cow;
@@ -95,9 +95,9 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
+use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
@@ -114,6 +114,8 @@ use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\Random;
 use pocketmine\utils\UUID;
 use function abs;
+use function array_map;
+use function array_search;
 use function assert;
 use function cos;
 use function count;
@@ -122,13 +124,19 @@ use function floor;
 use function fmod;
 use function get_class;
 use function in_array;
+use function intval;
 use function is_a;
 use function is_array;
 use function is_infinite;
 use function is_nan;
 use function lcg_value;
+use function max;
+use function microtime;
+use function min;
+use function pi;
 use function reset;
 use function sin;
+use function sqrt;
 use const M_PI_2;
 
 abstract class Entity extends Location implements Metadatable, EntityIds{
@@ -849,16 +857,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->setScale($value ? 0.5 : 1.0);
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isInPortal() : bool{
 		return $this->inPortal;
 	}
 
-	/**
-	 * @param bool $inPortal
-	 */
 	public function setInPortal(bool $inPortal) : void{
 		$this->inPortal = $inPortal;
 	}
@@ -882,9 +884,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Update entity's height and width
-	 *
-	 * @param float $height
-	 * @param float $width
 	 */
 	public function updateBoundingBox(float $height, float $width) : void{
 		$this->height = $height;
@@ -979,7 +978,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Returns whether the entity is able to fly
-	 * @return bool
 	 */
 	public function canFly() : bool{
 		return $this->getGenericFlag(self::DATA_FLAG_CAN_FLY);
@@ -987,8 +985,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Sets whether the entity is able to fly
-	 *
-	 * @param bool $value
 	 */
 	public function setCanFly(bool $value = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_CAN_FLY, $value);
@@ -1162,9 +1158,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		}
 	}
 
-	/**
-	 * @return null|UUID
-	 */
 	public function getUniqueId() : ?UUID{
 		return $this->uuid;
 	}
@@ -1503,8 +1496,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Pushes the other entity
-	 *
-	 * @param Entity $entity
 	 */
 	public function applyEntityCollision(Entity $entity) : void{
 		if(!$this->isRiding() and !$entity->isRiding()){
@@ -1838,26 +1829,16 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		return false;
 	}
 
-	/**
-	 * @param Entity $entity
-	 */
 	public function onRiderMount(Entity $entity) : void{
 
 	}
 
-	/**
-	 * @param Entity $entity
-	 */
 	public function onRiderLeave(Entity $entity) : void{
 
 	}
 
 	/**
 	 * @param Player[] $targets
-	 * @param int $entityId
-	 * @param int $type
-	 * @param bool $immediate
-	 * @param bool $causedByRider
 	 */
 	public function sendLink(array $targets, int $entityId, int $type = EntityLink::TYPE_RIDER, bool $immediate = false, bool $causedByRider = true) : void{
 		$pk = new SetActorLinkPacket();
@@ -2426,10 +2407,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Adds the given values to the entity's motion vector.
-	 *
-	 * @param float $x
-	 * @param float $y
-	 * @param float $z
 	 */
 	public function addMotion(float $x, float $y, float $z) : void{
 		$this->motion->x += $x;
@@ -2437,21 +2414,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->motion->z += $z;
 	}
 
-	/**
-	 * @param string     $sound
-	 * @param float      $volume
-	 * @param float      $pitch
-	 * @param array|null $targets
-	 */
 	public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0, array $targets = null) : void{
 		$this->level->addSound(new PlaySound($this, $sound, $volume, $pitch), $targets ?? null);
 	}
 
-	/**
-	 * @param string     $sound
-	 * @param bool       $stopAll
-	 * @param array|null $targets
-	 */
 	public function stopSound(string $sound, bool $stopAll = false, array $targets = null) : void{
 		$pk = new StopSoundPacket();
 		$pk->soundName = $sound;
@@ -2763,24 +2729,11 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * Called when interacted or tapped by a Player
-	 *
-	 * @param Player  $player
-	 * @param Item    $item
-	 * @param Vector3 $clickPos
-	 *
-	 * @return bool
 	 */
 	public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		return false;
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 * @param float   $yaw
-	 * @param float   $pitch
-	 * @param int     $clientMoveTicks
-	 * @param bool    $immediate
-	 */
 	public function setClientPositionAndRotation(Vector3 $pos, float $yaw, float $pitch, int $clientMoveTicks, bool $immediate) : void{
 		$this->clientPos = $pos;
 		$this->clientYaw = $yaw;

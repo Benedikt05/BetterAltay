@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\plugin;
 
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\permission\Permission;
+use pocketmine\utils\VersionString;
 use function array_map;
 use function array_values;
 use function constant;
@@ -36,14 +38,10 @@ use function str_replace;
 use function stripos;
 use function strlen;
 use function substr;
-use function version_compare;
-use function yaml_parse;
 
 //NEW
-use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\utils\VersionString;
-use pocketmine\utils\AssumptionFailedError;
-use pocketmine\utils\Utils;
+use function version_compare;
+use function yaml_parse;
 
 class PluginDescription{
 	/**

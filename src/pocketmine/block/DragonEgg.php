@@ -29,6 +29,8 @@ use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
+use function min;
+use function mt_rand;
 
 class DragonEgg extends Fallable{
 

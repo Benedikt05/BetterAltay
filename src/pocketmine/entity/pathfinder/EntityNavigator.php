@@ -28,9 +28,7 @@ use pocketmine\block\Block;
 use pocketmine\block\Lava;
 use pocketmine\block\Liquid;
 use pocketmine\block\Water;
-use pocketmine\entity\Attribute;
 use pocketmine\entity\Mob;
-use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
 use pocketmine\timings\Timings;
 use function abs;
@@ -89,13 +87,6 @@ class EntityNavigator{
 		$this->mob = $mob;
 	}
 
-	/**
-	 * @param PathPoint  $from
-	 * @param PathPoint  $to
-	 * @param float|null $followRange
-	 *
-	 * @return array
-	 */
 	public function navigate(PathPoint $from, PathPoint $to, ?float $followRange = null) : array{
 		Timings::$mobPathFindingTimer->startTiming();
 
@@ -172,9 +163,6 @@ class EntityNavigator{
 		return [];
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getUsableYCoordinate() : int{
 		switch($this->processorType){
 			case self::PROCESSOR_TYPE_WALK:
@@ -196,9 +184,6 @@ class EntityNavigator{
 	}
 
 	/**
-	 * @param array     $path
-	 * @param PathPoint $current
-	 *
 	 * @return array
 	 */
 	public function initPath(array $path, PathPoint $current){
@@ -214,23 +199,10 @@ class EntityNavigator{
 		return array_values($totalPath);
 	}
 
-	/**
-	 * @param PathPoint $from
-	 * @param PathPoint $to
-	 *
-	 * @return float
-	 */
 	public function calculateGridDistance(PathPoint $from, PathPoint $to) : float{
 		return abs($from->x - $to->x) + abs($from->y - $to->y);
 	}
 
-	/**
-	 * @param PathPoint $from
-	 * @param PathPoint $to
-	 * @param array     $cache
-	 *
-	 * @return float
-	 */
 	public function calculateBlockDistance(PathPoint $from, PathPoint $to, array $cache) : float{
 		$block1 = $this->getBlockByPoint($from, $cache);
 		$block2 = $this->getBlockByPoint($to, $cache);
@@ -249,21 +221,11 @@ class EntityNavigator{
 		return $block1->distanceSquared($block2);
 	}
 
-	/**
-	 * @param PathPoint $tile
-	 * @param array     $cache
-	 *
-	 * @return null|Block
-	 */
 	public function getBlockByPoint(PathPoint $tile, array $cache) : ?Block{
 		return $cache[$tile->getHashCode()] ?? null;
 	}
 
 	/**
-	 * @param PathPoint $tile
-	 * @param array     $cache
-	 * @param int       $startY
-	 *
 	 * @return PathPoint[]
 	 */
 	public function getNeighbors(PathPoint $tile, array &$cache, int $startY) : array{
@@ -360,9 +322,6 @@ class EntityNavigator{
 		return $list;
 	}
 
-	/**
-	 * @param array $list
-	 */
 	public function checkDiagonals(array &$list) : void{
 		$checkDiagonals = [
 			0 => [
@@ -385,22 +344,12 @@ class EntityNavigator{
 		}
 	}
 
-	/**
-	 * @param Vector3 $coord
-	 *
-	 * @return bool
-	 */
 	public function isObstructed(Vector3 $coord) : bool{
 		for($i = 1; $i < $this->mob->height; $i++) if($this->isBlocked($coord->add(0, $i, 0))) return true;
 
 		return false;
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 *
-	 * @return bool
-	 */
 	public function canJumpAt(Vector3 $pos) : bool{
 		for($i = 1; $i < $this->mob->height + 1; $i++){
 			if($this->isBlocked($pos->add(0, $i, 0))) return false;
@@ -408,11 +357,6 @@ class EntityNavigator{
 		return true;
 	}
 
-	/**
-	 * @param Vector3 $coord
-	 *
-	 * @return bool
-	 */
 	public function isBlocked(Vector3 $coord) : bool{
 		$block = $this->mob->level->getBlock($coord);
 		return !$block->isPassable();
@@ -467,13 +411,6 @@ class EntityNavigator{
 		}
 	}
 
-	/**
-	 * @param Vector3 $from
-	 * @param Vector3 $to
-	 * @param bool    $onlySee
-	 *
-	 * @return bool
-	 */
 	public function isClearBetweenPoints(Vector3 $from, Vector3 $to, bool $onlySee = false) : bool{
 		$entityPos = $from;
 		$targetPos = $to;
@@ -495,12 +432,6 @@ class EntityNavigator{
 		return true;
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 * @param bool    $onlySee
-	 *
-	 * @return bool
-	 */
 	public function isSafeToStandAt(Vector3 $pos, bool $onlySee = false) : bool{
 		if($this->isObstructed($pos) and !$onlySee){
 			return false;
@@ -517,38 +448,23 @@ class EntityNavigator{
 		return true;
 	}
 
-	/**
-	 * @param Path $path
-	 */
 	public function setPath(Path $path) : void{
 		$this->currentPath = $path;
 		$this->removeSunnyPath();
 	}
 
-	/**
-	 * @return null|Path
-	 */
 	public function getPath() : ?Path{
 		return $this->currentPath;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function havePath() : bool{
 		return $this->currentPath !== null and $this->currentPath->havePath();
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isBusy() : bool{
 		return $this->havePath() or $this->movePoint !== null;
 	}
 
-	/**
-	 * @param bool $all
-	 */
 	public function clearPath(bool $all = true) : void{
 		$this->currentPath = null;
 		$this->lastPoint = null;
@@ -558,50 +474,26 @@ class EntityNavigator{
 		}
 	}
 
-	/**
-	 * @param bool $value
-	 */
 	public function setAvoidsWater(bool $value) : void{
 		$this->avoidsWater = $value;
 	}
 
-	/**
-	 * @param bool $value
-	 */
 	public function setAvoidsSun(bool $value) : void{
 		$this->avoidsSun = $value;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getAvoidsWater() : bool{
 		return $this->avoidsWater;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getAvoidsSun() : bool{
 		return $this->avoidsSun;
 	}
 
-	/**
-	 * @param Vector3 $point
-	 *
-	 * @return bool
-	 */
 	public function isSameDestination(Vector3 $point) : bool{
 		return !$this->havePath() ? false : $this->currentPath->getVectorByIndex(count($this->currentPath->getPoints()) - 1)->equals($point);
 	}
 
-	/**
-	 * @param Vector3    $pos
-	 * @param float      $speed
-	 * @param float|null $followRange
-	 *
-	 * @return bool
-	 */
 	public function tryMoveTo(Vector3 $pos, float $speed, ?float $followRange = null) : bool{
 		if(!$this->isSameDestination($pos->floor())){
 			$this->setSpeedMultiplier($speed);
@@ -611,12 +503,6 @@ class EntityNavigator{
 		return false;
 	}
 
-	/**
-	 * @param Vector3    $pos
-	 * @param float|null $followRange
-	 *
-	 * @return Path
-	 */
 	public function findPath(Vector3 $pos, ?float $followRange = null) : Path{
 		return new Path($this->navigate(new PathPoint(floor($this->mob->x), floor($this->mob->z)), new PathPoint(floor($pos->x), floor($pos->z)), $followRange * 2));
 	}
@@ -666,30 +552,18 @@ class EntityNavigator{
 		return false;
 	}
 
-	/**
-	 * @return float
-	 */
 	public function getSpeedMultiplier() : float{
 		return $this->speedMultiplier;
 	}
 
-	/**
-	 * @param float $speedMultiplier
-	 */
 	public function setSpeedMultiplier(float $speedMultiplier) : void{
 		$this->speedMultiplier = $speedMultiplier;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getProcessorType() : int{
 		return $this->processorType;
 	}
 
-	/**
-	 * @param int $processorType
-	 */
 	public function setProcessorType(int $processorType) : void{
 		$this->processorType = $processorType;
 	}

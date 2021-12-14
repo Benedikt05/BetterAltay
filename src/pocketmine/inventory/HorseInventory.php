@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  *               _ _
  *         /\   | | |
@@ -28,8 +30,8 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
@@ -49,16 +51,10 @@ class HorseInventory extends AbstractHorseInventory{
 		return 2;
 	}
 
-	/**
-	 * @return Item
-	 */
 	public function getArmor() : Item{
 		return $this->getItem(1);
 	}
 
-	/**
-	 * @param Item $armor
-	 */
 	public function setArmor(Item $armor) : void{
 		$this->setItem(1, $armor);
 

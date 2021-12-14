@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\entity\Skin;
+use function random_bytes;
+use function str_repeat;
 
 class LegacySkinAdapter implements SkinAdapter{
 

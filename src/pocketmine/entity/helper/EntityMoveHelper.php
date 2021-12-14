@@ -25,6 +25,9 @@ declare(strict_types=1);
 namespace pocketmine\entity\helper;
 
 use pocketmine\entity\Mob;
+use function atan2;
+use function floor;
+use function pi;
 
 class EntityMoveHelper{
 
@@ -73,32 +76,18 @@ class EntityMoveHelper{
 		}
 	}
 
-
-
-	/**
-	 * @return float
-	 */
 	public function getSpeedMultiplier() : float{
 		return $this->speedMultiplier;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getTargetX() : int{
 		return $this->targetX;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getTargetY() : int{
 		return $this->targetY;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getTargetZ() : int{
 		return $this->targetZ;
 	}

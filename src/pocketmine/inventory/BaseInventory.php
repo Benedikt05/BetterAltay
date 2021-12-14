@@ -99,9 +99,6 @@ abstract class BaseInventory implements Inventory{
 
 	/**
 	 * Checks whether the inventory can store item
-	 *
-	 * @param Item $item
-	 * @return bool
 	 */
 	public function canStoreItem(Item $item) : bool{
 		return true;

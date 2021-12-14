@@ -31,10 +31,11 @@ use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\tag\IntTag;
 
+use function file_get_contents;
 use function is_file;
 
 class Structure{
@@ -84,23 +85,14 @@ class Structure{
 			$nbt->hasTag(self::TAG_PALETTE, ListTag::class);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getAuthor() : string{
 		return $this->nbt->getString(self::TAG_AUTHOR, "");
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getVersion() : int{
 		return $this->nbt->getInt(self::TAG_VERSION, 0);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getDataVersion() : int{
 		return $this->nbt->getInt(self::TAG_DATA_VERSION, 0);
 	}
@@ -133,11 +125,6 @@ class Structure{
 		return $this->nbt->getListTag(self::TAG_PALETTE)->getAllValues();
 	}
 
-	/**
-	 * @param Level   $level
-	 * @param Vector3 $baseVector
-	 * @param bool    $spawnEntities
-	 */
 	public function place(Level $level, Vector3 $baseVector, bool $spawnEntities = true) : void{
 		$palette = $this->getPalette();
 

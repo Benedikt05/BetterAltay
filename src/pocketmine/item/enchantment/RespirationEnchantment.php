@@ -23,9 +23,6 @@ declare(strict_types=1);
 
 namespace pocketmine\item\enchantment;
 
-use pocketmine\item\Item;
-use pocketmine\item\Shears;
-
 class RespirationEnchantment extends Enchantment{
 
 	public function getMinEnchantAbility(int $level) : int{

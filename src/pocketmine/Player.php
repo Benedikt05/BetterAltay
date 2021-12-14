@@ -58,6 +58,9 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerEditBookEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
+use pocketmine\event\player\PlayerInteractEntityEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerKickEvent;
@@ -72,23 +75,20 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\player\PlayerToggleSprintEvent;
 use pocketmine\event\player\PlayerToggleSwimEvent;
 use pocketmine\event\player\PlayerTransferEvent;
-use pocketmine\event\player\PlayerInteractEntityEvent;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\form\Form;
 use pocketmine\form\FormValidationException;
 use pocketmine\form\ServerSettingsForm;
 use pocketmine\inventory\CraftingGrid;
+use pocketmine\inventory\Inventory;
+use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\PlayerCursorInventory;
 use pocketmine\inventory\PlayerOffHandInventory;
 use pocketmine\inventory\PlayerUIInventory;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
-use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\inventory\transaction\InventoryTransaction;
-use pocketmine\inventory\Inventory;
-use pocketmine\inventory\InventoryHolder;
+use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
@@ -151,8 +151,8 @@ use pocketmine\network\mcpe\protocol\ResourcePackChunkDataPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
-use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
+use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
@@ -195,16 +195,15 @@ use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
+use pocketmine\tile\ItemFrame;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
-use pocketmine\tile\ItemFrame;
 use pocketmine\timings\Timings;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
 use function abs;
 use function array_key_exists;
 use function array_merge;
-use function array_values;
 use function assert;
 use function base64_decode;
 use function ceil;
@@ -216,6 +215,7 @@ use function get_class;
 use function gettype;
 use function implode;
 use function in_array;
+use function intval;
 use function is_infinite;
 use function is_int;
 use function is_nan;
@@ -591,16 +591,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->autoJump;
 	}
 
-	/**
-	 * @return null|FishingHook
-	 */
 	public function getFishingHook() : ?FishingHook{
 		return $this->fishingHook;
 	}
 
-	/**
-	 * @param null|FishingHook $fishingHook
-	 */
 	public function setFishingHook(?FishingHook $fishingHook) : void{
 		$this->fishingHook = $fishingHook;
 	}
@@ -761,7 +755,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->perm->addAttachment($plugin, $name, $value);
 	}
 
-
 	public function getNetworkSession(): self{
 		return $this;
 	}
@@ -889,8 +882,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/**
 	 * Sets player locale, e.g. en_US
-	 *
-	 * @param string $locale
 	 */
 	public function setLocale(string $locale) : void{
 		$this->locale = $locale;
@@ -4146,9 +4137,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if($this->uiInventory !== null){
 				$this->uiInventory->clearAll();
 			}
-            if($this->offHandInventory !== null){
-                $this->offHandInventory->clearAll();
-            }
+			if($this->offHandInventory !== null){
+				$this->offHandInventory->clearAll();
+			}
 		}
 
 		if(!$ev->getKeepExperience()){
@@ -4335,7 +4326,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/**
 	 * @deprecated
-	 * @return PlayerCursorInventory
 	 */
 	public function getCursorInventory() : PlayerCursorInventory{
 		return $this->cursorInventory;
@@ -4396,11 +4386,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->windowIndex[$windowId] ?? null;
 	}
 
-	/**
-	 * @param string $expectedClass
-	 *
-	 * @return null|Inventory
-	 */
 	public function findWindow(string $expectedClass) : ?Inventory{
 		foreach($this->windowIndex as $window){
 			if($window instanceof $expectedClass){
@@ -4553,14 +4538,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function getDeviceOS(): ?int{
-	    return $this->deviceOS;
-    }
+		return $this->deviceOS;
+	}
 
-    public function getDeviceModel(): ?string{
-	    return $this->deviceModel;
-    }
+	public function getDeviceModel(): ?string{
+		return $this->deviceModel;
+	}
 
-    public function getDeviceId(): ?string{
-	    return $this->deviceId;
-    }
+	public function getDeviceId(): ?string{
+		return $this->deviceId;
+	}
 }

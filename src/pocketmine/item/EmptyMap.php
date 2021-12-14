@@ -35,12 +35,6 @@ class EmptyMap extends Item{
 		parent::__construct(self::EMPTY_MAP, $meta, "Empty Map");
 	}
 
-	/**
-	 * @param Player  $player
-	 * @param Vector3 $directionVector
-	 *
-	 * @return bool
-	 */
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
 		$map = new Map();
 		$map->initMap($player, 0);
@@ -60,9 +54,6 @@ class EmptyMap extends Item{
 		return true;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getMaxStackSize() : int{
 		return 1;
 	}

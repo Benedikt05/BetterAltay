@@ -168,15 +168,15 @@ use function time;
 use function touch;
 use function trim;
 use const DIRECTORY_SEPARATOR;
+use const INT32_MAX;
+use const INT32_MIN;
 use const PHP_EOL;
 use const PHP_INT_MAX;
 use const PTHREADS_INHERIT_NONE;
 use const SCANDIR_SORT_NONE;
 use const SIGHUP;
-use const SIGTERM;
 use const SIGINT;
-use const INT32_MAX;
-use const INT32_MIN;
+use const SIGTERM;
 
 /**
  * The class that manages everything
@@ -1958,7 +1958,7 @@ class Server{
 		}
 		$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 		$this->pluginManager->registerInterface(new ScriptPluginLoader());
-        $this->pluginManager->loadPlugins($this->pluginPath);
+		$this->pluginManager->loadPlugins($this->pluginPath);
 
 		foreach($this->getAdditionalPluginDirs() as $path){
 			$this->pluginManager->loadPlugins($path);
@@ -2463,9 +2463,9 @@ class Server{
 		//TODO: add raw packet events
 	}
 
-    private function getAdditionalPluginDirs() : array{
-        return $this->getAltayProperty("additional-plugin-dirs", []);
-    }
+	private function getAdditionalPluginDirs() : array{
+		return $this->getAltayProperty("additional-plugin-dirs", []);
+	}
 
 	/**
 	 * Tries to execute a server tick

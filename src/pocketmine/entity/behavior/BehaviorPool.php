@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\behavior;
 
-use pocketmine\Server;
-use function spl_object_hash;
+use function count;
+use function spl_object_id;
 
 class BehaviorPool{
 
@@ -53,18 +53,18 @@ class BehaviorPool{
 		if($this->tickCounter++ % $this->tickRate === 0){
 			foreach($this->behaviorEntries as $id => $entry){
 				$behavior = $entry->getBehavior();
-				
+
 				if(isset($this->workingBehaviors[$id])){
 					if(!$this->canUse($entry) or !$behavior->canContinue()){
 						$behavior->onEnd();
-						
+
 						unset($this->workingBehaviors[$id]);
 					}
 				}
-				
+
 				if($this->canUse($entry) and $behavior->canStart()){
 					$behavior->onStart();
-					
+
 					$this->workingBehaviors[$id] = $entry;
 				}
 			}
@@ -72,7 +72,7 @@ class BehaviorPool{
 			foreach($this->workingBehaviors as $id => $entry){
 				if(!$entry->getBehavior()->canContinue()){
 					$entry->getBehavior()->onEnd();
-					
+
 					unset($this->workingBehaviors[$id]);
 				}
 			}
@@ -104,22 +104,22 @@ class BehaviorPool{
 	public function theyCanWorkCompatible(Behavior $b1, Behavior $b2) : bool{
 		return ($b1->getMutexBits() & $b2->getMutexBits()) === 0;
 	}
-	
+
 	public function getTickRate() : int{
 		return $this->tickRate;
 	}
-	
+
 	public function setTickRate(int $tickRate) : void{
 		$this->tickRate = $tickRate;
 	}
-	
+
 	/**
 	 * @return BehaviorEntry[]
 	 */
 	public function getBehaviorEntries() : array{
 		return $this->behaviorEntries;
 	}
-	
+
 	public function clearBehaviors() : void{
 		$this->behaviorEntries = [];
 		$this->workingBehaviors = [];

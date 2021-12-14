@@ -29,14 +29,22 @@ use pocketmine\level\Level;
 use pocketmine\maps\renderer\MapRenderer;
 use pocketmine\maps\renderer\VanillaMapRenderer;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\IntArrayTag;
-use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\MapDecoration;
 use pocketmine\network\mcpe\protocol\types\MapTrackedObject;
 use pocketmine\Player;
 use pocketmine\utils\Color;
+use function abs;
+use function array_fill;
+use function array_keys;
+use function boolval;
+use function count;
+use function floor;
+use function intval;
+use function spl_object_hash;
+use function spl_object_id;
 
 class MapData{
 
@@ -78,7 +86,6 @@ class MapData{
 	/**
 	 * MapData constructor.
 	 *
-	 * @param int   $mapId
 	 * @param MapRenderer[]|null $renderers
 	 */
 	public function __construct(int $mapId, ?array $renderers = null){
@@ -100,45 +107,27 @@ class MapData{
 		$this->colors = self::$emptyColors;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getId() : int{
 		return $this->id;
 	}
 
-	/**
-	 * @param int $id
-	 */
 	public function setId(int $id) : void{
 		$this->id = $id;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getDimension() : int{
 		return $this->dimension;
 	}
 
-	/**
-	 * @param int $dimension
-	 */
 	public function setDimension(int $dimension) : void{
 		$this->dimension = $dimension;
 		$this->markAsDirty();
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getScale() : int{
 		return $this->scale;
 	}
 
-	/**
-	 * @param int $scale
-	 */
 	public function setScale(int $scale) : void{
 		$this->scale = $scale;
 		$this->markAsDirty();
@@ -159,30 +148,15 @@ class MapData{
 		$this->markAsDirty();
 	}
 
-	/**
-	 * @param int   $x
-	 * @param int   $y
-	 * @param Color $color
-	 */
 	public function setColorAt(int $x, int $y, Color $color) : void{
 		$this->colors[$y][$x] = $color;
 		$this->markAsDirty();
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 *
-	 * @return Color
-	 */
 	public function getColorAt(int $x, int $y) : Color{
 		return $this->colors[$y][$x] ?? new Color(0, 0, 0, 0);
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $z
-	 */
 	public function setCenter(int $x, int $z) : void{
 		$this->xCenter = $x;
 		$this->zCenter = $z;
@@ -253,26 +227,14 @@ class MapData{
 		return $this->decorations;
 	}
 
-	/**
-	 * @param string $identifier
-	 *
-	 * @return MapDecoration|null
-	 */
 	public function getDecoration(string $identifier) : ?MapDecoration{
 		return $this->decorations[$identifier] ?? null;
 	}
 
-	/**
-	 * @param string        $identifier
-	 * @param MapDecoration $decoration
-	 */
 	public function setDecoration(string $identifier, MapDecoration $decoration) : void{
 		$this->decorations[$identifier] = $decoration;
 	}
 
-	/**
-	 * @param string $identifier
-	 */
 	public function removeDecoration(string $identifier) : void{
 		unset($this->decorations[$identifier]);
 	}
@@ -328,10 +290,6 @@ class MapData{
 		return $this->playersMap[spl_object_hash($player)];
 	}
 
-	/**
-	 * @param int $x
-	 * @param int $y
-	 */
 	public function updateTextureAt(int $x, int $y) : void{
 		foreach($this->playersMap as $info){
 			$info->updateTextureAt($x, $y);
@@ -342,8 +300,6 @@ class MapData{
 
 	/**
 	 * Renders map for holder player
-	 *
-	 * @param Player $holder
 	 */
 	public function renderMap(Player $holder) : void{
 		foreach($this->renderers as $renderer){
@@ -353,9 +309,6 @@ class MapData{
 
 	/**
 	 * Adds the player passed to the list of visible players and checks to see which players are visible
-	 *
-	 * @param Player $player
-	 * @param Map    $mapStack
 	 */
 	public function updateVisiblePlayers(Player $player, Map $mapStack){
 		if(!isset($this->playersMap[$hash = spl_object_hash($player)])){
@@ -394,14 +347,6 @@ class MapData{
 
 	/**
 	 * Updates decorations
-	 *
-	 * @param int        $type
-	 * @param Level      $worldIn
-	 * @param String     $entityIdentifier
-	 * @param int        $worldX
-	 * @param int        $worldZ
-	 * @param float      $rotation
-	 * @param Color|null $color
 	 */
 	public function updateDecorations(int $type, Level $worldIn, string $entityIdentifier, int $worldX, int $worldZ, float $rotation, ?Color $color = null){
 		$i = 1 << $this->scale;
@@ -444,7 +389,7 @@ class MapData{
 				$b1 = (int) ($j * 2 + 1);
 			}
 		}
-		
+
 		$this->decorations[$entityIdentifier] = new MapDecoration(
 			$type,
 			$b2,
@@ -455,17 +400,11 @@ class MapData{
 		);
 	}
 
-	/**
-	 * @param MapRenderer $renderer
-	 */
 	public function addRenderer(MapRenderer $renderer) : void{
 		$this->renderers[spl_object_id($renderer)] = $renderer;
 		$renderer->initialize($this);
 	}
 
-	/**
-	 * @param MapRenderer $renderer
-	 */
 	public function removeRenderer(MapRenderer $renderer) : void{
 		unset($this->renderers[spl_object_id($renderer)]);
 	}
@@ -477,37 +416,22 @@ class MapData{
 		return $this->renderers;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isUnlimitedTracking() : bool{
 		return $this->unlimitedTracking;
 	}
 
-	/**
-	 * @param bool $unlimitedTracking
-	 */
 	public function setUnlimitedTracking(bool $unlimitedTracking) : void{
 		$this->unlimitedTracking = $unlimitedTracking;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isVirtual() : bool{
 		return $this->virtual;
 	}
 
-	/**
-	 * @param bool $virtual
-	 */
 	public function setVirtual(bool $virtual) : void{
 		$this->virtual = $virtual;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isDirty() : bool{
 		return $this->dirty;
 	}
@@ -516,9 +440,6 @@ class MapData{
 		$this->setDirty(true);
 	}
 
-	/**
-	 * @param bool $value
-	 */
 	public function setDirty(bool $value) : void{
 		$this->dirty = $value;
 	}
@@ -527,16 +448,10 @@ class MapData{
 		return count($this->colors) === 0;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getLevelName() : string{
 		return $this->levelName;
 	}
 
-	/**
-	 * @param string $levelName
-	 */
 	public function setLevelName(string $levelName) : void{
 		$this->levelName = $levelName;
 	}

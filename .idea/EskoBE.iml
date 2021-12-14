@@ -14,6 +14,16 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/pocketmine/binaryutils" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/adhocore/json-comment" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/tools/php-cs-fixer/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/crashdumps" />
+      <excludeFolder url="file://$MODULE_DIR$/maps" />
+      <excludeFolder url="file://$MODULE_DIR$/players" />
+      <excludeFolder url="file://$MODULE_DIR$/plugin_data" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/resource_packs" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/worlds" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

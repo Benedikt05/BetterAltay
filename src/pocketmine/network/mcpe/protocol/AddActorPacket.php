@@ -44,10 +44,10 @@ class AddActorPacket extends DataPacket{
 	 */
 	public const LEGACY_ID_MAP_BC = [
 		//NEW
-	        EntityIds::AXOLOTL => "minecraft:axolotl",
+		EntityIds::AXOLOTL => "minecraft:axolotl",
 		EntityIds::GOAT => "minecraft:goat",
 		EntityIds::GLOW_SQUID => "minecraft:glow_squid",
-		
+
 		//OLD
 		EntityIds::NPC => "minecraft:npc",
 		EntityIds::PLAYER => "minecraft:player",
@@ -154,9 +154,9 @@ class AddActorPacket extends DataPacket{
 		EntityIds::PIGLIN => "minecraft:piglin",
 		EntityIds::HOGLIN => "minecraft:hoglin",
 		EntityIds::ZOGLIN => "minecraft:zoglin",
-		
+
 	];
-	
+
 	/** @var int|null */
 	public $entityUniqueId = null; //TODO
 	/** @var int */

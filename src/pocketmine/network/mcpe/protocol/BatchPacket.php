@@ -28,14 +28,14 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\Binary;
 use function assert;
 use function get_class;
 use function strlen;
 use function zlib_decode;
 use function zlib_encode;
-use const ZLIB_ENCODING_RAW;
 #ifndef COMPILE
-use pocketmine\utils\Binary;
+use const ZLIB_ENCODING_RAW;
 #endif
 
 class BatchPacket extends DataPacket{

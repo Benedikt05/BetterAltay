@@ -27,7 +27,6 @@ namespace pocketmine\entity\passive;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EntityIds;
-use pocketmine\entity\helper\EntityLookHelper;
 use pocketmine\entity\Living;
 use pocketmine\entity\Tamable;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -38,8 +37,12 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\Player;
 use function boolval;
+use function ceil;
+use function cos;
+use function count;
 use function intval;
 use function mt_rand;
+use function sin;
 
 abstract class AbstractHorse extends Tamable{
 
@@ -70,16 +73,10 @@ abstract class AbstractHorse extends Tamable{
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isHorseJumping() : bool{
 		return $this->horseJumping;
 	}
 
-	/**
-	 * @param bool $horseJumping
-	 */
 	public function setHorseJumping(bool $horseJumping) : void{
 		$this->horseJumping = $horseJumping;
 	}

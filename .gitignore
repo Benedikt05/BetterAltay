@@ -8,6 +8,7 @@ server.log
 server.properties
 white-list.txt
 EskoBE.phar
+.php-cs-fixer.cache
 bin
 vendor/
 worlds

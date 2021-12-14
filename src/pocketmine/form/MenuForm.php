@@ -27,6 +27,7 @@ use pocketmine\Player;
 use pocketmine\utils\Utils;
 
 use function array_values;
+use function gettype;
 use function is_int;
 
 /**
@@ -45,8 +46,6 @@ abstract class MenuForm extends BaseForm{
 	private $onClose = null;
 
 	/**
-	 * @param string        $title
-	 * @param string        $text
 	 * @param MenuOption[]  $options
 	 * @param \Closure      $onSubmit signature `function(Player $player, int $selectedOption)`
 	 * @param \Closure|null $onClose signature `function(Player $player)`

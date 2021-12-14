@@ -33,6 +33,43 @@ namespace pocketmine {
 	use pocketmine\utils\Utils;
 	use pocketmine\utils\VersionString;
 	use pocketmine\wizard\SetupWizard;
+use function count;
+use function define;
+use function dirname;
+use function error_reporting;
+use function explode;
+use function extension_loaded;
+use function fclose;
+use function fflush;
+use function file_exists;
+use function flock;
+use function fopen;
+use function ftruncate;
+use function function_exists;
+use function fwrite;
+use function getcwd;
+use function getenv;
+use function getmypid;
+use function getopt;
+use function ini_get;
+use function ini_set;
+use function is_file;
+use function is_int;
+use function microtime;
+use function mkdir;
+use function opcache_get_status;
+use function php_ini_loaded_file;
+use function php_sapi_name;
+use function phpversion;
+use function preg_match;
+use function preg_quote;
+use function realpath;
+use function set_error_handler;
+use function str_repeat;
+use function stream_get_contents;
+use function substr_count;
+use function usleep;
+use function version_compare;
 
 	require_once __DIR__ . '/VersionInfo.php';
 
@@ -134,7 +171,6 @@ namespace pocketmine {
 	}
 
 	/**
-	 * @param \Logger $logger
 	 * @return void
 	 */
 	function emit_performance_warnings(\Logger $logger){
