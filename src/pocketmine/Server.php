@@ -48,6 +48,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\lang\BaseLang;
 use pocketmine\lang\TextContainer;
+use pocketmine\level\api4\WorldManager;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\format\io\LevelProvider;
 use pocketmine\level\format\io\LevelProviderManager;
@@ -1122,6 +1123,11 @@ class Server{
 		}
 
 		return null;
+	}
+
+	public function getWorldManager() : WorldManager
+	{
+		return new WorldManager();
 	}
 
 	/**
