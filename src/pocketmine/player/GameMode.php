@@ -2,6 +2,8 @@
 
 namespace pocketmine\player;
 
+use function DeepCopy\deep_copy;
+
 final class GameMode
 {
 
@@ -32,7 +34,8 @@ final class GameMode
 			}
 		};
 		match ($str) {
-			"creative", "c", "Creative", "survival", "s", "Survival", "spectator", "v", "view", "Spectator", "adventure", "a", "Adventure" => self::$gamemodeName = $str
+			"creative", "c", "Creative", "survival", "s", "Survival", "spectator", "v", "view", "Spectator", "adventure", "a", "Adventure" => self::$gamemodeName = $str,
+			default => self::$gamemodeName = "Survival"
 		};
 		return $gm;
 	}
