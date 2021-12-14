@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\player;
 
 use pocketmine\block\Bed;
 use pocketmine\block\Block;
@@ -89,6 +89,7 @@ use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\inventory\transaction\TransactionValidationException;
+use pocketmine\IPlayer;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
@@ -755,18 +756,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->perm->addAttachment($plugin, $name, $value);
 	}
 
-	public function getNetworkSession() : self{
+	public function getNetworkSession(): self{
 		return $this;
-	}
-
-	/*public function getPlayerInfo(): self
-	{
-		return $this;
-	}*/ //soon implement
-
-	public function getWorld() : Level
-	{
-		return $this->getLevel();
 	}
 
 	/**
