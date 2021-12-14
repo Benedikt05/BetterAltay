@@ -331,13 +331,13 @@ class Server{
 	private $propertyCache = [];
 
 	/** @var mixed[] */
-	private $altayPropertyCache = [];
+	private $eskoPropertyCache = [];
 
 	/** @var Config */
 	private $config;
 
 	/** @var Config */
-	private $altayConfig;
+	private $eskoConfig;
 
 	/** @var Player[] */
 	private $players = [];
@@ -367,11 +367,11 @@ class Server{
 	/** @var bool */
 	public $mobAiEnabled = true;
 
-	public function loadAltayConfig(){
-		$this->keepInventory = $this->getAltayProperty("player.keep-inventory", false);
-		$this->keepExperience = $this->getAltayProperty("player.keep-experience", false);
-		$this->folderPluginLoader = $this->getAltayProperty("developer.folder-plugin-loader", true);
-		$this->mobAiEnabled = $this->getAltayProperty("level.enable-mob-ai", false);
+	public function loadEskoConfig(){
+		$this->keepInventory = $this->getEskoProperty("player.keep-inventory", false);
+		$this->keepExperience = $this->getEskoProperty("player.keep-experience", false);
+		$this->folderPluginLoader = $this->getEskoProperty("developer.folder-plugin-loader", true);
+		$this->mobAiEnabled = $this->getEskoProperty("level.enable-mob-ai", false);
 	}
 
 	public function getName() : string{
@@ -1142,12 +1142,12 @@ class Server{
 		return $this->propertyCache[$variable] ?? $defaultValue;
 	}
 
-	public function getAltayProperty(string $variable, $defaultValue = null){
-		if(!array_key_exists($variable, $this->altayPropertyCache)){
-			$this->altayPropertyCache[$variable] = $this->altayConfig->getNested($variable);
+	public function getEskoProperty(string $variable, $defaultValue = null){
+		if(!array_key_exists($variable, $this->eskoPropertyCache)){
+			$this->eskoPropertyCache[$variable] = $this->eskoConfig->getNested($variable);
 		}
 
-		return $this->altayPropertyCache[$variable] ?? $defaultValue;
+		return $this->eskoPropertyCache[$variable] ?? $defaultValue;
 	}
 
 	public function getConfigString(string $variable, string $defaultValue = "") : string{
@@ -1390,8 +1390,8 @@ class Server{
 				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "eskobe.yml");
 				@file_put_contents($this->dataPath . "eskobe.yml", $content);
 			}
-			$this->altayConfig = new Config($this->dataPath . "eskobe.yml", Config::YAML, []);
-			$this->loadAltayConfig();
+			$this->eskoConfig = new Config($this->dataPath . "eskobe.yml", Config::YAML, []);
+			$this->loadEskoConfig();
 
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
@@ -1640,7 +1640,7 @@ class Server{
 
 			if($this->isAllowNether() and $this->getNetherLevel() === null){
 				/** @var string $netherLevelName */
-				$netherLevelName = $this->getAltayProperty("dimensions.nether.level-name", "nether");
+				$netherLevelName = $this->getEskoProperty("dimensions.nether.level-name", "nether");
 				if(trim($netherLevelName) == ""){
 					$netherLevelName = "nether";
 				}
@@ -1653,7 +1653,7 @@ class Server{
 
 			if($this->isAllowTheEnd() and $this->getTheEndLevel() === null){
 				/** @var string $endLevelName */
-				$endLevelName = $this->getAltayProperty("dimensions.the-end.level-name", "end");
+				$endLevelName = $this->getEskoProperty("dimensions.the-end.level-name", "end");
 				if(trim($endLevelName) == ""){
 					$endLevelName = "end";
 				}
@@ -1688,11 +1688,11 @@ class Server{
 	}
 
 	public function isAllowNether() : bool{
-		return (bool) $this->getAltayProperty("dimensions.nether.active", true);
+		return (bool) $this->getEskoProperty("dimensions.nether.active", true);
 	}
 
 	public function isAllowTheEnd() : bool{
-		return (bool) $this->getAltayProperty("dimensions.the-end.active", true);
+		return (bool) $this->getEskoProperty("dimensions.the-end.active", true);
 	}
 
 	/**
@@ -2464,7 +2464,7 @@ class Server{
 	}
 
 	private function getAdditionalPluginDirs() : array{
-		return $this->getAltayProperty("additional-plugin-dirs", []);
+		return $this->getEskoProperty("additional-plugin-dirs", []);
 	}
 
 	/**

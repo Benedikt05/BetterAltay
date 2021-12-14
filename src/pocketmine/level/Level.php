@@ -933,7 +933,7 @@ class Level implements ChunkManager, Metadatable{
 		$this->tickChunks();
 		$this->timings->doTickTiles->stopTiming();
 
-		if($this->server->getAltayProperty("level.generic-auto-mob-spawning", false) and $this->gameRules->getBool(GameRules::RULE_DO_MOB_SPAWNING) and $currentTick % 400 === 0){
+		if($this->server->getEskoProperty("level.generic-auto-mob-spawning", false) and $this->gameRules->getBool(GameRules::RULE_DO_MOB_SPAWNING) and $currentTick % 400 === 0){
 			$eligibleChunks = [];
 			foreach($this->players as $player){
 				if($player->chunk !== null){
