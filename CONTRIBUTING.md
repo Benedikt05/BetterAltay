@@ -1,8 +1,8 @@
-![](http://cdn.pocketmine.net/img/PocketMine-MP-h.png)
+![](https://cdn.discordapp.com/attachments/805530984807399484/919448233317634068/logo.png)
 
-# PocketMine-MP Contribution Guidelines
+# EskoBE Contribution Guidelines
 
-PocketMine-MP is an open source project, and contributions from the community are welcomed, as long as they comply with our quality standards and licensing.
+EskoBE is an open source project and its a PocketMine-MP fork, and contributions from the community are welcomed, as long as they comply with our quality standards and licensing.
 
 Code contributions must be submitted using [GitHub Pull Requests](https://github.com/pmmp/PocketMine-MP/pulls), where they will be reviewed by maintainers.
 
