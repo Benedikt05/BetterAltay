@@ -1495,7 +1495,7 @@ class Server{
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
 
-			SkinAdapterSingleton::set(new LegacySkinAdapter());
+			//SkinAdapterSingleton::set(new LegacySkinAdapter());
 
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
