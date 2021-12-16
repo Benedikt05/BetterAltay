@@ -35,13 +35,13 @@ abstract class Achievement{
 	 * @phpstan-var array<string, array{name: string, requires: list<string>}>
 	 */
 	public static $list = [
-		/*"openInventory" => array(
+		/*"openInventory" => [
 			"name" => "Taking Inventory",
 			"requires" => [],
-		),*/
+		],*/
 		"mineWood" => [
 			"name" => "Getting Wood",
-			"requires" => [ //"openInventory",
+			"requires" => [ //""
 			]
 		],
 		"buildWorkBench" => [
