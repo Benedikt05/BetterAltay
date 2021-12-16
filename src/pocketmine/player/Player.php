@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\player;
 
+use pocketmine\level\Level;
 use pocketmine\Player as ApiPlayer;
 
 class Player extends ApiPlayer {
@@ -38,6 +39,6 @@ class Player extends ApiPlayer {
 
 	public function getWorld() : Level
 	{
-		return $this->getLevel();
+		return $this->getLevelNonNull();
 	}
 }

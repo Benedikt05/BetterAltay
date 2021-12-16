@@ -64,7 +64,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	/** @var RakLibServer */
 	private $rakLib;
 
-	/** @var Player[] */
+	/** @var Player[] | \pocketmine\player\Player[] */
 	private $players = [];
 
 	/** @var string[] */
@@ -151,6 +151,15 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		 * @var Player $player
 		 * @see Player::__construct()
 		 */
+		$player = new $class($this, $ev->getAddress(), $ev->getPort());
+		$this->players[$identifier] = $player;
+		$this->identifiersACK[$identifier] = 0;
+		$this->identifiers[spl_object_hash($player)] = $identifier;
+		$this->server->addPlayer($player);
+		$ev = new PlayerCreationEvent($this, \pocketmine\player\Player::class, \pocketmine\player\Player::class, $address, $port);
+		$ev->call();
+		$class = \pocketmine\player\Player::class;
+
 		$player = new $class($this, $ev->getAddress(), $ev->getPort());
 		$this->players[$identifier] = $player;
 		$this->identifiersACK[$identifier] = 0;

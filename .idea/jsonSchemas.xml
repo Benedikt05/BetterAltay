@@ -3,14 +3,17 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
-        <entry key="PocketMine plugin.yml">
+        <entry key="Esko plugin.yml">
           <value>
             <SchemaInfo>
-              <option name="name" value="PocketMine plugin.yml" />
+              <option name="name" value="Esko plugin.yml" />
               <option name="relativePathToSchema" value="https://json.schemastore.org/pocketmine-plugin.json" />
               <option name="applicationDefined" value="true" />
               <option name="patterns">
                 <list>
+                  <Item>
+                    <option name="path" value="plugins/pm4/plugin.yml" />
+                  </Item>
                   <Item>
                     <option name="path" value="plugins/test/plugin.yml" />
                   </Item>

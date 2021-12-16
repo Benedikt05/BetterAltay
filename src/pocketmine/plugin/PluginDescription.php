@@ -25,7 +25,6 @@ namespace pocketmine\plugin;
 
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\permission\Permission;
-use pocketmine\utils\VersionString;
 use function array_map;
 use function array_values;
 use function constant;
@@ -96,18 +95,18 @@ class PluginDescription{
 	 * @param string|mixed[] $yamlString
 	 */
 	public function __construct($yamlString){
-		$this->loadMap(!is_array($yamlString) ? yaml_parse($yamlString) : $yamlString);
+		$plugin = !is_array($yamlString) ? yaml_parse($yamlString) : $yamlString;
+		$this->loadMap($plugin);
 	}
 
 	/**
 	 * @param mixed[] $plugin
 	 * @throws PluginException
 	 */
-	private function loadMap(array $plugin) : void{
+	private function loadMap(array &$plugin) : void{
 		$this->map = $plugin;
 
 		$this->name = $plugin["name"];
-		$version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
 		if(preg_match('/^[A-Za-z0-9 _.-]+$/', $this->name) === 0){
 			throw new PluginException("Invalid Plugin name");
 		}
