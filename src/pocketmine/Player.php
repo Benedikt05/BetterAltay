@@ -275,7 +275,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$lname = strtolower($name);
 		$len = strlen($name);
-		return $lname !== "rcon" and $lname !== "console" and $len >= 1 and $len <= 16 and preg_match("/[^A-Za-z0-9_ ]/", $name) === 0;
+		return $lname !== "rcon" and $lname !== "console" and $len >= 1 and $len <= 16 and preg_match("/[^A-Za-z0-9_&* ]/", $name) === 0;
 	}
 
 	/** @var SourceInterface */
