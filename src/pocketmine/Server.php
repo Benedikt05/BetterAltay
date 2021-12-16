@@ -95,6 +95,7 @@ use pocketmine\plugin\PluginManager;
 use pocketmine\plugin\ScriptPluginLoader;
 use pocketmine\resourcepacks\ResourcePackManager;
 use pocketmine\scheduler\AsyncPool;
+use pocketmine\scheduler\TaskScheduler;
 use pocketmine\snooze\SleeperHandler;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\tile\Tile;
@@ -778,6 +779,14 @@ class Server{
 
 		return $nbt;
 
+	}
+
+	public function getScheduler() : TaskScheduler{
+		$owner = "";
+		foreach($this->getPluginManager()->getPlugins() as $plugins){
+			$owner = $plugins->getDescription()->getFullName();
+		}
+		return new TaskScheduler($this->logger, $owner);
 	}
 
 	/**
