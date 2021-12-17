@@ -14,8 +14,7 @@ abstract class PluginTask extends Task{
 		$this->plugin = $plugin;
 	}
 
-	public function getPlugin(): Plugin
-	{
+	public function getPlugin(){
 		return $this->plugin;
 	}
 }

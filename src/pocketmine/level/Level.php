@@ -2477,6 +2477,11 @@ class Level implements ChunkManager, Metadatable{
 		return null;
 	}
 
+	public function getSpawn(/*Not sure if it have that or no*/bool $idk = false)
+	{
+		return $this->getSafeSpawn();
+	}
+
 	/**
 	 * Returns the chunk containing the given Vector3 position.
 	 */
