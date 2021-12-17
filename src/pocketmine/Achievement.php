@@ -41,7 +41,7 @@ abstract class Achievement{
 		],*/
 		"mineWood" => [
 			"name" => "Getting Wood",
-			"requires" => [ //""
+			"requires" => [ //"openInventory",
 			]
 		],
 		"buildWorkBench" => [
