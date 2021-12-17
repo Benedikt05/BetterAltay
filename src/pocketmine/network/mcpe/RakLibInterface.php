@@ -32,6 +32,7 @@ use pocketmine\network\Network;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
+use pocketmine\utils\TextFormat;
 use raklib\protocol\EncapsulatedPacket;
 use raklib\protocol\PacketReliability;
 use raklib\RakLib;
@@ -64,7 +65,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	/** @var RakLibServer */
 	private $rakLib;
 
-	/** @var Player[] | \pocketmine\player\Player[] */
+	/** @var Player[] */
 	private $players = [];
 
 	/** @var string[] */
@@ -156,15 +157,6 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		$this->identifiersACK[$identifier] = 0;
 		$this->identifiers[spl_object_hash($player)] = $identifier;
 		$this->server->addPlayer($player);
-		$ev = new PlayerCreationEvent($this, \pocketmine\player\Player::class, \pocketmine\player\Player::class, $address, $port);
-		$ev->call();
-		$class = \pocketmine\player\Player::class;
-
-		$player = new $class($this, $ev->getAddress(), $ev->getPort());
-		$this->players[$identifier] = $player;
-		$this->identifiersACK[$identifier] = 0;
-		$this->identifiers[spl_object_hash($player)] = $identifier;
-		$this->server->addPlayer($player);
 	}
 
 	public function handleEncapsulated(string $identifier, EncapsulatedPacket $packet, int $flags) : void{
@@ -181,7 +173,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$logger->debug("Packet " . (isset($pk) ? get_class($pk) : "unknown") . ": " . base64_encode($packet->buffer));
 				$logger->logException($e);
 
-				$player->sendMessage("Internal server error");
+				$player->sendMessage(TextFormat::RED."Internal server error");
 			}
 		}
 	}

@@ -24,12 +24,18 @@ declare(strict_types=1);
 namespace pocketmine\player;
 
 use pocketmine\level\Level;
-use pocketmine\Player as ApiPlayer;
 
-class Player extends ApiPlayer {
+class Player {
 
-	public function getNetworkSession() : self{
-		return $this;
+	protected \pocketmine\Player $player;
+
+	public function __construct(\pocketmine\Player $player){
+		$this->player = $player;
+	}
+
+	public function getNetworkSession() : \pocketmine\Player
+	{
+		return $this->player;
 	}
 
 	/*public function getPlayerInfo(): self
@@ -39,6 +45,6 @@ class Player extends ApiPlayer {
 
 	public function getWorld() : Level
 	{
-		return $this->getLevelNonNull();
+		return $this->player->getLevelNonNull();
 	}
 }
