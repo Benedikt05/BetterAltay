@@ -63,7 +63,6 @@ use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\Cape;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\Player;
-use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\UUID;
 use function array_filter;
 use function array_merge;
@@ -76,7 +75,6 @@ use function max;
 use function min;
 use function mt_rand;
 use function random_int;
-use function sprintf;
 use function strlen;
 use const INT32_MAX;
 use const INT32_MIN;
@@ -452,9 +450,6 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 
 		$xpLevel = (int) $newLevel;
 		$xpProgress = $newLevel - (int) $newLevel;
-		if($xpProgress > 1.0){
-			throw new AssumptionFailedError(sprintf("newLevel - (int) newLevel should never be bigger than 1, but have %.53f (newLevel=%.53f)", $xpProgress, $newLevel));
-		}
 		return $this->setXpAndProgress($xpLevel, $xpProgress);
 	}
 
@@ -502,24 +497,26 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	}
 
 	protected function setXpAndProgress(?int $level, ?float $progress) : bool{
+		$newLevel = $level;
+		$newProgress = $progress;
 		if(!$this->justCreated){
-			$ev = new PlayerExperienceChangeEvent($this, $this->getXpLevel(), $this->getXpProgress(), $level, $progress);
+			$ev = new PlayerExperienceChangeEvent($this, $this->getXpLevel(), $this->getXpProgress(), $newLevel, $newProgress);
 			$ev->call();
 
 			if($ev->isCancelled()){
 				return false;
 			}
 
-			$level = $ev->getNewLevel();
-			$progress = $ev->getNewProgress();
+			$newLevel = $ev->getNewLevel();
+			$newProgress = $ev->getNewProgress();
 		}
 
-		if($level !== null){
-			$this->getAttributeMap()->getAttribute(Attribute::EXPERIENCE_LEVEL)->setValue($level);
+		if($newLevel !== null){
+			$this->getAttributeMap()->getAttribute(Attribute::EXPERIENCE_LEVEL)->setValue($newLevel);
 		}
 
-		if($progress !== null){
-			$this->getAttributeMap()->getAttribute(Attribute::EXPERIENCE)->setValue($progress);
+		if($newProgress !== null){
+			$this->getAttributeMap()->getAttribute(Attribute::EXPERIENCE)->setValue($newProgress);
 		}
 
 		return true;
