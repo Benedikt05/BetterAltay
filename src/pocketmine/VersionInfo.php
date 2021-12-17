@@ -33,7 +33,7 @@ if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
 const _VERSION_INFO_INCLUDED = true;
 
 const NAME = "BetterAltay";
-const BASE_VERSION = "3.26.3";
-const FORK_VERSION = "1.0.0";
-const IS_DEVELOPMENT_BUILD = true;
+const BASE_VERSION = "3.26.4";
+const FORK_VERSION = "1.0.1";
+const IS_DEVELOPMENT_BUILD = false;
 const BUILD_CHANNEL = "master";
