@@ -107,6 +107,8 @@ class Wither extends Monster implements RangedAttackerMob{
 	
 	public function onCollideWithEntity(Entity $entity) : void{
 		parent::onCollideWithEntity($entity);
+		if($entity instanceof Player){
 		$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 7 * 20, 1));
+		}
 	}
 }
