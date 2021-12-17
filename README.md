@@ -3,5 +3,5 @@
 	<b>A server software for Minecraft: BE. This is a SPOON of </b><a href="https://github.com/Benedikt05/BetterAltay">BetterAltay</a><b>
 </p>
 <p align="center">
-	<a href="https://discord.gg/tFrbFJXn"><img src="https://img.shields.io/discord/918828825553534987.svg?style=flat-square&label=discord&colorB=7289da" alt="Discord" /></a>
+	<a href="https://discord.gg/PKWkpSmygR"><img src="https://img.shields.io/discord/918828825553534987.svg?style=flat-square&label=discord&colorB=7289da" alt="Discord" /></a>
 </p>
