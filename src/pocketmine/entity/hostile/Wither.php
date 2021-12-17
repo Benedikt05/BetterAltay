@@ -39,6 +39,8 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\Player;
+use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use function rand;
 
 class Wither extends Monster implements RangedAttackerMob{
@@ -101,5 +103,10 @@ class Wither extends Monster implements RangedAttackerMob{
 		}
 		$fireball->setMotion($dv->multiply($power));
 		$fireball->spawnToAll();
+	}
+	
+	public function onCollideWithEntity(Entity $entity) : void{
+		parent::onCollideWithEntity($entity);
+			$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 7 * 20, 1));
 	}
 }
