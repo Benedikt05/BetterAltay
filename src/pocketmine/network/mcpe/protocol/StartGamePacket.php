@@ -137,13 +137,13 @@ class StartGamePacket extends DataPacket{
 	/** @var bool */
 	public $onlySpawnV1Villagers = false;
 	/** @var string */
-	public $vanillaVersion = 471;
+	public $vanillaVersion = "471";
 	/** @var int */
 	public $limitedWorldWidth = 0;
 	/** @var int */
 	public $limitedWorldLength = 0;
 	/** @var bool */
-	public $isNewNether = true;
+	public $isNewNether = false;
 	/** @var EducationUriResource|null */
 	public $eduSharedUriResource = null;
 	/** @var bool|null */
