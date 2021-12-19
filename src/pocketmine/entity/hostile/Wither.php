@@ -97,9 +97,9 @@ class Wither extends Monster implements RangedAttackerMob{
 		$dv = $target->subtract($this)->normalize();
 		$fireball = new WitherSkull($this->level, Entity::createBaseNBT($this->add($this->random->nextFloat() * $power, $this->getEyeHeight() - 1, $this->random->nextFloat() * $power), $dv), $this);
 		switch(mt_rand(0, 5)){
-		case 0:
-			$fireball = new WitherSkullDangerous($this->level, Entity::createBaseNBT($this->add($this->random->nextFloat() * $power, $this->getEyeHeight() - 1, $this->random->nextFloat() * $power), $dv), $this);
-		break;
+			case 0:
+				$fireball = new WitherSkullDangerous($this->level, Entity::createBaseNBT($this->add($this->random->nextFloat() * $power, $this->getEyeHeight() - 1, $this->random->nextFloat() * $power), $dv), $this);
+			break;
 		}
 		$fireball->setMotion($dv->multiply($power));
 		$fireball->spawnToAll();
