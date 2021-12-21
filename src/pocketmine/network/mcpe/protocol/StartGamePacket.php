@@ -137,7 +137,7 @@ class StartGamePacket extends DataPacket{
 	/** @var bool */
 	public $onlySpawnV1Villagers = false;
 	/** @var string */
-	public $vanillaVersion = "471";
+	public $vanillaVersion = "1.16.220";
 	/** @var int */
 	public $limitedWorldWidth = 0;
 	/** @var int */
