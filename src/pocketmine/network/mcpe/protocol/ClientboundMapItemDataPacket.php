@@ -201,6 +201,11 @@ class ClientboundMapItemDataPacket extends DataPacket{
 
 	/**
 	 * Crops the texture to wanted size
+	 *
+	 * @param int $minX
+	 * @param int $minY
+	 * @param int $maxX
+	 * @param int $maxY
 	 */
 	public function cropTexture(int $minX, int $minY, int $maxX, int $maxY) : void{
 		$this->height = $maxY;

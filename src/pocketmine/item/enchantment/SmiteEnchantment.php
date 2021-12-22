@@ -25,6 +25,8 @@ namespace pocketmine\item\enchantment;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Smite;
+use pocketmine\item\Axe;
+use pocketmine\item\Item;
 
 class SmiteEnchantment extends DamageEnchantment{
 

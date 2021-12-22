@@ -25,7 +25,6 @@ namespace pocketmine\form\element;
 
 use pocketmine\form\FormValidationException;
 
-use function gettype;
 use function is_string;
 
 /**
@@ -39,6 +38,12 @@ class Input extends CustomFormElement{
 	/** @var string */
 	private $default;
 
+	/**
+	 * @param string $name
+	 * @param string $text
+	 * @param string $hintText
+	 * @param string $defaultText
+	 */
 	public function __construct(string $name, string $text, string $hintText = "", string $defaultText = ""){
 		parent::__construct($name, $text);
 		$this->hint = $hintText;
@@ -62,6 +67,7 @@ class Input extends CustomFormElement{
 
 	/**
 	 * Returns the text shown in the text-box when the box is not focused and there is no text in it.
+	 * @return string
 	 */
 	public function getHintText() : string{
 		return $this->hint;
@@ -69,6 +75,7 @@ class Input extends CustomFormElement{
 
 	/**
 	 * Returns the text which will be in the text-box by default.
+	 * @return string
 	 */
 	public function getDefaultText() : string{
 		return $this->default;

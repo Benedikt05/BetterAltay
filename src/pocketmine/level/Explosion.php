@@ -34,6 +34,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\level\particle\HugeExplodeSeedParticle;
 use pocketmine\level\utils\SubChunkIteratorManager;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;

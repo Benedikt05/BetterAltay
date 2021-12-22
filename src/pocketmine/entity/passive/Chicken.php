@@ -31,8 +31,8 @@ use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
@@ -50,10 +50,16 @@ class Chicken extends Animal{
 	protected $chickenJockey = false;
 	protected $timeUntilNextEgg = 0;
 
+	/**
+	 * @return bool
+	 */
 	public function isChickenJockey() : bool{
 		return $this->chickenJockey;
 	}
 
+	/**
+	 * @param bool $chickenJockey
+	 */
 	public function setChickenJockey(bool $chickenJockey) : void{
 		$this->chickenJockey = $chickenJockey;
 	}

@@ -29,6 +29,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
+use pocketmine\item\Shears;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 class ThornsEnchantment extends Enchantment{

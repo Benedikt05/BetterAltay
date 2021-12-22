@@ -123,7 +123,7 @@ class AutoUpdater{
 	protected function showChannelSuggestionStable(){
 		$this->printConsoleMessage([
 			"It appears you're running a Stable build, when you've specified that you prefer to run " . ucfirst($this->getChannel()) . " builds.",
-			"If you would like to be kept informed about new Stable builds only, it is recommended that you change 'preferred-channel' in your esko.yml to 'stable'."
+			"If you would like to be kept informed about new Stable builds only, it is recommended that you change 'preferred-channel' in your pocketmine.yml to 'stable'."
 		]);
 	}
 
@@ -133,7 +133,7 @@ class AutoUpdater{
 	protected function showChannelSuggestionBeta(){
 		$this->printConsoleMessage([
 			"It appears you're running a Beta build, when you've specified that you prefer to run Stable builds.",
-			"If you would like to be kept informed about new Beta or Development builds, it is recommended that you change 'preferred-channel' in your esko.yml to 'beta' or 'development'."
+			"If you would like to be kept informed about new Beta or Development builds, it is recommended that you change 'preferred-channel' in your pocketmine.yml to 'beta' or 'development'."
 		]);
 	}
 

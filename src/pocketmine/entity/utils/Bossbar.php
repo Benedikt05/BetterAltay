@@ -31,9 +31,6 @@ use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\Player;
-use function max;
-use function min;
-use function spl_object_id;
 
 /*
  * This is a Helper class to create a simple Bossbar
@@ -72,6 +69,7 @@ class Bossbar extends Vector3{
 
 	/**
 	 * @param float $hp This should be in 0.0-1.0 range
+	 * @param bool  $update
 	 */
 	public function setHealthPercent(float $hp, bool $update = true){
 		$this->healthPercent = max(0, min(1.0, $hp));

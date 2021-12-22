@@ -11,7 +11,7 @@ includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-	level: max
+	level: 9
 	checkMissingCallableSignature: true
 	treatPhpDocTypesAsCertain: false
 	bootstrapFiles:

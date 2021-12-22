@@ -31,10 +31,6 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
-use function cos;
-use function lcg_value;
-use function mt_rand;
-use function sin;
 
 class Fireworks extends Item{
 	/** @var float */

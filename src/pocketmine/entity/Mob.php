@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+
 use pocketmine\block\Liquid;
 use pocketmine\entity\behavior\BehaviorPool;
 use pocketmine\entity\helper\EntityBodyHelper;
@@ -32,16 +33,13 @@ use pocketmine\entity\helper\EntityLookHelper;
 use pocketmine\entity\helper\EntityMoveHelper;
 use pocketmine\entity\pathfinder\EntityNavigator;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\timings\Timings;
 use function abs;
 use function boolval;
-use function cos;
-use function deg2rad;
-use function floor;
 use function in_array;
 use function intval;
-use function sin;
 
 abstract class Mob extends Living{
 
@@ -78,10 +76,16 @@ abstract class Mob extends Living{
 	public $yawOffset = 0.0;
 	public $headYaw = 0.0;
 
+	/**
+	 * @return Vector3
+	 */
 	public function getHomePosition() : Vector3{
 		return $this->homePosition;
 	}
 
+	/**
+	 * @param Vector3 $homePosition
+	 */
 	public function setHomePosition(Vector3 $homePosition) : void{
 		$this->homePosition = $homePosition;
 	}
@@ -94,26 +98,44 @@ abstract class Mob extends Living{
 		$this->landMovementFactor = $value;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isJumping() : bool{
 		return $this->isJumping;
 	}
 
+	/**
+	 * @param bool $isJumping
+	 */
 	public function setJumping(bool $isJumping) : void{
 		$this->isJumping = $isJumping;
 	}
 
+	/**
+	 * @return EntityMoveHelper
+	 */
 	public function getMoveHelper() : EntityMoveHelper{
 		return $this->moveHelper;
 	}
 
+	/**
+	 * @return EntityJumpHelper
+	 */
 	public function getJumpHelper() : EntityJumpHelper{
 		return $this->jumpHelper;
 	}
 
+	/**
+	 * @return EntityBodyHelper
+	 */
 	public function getBodyHelper() : EntityBodyHelper{
 		return $this->bodyHelper;
 	}
 
+	/**
+	 * @return EntityLookHelper
+	 */
 	public function getLookHelper() : EntityLookHelper{
 		return $this->lookHelper;
 	}
@@ -200,16 +222,21 @@ abstract class Mob extends Living{
 		$this->moveWithHeading($this->moveStrafing, $this->moveForward);
 
 		$this->bodyHelper->onUpdate();
-
+		
 		$this->tryToDespawn();
 
 		return (bool) $hasUpdate;
 	}
 
+	/**
+	 * @param Entity $target
+	 *
+	 * @return bool
+	 */
 	public function canSeeEntity(Entity $target) : bool{
-		if(in_array($target->getId(), $this->unseenEntities, true)){
+		if(in_array($target->getId(), $this->unseenEntities)){
 			return false;
-		}elseif(in_array($target->getId(), $this->seenEntities, true)){
+		}elseif(in_array($target->getId(), $this->seenEntities)){
 			return true;
 		}else{
 			// TODO: Fix seen from corners
@@ -234,10 +261,16 @@ abstract class Mob extends Living{
 
 	}
 
+	/**
+	 * @return BehaviorPool
+	 */
 	public function getBehaviorPool() : BehaviorPool{
 		return $this->behaviorPool;
 	}
 
+	/**
+	 * @return BehaviorPool
+	 */
 	public function getTargetBehaviorPool() : BehaviorPool{
 		return $this->targetBehaviorPool;
 	}
@@ -250,6 +283,9 @@ abstract class Mob extends Living{
 		$this->motion->y += 0.04;
 	}
 
+	/**
+	 * @return EntityNavigator
+	 */
 	public function getNavigator() : EntityNavigator{
 		return $this->navigator;
 	}
@@ -258,6 +294,9 @@ abstract class Mob extends Living{
 		return 40;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canBePushed() : bool{
 		return !$this->isImmobile();
 	}
@@ -295,21 +334,32 @@ abstract class Mob extends Living{
 			}
 		}
 	}
-
+	
 	protected function tryToDespawn() : void{
 		if($this->canDespawn() and $this->level->getNearestEntity($this, 128, Player::class, true) === null){
 			$this->flagForDespawn();
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canDespawn() : bool{
 		return !$this->isImmobile() and !$this->isLeashed() and $this->getOwningEntityId() === null;
 	}
 
+	/**
+	 * @param Vector3 $pos
+	 *
+	 * @return float
+	 */
 	public function getBlockPathWeight(Vector3 $pos) : float{
 		return 0.0;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canSpawnHere() : bool{
 		return parent::canSpawnHere() and $this->getBlockPathWeight($this) > 0;
 	}
@@ -411,6 +461,9 @@ abstract class Mob extends Living{
 		}
 	}
 
+	/**
+	 * @return Vector3
+	 */
 	public function getLookVector() : Vector3{
 		$y = -sin(deg2rad($this->pitch));
 		$xz = cos(deg2rad($this->pitch));
@@ -420,6 +473,11 @@ abstract class Mob extends Living{
 		return $this->temporalVector->setComponents($x, $y, $z)->normalize();
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @param float  $dxz
+	 * @param float  $dy
+	 */
 	public function faceEntity(Entity $entity, float $dxz, float $dy) : void{
 		if($entity instanceof Living){
 			$d2 = $entity->y + $entity->getEyeHeight() - ($this->y + $this->getEyeHeight());

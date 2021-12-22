@@ -25,6 +25,7 @@ namespace pocketmine\entity;
 
 use pocketmine\block\Block;
 use pocketmine\entity\object\LeashKnot;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -44,10 +45,10 @@ use pocketmine\math\VoxelRayTrace;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
-use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ShortTag;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\MobEffectPacket;
@@ -59,11 +60,9 @@ use pocketmine\utils\UUID;
 use function abs;
 use function array_shift;
 use function atan2;
-use function boolval;
 use function ceil;
 use function count;
 use function floor;
-use function intval;
 use function lcg_value;
 use function max;
 use function min;
@@ -1035,10 +1034,17 @@ abstract class Living extends Entity implements Damageable{
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function allowLeashing() : bool{
 		return false;
 	}
 
+	/**
+	 * @param bool $send
+	 * @param bool $dropLead
+	 */
 	public function clearLeashed(bool $send, bool $dropLead) : void{
 		if($this->isLeashed()){
 			$this->leashed = false;
@@ -1123,26 +1129,44 @@ abstract class Living extends Entity implements Damageable{
 		return false;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canSpawnHere() : bool{
 		return true;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMaxSpawnedInChunk() : int{
 		return 4;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getMoveForward() : float{
 		return $this->moveForward;
 	}
 
+	/**
+	 * @param float $moveForward
+	 */
 	public function setMoveForward(float $moveForward) : void{
 		$this->moveForward = $moveForward;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getMoveStrafing() : float{
 		return $this->moveStrafing;
 	}
 
+	/**
+	 * @param float $moveStrafing
+	 */
 	public function setMoveStrafing(float $moveStrafing) : void{
 		$this->moveStrafing = $moveStrafing;
 	}

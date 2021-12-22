@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\Player;
 

@@ -37,7 +37,7 @@ class MapDecoration{
 	public const TYPE_MANSION = 8;
 	public const TYPE_MONUMENT = 9;
 	// TODO: more ???
-
+	
 	/** @var int */
 	private $icon;
 	/** @var int */

@@ -27,13 +27,13 @@ namespace pocketmine\entity\passive;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
+use pocketmine\entity\behavior\MountPathingBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
-use pocketmine\entity\behavior\MountPathingBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\inventory\HorseInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
@@ -41,7 +41,6 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
-use function mt_rand;
 
 class Horse extends AbstractHorse implements InventoryHolder{
 
@@ -71,6 +70,9 @@ class Horse extends AbstractHorse implements InventoryHolder{
 		return "Horse";
 	}
 
+	/**
+	 * @return HorseInventory
+	 */
 	public function getInventory() : HorseInventory{
 		return $this->inventory;
 	}

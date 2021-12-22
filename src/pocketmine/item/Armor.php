@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\ProtectionEnchantment;

@@ -40,6 +40,7 @@ abstract class BaseForm implements Form{
 
 	/**
 	 * Returns the text shown on the form title-bar.
+	 * @return string
 	 */
 	public function getTitle() : string{
 		return $this->title;
@@ -47,6 +48,8 @@ abstract class BaseForm implements Form{
 
 	/**
 	 * Serializes the form to JSON for sending to clients.
+	 *
+	 * @return array
 	 */
 	final public function jsonSerialize() : array{
 		$ret = $this->serializeFormData();
@@ -58,11 +61,13 @@ abstract class BaseForm implements Form{
 
 	/**
 	 * Returns the type used to show this form to clients
+	 * @return string
 	 */
 	abstract protected function getType() : string;
 
 	/**
 	 * Serializes additional data needed to show this form to clients.
+	 * @return array
 	 */
 	abstract protected function serializeFormData() : array;
 

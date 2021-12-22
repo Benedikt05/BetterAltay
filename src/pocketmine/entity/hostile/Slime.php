@@ -39,17 +39,13 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\biome\Biome;
+use pocketmine\level\generator\Flat;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\level\particle\Particle;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
-use function boolval;
-use function cos;
-use function intval;
-use function pi;
-use function sin;
 
 class Slime extends Monster{
 

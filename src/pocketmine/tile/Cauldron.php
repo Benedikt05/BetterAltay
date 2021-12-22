@@ -27,8 +27,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Color;
-use function boolval;
-use function intval;
 
 class Cauldron extends Spawnable{
 
@@ -63,19 +61,31 @@ class Cauldron extends Spawnable{
 		$this->writeSaveData($nbt);
 	}
 
+	/**
+	 * @return Color|null
+	 */
 	public function getCustomColor() : ?Color{
 		return $this->customColor;
 	}
 
+	/**
+	 * @param Color|null $customColor
+	 */
 	public function setCustomColor(?Color $customColor) : void{
 		$this->customColor = $customColor;
 		$this->onChanged();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getPotionId() : int{
 		return $this->potionId;
 	}
 
+	/**
+	 * @param int $potionId
+	 */
 	public function setPotionId(int $potionId) : void{
 		$this->potionId = $potionId;
 		$this->onChanged();
@@ -85,10 +95,16 @@ class Cauldron extends Spawnable{
 		return $this->potionId !== -1;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSplashPotion() : bool{
 		return $this->splashPotion;
 	}
 
+	/**
+	 * @param bool $splashPotion
+	 */
 	public function setSplashPotion(bool $splashPotion) : void{
 		$this->splashPotion = $splashPotion;
 		$this->onChanged();

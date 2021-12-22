@@ -27,7 +27,6 @@ namespace pocketmine\entity\behavior;
 use pocketmine\entity\Mob;
 use pocketmine\Player;
 use function in_array;
-use function sqrt;
 
 class TemptBehavior extends Behavior{
 
@@ -61,7 +60,7 @@ class TemptBehavior extends Behavior{
 		$player = $this->mob->level->getNearestEntity($this->mob, sqrt(10), Player::class);
 
 		if($player instanceof Player){
-			if(in_array($player->getInventory()->getItemInHand()->getId(), $this->temptItems, true)){
+			if(in_array($player->getInventory()->getItemInHand()->getId(), $this->temptItems)){
 				$this->temptingPlayer = $player;
 
 				return true;

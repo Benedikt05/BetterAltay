@@ -292,7 +292,7 @@ class ItemFactory{
 		self::registerItem(new Record(Item::RECORD_WAIT, LevelSoundEventPacket::SOUND_RECORD_WAIT));
 
 		self::registerItem(new Shield());
-
+		
 		self::registerItem(new Item(Item::NETHERITE_INGOT, 0, "Netherite Ingot"));
 		self::registerItem(new Item(Item::NETHERITE_SCRAP, 0, "Netherite Scrap"));
 	}

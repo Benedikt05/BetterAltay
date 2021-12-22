@@ -33,8 +33,6 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
-use function count;
-use function floatval;
 
 class PlaySoundCommand extends VanillaCommand{
 

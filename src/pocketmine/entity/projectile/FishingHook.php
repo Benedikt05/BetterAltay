@@ -43,7 +43,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use function cos;
-use function count;
 use function floor;
 use function mt_rand;
 use function sin;
@@ -77,6 +76,10 @@ class FishingHook extends Projectile{
 
 	/**
 	 * FishingHook constructor.
+	 *
+	 * @param Level       $level
+	 * @param CompoundTag $nbt
+	 * @param null|Entity $owner
 	 */
 	public function __construct(Level $level, CompoundTag $nbt, ?Entity $owner = null){
 		parent::__construct($level, $nbt, $owner);
@@ -88,16 +91,30 @@ class FishingHook extends Projectile{
 		}
 	}
 
+	/**
+	 * @param Entity         $entityHit
+	 * @param RayTraceResult $hitResult
+	 */
 	public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult) : void{
 		$entityHit->attack(new EntityDamageByEntityEvent($this, $entityHit, EntityDamageEvent::CAUSE_ENTITY_ATTACK, 0));
 
 		$this->mountEntity($entityHit);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canBePushed() : bool{
 		return false;
 	}
 
+	/**
+	 * @param float $x
+	 * @param float $y
+	 * @param float $z
+	 * @param float $f1
+	 * @param float $f2
+	 */
 	public function handleHookCasting(float $x, float $y, float $z, float $f1, float $f2){
 		$f = sqrt($x * $x + $y * $y + $z * $z);
 		$x = $x / $f;

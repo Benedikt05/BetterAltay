@@ -1,7 +1,7 @@
 ﻿[CmdletBinding(PositionalBinding=$false)]
 param (
 	[string]$php = "",
-	[switch]$Loop = $true,
+	[switch]$Loop = $false,
 	[string]$file = "",
 	[string][Parameter(ValueFromRemainingArguments)]$extraPocketMineArgs
 )
@@ -21,13 +21,11 @@ if($php -ne ""){
 }
 
 if($file -eq ""){
-	if(Test-Path "Esko.phar"){
-	    $file = "Esko.phar"
-	}elseif (Test-Path "src\pocketmine\PocketMine.php"){
-	    $file = "src\pocketmine\PocketMine.php"
+	if(Test-Path "BetterAltay.phar"){
+	    $file = "BetterAltay.phar"
 	}else{
-	    echo "Couldn't find EskoBE installation"
-	    echo "Downloads can be found at https://github.com/MCPE357/EskoBE/releases"
+	    echo "BetterAltay.phar not found"
+	    echo "Downloads can be found at https://github.com/Benedikt05/BetterAltay/releases"
 	    pause
 	    exit 1
 	}
@@ -48,6 +46,7 @@ while($Loop){
 	}
 	$loops++
 	echo "To escape the loop, press CTRL+C now. Otherwise, wait 5 seconds for the server to restart."
+	echo ""
 	Start-Sleep 5
 	StartServer
 }

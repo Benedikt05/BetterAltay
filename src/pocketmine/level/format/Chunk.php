@@ -587,10 +587,16 @@ class Chunk{
 		$this->hasChanged = true;
 	}
 
+	/**
+	 * @param int $value
+	 */
 	public function setInhabitedTime(int $value) : void{
 		$this->inhabitedTime = $value;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getInhabitedTime() : int{
 		return $this->inhabitedTime;
 	}

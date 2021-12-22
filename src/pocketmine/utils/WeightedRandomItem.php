@@ -38,6 +38,8 @@ class WeightedRandomItem{
 
 	/**
 	 * @param WeightedRandomItem[] $weightedItems
+	 *
+	 * @return int
 	 */
 	public static function getTotalWeight(array $weightedItems) : int{
 		$total = 0;
@@ -49,7 +51,11 @@ class WeightedRandomItem{
 	}
 
 	/**
+	 * @param Random               $random
 	 * @param WeightedRandomItem[] $items
+	 * @param int                  $totalWeight
+	 *
+	 * @return null|WeightedRandomItem
 	 */
 	public static function getRandomItem(Random $random, array $items, int $totalWeight) : ?WeightedRandomItem{
 		return self::getRandomItemFromCollection($items, $random->nextBoundedInt($totalWeight));
@@ -57,6 +63,9 @@ class WeightedRandomItem{
 
 	/**
 	 * @param WeightedRandomItem[] $collection
+	 * @param int                  $weight
+	 *
+	 * @return null|WeightedRandomItem
 	 */
 	public static function getRandomItemFromCollection(array $collection, int $weight) : ?WeightedRandomItem{
 		foreach($collection as $item){

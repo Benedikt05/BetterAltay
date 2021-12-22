@@ -30,7 +30,6 @@ use pocketmine\entity\object\ArmorStand as EntityArmorStand;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
-use function round;
 
 class ArmorStand extends Item{
 

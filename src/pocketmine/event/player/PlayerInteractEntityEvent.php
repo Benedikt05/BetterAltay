@@ -42,6 +42,12 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 	/** @var Vector3 */
 	protected $clickPos;
 
+	/**
+	 * @param Player  $player
+	 * @param Entity  $entity
+	 * @param Item    $item
+	 * @param Vector3 $clickPos
+	 */
 	public function __construct(Player $player, Entity $entity, Item $item, Vector3 $clickPos){
 		$this->player = $player;
 		$this->entity = $entity;
@@ -49,14 +55,23 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 		$this->clickPos = $clickPos;
 	}
 
+	/**
+	 * @return Entity
+	 */
 	public function getEntity() : Entity{
 		return $this->entity;
 	}
 
+	/**
+	 * @return Item
+	 */
 	public function getItem() : Item{
 		return $this->item;
 	}
 
+	/**
+	 * @return Vector3
+	 */
 	public function getClickPosition() : Vector3{
 		return $this->clickPos;
 	}

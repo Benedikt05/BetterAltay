@@ -31,16 +31,11 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
-use function abs;
-use function count;
-use function rtrim;
-use function strcasecmp;
-use function substr;
 
 class XpCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "Add xp to player", '/xp (player) (amount)', [], [
+		parent::__construct($name, "%altay.command.xp.description", 'altay.command.xp.usage', [], [
 			[
 				new CommandParameter("amount", AvailableCommandsPacket::ARG_TYPE_INT, false),
 				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)

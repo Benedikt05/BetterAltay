@@ -34,11 +34,11 @@ final class BehaviorEntry{
 		$this->priority = $priority;
 		$this->behavior = $behavior;
 	}
-
+	
 	public function getPriority() : int{
 		return $this->priority;
 	}
-
+	
 	public function getBehavior() : Behavior{
 		return $this->behavior;
 	}

@@ -28,7 +28,6 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
 use pocketmine\Player;
-use function get_class;
 
 class NearestAttackableTargetBehavior extends TargetBehavior{
 

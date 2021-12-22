@@ -52,7 +52,7 @@ class LookAtEntityBehavior extends Behavior{
 
 			if($target !== null){
 				$this->nearestEntity = $target;
-
+				
 				return true;
 			}
 		}

@@ -35,10 +35,7 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
-use function basename;
 use function count;
-use function get_class;
-use function implode;
 
 class KillCommand extends VanillaCommand{
 

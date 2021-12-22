@@ -637,7 +637,7 @@ class Utils{
 	 */
 	public static function parseDocComment(string $docComment) : array{
 		$rawDocComment = substr($docComment, 3, -2); //remove the opening and closing markers
-		if($rawDocComment == false){ //usually empty doc comment, but this is safer and statically analysable
+		if($rawDocComment === false){ //usually empty doc comment, but this is safer and statically analysable
 			return [];
 		}
 		preg_match_all('/(*ANYCRLF)^[\t ]*(?:\* )?@([a-zA-Z]+)(?:[\t ]+(.+?))?[\t ]*$/m', $rawDocComment, $matches);

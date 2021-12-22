@@ -40,10 +40,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
-use function intval;
-use function min;
 use function mt_rand;
-use function rand;
 
 class Cat extends Tamable{
 	public const NETWORK_ID = self::CAT;
@@ -66,6 +63,7 @@ class Cat extends Tamable{
 		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 0.8));
 		$this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 14.0));
 		$this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
+
 
 		// TODO: attack turtle and rabbit
 	}

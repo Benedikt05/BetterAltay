@@ -32,7 +32,6 @@ use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\item\Bucket;
 use pocketmine\item\Dye;
 use pocketmine\item\GlassBottle;
-use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\LeatherBoots;
 use pocketmine\item\LeatherCap;
@@ -41,6 +40,7 @@ use pocketmine\item\LeatherTunic;
 use pocketmine\item\Potion;
 use pocketmine\item\SplashPotion;
 use pocketmine\item\TieredTool;
+use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
@@ -51,7 +51,6 @@ use pocketmine\tile\Cauldron as TileCauldron;
 use pocketmine\tile\Tile;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Color;
-use function min;
 
 class Cauldron extends Solid{
 

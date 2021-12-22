@@ -29,9 +29,9 @@ class DesertBiome extends SandyBiome{
 
 	public function __construct(){
 		parent::__construct();
-		$cactus = new Cactus();
-		$cactus->setBaseAmount(1);
-		$this->addPopulator($cactus);
+        $cactus = new Cactus();
+        $cactus->setBaseAmount(1);
+        $this->addPopulator($cactus);
 
 		$this->setElevation(63, 74);
 

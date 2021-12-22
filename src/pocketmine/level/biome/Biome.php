@@ -247,6 +247,8 @@ abstract class Biome{
 	}
 
 	/**
+	 * @param CreatureType $creatureType
+	 *
 	 * @return SpawnListEntry[]
 	 */
 	public function getSpawnableList(CreatureType $creatureType) : array{
@@ -265,6 +267,9 @@ abstract class Biome{
 		return [];
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getSpawningChance() : float{
 		return 0.1;
 	}

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  *               _ _
  *         /\   | | |
@@ -35,6 +33,9 @@ abstract class MapRenderer{
 
 	/**
 	 * Renders a map
+	 *
+	 * @param MapData $mapData
+	 * @param Player $player
 	 */
 	public abstract function render(MapData $mapData, Player $player) : void;
 

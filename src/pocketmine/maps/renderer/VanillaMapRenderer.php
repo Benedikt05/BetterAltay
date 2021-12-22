@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  *               _ _
  *         /\   | | |
@@ -36,9 +34,6 @@ use pocketmine\block\Wood2;
 use pocketmine\maps\MapData;
 use pocketmine\Player;
 use pocketmine\utils\Color;
-use function floor;
-use function max;
-use function min;
 
 class VanillaMapRenderer extends MapRenderer{
 	protected $currentCheckX = 0;
@@ -56,6 +51,9 @@ class VanillaMapRenderer extends MapRenderer{
 
 	/**
 	 * Renders a map
+	 *
+	 * @param MapData $mapData
+	 * @param Player  $player
 	 */
 	public function render(MapData $mapData, Player $player) : void{
 		if($mapData->getLevelName() === ""){
@@ -190,6 +188,10 @@ class VanillaMapRenderer extends MapRenderer{
 
 	/**
 	 * TODO: Separate map colors to blocks
+	 *
+	 * @param Block $block
+	 *
+	 * @return Color
 	 */
 	public static function getMapColorByBlock(Block $block) : Color{
 		$meta = $block->getDamage();
@@ -272,7 +274,10 @@ class VanillaMapRenderer extends MapRenderer{
 	}
 
 	/**
+	 * @param Color $color
 	 * @param int   $colorLevel colorization level
+	 *
+	 * @return Color
 	 */
 	public static function colorizeMapColor(Color $color, int $colorLevel) : Color{
 		$colorDepth = 220;

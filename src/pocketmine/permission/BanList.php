@@ -163,7 +163,7 @@ class BanList{
 		$fp = @fopen($this->file, "w");
 		if(is_resource($fp)){
 			if($writeHeader){
-				fwrite($fp, "# Updated " . strftime("%x %H:%M", time()) . " by " . Server::getInstance()->getName() . " " . Server::getInstance()->getEskoVersion() . "\n");
+				fwrite($fp, "# Updated " . strftime("%x %H:%M", time()) . " by " . Server::getInstance()->getName() . " " . Server::getInstance()->getPocketMineVersion() . "\n");
 				fwrite($fp, "# victim name | ban date | banned by | banned until | reason\n\n");
 			}
 

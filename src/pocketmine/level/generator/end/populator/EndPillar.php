@@ -29,11 +29,11 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\utils\Random;
 
+use function mt_rand;
+use function intval;
+use function pi;
 use function cos;
 use function deg2rad;
-use function intval;
-use function mt_rand;
-use function pi;
 use function sin;
 
 class EndPillar extends Populator {
@@ -78,6 +78,7 @@ class EndPillar extends Populator {
 			}
 		}
 	}
+
 
 	private function getHighestWorkableBlock($x, $z){
 		for($y = 127; $y >= 0; --$y){

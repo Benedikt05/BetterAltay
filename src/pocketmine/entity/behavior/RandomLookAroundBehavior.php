@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\entity\behavior;
 
 use pocketmine\entity\Mob;
+use pocketmine\math\Vector3;
 use function cos;
 use function pi;
 use function sin;

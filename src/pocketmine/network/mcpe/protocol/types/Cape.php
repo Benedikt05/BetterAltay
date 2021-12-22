@@ -37,14 +37,23 @@ class Cape{
 		$this->onClassicSkin = $onClassicSkin;
 	}
 
+	/**
+	 * @return SkinImage
+	 */
 	public function getImage() : SkinImage{
 		return $this->image;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getId() : string{
 		return $this->id;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isOnClassicSkin() : bool{
 		return $this->onClassicSkin;
 	}

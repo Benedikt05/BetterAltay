@@ -32,7 +32,6 @@ use pocketmine\network\Network;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
-use pocketmine\utils\TextFormat;
 use raklib\protocol\EncapsulatedPacket;
 use raklib\protocol\PacketReliability;
 use raklib\RakLib;
@@ -173,7 +172,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$logger->debug("Packet " . (isset($pk) ? get_class($pk) : "unknown") . ": " . base64_encode($packet->buffer));
 				$logger->logException($e);
 
-				$player->sendMessage(TextFormat::RED."Internal server error");
+				$player->sendMessage("Internal server error");
 			}
 		}
 	}

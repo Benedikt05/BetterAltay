@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  *               _ _
  *         /\   | | |
@@ -25,14 +23,17 @@ declare(strict_types=1);
 namespace pocketmine\inventory;
 
 use pocketmine\entity\passive\AbstractHorse;
-use pocketmine\item\Item;
 use pocketmine\item\Saddle;
+use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 abstract class AbstractHorseInventory extends ContainerInventory{
 	/** @var AbstractHorse */
 	protected $holder;
 
+	/**
+	 * @param Item $saddle
+	 */
 	public function setSaddle(Item $saddle) : void{
 		$this->setItem(0, $saddle);
 
@@ -49,6 +50,9 @@ abstract class AbstractHorseInventory extends ContainerInventory{
 		}
 	}
 
+	/**
+	 * @return Item
+	 */
 	public function getSaddle() : Item{
 		return $this->getItem(0);
 	}

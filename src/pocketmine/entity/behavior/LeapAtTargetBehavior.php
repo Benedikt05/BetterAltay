@@ -25,7 +25,6 @@ declare(strict_types=1);
 namespace pocketmine\entity\behavior;
 
 use pocketmine\entity\Mob;
-use function sqrt;
 
 class LeapAtTargetBehavior extends Behavior{
 

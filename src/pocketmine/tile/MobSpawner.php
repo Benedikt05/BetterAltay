@@ -32,8 +32,6 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\Server;
-use function intval;
-use function rand;
 
 class MobSpawner extends Spawnable{
 
@@ -77,75 +75,129 @@ class MobSpawner extends Spawnable{
 		$this->scheduleUpdate();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getEntityId() : int{
 		return $this->entityId;
 	}
 
+	/**
+	 * @param int $entityId
+	 */
 	public function setEntityId(int $entityId) : void{
 		$this->entityId = $entityId;
 		$this->onChanged();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getSpawnRange() : int{
 		return $this->spawnRange;
 	}
 
+	/**
+	 * @param int $spawnRange
+	 */
 	public function setSpawnRange(int $spawnRange) : void{
 		$this->spawnRange = $spawnRange;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMaxNearbyEntities() : int{
 		return $this->maxNearbyEntities;
 	}
 
+	/**
+	 * @param int $maxNearbyEntities
+	 */
 	public function setMaxNearbyEntities(int $maxNearbyEntities) : void{
 		$this->maxNearbyEntities = $maxNearbyEntities;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getRequiredPlayerRange() : int{
 		return $this->requiredPlayerRange;
 	}
 
+	/**
+	 * @param int $requiredPlayerRange
+	 */
 	public function setRequiredPlayerRange(int $requiredPlayerRange) : void{
 		$this->requiredPlayerRange = $requiredPlayerRange;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getDelay() : int{
 		return $this->delay;
 	}
 
+	/**
+	 * @param int $delay
+	 */
 	public function setDelay(int $delay) : void{
 		$this->delay = $delay;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMinSpawnDelay() : int{
 		return $this->minSpawnDelay;
 	}
 
+	/**
+	 * @param int $minSpawnDelay
+	 */
 	public function setMinSpawnDelay(int $minSpawnDelay) : void{
 		$this->minSpawnDelay = $minSpawnDelay;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMaxSpawnDelay() : int{
 		return $this->maxSpawnDelay;
 	}
 
+	/**
+	 * @param int $maxSpawnDelay
+	 */
 	public function setMaxSpawnDelay(int $maxSpawnDelay) : void{
 		$this->maxSpawnDelay = $maxSpawnDelay;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getSpawnCount() : int{
 		return $this->spawnCount;
 	}
 
+	/**
+	 * @param int $spawnCount
+	 */
 	public function setSpawnCount(int $spawnCount) : void{
 		$this->spawnCount = $spawnCount;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isMovable() : bool{
 		return $this->isMovable;
 	}
 
+	/**
+	 * @param bool $isMovable
+	 */
 	public function setMovable(bool $isMovable) : void{
 		$this->isMovable = $isMovable;
 		$this->onChanged();

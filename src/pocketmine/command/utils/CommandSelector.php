@@ -29,10 +29,6 @@ use pocketmine\entity\Entity;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use function array_values;
-use function count;
-use function mt_rand;
-use function reset;
 
 class CommandSelector{
 
@@ -47,6 +43,11 @@ class CommandSelector{
 	}
 
 	/**
+	 * @param CommandSender $sender
+	 * @param string        $selector
+	 * @param string        $entityType
+	 * @param Vector3|null  $pos
+	 *
 	 * @throws NoSelectorMatchException
 	 *
 	 * @return Entity[]
@@ -98,6 +99,14 @@ class CommandSelector{
 		return $targets;
 	}
 
+	/**
+	 * @param CommandSender $sender
+	 * @param string        $selector
+	 * @param string        $entityType
+	 * @param Vector3|null  $pos
+	 *
+	 * @return Entity|null
+	 */
 	public static function findTarget(CommandSender $sender, string $selector, string $entityType = Entity::class, ?Vector3 $pos = null) : ?Entity{
 		return !empty($targets = self::findTargets($sender, $selector, $entityType, $pos)) ? reset($targets) : null;
 	}

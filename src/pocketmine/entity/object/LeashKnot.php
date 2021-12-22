@@ -54,6 +54,9 @@ class LeashKnot extends Entity{
 
 	/**
 	 * LeashKnot constructor.
+	 *
+	 * @param Level       $level
+	 * @param CompoundTag $nbt
 	 */
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -67,22 +70,39 @@ class LeashKnot extends Entity{
 		parent::initEntity();
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSurfaceValid() : bool{
 		return $this->level->getBlock($this) instanceof Fence;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasMovementUpdate() : bool{
 		return false;
 	}
 
+	/**
+	 * @param bool $teleport
+	 */
 	protected function updateMovement(bool $teleport = false) : void{
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canBeCollidedWith() : bool{
 		return false;
 	}
 
+	/**
+	 * @param int $tickDiff
+	 *
+	 * @return bool
+	 */
 	public function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->dropCounter++ >= 100 and $this->isValid()){
 			$this->dropCounter = 0;
@@ -93,6 +113,13 @@ class LeashKnot extends Entity{
 		return parent::entityBaseTick($tickDiff);
 	}
 
+	/**
+	 * @param Player  $player
+	 * @param Item    $item
+	 * @param Vector3 $clickPos
+	 *
+	 * @return bool
+	 */
 	public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		$flag = false;
 
@@ -128,6 +155,9 @@ class LeashKnot extends Entity{
 		return true;
 	}
 
+	/**
+	 * @param EntityDamageEvent $source
+	 */
 	public function attack(EntityDamageEvent $source) : void{
 		parent::attack($source);
 
@@ -142,10 +172,19 @@ class LeashKnot extends Entity{
 		$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_LEASHKNOT_BREAK);
 	}
 
+	/**
+	 * @return Position
+	 */
 	public function getHangingPosition() : Position{
 		return new Position($this->getFloorX(), $this->getFloorY(), $this->getFloorZ(), $this->level);
 	}
 
+	/**
+	 * @param Level   $level
+	 * @param Vector3 $pos
+	 *
+	 * @return null|LeashKnot
+	 */
 	public static function getKnotFromPosition(Level $level, Vector3 $pos) : ?LeashKnot{
 		foreach($level->getCollidingEntities(new AxisAlignedBB($pos->x - 1, $pos->y - 1, $pos->z - 1, $pos->x + 1, $pos->y + 1, $pos->z + 1)) as $entity){
 			if($entity instanceof LeashKnot){

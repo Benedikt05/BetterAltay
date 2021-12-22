@@ -27,9 +27,9 @@ namespace pocketmine\entity\passive;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\item\Bowl;
+use pocketmine\item\Shears;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
