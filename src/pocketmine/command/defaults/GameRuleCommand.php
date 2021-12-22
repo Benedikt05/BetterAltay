@@ -37,7 +37,7 @@ use function strtolower;
 class GameRuleCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%altay.command.gamerule.description", "%altay.command.gamerule.usage", [], [
+		parent::__construct($name, "Add a gamerule to the world you are in", "/gamerule (rule name)", [], [
 			[
 				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownGameRules()), 1),
 				new CommandParameter("value", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("Bool", ["true", "false"])),
