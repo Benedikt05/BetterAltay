@@ -27,8 +27,13 @@ namespace pocketmine\level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 
-use function strval;
+use function floatval;
+use function intval;
 use function is_bool;
+use function is_float;
+use function is_int;
+use function strtolower;
+use function strval;
 
 class GameRules{
 
@@ -91,11 +96,7 @@ class GameRules{
 	}
 
 	/**
-	 * @param string $name
 	 * @param        $value
-	 * @param int    $valueType
-	 *
-	 * @return bool
 	 */
 	public function setRule(string $name, $value, int $valueType) : bool{
 		if($this->checkType($value, $valueType)){
@@ -108,10 +109,7 @@ class GameRules{
 	}
 
 	/**
-	 * @param string $name
 	 * @param        $value
-	 *
-	 * @return bool
 	 */
 	public function setRuleWithMatching(string $name, $value) : bool{
 		if($this->hasRule($name)){
@@ -125,8 +123,6 @@ class GameRules{
 	}
 
 	/**
-	 * @param string $name
-	 * @param int    $expectedType
 	 * @param        $defaultValue
 	 *
 	 * @return int|float|bool|null
@@ -143,28 +139,18 @@ class GameRules{
 	}
 
 	/**
-	 * @param string $name
-	 *
 	 * @return bool|int|null
 	 */
 	public function getRuleValue(string $name){
 		return isset($this->rules[$name]) ? $this->rules[$name][1] : null;
 	}
 
-	/**
-	 * @param string $name
-	 *
-	 * @return bool
-	 */
 	public function hasRule(string $name) : bool{
 		return isset($this->rules[$name]) and isset($this->rules[$name][0]) and isset($this->rules[$name][1]);
 	}
 
 	/**
 	 * @param     $input
-	 * @param int $wantedType
-	 *
-	 * @return bool
 	 */
 	public function checkType($input, int $wantedType) : bool{
 		switch($wantedType){
@@ -180,9 +166,6 @@ class GameRules{
 	}
 
 	/**
-	 * @param string $input
-	 * @param int    $wantedType
-	 *
 	 * @return bool|float|int|string
 	 */
 	public function convertType(string $input, int $wantedType){
@@ -200,8 +183,6 @@ class GameRules{
 
 	/**
 	 * @param $value
-	 *
-	 * @return string
 	 */
 	public function toStringValue($value) : string{
 		if(is_bool($value)){
@@ -210,70 +191,34 @@ class GameRules{
 		return strval($value);
 	}
 
-	/**
-	 * @param string $name
-	 * @param bool   $value
-	 */
 	public function setBool(string $name, bool $value) : void{
 		$this->setRule($name, $value, self::RULE_TYPE_BOOL);
 	}
 
-	/**
-	 * @param string $name
-	 * @param bool   $defaultValue
-	 *
-	 * @return bool
-	 */
 	public function getBool(string $name, bool $defaultValue = false) : bool{
 		return $this->getRule($name, self::RULE_TYPE_BOOL, $defaultValue);
 	}
 
-	/**
-	 * @param string $name
-	 * @param int    $value
-	 */
 	public function setInt(string $name, int $value) : void{
 		$this->setRule($name, $value, self::RULE_TYPE_INT);
 	}
 
-	/**
-	 * @param string $name
-	 * @param int    $defaultValue
-	 *
-	 * @return int
-	 */
 	public function getInt(string $name, int $defaultValue = 0) : int{
 		return $this->getRule($name, self::RULE_TYPE_INT, $defaultValue);
 	}
 
-	/**
-	 * @param string $name
-	 * @param float  $value
-	 */
 	public function setFloat(string $name, float $value) : void{
 		$this->setRule($name, $value, self::RULE_TYPE_FLOAT);
 	}
 
-	/**
-	 * @param string $name
-	 * @param float  $defaultValue
-	 *
-	 * @return float
-	 */
 	public function getFloat(string $name, float $defaultValue = 0.0) : float{
 		return $this->getRule($name, self::RULE_TYPE_FLOAT, $defaultValue);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getRules() : array{
 		return $this->rules;
 	}
 
-	/**
-	 * @param CompoundTag $nbt
-	 */
 	public function readSaveData(CompoundTag $nbt) : void{
 		foreach($nbt->getValue() as $tag){
 			if($tag instanceof StringTag){
@@ -284,9 +229,6 @@ class GameRules{
 		$this->clearDirtyRules();
 	}
 
-	/**
-	 * @return CompoundTag
-	 */
 	public function writeSaveData() : CompoundTag{
 		$nbt = new CompoundTag("GameRules");
 

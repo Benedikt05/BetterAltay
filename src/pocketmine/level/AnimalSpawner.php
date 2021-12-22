@@ -61,12 +61,6 @@ class AnimalSpawner{
 		self::$creatureTypes[WaterAnimal::class] = new CreatureType(WaterAnimal::class, 5, Block::STILL_WATER, false);
 	}
 
-	/**
-	 * @param Level $level
-	 * @param bool  $spawnHostileMobs
-	 * @param bool  $spawnPeacefulMobs
-	 * @param array $eligibleChunks
-	 */
 	public function findChunksForSpawning(Level $level, bool $spawnHostileMobs, bool $spawnPeacefulMobs, array $eligibleChunks) : void{
 		if($spawnHostileMobs or $spawnPeacefulMobs){
 			$spawn = $level->getSpawnLocation();
@@ -153,10 +147,6 @@ class AnimalSpawner{
 	}
 
 	/**
-	 * @param Level $level
-	 * @param int   $x
-	 * @param int   $z
-	 *
 	 * @return Vector3
 	 */
 	public static function getRandomChunkPosition(Level $level, int $x, int $z){
@@ -171,10 +161,6 @@ class AnimalSpawner{
 	}
 
 	/**
-	 * @param int     $spawnPlacementType
-	 * @param Level   $level
-	 * @param Vector3 $pos
-	 *
 	 * @return bool
 	 */
 	public static function canCreatureTypeSpawnAtLocation(int $spawnPlacementType, Level $level, Vector3 $pos){
@@ -196,14 +182,6 @@ class AnimalSpawner{
 
 	/**
 	 * Called during chunk generation to spawn initial creatures.
-	 *
-	 * @param Level  $level
-	 * @param Biome  $biome
-	 * @param int    $sourceX
-	 * @param int    $sourceZ
-	 * @param int    $xRange
-	 * @param int    $zRange
-	 * @param Random $random
 	 */
 	public static function performChunkGeneratorSpawning(Level $level, Biome $biome, int $sourceX, int $sourceZ, int $xRange, int $zRange, Random $random){
 		$list = $biome->getSpawnableList(self::$creatureTypes[Animal::class]);

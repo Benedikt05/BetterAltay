@@ -42,30 +42,18 @@ class CreatureType{
 		$this->peacefulCreature = $peacefulCreature;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getCreatureClass() : string{
 		return $this->creatureClass;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getMaxSpawn() : int{
 		return $this->maxSpawn;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getMaterialIn() : int{
 		return $this->materialIn;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isPeacefulCreature() : bool{
 		return $this->peacefulCreature;
 	}

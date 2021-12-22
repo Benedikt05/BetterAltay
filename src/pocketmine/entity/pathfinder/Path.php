@@ -26,6 +26,8 @@ namespace pocketmine\entity\pathfinder;
 
 use pocketmine\math\Vector3;
 use function array_slice;
+use function count;
+use function end;
 
 class Path{
 
@@ -68,16 +70,10 @@ class Path{
 		return $this->points;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getCurrentIndex() : int{
 		return $this->currentIndex;
 	}
 
-	/**
-	 * @param int $currentIndex
-	 */
 	public function setCurrentIndex(int $currentIndex) : void{
 		$this->currentIndex = $currentIndex;
 	}

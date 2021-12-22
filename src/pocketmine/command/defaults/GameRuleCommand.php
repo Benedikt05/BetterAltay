@@ -31,11 +31,13 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
+use function count;
+use function strtolower;
 
 class GameRuleCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%altay.command.gamerule.description", "%altay.command.gamerule.usage", [], [
+		parent::__construct($name, "Add a gamerule to the world you are in", "/gamerule (rule name)", [], [
 			[
 				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownGameRules()), 1),
 				new CommandParameter("value", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("Bool", ["true", "false"])),
@@ -100,11 +102,6 @@ class GameRuleCommand extends VanillaCommand{
 
 	/**
 	 * This a fix for difference between bedrock and java edition game rule name
-	 *
-	 * @param array  $rules
-	 * @param string $input
-	 *
-	 * @return string
 	 */
 	public function matchRuleName(array $rules, string $input) : string{
 		foreach($rules as $name => $d){

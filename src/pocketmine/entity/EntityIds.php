@@ -25,6 +25,12 @@ namespace pocketmine\entity;
 
 interface EntityIds{
 
+	//NEW 1.18
+		public const AXOLOTL = 130;
+		public const GLOW_SQUID = 139;
+		public const GOAT = 128;
+
+		//OLD
 	public const CHICKEN = 10;
 	public const COW = 11;
 	public const PIG = 12;
@@ -128,6 +134,7 @@ interface EntityIds{
 	public const TROPICALFISH = 111, TROPICAL_FISH = 111;
 	public const COD = 112, FISH = 112;
 	public const PANDA = 113;
+	public const PILLAGER = 114;
 	public const FOX = 121;
 	public const BEE = 122;
 	public const PIGLIN = 123;

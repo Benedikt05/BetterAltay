@@ -48,6 +48,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\lang\BaseLang;
 use pocketmine\lang\TextContainer;
+use pocketmine\level\api4\WorldManager;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\format\io\LevelProvider;
 use pocketmine\level\format\io\LevelProviderManager;
@@ -95,6 +96,7 @@ use pocketmine\plugin\PluginManager;
 use pocketmine\plugin\ScriptPluginLoader;
 use pocketmine\resourcepacks\ResourcePackManager;
 use pocketmine\scheduler\AsyncPool;
+use pocketmine\scheduler\TaskScheduler;
 use pocketmine\snooze\SleeperHandler;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\tile\Tile;
@@ -169,15 +171,15 @@ use function time;
 use function touch;
 use function trim;
 use const DIRECTORY_SEPARATOR;
+use const INT32_MAX;
+use const INT32_MIN;
 use const PHP_EOL;
 use const PHP_INT_MAX;
 use const PTHREADS_INHERIT_NONE;
 use const SCANDIR_SORT_NONE;
 use const SIGHUP;
-use const SIGTERM;
 use const SIGINT;
-use const INT32_MAX;
-use const INT32_MIN;
+use const SIGTERM;
 
 /**
  * The class that manages everything
@@ -332,13 +334,13 @@ class Server{
 	private $propertyCache = [];
 
 	/** @var mixed[] */
-	private $altayPropertyCache = [];
+	private $eskoPropertyCache = [];
 
 	/** @var Config */
 	private $config;
 
 	/** @var Config */
-	private $altayConfig;
+	private $eskoConfig;
 
 	/** @var Player[] */
 	private $players = [];
@@ -368,11 +370,11 @@ class Server{
 	/** @var bool */
 	public $mobAiEnabled = true;
 
-	public function loadAltayConfig(){
-		$this->keepInventory = $this->getAltayProperty("player.keep-inventory", false);
-		$this->keepExperience = $this->getAltayProperty("player.keep-experience", false);
-		$this->folderPluginLoader = $this->getAltayProperty("developer.folder-plugin-loader", true);
-		$this->mobAiEnabled = $this->getAltayProperty("level.enable-mob-ai", false);
+	public function loadEskoConfig(){
+		$this->keepInventory = $this->getEskoProperty("player.keep-inventory", false);
+		$this->keepExperience = $this->getEskoProperty("player.keep-experience", false);
+		$this->folderPluginLoader = $this->getEskoProperty("developer.folder-plugin-loader", true);
+		$this->mobAiEnabled = $this->getEskoProperty("level.enable-mob-ai", false);
 	}
 
 	public function getName() : string{
@@ -383,8 +385,8 @@ class Server{
 		return $this->isRunning;
 	}
 
-	public function getPocketMineVersion() : string{
-		return \pocketmine\VERSION;
+	public function getEskoVersion() : string{
+		return \pocketmine\PROJECT_VERSION;
 	}
 
 	public function getVersion() : string{
@@ -755,11 +757,6 @@ class Server{
 				new DoubleTag("", $spawn->z)
 			], NBT::TAG_Double),
 			new StringTag("Level", $this->getDefaultLevel()->getFolderName()),
-			//new StringTag("SpawnLevel", $this->getDefaultLevel()->getFolderName()),
-			//new IntTag("SpawnX", $spawn->getFloorX()),
-			//new IntTag("SpawnY", $spawn->getFloorY()),
-			//new IntTag("SpawnZ", $spawn->getFloorZ()),
-			//new ByteTag("SpawnForced", 1), //TODO
 			new ListTag("Inventory", [], NBT::TAG_Compound),
 			new ListTag("EnderChestInventory", [], NBT::TAG_Compound),
 			new CompoundTag("Achievements", []),
@@ -783,6 +780,14 @@ class Server{
 
 		return $nbt;
 
+	}
+
+	public function getScheduler() : TaskScheduler{
+		$owner = "";
+		foreach($this->getPluginManager()->getPlugins() as $plugins){
+			$owner = $plugins->getDescription()->getFullName();
+		}
+		return new TaskScheduler($this->logger, $owner);
 	}
 
 	/**
@@ -1130,6 +1135,11 @@ class Server{
 		return null;
 	}
 
+	public function getWorldManager() : WorldManager
+	{
+		return new WorldManager();
+	}
+
 	/**
 	 * @param mixed  $defaultValue
 	 *
@@ -1148,12 +1158,12 @@ class Server{
 		return $this->propertyCache[$variable] ?? $defaultValue;
 	}
 
-	public function getAltayProperty(string $variable, $defaultValue = null){
-		if(!array_key_exists($variable, $this->altayPropertyCache)){
-			$this->altayPropertyCache[$variable] = $this->altayConfig->getNested($variable);
+	public function getEskoProperty(string $variable, $defaultValue = null){
+		if(!array_key_exists($variable, $this->eskoPropertyCache)){
+			$this->eskoPropertyCache[$variable] = $this->eskoConfig->getNested($variable);
 		}
 
-		return $this->altayPropertyCache[$variable] ?? $defaultValue;
+		return $this->eskoPropertyCache[$variable] ?? $defaultValue;
 	}
 
 	public function getConfigString(string $variable, string $defaultValue = "") : string{
@@ -1374,30 +1384,30 @@ class Server{
 				mkdir($pluginPath, 0777);
 			}
 
-			if(!file_exists($pluginPath . "Altay/")){
-				mkdir($pluginPath . "Altay/", 0777);
+			if(!is_dir($pluginPath . "Esko/")){
+				mkdir($pluginPath . "Esko/", 0777);
 			}
 
 			$this->dataPath = realpath($dataPath) . DIRECTORY_SEPARATOR;
 			$this->pluginPath = realpath($pluginPath) . DIRECTORY_SEPARATOR;
 
-			$this->logger->info("Loading pocketmine.yml...");
-			if(!file_exists($this->dataPath . "pocketmine.yml")){
-				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "pocketmine.yml");
+			$this->logger->info("Loading esko.yml...");
+			if(!file_exists($this->dataPath . "esko.yml")){
+				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "esko.yml");
 				if(\pocketmine\IS_DEVELOPMENT_BUILD){
 					$content = str_replace("preferred-channel: stable", "preferred-channel: beta", $content);
 				}
-				@file_put_contents($this->dataPath . "pocketmine.yml", $content);
+				@file_put_contents($this->dataPath . "esko.yml", $content);
 			}
-			$this->config = new Config($this->dataPath . "pocketmine.yml", Config::YAML, []);
+			$this->config = new Config($this->dataPath . "esko.yml", Config::YAML, []);
 
-			$this->logger->info("Loading altay.yml...");
-			if(!file_exists($this->dataPath . "altay.yml")){
-				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "altay.yml");
-				@file_put_contents($this->dataPath . "altay.yml", $content);
+			$this->logger->info("Loading eskobe.yml...");
+			if(!file_exists($this->dataPath . "eskobe.yml")){
+				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "eskobe.yml");
+				@file_put_contents($this->dataPath . "eskobe.yml", $content);
 			}
-			$this->altayConfig = new Config($this->dataPath . "altay.yml", Config::YAML, []);
-			$this->loadAltayConfig();
+			$this->eskoConfig = new Config($this->dataPath . "eskobe.yml", Config::YAML, []);
+			$this->loadEskoConfig();
 
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
@@ -1436,7 +1446,7 @@ class Server{
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error2"));
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error3"));
 				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error4", ["settings.enable-dev-builds"]));
-				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error5", ["https://github.com/Benedikt05/BetterAltay/releases"]));
+				$this->logger->emergency($this->baseLang->translateString("pocketmine.server.devBuild.error5", ["https://github.com/MCPE357/EskoBE/releases"]));
 				$this->forceShutdown();
 				return;
 			}
@@ -1544,7 +1554,7 @@ class Server{
 			}
 
 			if(\pocketmine\DEBUG >= 0){
-				@cli_set_process_title($this->getName() . " " . $this->getPocketMineVersion());
+				@cli_set_process_title($this->getName() . " " . $this->getEskoVersion());
 			}
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.networkStart", [$this->getIp(), $this->getPort()]));
@@ -1559,7 +1569,7 @@ class Server{
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.info", [
 				$this->getName(),
-				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getPocketMineVersion() . TextFormat::RESET
+				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getEskoVersion() . TextFormat::RESET
 			]));
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.license", [$this->getName()]));
 
@@ -1648,7 +1658,7 @@ class Server{
 
 			if($this->isAllowNether() and $this->getNetherLevel() === null){
 				/** @var string $netherLevelName */
-				$netherLevelName = $this->getAltayProperty("dimensions.nether.level-name", "nether");
+				$netherLevelName = $this->getEskoProperty("dimensions.nether.level-name", "nether");
 				if(trim($netherLevelName) == ""){
 					$netherLevelName = "nether";
 				}
@@ -1661,7 +1671,7 @@ class Server{
 
 			if($this->isAllowTheEnd() and $this->getTheEndLevel() === null){
 				/** @var string $endLevelName */
-				$endLevelName = $this->getAltayProperty("dimensions.the-end.level-name", "end");
+				$endLevelName = $this->getEskoProperty("dimensions.the-end.level-name", "end");
 				if(trim($endLevelName) == ""){
 					$endLevelName = "end";
 				}
@@ -1696,11 +1706,11 @@ class Server{
 	}
 
 	public function isAllowNether() : bool{
-		return (bool) $this->getAltayProperty("dimensions.nether.active", true);
+		return (bool) $this->getEskoProperty("dimensions.nether.active", true);
 	}
 
 	public function isAllowTheEnd() : bool{
-		return (bool) $this->getAltayProperty("dimensions.the-end.active", true);
+		return (bool) $this->getEskoProperty("dimensions.the-end.active", true);
 	}
 
 	/**
@@ -1966,7 +1976,7 @@ class Server{
 		}
 		$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 		$this->pluginManager->registerInterface(new ScriptPluginLoader());
-        $this->pluginManager->loadPlugins($this->pluginPath);
+		$this->pluginManager->loadPlugins($this->pluginPath);
 
 		foreach($this->getAdditionalPluginDirs() as $path){
 			$this->pluginManager->loadPlugins($path);
@@ -2215,7 +2225,7 @@ class Server{
 					$postUrlError = "Unknown error";
 					$reply = Internet::postURL($url, [
 						"report" => "yes",
-						"name" => $this->getName() . " " . $this->getPocketMineVersion(),
+						"name" => $this->getName() . " " . $this->getEskoVersion(),
 						"email" => "crash@pocketmine.net",
 						"reportPaste" => base64_encode($dump->getEncodedData())
 					], 10, [], $postUrlError);
@@ -2440,7 +2450,7 @@ class Server{
 		$usage = sprintf("%g/%g/%g/%g MB @ %d threads", round(($u[0] / 1024) / 1024, 2), round(($d[0] / 1024) / 1024, 2), round(($u[1] / 1024) / 1024, 2), round(($u[2] / 1024) / 1024, 2), Process::getThreadCount());
 
 		echo "\x1b]0;" . $this->getName() . " " .
-			$this->getPocketMineVersion() .
+			$this->getEskoVersion() .
 			" | Online " . count($this->players) . "/" . $this->getMaxPlayers() .
 			" | Memory " . $usage .
 			" | U " . round($this->network->getUpload() / 1024, 2) .
@@ -2471,9 +2481,9 @@ class Server{
 		//TODO: add raw packet events
 	}
 
-    private function getAdditionalPluginDirs() : array{
-        return $this->getAltayProperty("additional-plugin-dirs", []);
-    }
+	private function getAdditionalPluginDirs() : array{
+		return $this->getEskoProperty("additional-plugin-dirs", []);
+	}
 
 	/**
 	 * Tries to execute a server tick

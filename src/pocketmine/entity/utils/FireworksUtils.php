@@ -34,6 +34,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\utils\Random;
 
+use function chr;
 use function is_null;
 
 class FireworksUtils{

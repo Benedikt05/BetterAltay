@@ -26,6 +26,8 @@ namespace pocketmine\maps;
 
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\Player;
+use function max;
+use function min;
 
 class MapInfo{
 
@@ -74,12 +76,8 @@ class MapInfo{
 		return null;
 	}
 
-
 	/**
 	 * Calculates map canvas
-	 *
-	 * @param int $x
-	 * @param int $y
 	 */
 	public function updateTextureAt(int $x, int $y) : void{
 		if($this->dirty){

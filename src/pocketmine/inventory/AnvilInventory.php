@@ -31,16 +31,20 @@ use pocketmine\item\Durable;
 use pocketmine\item\EnchantedBook;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\item\TieredTool;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\TieredTool;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
+use function count;
+use function intval;
+use function max;
+use function min;
 
 class AnvilInventory extends ContainerInventory implements FakeInventory, FakeResultInventory{
 
@@ -75,12 +79,6 @@ class AnvilInventory extends ContainerInventory implements FakeInventory, FakeRe
 		return self::SLOT_OUTPUT;
 	}
 
-	/**
-	 * @param Player $player
-	 * @param Item   $result
-	 *
-	 * @return bool
-	 */
 	public function onResult(Player $player, Item $result) : bool{
 		$input = $this->getItem(self::SLOT_INPUT);
 		$sacrifice = $this->getItem(self::SLOT_SACRIFICE);

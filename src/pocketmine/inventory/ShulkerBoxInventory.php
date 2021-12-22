@@ -32,6 +32,7 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 use pocketmine\tile\ShulkerBox;
+use function count;
 
 class ShulkerBoxInventory extends ContainerInventory{
 
@@ -55,7 +56,6 @@ class ShulkerBoxInventory extends ContainerInventory{
 
 	/**
 	 * Returns the Minecraft PE inventory type used to show the inventory window to clients.
-	 * @return int
 	 */
 	public function getNetworkType() : int{
 		return WindowTypes::CONTAINER;

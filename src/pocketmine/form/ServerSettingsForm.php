@@ -31,9 +31,7 @@ namespace pocketmine\form;
  * settings.
  */
 abstract class ServerSettingsForm extends CustomForm{
-	/**
-	 * @var FormIcon|null
-	 */
+	/** @var FormIcon|null */
 	private $icon;
 
 	public function __construct(string $title, array $elements, ?FormIcon $icon, \Closure $onSubmit, ?\Closure $onClose = null){

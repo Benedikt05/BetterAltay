@@ -28,8 +28,9 @@ use pocketmine\Player;
 use pocketmine\utils\Utils;
 
 use function array_values;
-use function is_array;
 use function count;
+use function gettype;
+use function is_array;
 
 abstract class CustomForm extends BaseForm{
 
@@ -43,7 +44,6 @@ abstract class CustomForm extends BaseForm{
 	private $onClose = null;
 
 	/**
-	 * @param string              $title
 	 * @param CustomFormElement[] $elements
 	 * @param \Closure            $onSubmit signature `function(Player $player, CustomFormResponse $data)`
 	 * @param \Closure|null       $onClose signature `function(Player $player)`
@@ -68,20 +68,10 @@ abstract class CustomForm extends BaseForm{
 		}
 	}
 
-	/**
-	 * @param int $index
-	 *
-	 * @return CustomFormElement|null
-	 */
 	public function getElement(int $index) : ?CustomFormElement{
 		return $this->elements[$index] ?? null;
 	}
 
-	/**
-	 * @param string $name
-	 *
-	 * @return null|CustomFormElement
-	 */
 	public function getElementByName(string $name) : ?CustomFormElement{
 		return $this->elementMap[$name] ?? null;
 	}
@@ -125,9 +115,6 @@ abstract class CustomForm extends BaseForm{
 		}
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function getType() : string{
 		return "custom_form";
 	}

@@ -62,7 +62,7 @@ class TimingsHandler{
 		}
 
 		fwrite($fp, "# Version " . Server::getInstance()->getVersion() . PHP_EOL);
-		fwrite($fp, "# " . Server::getInstance()->getName() . " " . Server::getInstance()->getPocketMineVersion() . PHP_EOL);
+		fwrite($fp, "# " . Server::getInstance()->getName() . " " . Server::getInstance()->getEskoVersion() . PHP_EOL);
 
 		$entities = 0;
 		$livingEntities = 0;

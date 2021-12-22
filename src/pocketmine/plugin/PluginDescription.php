@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\plugin;
 
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\permission\Permission;
 use function array_map;
 use function array_values;
@@ -36,6 +37,8 @@ use function str_replace;
 use function stripos;
 use function strlen;
 use function substr;
+
+//NEW
 use function version_compare;
 use function yaml_parse;
 
@@ -92,14 +95,15 @@ class PluginDescription{
 	 * @param string|mixed[] $yamlString
 	 */
 	public function __construct($yamlString){
-		$this->loadMap(!is_array($yamlString) ? yaml_parse($yamlString) : $yamlString);
+		$plugin = !is_array($yamlString) ? yaml_parse($yamlString) : $yamlString;
+		$this->loadMap($plugin);
 	}
 
 	/**
 	 * @param mixed[] $plugin
 	 * @throws PluginException
 	 */
-	private function loadMap(array $plugin) : void{
+	private function loadMap(array &$plugin) : void{
 		$this->map = $plugin;
 
 		$this->name = $plugin["name"];
@@ -113,8 +117,8 @@ class PluginDescription{
 			throw new PluginException("Invalid Plugin main, cannot start within the PocketMine namespace");
 		}
 
-		$this->api = array_map("\strval", (array) ($plugin["api"] ?? []));
-		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] ?? []));
+		$this->api = array_map("\strval", (array) ($plugin["api"] = \pocketmine\BASE_VERSION));
+		$this->compatibleMcpeProtocols = array_map("\intval", (array) ($plugin["mcpe-protocol"] = ProtocolInfo::CURRENT_PROTOCOL));
 		$this->compatibleOperatingSystems = array_map("\strval", (array) ($plugin["os"] ?? []));
 
 		if(isset($plugin["commands"]) and is_array($plugin["commands"])){

@@ -37,11 +37,11 @@ use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
@@ -753,11 +753,6 @@ class Item implements ItemIds, \JsonSerializable{
 
 	/**
 	 * Called when player interacted with an entity and entity didnt make anything
-	 *
-	 * @param Player $player
-	 * @param Entity $entity
-	 *
-	 * @return bool
 	 */
 	public function onInteractWithEntity(Player $player, Entity $entity) : bool{
 		return false;
@@ -920,16 +915,10 @@ class Item implements ItemIds, \JsonSerializable{
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isOnItemFrame() : bool{
 		return $this->onItemFrame;
 	}
 
-	/**
-	 * @param bool $onItemFrame
-	 */
 	public function setOnItemFrame(bool $onItemFrame) : void{
 		$this->onItemFrame = $onItemFrame;
 	}

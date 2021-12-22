@@ -26,7 +26,6 @@ namespace pocketmine\entity\vehicle;
 
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Mob;
 use pocketmine\entity\Vehicle;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -197,8 +196,6 @@ class Boat extends Vehicle{
 				if($this->ticksLived % 100 === 0){
 					$this->broadcastLink($this->getRiddenByEntity());
 				}
-
-
 
 			}else{
 				if($this->onGround){

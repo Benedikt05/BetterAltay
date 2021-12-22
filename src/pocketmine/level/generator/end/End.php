@@ -34,8 +34,8 @@ use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
-use function exp;
 use function abs;
+use function exp;
 
 class End extends Generator{
 

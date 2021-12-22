@@ -32,12 +32,12 @@ use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
+use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Dye;
-use pocketmine\item\Shears;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\utils\Color;
@@ -46,7 +46,6 @@ use pocketmine\utils\Random;
 use function boolval;
 use function intval;
 use function rand;
-use function var_dump;
 
 class Sheep extends Animal{
 
@@ -137,16 +136,11 @@ class Sheep extends Animal{
 		$this->namedtag->setByte("Color", intval($this->propertyManager->getByte(self::DATA_COLOR)));
 	}
 
-	/**
-	 * @param Random $random
-	 *
-	 * @return int
-	 */
 	public function getRandomColor(Random $random) : int{
 		$i = $random->nextBoundedInt(100);
-        return $i < 5 ? Color::COLOR_SHEEP_BLACK : ($i < 10 ? Color::COLOR_SHEEP_GRAY : ($i < 15 ? Color::COLOR_SHEEP_LIGHT_GRAY : ($i < 18 ? Color::COLOR_SHEEP_BROWN : ($random->nextBoundedInt(500) === 0 ? Color::COLOR_SHEEP_PINK : Color::COLOR_SHEEP_WHITE))));
+		return $i < 5 ? Color::COLOR_SHEEP_BLACK : ($i < 10 ? Color::COLOR_SHEEP_GRAY : ($i < 15 ? Color::COLOR_SHEEP_LIGHT_GRAY : ($i < 18 ? Color::COLOR_SHEEP_BROWN : ($random->nextBoundedInt(500) === 0 ? Color::COLOR_SHEEP_PINK : Color::COLOR_SHEEP_WHITE))));
 	}
-	
+
 	public function eatGrassBonus(Vector3 $pos) : void{
 		if(!$this->isBaby()){
 			if($this->isSheared()){

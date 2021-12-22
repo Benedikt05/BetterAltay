@@ -28,7 +28,6 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Tamable;
 use pocketmine\Player;
 
-
 class FollowOwnerBehavior extends Behavior{
 
 	/** @var float */

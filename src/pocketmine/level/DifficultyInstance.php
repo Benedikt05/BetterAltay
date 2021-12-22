@@ -24,6 +24,9 @@ declare(strict_types=1);
 
 namespace pocketmine\level;
 
+use function max;
+use function min;
+
 class DifficultyInstance{
 	/** @var int */
 	protected $difficulty;

@@ -283,10 +283,6 @@ class Enchantment{
 
 	/**
 	 * Determines if this enchantment can be applied to a specific Item.
-	 *
-	 * @param Item $item
-	 *
-	 * @return bool
 	 */
 	public function canApply(Item $item) : bool{
 		if(($item instanceof Shears or $item instanceof FlintSteel or $item instanceof Hoe) and $item instanceof Durable and $item->getMaxDurability() >= 0){

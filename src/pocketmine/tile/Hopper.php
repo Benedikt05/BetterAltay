@@ -33,6 +33,8 @@ use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use function array_filter;
+use function count;
 
 class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 	use NameableTrait {

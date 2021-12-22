@@ -26,6 +26,7 @@ namespace pocketmine\form;
 use pocketmine\Player;
 use pocketmine\utils\Utils;
 
+use function gettype;
 use function is_bool;
 
 /**

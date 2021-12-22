@@ -98,6 +98,7 @@ use pocketmine\utils\ReversePriorityQueue;
 use pocketmine\utils\WeightedRandomItem;
 use function abs;
 use function array_fill_keys;
+use function array_filter;
 use function array_map;
 use function array_merge;
 use function array_sum;
@@ -107,6 +108,8 @@ use function count;
 use function floor;
 use function get_class;
 use function gettype;
+use function in_array;
+use function intval;
 use function is_a;
 use function is_array;
 use function is_object;
@@ -117,9 +120,9 @@ use function min;
 use function mt_rand;
 use function strtolower;
 use function trim;
-use const M_PI;
 use const INT32_MAX;
 use const INT32_MIN;
+use const M_PI;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
@@ -812,7 +815,6 @@ class Level implements ChunkManager, Metadatable{
 
 	/**
 	 * @param Player[]   $target
-	 * @param array|null $rules
 	 */
 	public function sendGameRules(array $target = [], ?array $rules = null) : void{
 		$pk = new GameRulesChangedPacket();
@@ -931,7 +933,7 @@ class Level implements ChunkManager, Metadatable{
 		$this->tickChunks();
 		$this->timings->doTickTiles->stopTiming();
 
-		if($this->server->getAltayProperty("level.generic-auto-mob-spawning", false) and $this->gameRules->getBool(GameRules::RULE_DO_MOB_SPAWNING) and $currentTick % 400 === 0){
+		if($this->server->getEskoProperty("level.generic-auto-mob-spawning", false) and $this->gameRules->getBool(GameRules::RULE_DO_MOB_SPAWNING) and $currentTick % 400 === 0){
 			$eligibleChunks = [];
 			foreach($this->players as $player){
 				if($player->chunk !== null){
@@ -1353,12 +1355,6 @@ class Level implements ChunkManager, Metadatable{
 		return $collides;
 	}
 
-	/**
-	 * @param AxisAlignedBB $bb
-	 * @param Liquid        $material
-	 *
-	 * @return bool
-	 */
 	public function isLiquidInBoundingBox(AxisAlignedBB $bb, Liquid $material) : bool{
 		$minX = (int) floor($bb->minX);
 		$minY = (int) floor($bb->minY);
@@ -1391,11 +1387,6 @@ class Level implements ChunkManager, Metadatable{
 		return false;
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 *
-	 * @return bool
-	 */
 	public function isFullBlock(Vector3 $pos) : bool{
 		if($pos instanceof Block){
 			if($pos->isSolid()){
@@ -2445,8 +2436,6 @@ class Level implements ChunkManager, Metadatable{
 
 	/**
 	 * Return dimension of Level
-	 *
-	 * @return int
 	 */
 	public function getDimension() : int{
 		return $this->dimension;
@@ -2454,8 +2443,6 @@ class Level implements ChunkManager, Metadatable{
 
 	/**
 	 * Sets dimension of Level
-	 *
-	 * @param int $dimension
 	 */
 	public function setDimension(int $dimension) : void{
 		if($dimension > 2 or $dimension < 0){
@@ -2488,6 +2475,11 @@ class Level implements ChunkManager, Metadatable{
 		}
 
 		return null;
+	}
+
+	public function getSpawn(/*Not sure if it have that or no*/bool $idk = false)
+	{
+		return $this->getSafeSpawn();
 	}
 
 	/**
@@ -3107,11 +3099,6 @@ class Level implements ChunkManager, Metadatable{
 		return $this->worldHeight;
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 *
-	 * @return DifficultyInstance
-	 */
 	public function getDifficultyForPosition(Vector3 $pos) : DifficultyInstance{
 		$i = 0;
 		$m = 0;
@@ -3124,9 +3111,6 @@ class Level implements ChunkManager, Metadatable{
 		return new DifficultyInstance($this->getDifficulty(), $this->time, $i, $m);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getDifficulty() : int{
 		return $this->provider->getDifficulty();
 	}
@@ -3243,11 +3227,6 @@ class Level implements ChunkManager, Metadatable{
 		}
 	}
 
-	/**
-	 * @param Vector3 $pos
-	 *
-	 * @return bool
-	 */
 	public function canSeeSky(Vector3 $pos) : bool{
 		if($this->isChunkLoaded($pos->x >> 4, $pos->z >> 4)){
 			$chunk = $this->getChunk($pos->x >> 4, $pos->z >> 4);
@@ -3257,12 +3236,6 @@ class Level implements ChunkManager, Metadatable{
 		return false;
 	}
 
-	/**
-	 * @param CreatureType $creatureType
-	 * @param Vector3      $pos
-	 *
-	 * @return null|SpawnListEntry
-	 */
 	public function getSpawnListEntryForTypeAt(CreatureType $creatureType, Vector3 $pos) : ?SpawnListEntry{
 		// TODO: get level provider's possible creatures
 		$possibleCreatures = $this->getBiome($pos->x, $pos->z)->getSpawnableList($creatureType);
@@ -3277,18 +3250,11 @@ class Level implements ChunkManager, Metadatable{
 		return $possible;
 	}
 
-	/**
-	 * @param CreatureType   $creatureType
-	 * @param SpawnListEntry $entry
-	 * @param Vector3        $pos
-	 *
-	 * @return bool
-	 */
 	public function canCreatureTypeSpawnHere(CreatureType $creatureType, SpawnListEntry $entry, Vector3 $pos) : bool{
 		// TODO: get level provider's possible creatures
 		$possibleCreatures = $this->getBiome($pos->x, $pos->z)->getSpawnableList($creatureType);
 
-		return empty($possibleCreatures) ? false : in_array($entry, $possibleCreatures);
+		return empty($possibleCreatures) ? false : in_array($entry, $possibleCreatures, true);
 	}
 
 	public function getBlockDensity(Vector3 $vec, AxisAlignedBB $bb) : float{
@@ -3337,9 +3303,6 @@ class Level implements ChunkManager, Metadatable{
 		return 0;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isDayTime() : bool{
 		return $this->getSunAngleDegrees() < 90 or $this->getSunAngleDegrees() > 270;
 	}
@@ -3360,37 +3323,22 @@ class Level implements ChunkManager, Metadatable{
 		$this->server->getLevelMetadata()->removeMetadata($this, $metadataKey, $owningPlugin);
 	}
 
-	/**
-	 * @return GameRules
-	 */
 	public function getGameRules() : GameRules{
 		return $this->gameRules;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getSpawnPeacefulMobs() : bool{
 		return $this->spawnPeacefulMobs;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getSpawnHostileMobs() : bool{
 		return $this->spawnHostileMobs;
 	}
 
-	/**
-	 * @param bool $spawnPeacefulMobs
-	 */
 	public function setSpawnPeacefulMobs(bool $spawnPeacefulMobs) : void{
 		$this->spawnPeacefulMobs = $spawnPeacefulMobs;
 	}
 
-	/**
-	 * @param bool $spawnHostileMobs
-	 */
 	public function setSpawnHostileMobs(bool $spawnHostileMobs) : void{
 		$this->spawnHostileMobs = $spawnHostileMobs;
 	}

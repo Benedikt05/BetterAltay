@@ -25,7 +25,6 @@ namespace pocketmine\item;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\FishingHook;
-use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\player\PlayerFishEvent;
 use pocketmine\math\Vector3;
 use pocketmine\Player;

@@ -30,9 +30,9 @@ use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\NearestAttackableTargetBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
+use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\RangedAttackBehavior;
 use pocketmine\entity\behavior\RestrictSunBehavior;
-use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Monster;
 use pocketmine\entity\passive\Wolf;
@@ -45,6 +45,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use function rand;
+use function sqrt;
 
 class Skeleton extends Monster implements RangedAttackerMob, Smite{
 

@@ -28,13 +28,9 @@ namespace pocketmine\form;
  */
 class MenuOption implements \JsonSerializable{
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $text;
-	/**
-	 * @var FormIcon|null
-	 */
+	/** @var FormIcon|null */
 	private $image;
 
 	public function __construct(string $text, ?FormIcon $image = null){

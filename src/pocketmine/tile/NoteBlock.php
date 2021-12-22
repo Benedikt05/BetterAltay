@@ -28,6 +28,10 @@ use pocketmine\block\Block;
 use pocketmine\level\sound\NoteBlockSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use function boolval;
+use function intval;
+use function max;
+use function min;
 
 class NoteBlock extends Spawnable{
 

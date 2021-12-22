@@ -36,16 +36,10 @@ class EntityJumpHelper{
 		$this->entity = $mob;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isJumping() : bool{
 		return $this->isJumping;
 	}
 
-	/**
-	 * @param bool $isJumping
-	 */
 	public function setJumping(bool $isJumping) : void{
 		$this->isJumping = $isJumping;
 	}

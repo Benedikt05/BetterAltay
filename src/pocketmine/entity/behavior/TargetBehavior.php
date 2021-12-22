@@ -28,6 +28,7 @@ use pocketmine\entity\Attribute;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
 use pocketmine\Player;
+use function floor;
 
 abstract class TargetBehavior extends Behavior{
 

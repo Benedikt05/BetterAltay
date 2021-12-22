@@ -215,13 +215,13 @@ class CrashDump{
 			}else{
 				$this->data["server.properties"] = $serverDotProperties;
 			}
-			if(($pocketmineDotYml = @file_get_contents($this->server->getDataPath() . "pocketmine.yml")) !== false){
-				$this->data["pocketmine.yml"] = $pocketmineDotYml;
+			if(($pocketmineDotYml = @file_get_contents($this->server->getDataPath() . "esko.yml")) !== false){
+				$this->data["esko.yml"] = $pocketmineDotYml;
 			}else{
-				$this->data["pocketmine.yml"] = "";
+				$this->data["esko.yml"] = "";
 			}
 		}else{
-			$this->data["pocketmine.yml"] = "";
+			$this->data["esko.yml"] = "";
 			$this->data["server.properties"] = "";
 			$this->data["parameters"] = [];
 		}

@@ -31,16 +31,17 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\StopSoundPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
+use function strlen;
 
 class StopSoundCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "Stops a sound or all sounds", "/stopsound <player: target> [sound: string]", [], [
-				[
-					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
-					new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING)
-				]
-			]);
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+				new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING)
+			]
+		]);
 
 		$this->setPermission("altay.command.stopsound");
 	}

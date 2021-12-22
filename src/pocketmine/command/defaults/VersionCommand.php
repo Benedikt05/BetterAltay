@@ -53,10 +53,16 @@ class VersionCommand extends VanillaCommand{
 			return true;
 		}
 
+		if(!$sender->hasPermission("pocketmine.command.version1")) {
+			$sender->sendMessage("This server uses EskoBE a PocketMine-MP fork!");
+			$sender->sendMessage("You can try it out: https://github.com/MCPE357/EskoBE");
+			return false;
+		}
+
 		if(count($args) === 0){
 			$sender->sendMessage(new TranslationContainer("pocketmine.server.info.extended", [
 				$sender->getServer()->getName(),
-				$sender->getServer()->getPocketMineVersion(),
+				\pocketmine\PROJECT_VERSION,
 				$sender->getServer()->getVersion(),
 				ProtocolInfo::CURRENT_PROTOCOL
 			]));
@@ -105,6 +111,10 @@ class VersionCommand extends VanillaCommand{
 			}else{
 				$sender->sendMessage("Authors: " . implode(", ", $authors));
 			}
+		}
+
+		if(!$sender->hasPermission("pocketmine.command.version1")) {
+			 $sender->sendMessage("Sorry but we dont want to expose our plugins to strangers!");
 		}
 	}
 }
