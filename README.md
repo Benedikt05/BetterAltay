@@ -9,6 +9,6 @@ It contains:<br>
 </p>
 <p align="center">
 	<img src="https://github.com/TuranicTeam/Altay/workflows/CI/badge.svg" alt="CI" />
-	<a href="https://altay.minehub.de/job/Altay/"><img src="https://altay.minehub.de/job/Altay/badge/icon" alt="Jenkins" /></a>
+	<a
 	<a href="https://discord.gg/UsuhCFj"><img src="https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da" alt="Discord" /></a>
 </p>
