@@ -4,7 +4,7 @@
 It contains:<br>
 - Support for the latest Minecraft version<br>
 - Bug fixes<br>
-- Removed internal server error kick<br>
+- Anti internal server error kick<br>
 - It does NOT contain any other API changes<br>
 </p>
 <p align="center">
