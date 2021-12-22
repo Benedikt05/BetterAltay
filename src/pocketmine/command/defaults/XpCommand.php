@@ -40,7 +40,7 @@ use function substr;
 class XpCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%altay.command.xp.description", 'altay.command.xp.usage', [], [
+		parent::__construct($name, "Add xp to player", '/xp (player) (amount)', [], [
 			[
 				new CommandParameter("amount", AvailableCommandsPacket::ARG_TYPE_INT, false),
 				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
