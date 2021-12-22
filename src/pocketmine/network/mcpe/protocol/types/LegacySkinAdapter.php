@@ -29,8 +29,7 @@ use function str_repeat;
 
 class LegacySkinAdapter implements SkinAdapter{
 
-	/** @var SkinData[] */
-	private $personaSkins = [];
+	private array $personaSkins = [];
 
 	public function toSkinData(Skin $skin) : SkinData{
 		return $this->personaSkins[$skin->getSkinId()] ?? new SkinData(

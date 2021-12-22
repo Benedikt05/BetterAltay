@@ -77,6 +77,7 @@ use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\protocol\types\LegacySkinAdapter;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\RakLibInterface;
@@ -1503,6 +1504,8 @@ class Server{
 				Timings::$serverCommandTimer->stopTiming();
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
+
+			//SkinAdapterSingleton::set(new LegacySkinAdapter());
 
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
