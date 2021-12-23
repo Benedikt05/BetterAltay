@@ -148,6 +148,7 @@ use pocketmine\entity\hostile\Pillager;
 use pocketmine\entity\hostile\Wither;
 use pocketmine\entity\projectile\WitherSkull;
 use pocketmine\entity\projectile\WitherSkullDangerous;
+use pocketmine\entity\hostile\WitherSkeleton;
 
 abstract class Entity extends Location implements Metadatable, EntityIds{
 
@@ -453,6 +454,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		Entity::registerEntity(Wither::class, false, ['Wither', 'minecraft:wither']);
 		Entity::registerEntity(WitherSkull::class, false, ['WitherSkull', 'minecraft:wither_skull']);
 		Entity::registerEntity(WitherSkullDangerous::class, false, ['WitherSkullDangerous', 'minecraft:wither_skull_dangerous']);
+		Entity::registerEntity(WitherSkeleton::class, false, ['WitherSkeleton', 'minecraft:wither_skeleton']);
 
 		Entity::registerEntity(Human::class, true);
 
