@@ -47,6 +47,7 @@ class AddActorPacket extends DataPacket{
 		EntityIds::AXOLOTL => "minecraft:axolotl",
 		EntityIds::GOAT => "minecraft:goat",
 		EntityIds::GLOW_SQUID => "minecraft:glow_squid",
+		EntityIds::PILLAGER => "minecraft:pillager",
 
 		//OLD
 		EntityIds::NPC => "minecraft:npc",
