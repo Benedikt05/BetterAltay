@@ -377,7 +377,7 @@ class Server{
 	public $internalErrorKick = false;
 
 	public function loadBetteraltayConfig(){
-		$this->internalErrorKick = $this->getBetteraltayProperty("internal-server-error-kick", false);
+		$this->internalErrorKick = $this->getBetteraltayProperty("developer.internal-server-error-kick", false);
 	}
 
 	public function loadAltayConfig(){
