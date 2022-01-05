@@ -35,6 +35,7 @@ use function implode;
 use function json_decode;
 use function json_encode;
 use function strlen;
+use const INT32_MAX;
 
 class Skin{
 	public const ACCEPTED_SKIN_SIZES = [
@@ -122,10 +123,20 @@ class Skin{
 		}
 	}
 
+	private static function checkLength(string $string, string $name, int $maxLength) : void{
+		if(strlen($string) > $maxLength){
+			throw new InvalidSkinException("$name must be at most $maxLength bytes, but have " . strlen($string) . " bytes");
+		}
+	}
+
 	/**
 	 * @throws InvalidSkinException
 	 */
 	public function validate() : void{
+		self::checkLength($this->skinId, "Skin ID", 32767);
+		self::checkLength($this->geometryName, "Geometry name", 32767);
+		self::checkLength($this->geometryData, "Geometry data", INT32_MAX);
+
 		if($this->skinId === ""){
 			throw new InvalidSkinException("Skin ID must not be empty");
 		}
