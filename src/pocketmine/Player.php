@@ -232,7 +232,6 @@ use function preg_match;
 use function round;
 use function spl_object_hash;
 use function sprintf;
-use function str_repeat;
 use function sqrt;
 use function strlen;
 use function strpos;
