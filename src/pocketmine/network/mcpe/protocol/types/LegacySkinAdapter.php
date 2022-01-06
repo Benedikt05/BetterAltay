@@ -23,22 +23,34 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Skin;
+
+use function is_array;
+use function is_string;
+use function json_decode;
+use function json_encode;
 use function random_bytes;
 use function str_repeat;
 
 class LegacySkinAdapter implements SkinAdapter{
 
-	private array $personaSkins = [];
+	/** @var SkinData[] */
+	private $personaSkins = [];
 
 	public function toSkinData(Skin $skin) : SkinData{
+		$capeData = $skin->getCapeData();
+		$capeImage = $capeData === "" ? new SkinImage(0, 0, "") : new SkinImage(32, 64, $capeData);
+		$geometryName = $skin->getGeometryName();
+		if($geometryName === ""){
+			$geometryName = "geometry.humanoid.custom";
+		}
 		return $this->personaSkins[$skin->getSkinId()] ?? new SkinData(
 			$skin->getSkinId(),
 			"", //TODO: playfab ID
-			$skin->getResourcePatch(),
-			$skin->getSkinImage(),
-			$skin->getAnimations(),
-			$skin->getCape()->getImage(),
+			json_encode(["geometry" => ["default" => $geometryName]]),
+			SkinImage::fromLegacy($skin->getSkinData()), [],
+			$capeImage,
 			$skin->getGeometryData()
 		);
 	}
@@ -47,27 +59,63 @@ class LegacySkinAdapter implements SkinAdapter{
 	 * @throws \Exception
 	 */
 	public function fromSkinData(SkinData $data) : Skin{
-		if ($data->isPersona()) {
+		if($data->isPersona()){
 			$id = $data->getSkinId();
 			$this->personaSkins[$id] = $data;
-			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 2048));
+			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 4096));
 		}
-		return (new Skin(
-			$data->getSkinId(),
-			"",
-			"",
-			$data->getResourcePatch(),
-			$data->getGeometryData()
-		))->setSkinImage($data->getSkinImage())
-			->setCape(new Cape($data->getCapeId(), $data->getCapeImage(), $data->isPersonaCapeOnClassic()))
-			->setAnimations($data->getAnimations())
-			->setAnimationData($data->getAnimationData())
-			->setPremium($data->isPremium())
-			->setPersona($data->isPersona())
-			->setArmSize($data->getArmSize())
-			->setSkinColor($data->getSkinColor())
-			->setPersonaPieces($data->getPersonaPieces())
-			->setPieceTintColors($data->getPieceTintColors())
-			->setVerified($data->isVerified());
+
+		$capeData = $data->isPersonaCapeOnClassic() ? "" : $data->getCapeImage()->getData();
+
+		$resourcePatch = json_decode($data->getResourcePatch(), true);
+		if(is_array($resourcePatch) && isset($resourcePatch["geometry"]["default"]) && is_string($resourcePatch["geometry"]["default"])){
+			$geometryName = $resourcePatch["geometry"]["default"];
+		}else{
+			throw new InvalidSkinException("Missing geometry name field");
+		}
+
+		$skinData = $data->getSkinImage()->getData();
+		if(strlen($skinData) === (32 * 64 * 4)) {
+			$skinData = str_pad($skinData, 64 * 64 * 4, "\x00\x00\x00\x00"); // pad to 64x64
+
+			// leg tops
+			$skinData = self::mirroredCopy($skinData, 4, 16, 4, 4, 20, 48);
+			$skinData = self::mirroredCopy($skinData, 8, 16, 4, 4, 24, 48);
+
+			// arm tops
+			$skinData = self::mirroredCopy($skinData, 44, 16, 4, 4, 36, 48);
+			$skinData = self::mirroredCopy($skinData, 48, 16, 4, 4, 40, 48);
+
+			// leg pieces
+			$skinData = self::mirroredCopy($skinData, 8, 20, 4, 12, 16, 52);
+			$skinData = self::mirroredCopy($skinData, 4, 20, 4, 12, 20, 52);
+			$skinData = self::mirroredCopy($skinData, 0, 20, 4, 12, 24, 52);
+			$skinData = self::mirroredCopy($skinData, 12, 20, 4, 12, 28, 52);
+
+			// arm pieces
+			$skinData = self::mirroredCopy($skinData, 48, 20, 4, 12, 32, 52);
+			$skinData = self::mirroredCopy($skinData, 44, 20, 4, 12, 36, 52);
+			$skinData = self::mirroredCopy($skinData, 40, 20, 4, 12, 40, 52);
+			$skinData = self::mirroredCopy($skinData, 52, 20, 4, 12, 44, 52);
+		}
+
+		return new Skin($data->getSkinId(), $skinData, $capeData, $geometryName, $data->getGeometryData());
+	}
+
+	private static function mirroredCopy(string $bitmap, int $startX, int $startY, int $width, int $height, int $toX, int $toY) : string{
+		for($x = 0; $x < $width; $x++) {
+			for($y = 0; $y < $height; $y++) {
+				$index = self::toIndex($startX + $x, $startY + $y);
+				$toIndex = self::toIndex($toX + ($width - ($x + 1)), $toY + $y);
+				for($bit = 0; $bit < 4; $bit++) {
+					$bitmap[$toIndex + $bit] = $bitmap[$index + $bit];
+				}
+			}
+		}
+		return $bitmap;
+	}
+
+	private static function toIndex(int $x, int $y) : int{
+		return (64 * $y + $x) * 4;
 	}
 }

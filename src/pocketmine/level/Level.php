@@ -83,6 +83,7 @@ use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\network\mcpe\protocol\SetTimePacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
@@ -2656,6 +2657,20 @@ class Level implements ChunkManager, Metadatable{
 		$previousSpawn = $this->getSpawnLocation();
 		$this->provider->setSpawn($pos);
 		(new SpawnChangeEvent($this, $previousSpawn))->call();
+		
+		$location = Position::fromObject($pos, $this);
+		foreach($this->players as $player){
+			$pk = new SetSpawnPositionPacket();
+			$pk->spawnType = 1;
+			$pk->x = $location->asVector3()->x;
+			$pk->y = $location->asVector3()->y;
+			$pk->z = $location->asVector3()->z;
+			$pk->x2 = $location->asVector3()->getFloorX();
+			$pk->y2 = $location->asVector3()->getFloorY();
+			$pk->z2 = $location->asVector3()->getFloorZ();
+			$pk->dimension = DimensionIds::OVERWORLD;
+			$player->sendDataPacket($pk);
+		}
 	}
 
 	/**
