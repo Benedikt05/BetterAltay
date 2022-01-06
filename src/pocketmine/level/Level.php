@@ -83,6 +83,7 @@ use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\network\mcpe\protocol\SetTimePacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
