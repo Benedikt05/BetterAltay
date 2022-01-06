@@ -31,9 +31,7 @@ use function is_string;
 use function json_decode;
 use function json_encode;
 use function random_bytes;
-use function str_pad;
 use function str_repeat;
-use function strlen;
 
 class LegacySkinAdapter implements SkinAdapter{
 
@@ -61,15 +59,11 @@ class LegacySkinAdapter implements SkinAdapter{
 	 * @throws \Exception
 	 */
 	public function fromSkinData(SkinData $data) : Skin{
-		if ($data->isPersona()) {
+		if($data->isPersona()){
 			$id = $data->getSkinId();
 			$this->personaSkins[$id] = $data;
-			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 4096));
+			return new Skin("Standard_Custom", str_repeat(random_bytes(3) . "\xff", 4096));
 		}
-
-//		if($data->isPersona()){
-//			return new Skin("Standard_Custom", str_repeat(random_bytes(3) . "\xff", 4096));
-//		}
 
 		$capeData = $data->isPersonaCapeOnClassic() ? "" : $data->getCapeImage()->getData();
 
@@ -81,8 +75,7 @@ class LegacySkinAdapter implements SkinAdapter{
 		}
 
 		$skinData = $data->getSkinImage()->getData();
-		if(strlen($skinData) === (32 * 64 * 4)) { // convert to 64x64
-			// process from: https://imgur.com/a/hfaqL
+		if(strlen($skinData) === (32 * 64 * 4)) {
 			$skinData = str_pad($skinData, 64 * 64 * 4, "\x00\x00\x00\x00"); // pad to 64x64
 
 			// leg tops
@@ -105,7 +98,8 @@ class LegacySkinAdapter implements SkinAdapter{
 			$skinData = self::mirroredCopy($skinData, 40, 20, 4, 12, 40, 52);
 			$skinData = self::mirroredCopy($skinData, 52, 20, 4, 12, 44, 52);
 		}
-		return new Skin($data->getSkinId(), $skinData, $capeData, $geometryName, $data->getGeometryData());
+
+		return new Skin($data->getSkinId(), $data->getSkinImage()->getData(), $capeData, $geometryName, $data->getGeometryData());
 	}
 
 	private static function mirroredCopy(string $bitmap, int $startX, int $startY, int $width, int $height, int $toX, int $toY) : string{
