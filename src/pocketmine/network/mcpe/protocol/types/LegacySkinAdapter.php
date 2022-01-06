@@ -62,7 +62,7 @@ class LegacySkinAdapter implements SkinAdapter{
 		if($data->isPersona()){
 			$id = $data->getSkinId();
 			$this->personaSkins[$id] = $data;
-			return new Skin("Standard_Custom", str_repeat(random_bytes(3) . "\xff", 4096));
+			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 4096));
 		}
 
 		$capeData = $data->isPersonaCapeOnClassic() ? "" : $data->getCapeImage()->getData();
@@ -99,7 +99,7 @@ class LegacySkinAdapter implements SkinAdapter{
 			$skinData = self::mirroredCopy($skinData, 52, 20, 4, 12, 44, 52);
 		}
 
-		return new Skin($data->getSkinId(), $data->getSkinImage()->getData(), $capeData, $geometryName, $data->getGeometryData());
+		return new Skin($data->getSkinId(), $skinData, $capeData, $geometryName, $data->getGeometryData());
 	}
 
 	private static function mirroredCopy(string $bitmap, int $startX, int $startY, int $width, int $height, int $toX, int $toY) : string{
