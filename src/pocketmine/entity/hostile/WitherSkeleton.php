@@ -56,6 +56,7 @@ class WitherSkeleton extends Monster implements Ageable, Smite{
 		$this->setFollowRange(35);
 		$this->setAttackDamage(10);
 		$this->setScale(1.2);
+		$this->addEffect(new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 9999999, 1));
 
 		parent::initEntity();
 		$this->equipment = new AltayEntityEquipment($this);
@@ -65,6 +66,10 @@ class WitherSkeleton extends Monster implements Ageable, Smite{
 
 	public function getName() : string{
 		return "WitherSkeleton";
+	}
+
+	public function setOnFire(int $seconds) : void{
+		// NOOP
 	}
 
 	public function getDrops() : array{
