@@ -38,6 +38,8 @@ use pocketmine\entity\RangedAttackerMob;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\level\Explosion;
+use pocketmine\level\GameRules;
 use pocketmine\Player;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
@@ -49,11 +51,17 @@ class Wither extends Monster implements RangedAttackerMob{
 
 	public $height = 3.0;
 	public $width = 1.0;
+	public $gravity = 0.5;
+	protected $fuseTime = 30;
+	protected $explosionRadius = 7;
 
 	public function initEntity() : void{
 		$this->setMaxHealth(600);
 		$this->setMovementSpeed(0.7);
 		$this->setFollowRange(45);
+		$this->addEffect(new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 9999999, 1));
+		$this->explosionRadius = $this->namedtag->getByte("ExplosionRadius", $this->explosionRadius);
+		$this->fuseTime = $this->namedtag->getShort("Fuse", $this->fuseTime);
 
 		parent::initEntity();
 	}
@@ -74,6 +82,10 @@ class Wither extends Monster implements RangedAttackerMob{
 
 	public function getXpDropAmount() : int{
 		return 50;
+	}
+
+	public function setOnFire(int $seconds) : void{
+		// NOOP
 	}
 
 	public function getDrops() : array{
@@ -109,6 +121,19 @@ class Wither extends Monster implements RangedAttackerMob{
 		parent::onCollideWithEntity($entity);
 		if($entity instanceof Player){
 			$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 7 * 20, 1));
+		}
+	}
+
+	public function onDeath() : void{
+		parent::onDeath();
+		if($this->isValid()){
+			$exp = new Explosion($this, $this->explosionRadius * 1, $this);
+			$this->flagForDespawn();
+
+			if($this->level->getGameRules()->getBool(GameRules::RULE_MOB_GRIEFING, true)){
+				$exp->explodeA();
+			}
+			$exp->explodeB();
 		}
 	}
 }
