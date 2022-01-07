@@ -332,10 +332,16 @@ class Server{
 	private $propertyCache = [];
 
 	/** @var mixed[] */
+	private $betteraltayPropertyCache = [];
+
+	/** @var mixed[] */
 	private $altayPropertyCache = [];
 
 	/** @var Config */
 	private $config;
+
+	/** @var Config */
+	private $betteraltayConfig;
 
 	/** @var Config */
 	private $altayConfig;
@@ -367,6 +373,12 @@ class Server{
 	public $folderPluginLoader = true;
 	/** @var bool */
 	public $mobAiEnabled = true;
+	/** @var bool */
+	public $internalErrorKick = false;
+
+	public function loadBetteraltayConfig(){
+		$this->internalErrorKick = $this->getBetteraltayProperty("developer.internal-server-error-kick", false);
+	}
 
 	public function loadAltayConfig(){
 		$this->keepInventory = $this->getAltayProperty("player.keep-inventory", false);
@@ -1156,6 +1168,14 @@ class Server{
 		return $this->altayPropertyCache[$variable] ?? $defaultValue;
 	}
 
+	public function getBetteraltayProperty(string $variable, $defaultValue = null){
+		if(!array_key_exists($variable, $this->betteraltayPropertyCache)){
+			$this->betteraltayPropertyCache[$variable] = $this->betteraltayConfig->getNested($variable);
+		}
+
+		return $this->betteraltayPropertyCache[$variable] ?? $defaultValue;
+	}
+
 	public function getConfigString(string $variable, string $defaultValue = "") : string{
 		$v = getopt("", ["$variable::"]);
 		if(isset($v[$variable])){
@@ -1390,6 +1410,14 @@ class Server{
 				@file_put_contents($this->dataPath . "pocketmine.yml", $content);
 			}
 			$this->config = new Config($this->dataPath . "pocketmine.yml", Config::YAML, []);
+
+			$this->logger->info("Loading betteraltay.yml...");
+			if(!file_exists($this->dataPath . "betteraltay.yml")){
+				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "betteraltay.yml");
+				@file_put_contents($this->dataPath . "betteraltay.yml", $content);
+			}
+			$this->betteraltayConfig = new Config($this->dataPath . "betteraltay.yml", Config::YAML, []);
+			$this->loadBetteraltayConfig();
 
 			$this->logger->info("Loading altay.yml...");
 			if(!file_exists($this->dataPath . "altay.yml")){
