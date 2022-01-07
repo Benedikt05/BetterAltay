@@ -52,7 +52,7 @@ class WitherSkeleton extends Monster implements Ageable, Smite{
 	protected $equipment;
 
 	protected function initEntity() : void{
-		$this->setMovementSpeed($this->isBaby() ? 0.35 : 0.23);
+		$this->setMovementSpeed(0.35);
 		$this->setFollowRange(35);
 		$this->setAttackDamage(10);
 		$this->setScale(1.2);
