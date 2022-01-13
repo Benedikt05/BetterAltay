@@ -2656,6 +2656,10 @@ class Level implements ChunkManager, Metadatable{
 		$previousSpawn = $this->getSpawnLocation();
 		$this->provider->setSpawn($pos);
 		(new SpawnChangeEvent($this, $previousSpawn))->call();
+		foreach($this->players as $player){
+			$location = Position::fromObject($pos, $this);
+			$player->setSpawn($location);
+		}
 	}
 
 	/**
