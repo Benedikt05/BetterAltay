@@ -10,5 +10,5 @@ It contains:<br>
 <p align="center">
 	<img src="https://github.com/TuranicTeam/Altay/workflows/CI/badge.svg" alt="CI" />
 	<a
-	<a href="https://discord.gg/spquK3Q66W"><img src="https://img.shields.io/discord/.svg?style=flat-square&label=discord&colorB=7289da" alt="Discord" /></a>
+	<a href="https://discord.gg/spquK3Q66W"><img src="https://img.shields.io/discord/930544524655202317?logo=Discord" alt="Discord" /></a>
 </p>
