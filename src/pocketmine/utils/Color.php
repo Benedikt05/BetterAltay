@@ -156,8 +156,6 @@ class Color{
 
 	/**
 	 * Mixes the supplied list of colours together to produce a result colour.
-	 *
-	 * @param Color ...$colors
 	 */
 	public static function mix(Color ...$colors) : Color{
 		$count = count($colors);
