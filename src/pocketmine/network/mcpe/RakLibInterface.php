@@ -56,9 +56,9 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	 */
 	private const MCPE_RAKNET_PROTOCOL_VERSION = 10;
 
-    private const MCPE_RAKNET_PACKET_ID = "\xfe";
+	private const MCPE_RAKNET_PACKET_ID = "\xfe";
 
-    /** @var Server */
+	/** @var Server */
 	private $server;
 
 	/** @var Network */
@@ -168,15 +168,15 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 
 			try{
 				if($packet->buffer !== ""){
-                    if($packet->buffer[0] !== self::MCPE_RAKNET_PACKET_ID){
-                        throw new \UnexpectedValueException("Unexpected non-FE packet");
-                    }
+					if($packet->buffer[0] !== self::MCPE_RAKNET_PACKET_ID){
+						throw new \UnexpectedValueException("Unexpected non-FE packet");
+					}
 
-                    $cipher = $player->getCipher();
-                    $buffer = substr($packet->buffer, 1);
-                    $buffer = $cipher !== null ? $cipher->decrypt($buffer) : $buffer;
+					$cipher = $player->getCipher();
+					$buffer = substr($packet->buffer, 1);
+					$buffer = $cipher !== null ? $cipher->decrypt($buffer) : $buffer;
 
-                    $pk = new BatchPacket(self::MCPE_RAKNET_PACKET_ID . $buffer);
+					$pk = new BatchPacket(self::MCPE_RAKNET_PACKET_ID . $buffer);
 					$player->handleDataPacket($pk);
 				}
 			}catch(\Throwable $e){
@@ -261,9 +261,9 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 			}
 
 			if($packet instanceof BatchPacket){
-                $cipher = $player->getCipher();
-                $rawBuffer = substr($packet->buffer, 1);
-                $buffer = self::MCPE_RAKNET_PACKET_ID . ($cipher !== null ? $cipher->encrypt($rawBuffer) : $rawBuffer)
+				$cipher = $player->getCipher();
+				$rawBuffer = substr($packet->buffer, 1);
+				$buffer = self::MCPE_RAKNET_PACKET_ID . ($cipher !== null ? $cipher->encrypt($rawBuffer) : $rawBuffer);
 
 				$pk = new EncapsulatedPacket();
 				$pk->identifierACK = $needACK ? $this->identifiersACK[$identifier]++ : null;
