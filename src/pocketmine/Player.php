@@ -115,6 +115,8 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
+use pocketmine\network\mcpe\encryption\EncryptionContext;
+use pocketmine\network\mcpe\encryption\PrepareEncryptionTask;
 use pocketmine\network\mcpe\PlayerNetworkSessionAdapter;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
@@ -154,6 +156,7 @@ use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
+use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
@@ -199,6 +202,8 @@ use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\tile\ItemFrame;
 use pocketmine\timings\Timings;
+use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\BinaryStream;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
 use function abs;
@@ -298,6 +303,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/** @var DataPacket[] */
 	private $batchedPackets = [];
+	
+	private ?EncryptionContext $cipher = null;
 
 	/**
 	 * @var int
@@ -313,6 +320,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/** @var bool */
 	private $seenLoginPacket = false;
+	/** @var bool */
+	private $awaitingEncryptionHandshake = false;
 	/** @var bool */
 	private $resourcePacksDone = false;
 
@@ -2196,9 +2205,49 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$this->xuid = $xuid;
 		}
 
-		//TODO: encryption
+		$identityPublicKey = base64_decode($packet->identityPublicKey, true);
+		if($identityPublicKey === false){
+			//if this is invalid it should have borked VerifyLoginTask
+			throw new AssumptionFailedError("We should never have reached here if the key is invalid");
+		}
+
+		if(EncryptionContext::$ENABLED){
+			$this->server->getAsyncPool()->submitTask(new PrepareEncryptionTask(
+				$identityPublicKey,
+				function(string $encryptionKey, string $handshakeJwt) : void{
+					if(!$this->isConnected()){
+						return;
+					}
+
+					$pk = new ServerToClientHandshakePacket();
+					$pk->jwt = $handshakeJwt;
+					$this->sendDataPacket($pk, false, true); //make sure this gets sent before encryption is enabled
+
+					$this->awaitingEncryptionHandshake = true;
+
+					$this->cipher = EncryptionContext::fakeGCM($encryptionKey);
+
+					$this->server->getLogger()->debug("Enabled encryption for " . $this->username);
+				}
+			));
+		}else{
+			$this->processLogin();
+		}
+	}
+
+	/**
+	 * @internal
+	 */
+	public function onEncryptionHandshake() : bool{
+		if(!$this->awaitingEncryptionHandshake){
+			return false;
+		}
+		$this->awaitingEncryptionHandshake = false;
+
+		$this->server->getLogger()->debug("Encryption handshake completed for " . $this->username);
 
 		$this->processLogin();
+		return true;
 	}
 
 	/**
@@ -3677,6 +3726,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
+	 * @internal
+	 */
+	public function getCipher() : ?EncryptionContext{
+        return $this->cipher;
+    }
+
+    /**
 	 * @return bool|int
 	 */
 	public function dataPacket(DataPacket $packet, bool $needACK = false){
