@@ -302,8 +302,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/** @var DataPacket[] */
 	private $batchedPackets = [];
-
-    private ?EncryptionContext $cipher = null;
+	
+	private ?EncryptionContext $cipher = null;
 
     /**
 	 * @var int
@@ -320,8 +320,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/** @var bool */
 	private $seenLoginPacket = false;
 	/** @var bool */
-    private $awaitingEncryptionHandshake = false;
-    /** @var bool */
+	private $awaitingEncryptionHandshake = false;
+	/** @var bool */
 	private $resourcePacksDone = false;
 
 	/** @var bool */
