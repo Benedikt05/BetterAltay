@@ -73,6 +73,7 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\CompressBatchedTask;
+use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
@@ -1463,6 +1464,8 @@ class Server{
 				$this->networkCompressionLevel = 6;
 			}
 			$this->networkCompressionAsync = (bool) $this->getProperty("network.async-compression", true);
+
+			EncryptionContext::$ENABLED = (bool) $this->getProperty("network.enable-encryption", true);
 
 			$this->doTitleTick = ((bool) $this->getProperty("console.title-tick", true)) && Terminal::hasFormattingCodes();
 

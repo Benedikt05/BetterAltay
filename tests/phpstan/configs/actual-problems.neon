@@ -3411,6 +3411,16 @@ parameters:
 			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
 
 		-
+			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\encryption\\\\EncryptionUtils\\:\\:generateKey\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/network/mcpe/encryption/EncryptionUtils.php
+
+		-
+			message: "#^Property pocketmine\\\\network\\\\mcpe\\\\encryption\\\\PrepareEncryptionTask\\:\\:\\$serverPrivateKey \\(string\\) does not accept string\\|null\\.$#"
+			count: 1
+			path: ../../../src/pocketmine/network/mcpe/encryption/PrepareEncryptionTask.php
+
+		-
 			message: "#^Property pocketmine\\\\network\\\\mcpe\\\\protocol\\\\AddActorPacket\\:\\:\\$metadata \\(array\\<int, array\\{int, mixed\\}\\>\\) does not accept array\\<int, mixed\\>\\.$#"
 			count: 1
 			path: ../../../src/pocketmine/network/mcpe/protocol/AddActorPacket.php
@@ -3746,11 +3756,6 @@ parameters:
 			path: ../../../src/pocketmine/resourcepacks/ZippedResourcePack.php
 
 		-
-			message: "#^Parameter \\#2 \\$code of class pocketmine\\\\resourcepacks\\\\ResourcePackException constructor expects int, mixed given\\.$#"
-			count: 1
-			path: ../../../src/pocketmine/resourcepacks/ZippedResourcePack.php
-
-		-
 			message: "#^Parameter \\#2 \\$length of function fread expects int\\<0, max\\>, int given\\.$#"
 			count: 1
 			path: ../../../src/pocketmine/resourcepacks/ZippedResourcePack.php
@@ -4034,4 +4039,3 @@ parameters:
 			message: "#^Cannot call method cancel\\(\\) on pocketmine\\\\scheduler\\\\TaskHandler\\|null\\.$#"
 			count: 1
 			path: ../../plugins/TesterPlugin/src/pmmp/TesterPlugin/CheckTestCompletionTask.php
-
