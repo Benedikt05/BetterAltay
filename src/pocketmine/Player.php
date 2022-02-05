@@ -3228,7 +3228,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$this->toggleSwim(false);
 				}
 				break;
-				break;
 			case PlayerActionPacket::ACTION_INTERACT_BLOCK: //TODO: ignored (for now)
 				break;
 			case PlayerActionPacket::ACTION_CREATIVE_PLAYER_DESTROY_BLOCK:
