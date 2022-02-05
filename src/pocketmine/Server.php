@@ -88,6 +88,7 @@ use pocketmine\network\upnp\UPnP;
 use pocketmine\permission\BanList;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\PermissionManager;
+use pocketmine\player\GameMode;
 use pocketmine\plugin\FolderPluginLoader;
 use pocketmine\plugin\PharPluginLoader;
 use pocketmine\plugin\Plugin;
@@ -526,29 +527,7 @@ class Server{
 	 * Parses a string and returns a gamemode integer, -1 if not found
 	 */
 	public static function getGamemodeFromString(string $str) : int{
-		switch(strtolower(trim($str))){
-			case (string) Player::SURVIVAL:
-			case "survival":
-			case "s":
-				return Player::SURVIVAL;
-
-			case (string) Player::CREATIVE:
-			case "creative":
-			case "c":
-				return Player::CREATIVE;
-
-			case (string) Player::ADVENTURE:
-			case "adventure":
-			case "a":
-				return Player::ADVENTURE;
-
-			case (string) Player::SPECTATOR:
-			case "spectator":
-			case "view":
-			case "v":
-				return Player::SPECTATOR;
-		}
-		return -1;
+		return GameMode::fromString($str);
 	}
 
 	/**

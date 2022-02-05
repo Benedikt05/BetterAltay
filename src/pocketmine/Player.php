@@ -247,10 +247,10 @@ use const PHP_INT_MAX;
  */
 class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
-	public const SURVIVAL = 0;
-	public const CREATIVE = 1;
-	public const ADVENTURE = 2;
-	public const SPECTATOR = 3;
+	public const SURVIVAL = GameMode::SURVIVAL;
+	public const CREATIVE = GameMode::CREATIVE;
+	public const ADVENTURE = GameMode::ADVENTURE;
+	public const SPECTATOR = GameMode::SURVIVAL_VIEWER;
 	public const VIEW = Player::SPECTATOR;
 
 	private const MOVES_PER_TICK = 2;
