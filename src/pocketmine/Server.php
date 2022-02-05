@@ -1364,10 +1364,6 @@ class Server{
 				mkdir($pluginPath, 0777);
 			}
 
-			if(!is_dir($pluginPath . "Esko/")){
-				mkdir($pluginPath . "Esko/", 0777);
-			}
-
 			$this->dataPath = realpath($dataPath) . DIRECTORY_SEPARATOR;
 			$this->pluginPath = realpath($pluginPath) . DIRECTORY_SEPARATOR;
 
