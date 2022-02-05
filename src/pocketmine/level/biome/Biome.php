@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\biome;
 
 use pocketmine\block\Block;
-use pocketmine\entity\Animal;
+use pocketmine\entity\MCAnimal;
 use pocketmine\entity\Creature;
 use pocketmine\entity\CreatureType;
 use pocketmine\entity\hostile\Creeper;
@@ -256,7 +256,7 @@ abstract class Biome{
 				return $this->spawnableWaterCreatureList;
 			case Creature::class:
 				return $this->spawnableCaveCreatureList;
-			case Animal::class:
+			case MCAnimal::class:
 				return $this->spawnableCreatureList;
 			case Monster::class:
 				return $this->spawnableMonsterList;

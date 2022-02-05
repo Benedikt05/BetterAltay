@@ -27,7 +27,7 @@ namespace pocketmine\entity\behavior;
 use pocketmine\block\Block;
 use pocketmine\block\Grass;
 use pocketmine\block\TallGrass;
-use pocketmine\entity\Animal;
+use pocketmine\entity\MCAnimal;
 use pocketmine\level\GameRules;
 use pocketmine\level\particle\DestroyBlockParticle;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
@@ -70,7 +70,7 @@ class EatBlockBehavior extends Behavior{
 					$this->mob->level->setBlock($pos, Block::get(Block::DIRT));
 				}
 
-				if($this->mob instanceof Animal){
+				if($this->mob instanceof MCAnimal){
 					$this->mob->eatGrassBonus($pos);
 				}
 			}

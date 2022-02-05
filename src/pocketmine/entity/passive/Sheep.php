@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\entity\Animal;
+use pocketmine\entity\MCAnimal;
 use pocketmine\entity\behavior\EatBlockBehavior;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
@@ -47,7 +47,7 @@ use function boolval;
 use function intval;
 use function rand;
 
-class Sheep extends Animal{
+class Sheep extends MCAnimal{
 
 	public const NETWORK_ID = self::SHEEP;
 

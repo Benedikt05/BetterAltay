@@ -2655,7 +2655,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->craftingTransaction->validate();
 			}catch(TransactionValidationException $e){
 				//transaction is incomplete - crafting transaction comes in lots of little bits, so we have to collect
-				//all of the parts before we can execute it
+				//all the parts before we can execute it
 				return true;
 			}
 

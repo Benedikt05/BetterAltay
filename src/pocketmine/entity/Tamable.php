@@ -29,7 +29,7 @@ use pocketmine\utils\UUID;
 use function boolval;
 use function intval;
 
-abstract class Tamable extends Animal{
+abstract class Tamable extends MCAnimal{
 
 	public function saveNBT() : void {
 		parent::saveNBT();

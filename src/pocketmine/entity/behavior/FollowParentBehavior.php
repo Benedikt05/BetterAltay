@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\behavior;
 
-use pocketmine\entity\Animal;
+use pocketmine\entity\MCAnimal;
 
 class FollowParentBehavior extends Behavior{
 
@@ -32,10 +32,10 @@ class FollowParentBehavior extends Behavior{
 	protected $speedMultiplier;
 	/** @var int */
 	protected $delay = 0;
-	/** @var Animal */
+	/** @var MCAnimal */
 	protected $parentAnimal;
 
-	public function __construct(Animal $mob, float $speedMultiplier){
+	public function __construct(MCAnimal $mob, float $speedMultiplier){
 		parent::__construct($mob);
 
 		$this->speedMultiplier = $speedMultiplier;
@@ -56,7 +56,7 @@ class FollowParentBehavior extends Behavior{
 				}
 			}
 
-			if($animal instanceof Animal){
+			if($animal instanceof MCAnimal){
 				if($dist >= 9){
 					$this->parentAnimal = $animal;
 					return true;

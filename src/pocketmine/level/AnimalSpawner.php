@@ -28,7 +28,7 @@ use pocketmine\block\Block;
 use pocketmine\block\Leaves;
 use pocketmine\block\Liquid;
 use pocketmine\block\Water;
-use pocketmine\entity\Animal;
+use pocketmine\entity\MCAnimal;
 use pocketmine\entity\Creature;
 use pocketmine\entity\CreatureType;
 use pocketmine\entity\Entity;
@@ -56,7 +56,7 @@ class AnimalSpawner{
 
 	public function __construct(){
 		self::$creatureTypes[Monster::class] = new CreatureType(Monster::class, 70, Block::AIR, false);
-		self::$creatureTypes[Animal::class] = new CreatureType(Animal::class, 10, Block::AIR, true);
+		self::$creatureTypes[MCAnimal::class] = new CreatureType(MCAnimal::class, 10, Block::AIR, true);
 		self::$creatureTypes[Creature::class] = new CreatureType(Creature::class, 15, Block::AIR, false);
 		self::$creatureTypes[WaterAnimal::class] = new CreatureType(WaterAnimal::class, 5, Block::STILL_WATER, false);
 	}
@@ -66,7 +66,7 @@ class AnimalSpawner{
 			$spawn = $level->getSpawnLocation();
 
 			foreach(self::$creatureTypes as $creatureType){
-				if((!$creatureType->isPeacefulCreature() or $spawnPeacefulMobs) and ($creatureType->isPeacefulCreature() or $spawnHostileMobs) and ($creatureType->getCreatureClass() !== Animal::class or $level->isDayTime())) {
+				if((!$creatureType->isPeacefulCreature() or $spawnPeacefulMobs) and ($creatureType->isPeacefulCreature() or $spawnHostileMobs) and ($creatureType->getCreatureClass() !== MCAnimal::class or $level->isDayTime())) {
 					$a = $creatureType->getCreatureClass();
 					$j4 = count(array_filter($level->getEntities(), function(Entity $entity) use ($a){
 						return is_a($entity, $a);
@@ -184,7 +184,7 @@ class AnimalSpawner{
 	 * Called during chunk generation to spawn initial creatures.
 	 */
 	public static function performChunkGeneratorSpawning(Level $level, Biome $biome, int $sourceX, int $sourceZ, int $xRange, int $zRange, Random $random){
-		$list = $biome->getSpawnableList(self::$creatureTypes[Animal::class]);
+		$list = $biome->getSpawnableList(self::$creatureTypes[MCAnimal::class]);
 
 		if(!empty($list)){
 			while($random->nextFloat() < $biome->getSpawningChance()){
