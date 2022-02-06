@@ -78,7 +78,6 @@ use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\network\mcpe\protocol\types\LegacySkinAdapter;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\RakLibInterface;
@@ -90,7 +89,6 @@ use pocketmine\permission\BanList;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\PermissionManager;
 use pocketmine\player\GameMode;
-use pocketmine\plugin\FolderPluginLoader;
 use pocketmine\plugin\PharPluginLoader;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginLoadOrder;
@@ -335,14 +333,8 @@ class Server{
 	/** @var mixed[] */
 	private $propertyCache = [];
 
-	/** @var mixed[] */
-	private $eskoPropertyCache = [];
-
 	/** @var Config */
 	private $config;
-
-	/** @var Config */
-	private $eskoConfig;
 
 	/** @var Player[] */
 	private $players = [];
@@ -364,20 +356,7 @@ class Server{
 	private $levelTheEnd = null;
 
 	/** @var bool */
-	public $keepInventory = false;
-	/** @var bool */
-	public $keepExperience = false;
-	/** @var bool */
-	public $folderPluginLoader = true;
-	/** @var bool */
 	public $mobAiEnabled = true;
-
-	public function loadEskoConfig(){
-		$this->keepInventory = $this->getEskoProperty("player.keep-inventory", false);
-		$this->keepExperience = $this->getEskoProperty("player.keep-experience", false);
-		$this->folderPluginLoader = $this->getEskoProperty("developer.folder-plugin-loader", true);
-		$this->mobAiEnabled = $this->getEskoProperty("level.enable-mob-ai", false);
-	}
 
 	public function getName() : string{
 		return \pocketmine\NAME;
@@ -1138,14 +1117,6 @@ class Server{
 		return $this->propertyCache[$variable] ?? $defaultValue;
 	}
 
-	public function getEskoProperty(string $variable, $defaultValue = null){
-		if(!array_key_exists($variable, $this->eskoPropertyCache)){
-			$this->eskoPropertyCache[$variable] = $this->eskoConfig->getNested($variable);
-		}
-
-		return $this->eskoPropertyCache[$variable] ?? $defaultValue;
-	}
-
 	public function getConfigString(string $variable, string $defaultValue = "") : string{
 		$v = getopt("", ["$variable::"]);
 		if(isset($v[$variable])){
@@ -1377,14 +1348,6 @@ class Server{
 			}
 			$this->config = new Config($this->dataPath . "esko.yml", Config::YAML, []);
 
-			$this->logger->info("Loading eskobe.yml...");
-			if(!file_exists($this->dataPath . "eskobe.yml")){
-				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "eskobe.yml");
-				@file_put_contents($this->dataPath . "eskobe.yml", $content);
-			}
-			$this->eskoConfig = new Config($this->dataPath . "eskobe.yml", Config::YAML, []);
-			$this->loadEskoConfig();
-
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
 				"motd" => \pocketmine\NAME . " Server",
@@ -1483,8 +1446,6 @@ class Server{
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
 
-			//SkinAdapterSingleton::set(new LegacySkinAdapter());
-
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
 					$this->rcon = new RCON(
@@ -1578,9 +1539,6 @@ class Server{
 
 			$this->pluginManager = new PluginManager($this, $this->commandMap, ((bool) $this->getProperty("plugins.legacy-data-dir", true)) ? null : $this->getDataPath() . "plugin_data" . DIRECTORY_SEPARATOR);
 			$this->profilingTickRate = (float) $this->getProperty("settings.profile-report-trigger", 20);
-			if($this->folderPluginLoader){
-				$this->pluginManager->registerInterface(new FolderPluginLoader($this->autoloader));
-			}
 			$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 			$this->pluginManager->registerInterface(new ScriptPluginLoader());
 
@@ -1589,10 +1547,6 @@ class Server{
 			$this->queryRegenerateTask = new QueryRegenerateEvent($this);
 
 			$this->updater = new AutoUpdater($this, $this->getProperty("auto-updater.host", "update.pmmp.io"));
-
-			foreach($this->getAdditionalPluginDirs() as $path){
-				$this->pluginManager->loadPlugins($path);
-			}
 
 			$this->pluginManager->loadPlugins($this->pluginPath);
 			$this->enablePlugins(PluginLoadOrder::STARTUP);
@@ -1634,12 +1588,8 @@ class Server{
 				$this->setDefaultLevel($this->getLevelByName($default));
 			}
 
-			if($this->isAllowNether() and $this->getNetherLevel() === null){
-				/** @var string $netherLevelName */
-				$netherLevelName = $this->getEskoProperty("dimensions.nether.level-name", "nether");
-				if(trim($netherLevelName) == ""){
-					$netherLevelName = "nether";
-				}
+			if($this->getNetherLevel() === null){
+				$netherLevelName = "nether";
 				if(!$this->loadLevel($netherLevelName)){
 					$this->generateLevel($netherLevelName, time(), GeneratorManager::getGenerator("hell"));
 				}
@@ -1647,12 +1597,8 @@ class Server{
 				$this->setNetherLevel($this->getLevelByName($netherLevelName));
 			}
 
-			if($this->isAllowTheEnd() and $this->getTheEndLevel() === null){
-				/** @var string $endLevelName */
-				$endLevelName = $this->getEskoProperty("dimensions.the-end.level-name", "end");
-				if(trim($endLevelName) == ""){
-					$endLevelName = "end";
-				}
+			if($this->getTheEndLevel() === null){
+				$endLevelName = "end";
 				if(!$this->loadLevel($endLevelName)){
 					$this->generateLevel($endLevelName, time(), GeneratorManager::getGenerator("end"));
 				}
@@ -1681,14 +1627,6 @@ class Server{
 		}catch(\Throwable $e){
 			$this->exceptionHandler($e);
 		}
-	}
-
-	public function isAllowNether() : bool{
-		return (bool) $this->getEskoProperty("dimensions.nether.active", true);
-	}
-
-	public function isAllowTheEnd() : bool{
-		return (bool) $this->getEskoProperty("dimensions.the-end.active", true);
 	}
 
 	/**
@@ -1949,16 +1887,9 @@ class Server{
 			$this->getNetwork()->blockAddress($entry->getName(), -1);
 		}
 
-		if($this->folderPluginLoader){
-			$this->pluginManager->registerInterface(new FolderPluginLoader($this->autoloader));
-		}
 		$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 		$this->pluginManager->registerInterface(new ScriptPluginLoader());
 		$this->pluginManager->loadPlugins($this->pluginPath);
-
-		foreach($this->getAdditionalPluginDirs() as $path){
-			$this->pluginManager->loadPlugins($path);
-		}
 
 		$this->enablePlugins(PluginLoadOrder::STARTUP);
 		$this->enablePlugins(PluginLoadOrder::POSTWORLD);
@@ -2457,10 +2388,6 @@ class Server{
 			$this->getNetwork()->blockAddress($address, 600);
 		}
 		//TODO: add raw packet events
-	}
-
-	private function getAdditionalPluginDirs() : array{
-		return $this->getEskoProperty("additional-plugin-dirs", []);
 	}
 
 	/**
