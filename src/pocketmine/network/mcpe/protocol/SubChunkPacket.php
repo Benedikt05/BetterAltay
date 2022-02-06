@@ -40,7 +40,8 @@ class SubChunkPacket extends DataPacket{
 	private int $requestResult;
 	private ?SubChunkPacketHeightMapInfo $heightMapData = null;
 
-	public static function create(int $dimension, int $subChunkX, int $subChunkY, int $subChunkZ, string $data, int $requestResult, ?SubChunkPacketHeightMapInfo $heightMapData) : self{		$result = new self;
+	public static function create(int $dimension, int $subChunkX, int $subChunkY, int $subChunkZ, string $data, int $requestResult, ?SubChunkPacketHeightMapInfo $heightMapData) : self{
+		$result = new self;
 		$result->dimension = $dimension;
 		$result->subChunkX = $subChunkX;
 		$result->subChunkY = $subChunkY;

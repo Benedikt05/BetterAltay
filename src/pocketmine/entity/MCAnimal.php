@@ -67,13 +67,13 @@ abstract class MCAnimal extends Mob implements Ageable{
 		return parent::onInteract($player, $item, $clickPos);
 	}
 
-	public function entityBaseTick(int $diff = 1) : bool{
+	public function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->isInLove()){
 			if($this->inLove-- > 0 and $this->inLove % 10 === 0){
 				$this->broadcastEntityEvent(ActorEventPacket::LOVE_PARTICLES);
 			}
 		}
-		return parent::entityBaseTick($diff);
+		return parent::entityBaseTick($tickDiff);
 	}
 
 	public function setInLove(bool $value) : void{

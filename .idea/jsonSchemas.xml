@@ -20,6 +20,9 @@
                   <Item>
                     <option name="path" value="plugins/BigBrother/plugin.yml" />
                   </Item>
+                  <Item>
+                    <option name="path" value="plugins/InvMenuTesting/plugin.yml" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>
