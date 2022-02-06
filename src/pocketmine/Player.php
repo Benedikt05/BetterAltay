@@ -459,8 +459,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $fishingHook = null;
 	/** @var int */
 	protected $commandPermission = AdventureSettingsPacket::PERMISSION_NORMAL;
-	/** @var bool */
-	protected $keepExperience = false;
 
 	/**
 	 * @return TranslationContainer|string
@@ -476,9 +474,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * This might disappear in the future. Please use getUniqueId() instead.
-	 * @deprecated
-	 *
 	 * @return int
 	 */
 	public function getClientId(){
@@ -953,9 +948,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->lastPingMeasure = $pingMS;
 	}
 
-	/**
-	 * @deprecated
-	 */
 	public function getNextPosition() : Position{
 		return $this->getPosition();
 	}
@@ -1641,7 +1633,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function getXpDropAmount() : int{
-		if(!$this->server->keepExperience and !$this->isCreative() and !$this->keepExperience){
+		if(!$this->isCreative()){
 			return parent::getXpDropAmount();
 		}
 
@@ -3787,9 +3779,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
-	 * @see Player::sendTitle()
-	 *
 	 * @param int    $fadeIn Duration in ticks for fade-in. If -1 is given, client-sided defaults will be used.
 	 * @param int    $stay Duration in ticks to stay on screen for
 	 * @param int    $fadeOut Duration in ticks for fade-out.
@@ -3816,9 +3805,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
-	 * @see Player::sendSubTitle()
-	 *
 	 * @return void
 	 */
 	public function addSubTitle(string $subtitle){
@@ -3833,9 +3819,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
-	 * @see Player::sendActionBarMessage()
-	 *
 	 * @return void
 	 */
 	public function addActionBarMessage(string $message){
@@ -3952,7 +3935,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 *
 	 * TODO: add translation type popups
 	 *
-	 * @param string $subtitle @deprecated
+	 * @param string $message
+	 * @param string $subtitle
 	 *
 	 * @return void
 	 */
@@ -4204,11 +4188,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->doCloseInventory();
 
 		$ev = new PlayerDeathEvent($this, $this->getDrops(), null, $this->getXpDropAmount());
-		$ev->setKeepInventory($this->server->keepInventory or $this->level->getGameRules()->getBool(GameRules::RULE_KEEP_INVENTORY));
-		$ev->setKeepExperience($this->server->keepExperience);
+		$ev->setKeepInventory($this->level->getGameRules()->getBool(GameRules::RULE_KEEP_INVENTORY));
 		$ev->call();
-
-		$this->keepExperience = $ev->getKeepExperience();
 
 		if(!$ev->getKeepInventory()){
 			foreach($ev->getDrops() as $item){
@@ -4273,7 +4254,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->setHealth($this->getMaxHealth());
 
 		foreach($this->attributeMap->getAll() as $attr){
-			if($this->keepExperience and ($attr->getId() === Attribute::EXPERIENCE or $attr->getId() === Attribute::EXPERIENCE_LEVEL)){
+			if($attr->getId() === Attribute::EXPERIENCE or $attr->getId() === Attribute::EXPERIENCE_LEVEL){
 				continue;
 			}
 			$attr->resetToDefault();
@@ -4412,9 +4393,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		//TODO: more windows
 	}
 
-	/**
-	 * @deprecated
-	 */
 	public function getCursorInventory() : PlayerCursorInventory{
 		return $this->cursorInventory;
 	}
