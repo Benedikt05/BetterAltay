@@ -7,7 +7,8 @@
             "3": "minecraft:mojang_banner_pattern",
             "4": "minecraft:field_masoned_banner_pattern",
             "5": "minecraft:bordure_indented_banner_pattern",
-            "6": "minecraft:piglin_banner_pattern"
+            "6": "minecraft:piglin_banner_pattern",
+            "7": "minecraft:globe_banner_pattern"
         },
         "minecraft:boat": {
             "0": "minecraft:oak_boat",
@@ -22,6 +23,7 @@
             "10": "minecraft:lava_bucket",
             "11": "minecraft:powder_snow_bucket",
             "12": "minecraft:axolotl_bucket",
+            "13": "minecraft:tadpole_bucket",
             "2": "minecraft:cod_bucket",
             "3": "minecraft:salmon_bucket",
             "4": "minecraft:tropical_fish_bucket",
@@ -81,6 +83,10 @@
             "129": "minecraft:glow_squid_spawn_egg",
             "13": "minecraft:sheep_spawn_egg",
             "130": "minecraft:axolotl_spawn_egg",
+            "132": "minecraft:frog_spawn_egg",
+            "133": "minecraft:tadpole_spawn_egg",
+            "134": "minecraft:allay_spawn_egg",
+            "135": "minecraft:firefly_spawn_egg",
             "14": "minecraft:wolf_spawn_egg",
             "15": "minecraft:villager_spawn_egg",
             "16": "minecraft:mooshroom_spawn_egg",
