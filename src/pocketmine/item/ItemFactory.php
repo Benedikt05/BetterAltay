@@ -195,7 +195,7 @@ class ItemFactory{
 		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
 		self::registerItem(new SpawnEgg());
 		self::registerItem(new ExperienceBottle());
-		//TODO: FIREBALL
+		self::registerItem(new FireCharge(Item::FIRE_CHARGE, 0, "Fire Charge"));
 		self::registerItem(new WritableBook());
 		self::registerItem(new WrittenBook());
 		self::registerItem(new Item(Item::EMERALD, 0, "Emerald"));
