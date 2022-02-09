@@ -150,7 +150,7 @@ class ItemFactory{
 		self::registerItem(new Item(Item::PAPER, 0, "Paper"));
 		self::registerItem(new Book());
 		self::registerItem(new Item(Item::SLIME_BALL, 0, "Slimeball"));
-		//TODO: CHEST_MINECART
+		self::registerItem(new ChestMinecart(Item::CHEST_MINECART, 0, "Chest Minecart"));
 
 		self::registerItem(new Egg());
 		self::registerItem(new Compass());
