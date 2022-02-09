@@ -254,6 +254,7 @@ class ItemFactory{
 		self::registerItem(new Elytra());
 		self::registerItem(new Item(Item::SHULKER_SHELL, 0, "Shulker Shell"));
 		self::registerItem(new Banner());
+//		self::registerItem(new Spyglass());
 		//TODO: MEDICINE
 		//TODO: BALLOON
 		//TODO: RAPID_FERTILIZER
@@ -262,7 +263,7 @@ class ItemFactory{
 		self::registerItem(new Item(Item::IRON_NUGGET, 0, "Iron Nugget"));
 		//TODO: ICE_BOMB
 
-		//TODO: TRIDENT
+//		self::registerItem(new Trident(Item::TRIDENT, 0, "Trident"));
 
 		self::registerItem(new Beetroot());
 		self::registerItem(new BeetrootSeeds());
@@ -276,7 +277,7 @@ class ItemFactory{
 		self::registerItem(new GoldenAppleEnchanted());
 		self::registerItem(new Item(Item::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
 		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
-		//TODO: TURTLE_HELMET
+		self::registerItem(new TurtleHelmet());
 
 		self::registerItem(new Record(Item::RECORD_13, LevelSoundEventPacket::SOUND_RECORD_13));
 		self::registerItem(new Record(Item::RECORD_CAT, LevelSoundEventPacket::SOUND_RECORD_CAT));

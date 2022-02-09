@@ -31,6 +31,7 @@ use pocketmine\block\SoulSand;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
+use pocketmine\level\generator\InvalidGeneratorOptionsException;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\Ore;
@@ -58,7 +59,7 @@ class Nether extends Generator{
 	private $noiseBase;
 
 	/**
-	 * @param mixed[] $options
+	 * @param array                        $options
 	 * @phpstan-param array<string, mixed> $options
 	 *
 	 * @throws InvalidGeneratorOptionsException
@@ -105,7 +106,7 @@ class Nether extends Generator{
 				$chunk->setBiomeId($x, $z, $biome->getId());
 
 				for($y = 0; $y < 128; ++$y){
-					if($y === 0 or $y === 127){
+					if($y === 127){
 						$chunk->setBlock($x, $y, $z, Block::BEDROCK, 0);
 						continue;
 					}

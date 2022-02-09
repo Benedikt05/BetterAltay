@@ -173,7 +173,7 @@ class Normal extends Generator{
 	public function generateChunk(int $chunkX, int $chunkZ) : void{
 		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 
-		$noise = $this->noiseBase->getFastNoise3D(16, 128, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
+		$noise = $this->noiseBase->getFastNoise3D(16, 320, 16, 4, 8, 4, $chunkX * 16, 0, $chunkZ * 16);
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
@@ -216,7 +216,7 @@ class Normal extends Generator{
 
 				$smoothHeight = ($maxSum - $minSum) / 2;
 
-				for($y = 0; $y < 128; ++$y){
+				for($y = 0; $y < 320; ++$y){
 					if($y === 0){
 						$chunk->setBlockId($x, $y, $z, Block::BEDROCK);
 						continue;
@@ -249,6 +249,6 @@ class Normal extends Generator{
 	}
 
 	public function getSpawn() : Vector3{
-		return new Vector3(127.5, 128, 127.5);
+		return new Vector3(127.5, 320, 127.5);
 	}
 }

@@ -19,3 +19,6 @@ players
 maps
 crashdumps
 timings
+src/pocketmine/item/Trident.php
+src/pocketmine/entity/TridentEntity.php
+src/pocketmine/item/Spyglass.php

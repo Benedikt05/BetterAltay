@@ -262,6 +262,7 @@ interface ItemIds extends BlockIds{
 	public const RECORD_WAIT = 511;
 
 	public const SHIELD = 513;
+
 	public const NETHERITE_INGOT = 742;
 	public const NETHERITE_SWORD = 743;
 	public const NETHERITE_SHOVEL = 744;
@@ -273,5 +274,11 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_LEGGINGS = 750;
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
+	public const NETHERITE_BLOCK = 525;
+
+	public const NORMAL_CAMPFIRE_ITEM = 720;
+	public const SOUL_CAMPFIRE_ITEM = 801;
+
+	public const SPYGLASS = 772;
 
 }
