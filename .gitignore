@@ -9,6 +9,9 @@ white-list.txt
 EskoBE.phar
 .php-cs-fixer.cache
 whitelist_reason.txt
+src/pocketmine/item/Trident.php
+src/pocketmine/entity/TridentEntity.php
+src/pocketmine/item/Spyglass.php
 bin
 vendor/
 worlds
@@ -19,6 +22,3 @@ players
 maps
 crashdumps
 timings
-src/pocketmine/item/Trident.php
-src/pocketmine/entity/TridentEntity.php
-src/pocketmine/item/Spyglass.php

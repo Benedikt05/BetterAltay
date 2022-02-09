@@ -254,7 +254,7 @@ class ItemFactory{
 		self::registerItem(new Elytra());
 		self::registerItem(new Item(Item::SHULKER_SHELL, 0, "Shulker Shell"));
 		self::registerItem(new Banner());
-//		self::registerItem(new Spyglass());
+
 		//TODO: MEDICINE
 		//TODO: BALLOON
 		//TODO: RAPID_FERTILIZER
@@ -264,6 +264,7 @@ class ItemFactory{
 		//TODO: ICE_BOMB
 
 //		self::registerItem(new Trident(Item::TRIDENT, 0, "Trident"));
+		self::registerItem(new Spyglass(ItemIds::SPYGLASS, 0, "Spyglass"));
 
 		self::registerItem(new Beetroot());
 		self::registerItem(new BeetrootSeeds());
