@@ -30,6 +30,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 
 class Minecart extends Vehicle{
+
 	public const NETWORK_ID = self::MINECART;
 
 	public $height = 0.7;

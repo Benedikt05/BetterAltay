@@ -194,6 +194,7 @@ use pocketmine\network\mcpe\protocol\UpdatePlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;
 use pocketmine\network\mcpe\protocol\UpdateSubChunkBlocksPacket;
 use pocketmine\network\mcpe\protocol\UpdateTradePacket;
+use pocketmine\Server;
 
 abstract class NetworkSession{
 
@@ -431,7 +432,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleSetDifficulty(SetDifficultyPacket $packet) : bool{
-		return false;
+		//Def Peaceful = PAA=
+		//Def Easy = PAE=
+		//Def Normal = PAI=
+		//Def Hard = PAM=
+		foreach(Server::getInstance()->getLevels() as $level){
+			$level->setDifficulty($packet->difficulty);
+		}
+		return true;
 	}
 
 	public function handleChangeDimension(ChangeDimensionPacket $packet) : bool{
