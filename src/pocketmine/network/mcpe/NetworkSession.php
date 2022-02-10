@@ -432,14 +432,7 @@ abstract class NetworkSession{
 	}
 
 	public function handleSetDifficulty(SetDifficultyPacket $packet) : bool{
-		//Def Peaceful = PAA=
-		//Def Easy = PAE=
-		//Def Normal = PAI=
-		//Def Hard = PAM=
-		foreach(Server::getInstance()->getLevels() as $level){
-			$level->setDifficulty($packet->difficulty);
-		}
-		return true;
+		return false;
 	}
 
 	public function handleChangeDimension(ChangeDimensionPacket $packet) : bool{

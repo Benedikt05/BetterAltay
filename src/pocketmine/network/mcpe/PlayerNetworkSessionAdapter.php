@@ -68,6 +68,7 @@ use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\RiderJumpPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
+use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
 use pocketmine\network\mcpe\protocol\SetLocalPlayerAsInitializedPacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SettingsCommandPacket;
@@ -429,5 +430,14 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		}
 
 		return false;
+	}
+
+	public function handleSetDifficulty(SetDifficultyPacket $packet) : bool{
+		//Def Peaceful = PAA=
+		//Def Easy = PAE=
+		//Def Normal = PAI=
+		//Def Hard = PAM=
+		$this->player->getLevelNonNull()->setDifficulty($packet->difficulty);
+		return true;
 	}
 }
