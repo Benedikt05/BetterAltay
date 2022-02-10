@@ -82,33 +82,69 @@ class CobblestoneWall extends Transparent{
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
-		//walls don't have any special collision boxes like fences do
-
-		$north = $this->canConnect($this->getSide(Vector3::SIDE_NORTH));
-		$south = $this->canConnect($this->getSide(Vector3::SIDE_SOUTH));
-		$west = $this->canConnect($this->getSide(Vector3::SIDE_WEST));
-		$east = $this->canConnect($this->getSide(Vector3::SIDE_EAST));
-
-		$inset = 0.25;
-		if(
-			$this->getSide(Vector3::SIDE_UP)->getId() === Block::AIR and //if there is a block on top, it stays as a post
-			(
-				($north and $south and !$west and !$east) or
-				(!$north and !$south and $west and $east)
-			)
-		){
-			//If connected to two sides on the same axis but not any others, AND there is not a block on top, there is no post and the wall is thinner
-			$inset = 0.3125;
-		}
+		$width = 0.5 - 0.25 / 2;
 
 		return new AxisAlignedBB(
-			$this->x + ($west ? 0 : $inset),
+			$this->x + ($this->canConnect($this->getSide(Vector3::SIDE_WEST)) ? 0 : $width),
 			$this->y,
-			$this->z + ($north ? 0 : $inset),
-			$this->x + 1 - ($east ? 0 : $inset),
+			$this->z + ($this->canConnect($this->getSide(Vector3::SIDE_NORTH)) ? 0 : $width),
+			$this->x + 1 - ($this->canConnect($this->getSide(Vector3::SIDE_EAST)) ? 0 : $width),
 			$this->y + 1.5,
-			$this->z + 1 - ($south ? 0 : $inset)
+			$this->z + 1 - ($this->canConnect($this->getSide(Vector3::SIDE_SOUTH)) ? 0 : $width)
 		);
+	}
+
+	protected function recalculateCollisionBoxes() : array{
+		$inset = 0.5 - 0.25 / 2;
+
+		/** @var AxisAlignedBB[] $bbs */
+		$bbs = [];
+
+		$connectWest = $this->canConnect($this->getSide(Vector3::SIDE_WEST));
+		$connectEast = $this->canConnect($this->getSide(Vector3::SIDE_EAST));
+
+		if($connectWest or $connectEast){
+			//X axis (west/east)
+			$bbs[] = new AxisAlignedBB(
+				$this->x + ($connectWest ? 0 : $inset),
+				$this->y,
+				$this->z + $inset,
+				$this->x + 1 - ($connectEast ? 0 : $inset),
+				$this->y + 1.5,
+				$this->z + 1 - $inset
+			);
+		}
+
+		$connectNorth = $this->canConnect($this->getSide(Vector3::SIDE_NORTH));
+		$connectSouth = $this->canConnect($this->getSide(Vector3::SIDE_SOUTH));
+
+		if($connectNorth or $connectSouth){
+			//Z axis (north/south)
+			$bbs[] = new AxisAlignedBB(
+				$this->x + $inset,
+				$this->y,
+				$this->z + ($connectNorth ? 0 : $inset),
+				$this->x + 1 - $inset,
+				$this->y + 1.5,
+				$this->z + 1 - ($connectSouth ? 0 : $inset)
+			);
+		}
+
+		if(count($bbs) === 0){
+			//centre post AABB (only needed if not connected on any axis - other BBs overlapping will do this if any connections are made)
+			return [
+				new AxisAlignedBB(
+					$this->x + $inset,
+					$this->y,
+					$this->z + $inset,
+					$this->x + 1 - $inset,
+					$this->y + 1.5,
+					$this->z + 1 - $inset
+				)
+			];
+		}
+
+		return $bbs;
 	}
 
 	/**

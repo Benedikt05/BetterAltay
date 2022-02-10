@@ -274,7 +274,6 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_LEGGINGS = 750;
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
-	public const NETHERITE_BLOCK = 525;
 
 	public const NORMAL_CAMPFIRE_ITEM = 720;
 	public const SOUL_CAMPFIRE_ITEM = 801;

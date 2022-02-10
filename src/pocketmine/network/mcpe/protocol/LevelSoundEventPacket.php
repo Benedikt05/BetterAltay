@@ -360,17 +360,6 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BUCKET_EMPTY_POWDER_SNOW = 329;
 	public const SOUND_UNDEFINED = 330;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
-		$result = new self;
-		$result->sound = $sound;
-		$result->extraData = $extraData;
-		$result->position = $pos;
-		$result->disableRelativeVolume = $pos === null;
-		$result->entityType = $entityType;
-		$result->isBabyMob = $isBabyMob;
-		return $result;
-	}
-
 	/** @var int */
 	public $sound;
 	/** @var Vector3 */
@@ -383,6 +372,21 @@ class LevelSoundEventPacket extends DataPacket{
 	public $isBabyMob = false; //...
 	/** @var bool */
 	public $disableRelativeVolume = false;
+
+	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, bool $disableRelativeVolume = false) : self{
+		$result = new self;
+		$result->sound = $sound;
+		$result->extraData = $extraData;
+		$result->position = $pos;
+		$result->entityType = $entityType;
+		$result->isBabyMob = $isBabyMob;
+		$result->disableRelativeVolume = $disableRelativeVolume;
+		return $result;
+	}
+
+	public static function nonActorSound(int $sound, Vector3 $position, bool $disableRelativeVolume, int $extraData = -1) : self{
+		return self::create($sound, $position, $extraData, ":", false, $disableRelativeVolume);
+	}
 
 	protected function decodePayload(){
 		$this->sound = $this->getUnsignedVarInt();

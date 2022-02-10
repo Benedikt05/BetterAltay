@@ -277,9 +277,12 @@ interface BlockIds{
 	public const RESERVED6 = 255;
 
 	public const NORMAL_CAMPFIRE_BLOCK = 464;
-	public const SOUL_CAMPFIRE_BLOCK = 545;
 
+	public const SOUL_CAMPFIRE_BLOCK = 545;
 	public const BEE_NEST = 473;
+
 	public const BEEHIVE = 474;
+
+	public const NETHERITE_BLOCK = 525;
 
 }
