@@ -1,0 +1,6 @@
+{
+    "name": "pocketmine/locale-data",
+    "description": "Language resources used by PocketMine-MP",
+    "type": "library",
+    "require": {}
+}
