@@ -25,18 +25,14 @@ declare(strict_types=1);
 namespace pocketmine\entity\passive;
 
 use pocketmine\entity\behavior\FloatBehavior;
-use pocketmine\entity\behavior\HurtByTargetBehavior;
 use pocketmine\entity\behavior\LeapAtTargetBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MeleeAttackBehavior;
-use pocketmine\entity\behavior\NearestAttackableTargetBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\StayWhileSittingBehavior;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
-use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use function mt_rand;
 use pocketmine\entity\Ageable;
@@ -116,7 +112,7 @@ class ZombiePigman extends Monster implements Ageable, Smite{
 	public function setAngry(bool $angry = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_ANGRY, $angry);
 	}
-	
+
 	public function sendSpawnPacket(Player $player) : void{
 		parent::sendSpawnPacket($player);
 

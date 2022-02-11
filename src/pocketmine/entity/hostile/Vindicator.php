@@ -45,18 +45,18 @@ class Vindicator extends Monster implements Ageable, Smite{
 
 	public $width = 0.6;
 	public $height = 1.9;
-	
+
 	/** @var AltayEntityEquipment */
 	protected $equipment;
 
 	protected function initEntity() : void{
-	        $this->setMaxHealth(24);
+		$this->setMaxHealth(24);
 		$this->setFollowRange(35);
 		$this->setMovementSpeed(0.35);
 		$this->setAttackDamage(8);
 
 		parent::initEntity();
-		
+
 		$this->equipment = new AltayEntityEquipment($this);
 
 		$this->equipment->setItemInHand(ItemFactory::get(Item::IRON_AXE));
@@ -99,7 +99,7 @@ class Vindicator extends Monster implements Ageable, Smite{
 		$this->targetBehaviorPool->setBehavior(1, new NearestAttackableTargetBehavior($this, Player::class));
 		$this->targetBehaviorPool->setBehavior(2, new NearestAttackableTargetBehavior($this, Villager::class));
 	}
-	
+
 	public function sendSpawnPacket(Player $player) : void{
 		parent::sendSpawnPacket($player);
 		$this->equipment->sendContents([$player]);

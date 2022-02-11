@@ -24,8 +24,13 @@ declare(strict_types = 1);
 
 namespace pocketmine\entity;
 
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use function max;
 
 abstract class Monster extends Mob{
@@ -73,4 +78,14 @@ abstract class Monster extends Mob{
 			);
 	}
 
+	// todo public function attack(EntityDamageEvent $source) : void{
+	// 	parent::attack($source);
+	// 	if($source instanceof EntityDamageByEntityEvent){
+	// 		$e = $source->getDamager();
+
+	// 		if($e instanceof static){
+	// 			$e->broadcastEntityEvent(ActorEventPacket::ARM_SWING);
+	// 		}
+	// 	}
+	// }
 }
