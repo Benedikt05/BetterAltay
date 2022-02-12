@@ -27,6 +27,7 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\utils\SingletonTrait;
 use function constant;
 use function defined;
 use function explode;
@@ -43,6 +44,7 @@ use function trim;
  * Manages Item instance creation and registration
  */
 class ItemFactory{
+	use SingletonTrait;
 
 	/**
 	 * @var \SplFixedArray|Item[]

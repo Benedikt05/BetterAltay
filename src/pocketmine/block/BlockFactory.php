@@ -26,12 +26,15 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\utils\SingletonTrait;
 use function min;
 
 /**
  * Manages block registration and instance creation
  */
 class BlockFactory{
+	use SingletonTrait;
+
 	/**
 	 * @var \SplFixedArray|Block[]
 	 * @phpstan-var \SplFixedArray<Block>
