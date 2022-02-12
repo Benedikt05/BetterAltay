@@ -24,27 +24,22 @@ declare(strict_types=1);
 namespace pocketmine\player;
 
 use pocketmine\level\Level;
+use pocketmine\Player as IPlayer;
 
-class Player {
+class Player extends IPlayer {
 
-	protected \pocketmine\Player $player;
-
-	public function __construct(\pocketmine\Player $player){
-		$this->player = $player;
-	}
-
-	public function getNetworkSession() : \pocketmine\Player
+	public function getNetworkSession() : self
 	{
-		return $this->player;
+		return $this->getPlayer();
 	}
 
 	/*public function getPlayerInfo(): self
 	{
 		return $this;
-	}*/ //soon implement
+	} soon implement */
 
 	public function getWorld() : Level
 	{
-		return $this->player->getLevelNonNull();
+		return $this->getLevelNonNull();
 	}
 }
