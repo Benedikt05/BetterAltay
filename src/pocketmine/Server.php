@@ -1714,6 +1714,24 @@ class Server{
 	}
 
 	/**
+	 * @param Player[]            $players
+	 * @param DataPacket[] $packets
+	 */
+	public function broadcastPackets(array $players, array $packets) : bool{
+		if(count($packets) === 0){
+			throw new \InvalidArgumentException("Cannot broadcast empty list of packets");
+		}
+
+		foreach($packets as $packet){
+			foreach($players as $player){
+				$player->sendDataPacket($packet);
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * @param TextContainer|string $message
 	 */
 	public function broadcast($message, string $permissions) : int{

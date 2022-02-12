@@ -356,6 +356,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $craftingGrid;
 	/** @var CraftingTransaction|null */
 	protected $craftingTransaction = null;
+	/** @var Location|null */
+	protected $location;
 
 	/**
 	 * TODO: HACK! This tracks GUIs for inventories that the server considers "always open" so that the client can't
@@ -839,6 +841,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->allowMovementCheats = (bool) $this->server->getProperty("player.anti-cheat.allow-movement-cheats", false);
 
 		$this->sessionAdapter = new PlayerNetworkSessionAdapter($this->server, $this);
+		$this->location = $this->asLocation();
 	}
 
 	public function isConnected() : bool{
