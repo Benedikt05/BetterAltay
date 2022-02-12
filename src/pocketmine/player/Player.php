@@ -24,19 +24,27 @@ declare(strict_types=1);
 namespace pocketmine\player;
 
 use pocketmine\level\Level;
+use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\Player as IPlayer;
 
 class Player extends IPlayer {
+
+	private PlayerInfo $playerInfo;
+
+	public function handleLogin(LoginPacket $packet) : bool{
+		parent::handleLogin($packet);
+		$this->playerInfo = $packet->playerInfo;
+		return true;
+	}
 
 	public function getNetworkSession() : self
 	{
 		return $this->getPlayer();
 	}
 
-	/*public function getPlayerInfo(): self
-	{
-		return $this;
-	} soon implement */
+	public function getPlayerInfo() : PlayerInfo{
+		return $this->playerInfo;
+	}
 
 	public function getWorld() : Level
 	{

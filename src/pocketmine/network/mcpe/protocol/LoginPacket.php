@@ -26,6 +26,8 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\Player;
+use pocketmine\player\PlayerInfo;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Utils;
@@ -72,6 +74,11 @@ class LoginPacket extends DataPacket{
 	 * @var bool
 	 */
 	public $skipVerification = false;
+
+	/**
+	 * @var PlayerInfo $playerInfo
+	 */
+	public $playerInfo;
 
 	public function canBeSentBeforeLogin() : bool{
 		return true;
@@ -135,6 +142,7 @@ class LoginPacket extends DataPacket{
 		$this->serverAddress = $this->clientData["ServerAddress"] ?? null;
 
 		$this->locale = $this->clientData["LanguageCode"] ?? null;
+		$this->playerInfo = new PlayerInfo((new \ReflectionClass(Player::class))->getMethod("getPlayer"), $this->clientData);
 	}
 
 	protected function encodePayload(){
