@@ -5,14 +5,21 @@ declare(strict_types=1);
 namespace pocketmine\player;
 
 use pocketmine\entity\Skin;
+use pocketmine\Player;
 use pocketmine\utils\UUID;
 
 class PlayerInfo {
 
+	/**
+	 * @var Player $player
+	 */
 	private $player;
+	/**
+	 * @var array $extraData
+	 */
 	private $extraData;
 
-	public function __construct($player, array $extraData){
+	public function __construct(Player $player, array $extraData){
 		$this->player = $player;
 		$this->extraData = $extraData;
 	}

@@ -107,6 +107,10 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		$this->player = $player;
 	}
 
+	public function getPlayer() : Player{
+		return $this->player;
+	}
+
 	public function handleDataPacket(DataPacket $packet){
 		if(!$this->player->isConnected()){
 			return;
@@ -114,6 +118,10 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 		$timings = Timings::getReceiveDataPacketTimings($packet);
 		$timings->startTiming();
+
+		if($packet instanceof LoginPacket){
+			$packet->sessionAdapter = $this;
+		}
 
 		$packet->decode();
 		if(!$packet->feof() and !$packet->mayHaveUnreadBytes()){
@@ -131,6 +139,9 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 	}
 
 	public function handleLogin(LoginPacket $packet) : bool{
+		if($packet->sessionAdapter === null){
+			$packet->sessionAdapter = $this;
+		}
 		return $this->player->handleLogin($packet);
 	}
 
