@@ -66,7 +66,7 @@ abstract class Event{
 	}
 
         public function cancel() {
-               $this->setCancelled(true);
+               $this->setCancelled();
         }
 
         public function uncancel() {
