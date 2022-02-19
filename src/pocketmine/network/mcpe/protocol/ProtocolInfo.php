@@ -218,5 +218,8 @@ interface ProtocolInfo{
 	public const PHOTO_INFO_REQUEST_PACKET = 0xad;
 	public const SUB_CHUNK_PACKET = 0xae;
 	public const SUB_CHUNK_REQUEST_PACKET = 0xaf;
+	public const PLAYER_START_ITEM_COOLDOWN_PACKET = 0xb0;
+	public const SCRIPT_MESSAGE_PACKET = 0xb1;
+	public const CODE_BUILDER_SOURCE_PACKET = 0xb2;
 
 }
