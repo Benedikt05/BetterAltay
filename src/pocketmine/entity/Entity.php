@@ -1320,15 +1320,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		if($this->isGliding()) $this->resetFallDistance();
 
 		if($this->inPortal){
-			if($this->server->isAllowNether()){
-				if(!$this->isRiding() and $this->portalCounter++ > $this->getMaxInPortalTime()){
-					$this->portalCounter = $this->getMaxInPortalTime();
-					$this->timeUntilPortal = $this->getPortalCooldown();
+			if(!$this->isRiding() and $this->portalCounter++ > $this->getMaxInPortalTime()){
+				$this->portalCounter = $this->getMaxInPortalTime();
+				$this->timeUntilPortal = $this->getPortalCooldown();
 
-					$this->travelToDimension($this->level->getDimension() === DimensionIds::NETHER ? DimensionIds::OVERWORLD : DimensionIds::NETHER);
+				$this->travelToDimension($this->level->getDimension() === DimensionIds::NETHER ? DimensionIds::OVERWORLD : DimensionIds::NETHER);
 
-					$this->inPortal = false;
-				}
+				$this->inPortal = false;
 			}
 		}else{
 			if($this->portalCounter > 0){
