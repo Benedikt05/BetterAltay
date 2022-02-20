@@ -210,7 +210,8 @@ class ItemFactory{
 		self::registerItem(new EmptyMap());
 		self::registerItem(new GoldenCarrot());
 		self::registerItem(new ItemBlock(Block::SKULL_BLOCK, 0, Item::SKULL));
-		//TODO: CARROTONASTICK
+		self::registerItem(new CarrotStick(ItemIds::CARROTONASTICK, 0, "Carrot on a Stick"));
+		self::registerItem(new FungusStick(757, 0, "Warped Fungus on a Stick"));
 		self::registerItem(new Item(Item::NETHER_STAR, 0, "Nether Star"));
 		self::registerItem(new PumpkinPie());
 		self::registerItem(new Fireworks());
