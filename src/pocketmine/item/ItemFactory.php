@@ -193,7 +193,7 @@ class ItemFactory{
 		self::registerItem(new ItemBlock(Block::CAULDRON_BLOCK, 0, Item::CAULDRON));
 		self::registerItem(new ShulkerBox(), true);
 		self::registerItem(new UndyedShulkerBox(), true);
-		//TODO: ENDER_EYE
+		self::registerItem(new EnderEye(ItemIds::ENDER_EYE, 0, "Eye of Ender"));
 		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
 		self::registerItem(new SpawnEgg());
 		self::registerItem(new ExperienceBottle());
