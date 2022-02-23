@@ -42,6 +42,7 @@ use pocketmine\entity\hostile\Slime;
 use pocketmine\entity\hostile\Spider;
 use pocketmine\entity\hostile\Stray;
 use pocketmine\entity\hostile\Zombie;
+use pocketmine\entity\object\AreaEffectCloud;//new
 use pocketmine\entity\object\ArmorStand;
 use pocketmine\entity\object\EnderCrystal;
 use pocketmine\entity\object\ExperienceOrb;
@@ -63,6 +64,7 @@ use pocketmine\entity\passive\Squid;
 use pocketmine\entity\passive\Villager;
 use pocketmine\entity\passive\Wolf;
 use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\LingeringPotion;//new
 use pocketmine\entity\projectile\Egg;
 use pocketmine\entity\projectile\EnderPearl;
 use pocketmine\entity\projectile\ExperienceBottle;
@@ -405,7 +407,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public static function init() : void{
 		//define legacy save IDs first - use them for saving for maximum compatibility with Minecraft PC
 		//TODO: index them by version to allow proper multi-save compatibility
-
+		
+        Entity::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingering_potion']);
 		Entity::registerEntity(Arrow::class, false, ['Arrow', 'minecraft:arrow']);
 		Entity::registerEntity(Egg::class, false, ['Egg', 'minecraft:egg']);
 		Entity::registerEntity(EnderPearl::class, false, ['ThrownEnderpearl', 'minecraft:ender_pearl']);
@@ -438,6 +441,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		Entity::registerEntity(Horse::class, false, ['Horse', 'minecraft:horse']);
 		Entity::registerEntity(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
 		Entity::registerEntity(SmallFireball::class, false, ['SmallFireball', 'minecraft:small_fireball']);
+		Entity::registerEntity(AreaEffectCloud::class, false, ['AreaEffectCloud", "minecraft:area_effect_cloud']);
 		Entity::registerEntity(ArmorStand::class, false, ['armor_stand", "minecraft:armor_stand']);
 		Entity::registerEntity(Boat::class, false, ['Boat', 'minecraft:boat']);
 		Entity::registerEntity(Minecart::class, false, ['Minecart', 'minecraft:minecart']);
