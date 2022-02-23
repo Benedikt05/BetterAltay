@@ -1,95 +1,115 @@
 <?php
 
-declare(strict_types = 1);
+namespace pocketmine\item;
 
-namespace pocketmine\entity\projectile;
-
-use pocketmine\entity\object\AreaEffectCloud;
-use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Throwable;
-use pocketmine\event\entity\ProjectileHitEvent;
-use pocketmine\item\Item as ItemItem;
-use pocketmine\item\Potion;
-use pocketmine\level\{
-	particle\ItemBreakParticle
+use pocketmine\entity\{
+	Entity, projectile\Projectile
 };
-use pocketmine\nbt\tag\{
-	CompoundTag, DoubleTag, FloatTag, ListTag, ShortTag
+use pocketmine\event\entity\ProjectileLaunchEvent;
+use pocketmine\item\{
+	Item, Potion, ProjectileItem
 };
-use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\Server;
+use pocketmine\level\sound\LaunchSound;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
 
-class LingeringPotion extends Throwable {
+class LingeringPotion extends ProjectileItem {
 
-	public const NETWORK_ID = self::LINGERING_POTION;
-
-	public const DATA_POTION_ID = 16;//TODO: update this
 	public const TAG_POTION_ID = "PotionId";
-	public $width = 0.25;
-	public $length = 0.25;
-	public $height = 0.25;
-	protected $gravity = 0.1;
-	protected $drag = 0.05;
 
-	public function initEntity(): void{
-		if(!$this->namedtag->hasTag(self::TAG_POTION_ID, ShortTag::class)){
-			$this->namedtag->setShort(self::TAG_POTION_ID, Potion::AWKWARD);
-		}
-		$this->getDataPropertyManager()->setShort(self::DATA_VARIANT, $this->getPotionId());
-		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_LINGER);
-
-		parent::initEntity();
+	public function __construct($meta = 0){
+		parent::__construct(Item::LINGERING_POTION, $meta, $this->getNameByMeta($meta));
 	}
 
-	public function getPotionId(){
-		return $this->namedtag->getShort(self::TAG_POTION_ID);
+	public function getNameByMeta($meta){
+		switch($meta){
+			case Potion::WATER:
+				return "Lingering Water Bottle";
+			case Potion::MUNDANE:
+			case Potion::LONG_MUNDANE:
+				return "Lingering Mundane Potion";
+			case Potion::THICK:
+				return "Lingering Thick Potion";
+			case Potion::AWKWARD:
+				return "Lingering Awkward Potion";
+			case Potion::INVISIBILITY:
+			case Potion::LONG_INVISIBILITY:
+				return "Lingering Potion of Invisibility";
+			case Potion::LEAPING:
+			case Potion::LONG_LEAPING:
+				return "Lingering Potion of Leaping";
+			case Potion::STRONG_LEAPING:
+				return "Lingering Potion of Leaping II";
+			case Potion::FIRE_RESISTANCE:
+			case Potion::LONG_FIRE_RESISTANCE:
+				return "Lingering Potion of Fire Residence";
+			case Potion::SWIFTNESS:
+			case Potion::LONG_SWIFTNESS:
+				return "Lingering Potion of Swiftness";
+			case Potion::STRONG_SWIFTNESS:
+				return "Lingering Potion of Swiftness II";
+			case Potion::SLOWNESS:
+			case Potion::LONG_SLOWNESS:
+				return "Lingering Potion of Slowness";
+			case Potion::WATER_BREATHING:
+			case Potion::LONG_WATER_BREATHING:
+				return "Lingering Potion of Water Breathing";
+			case Potion::HARMING:
+				return "Lingering Potion of Harming";
+			case Potion::STRONG_HARMING:
+				return "Lingering Potion of Harming II";
+			case Potion::POISON:
+			case Potion::LONG_POISON:
+				return "Lingering Potion of Poison";
+			case Potion::STRONG_POISON:
+				return "Lingering Potion of Poison II";
+			case Potion::HEALING:
+				return "Lingering Potion of Healing";
+			case Potion::STRONG_HEALING:
+				return "Lingering Potion of Healing II";
+			case Potion::NIGHT_VISION:
+			case Potion::LONG_NIGHT_VISION:
+				return "Lingerin Potion of Night Vision";
+			default:
+				return "Lingering Potion";
+		}
 	}
 
-	public function onHit(ProjectileHitEvent $event): void{
-		$this->getLevel()->addParticle(new ItemBreakParticle($this, ItemItem::get(ItemItem::LINGERING_POTION)));
+	public function getMaxStackSize(): int{
+		return 1;
+	}
 
-		$aec = null;
+	public function onClickAir(Player $player, Vector3 $directionVector): bool{//TODO optimise
+		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $directionVector, $player->yaw, $player->pitch);
+		$nbt->setShort(self::TAG_POTION_ID, $this->meta);
+		$projectile = Entity::createEntity($this->getProjectileEntityType(), $player->getLevel(), $nbt, $player);
 
-		$nbt = new CompoundTag("", [
-			new ListTag("Pos", [
-				new DoubleTag("", $this->getX()),
-				new DoubleTag("", $this->getY()),
-				new DoubleTag("", $this->getZ()),
-			]),
-			new ListTag("Motion", [
-				new DoubleTag("", 0),
-				new DoubleTag("", 0),
-				new DoubleTag("", 0),
-			]),
-			new ListTag("Rotation", [
-				new FloatTag("", 0),
-				new FloatTag("", 0),
-			]),
-		]);
-		$nbt->setInt(AreaEffectCloud::TAG_AGE, 0);
-		$nbt->setShort(AreaEffectCloud::TAG_POTION_ID, $this->getPotionId());
-		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS, 3);
-		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_ON_USE, -0.5);
-		$nbt->setFloat(AreaEffectCloud::TAG_RADIUS_PER_TICK, -0.005);
-		$nbt->setInt(AreaEffectCloud::TAG_WAIT_TIME, 10);
-		$nbt->setInt(AreaEffectCloud::TAG_TILE_X, intval(round($this->getX())));
-		$nbt->setInt(AreaEffectCloud::TAG_TILE_Y, intval(round($this->getY())));
-		$nbt->setInt(AreaEffectCloud::TAG_TILE_Z, intval(round($this->getZ())));
-		$nbt->setInt(AreaEffectCloud::TAG_DURATION, 600);
-		$nbt->setInt(AreaEffectCloud::TAG_DURATION_ON_USE, 0);
-
-		$aec = Entity::createEntity("AreaEffectCloud", $this->getLevel(), $nbt);
-		if($aec instanceof Entity){
-			$aec->spawnToAll();
+		if($projectile !== null){
+			$projectile->setMotion($projectile->getMotion()->multiply($this->getThrowForce()));
 		}
 
-		$pk = new PlaySoundPacket();
-		$pk->soundName = "random.glass";
-		$pk->volume = 500;
-		$pk->pitch = 1;
-		Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
+		$this->count--;
 
-		$this->flagForDespawn();
-		parent::onHit($event);
+		if($projectile instanceof Projectile){
+			$player->getServer()->getPluginManager()->callEvent($projectileEv = new ProjectileLaunchEvent($projectile));
+			if($projectileEv->isCancelled()){
+				$projectile->kill();
+			}else{
+				$projectile->spawnToAll();
+				$player->getLevel()->addSound(new LaunchSound($player), $player->getViewers());
+			}
+		}else{
+			$projectile->spawnToAll();
+		}
+
+		return true;
+	}
+
+	public function getProjectileEntityType(): string{
+		return "LingeringPotion";
+	}
+
+	public function getThrowForce(): float{
+		return 0.5;
 	}
 }
