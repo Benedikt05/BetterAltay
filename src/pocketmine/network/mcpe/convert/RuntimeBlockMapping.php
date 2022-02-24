@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
-use pocketmine\nbt\NBT;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
@@ -60,7 +59,34 @@ final class RuntimeBlockMapping{
 		}
 		self::$bedrockKnownStates = $list;
 
+		self::registerMappings();
 		self::setupLegacyMappings();
+	}
+
+	private static function registerMappings(){
+		$nameToLegacyMap = json_decode(file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla/block_id_map.json"), true);
+		$metaMap = [];
+
+		foreach(RuntimeBlockMapping::$bedrockKnownStates as $runtimeId => $state){
+			$name = $state->getString("name");
+			if(!isset($nameToLegacyMap[$name])){
+				continue;
+			}
+
+			$legacyId = $nameToLegacyMap[$name];
+			if($legacyId <= 469){
+				continue;
+			}elseif(!isset($metaMap[$legacyId])){
+				$metaMap[$legacyId] = 0;
+			}
+
+			$meta = $metaMap[$legacyId]++;
+			if($meta > 15){
+				continue;
+			}
+
+			self::registerMapping($runtimeId, $legacyId, $meta);
+		}
 	}
 
 	private static function setupLegacyMappings() : void{

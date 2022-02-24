@@ -58,6 +58,12 @@ class ItemFactory{
 	public static function init(){
 		self::$list = new \SplFixedArray(65536);
 
+		if(!is_array(self::$list)){
+			$list = new \ReflectionProperty(static::class, 'list');
+			$list->setAccessible(true);
+			$list->setValue(self::$list->toArray());
+		}
+
 		self::registerItem(new Shovel(Item::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
 		self::registerItem(new Pickaxe(Item::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
 		self::registerItem(new Axe(Item::IRON_AXE, 0, "Iron Axe", TieredTool::TIER_IRON));
@@ -329,25 +335,13 @@ class ItemFactory{
 	 * @throws \TypeError
 	 */
 	public static function get(int $id, int $meta = 0, int $count = 1, $tags = null) : Item{
-		if(!is_string($tags) and !($tags instanceof CompoundTag) and $tags !== null){
+		if (!is_string($tags) and !$tags instanceof CompoundTag and $tags !== null){
 			throw new \TypeError("`tags` argument must be a string or CompoundTag instance, " . (is_object($tags) ? "instance of " . get_class($tags) : gettype($tags)) . " given");
 		}
-
-		try{
-			/** @var Item|null $listed */
-			$listed = self::$list[self::getListOffset($id)];
-			if($listed !== null){
-				$item = clone $listed;
-			}elseif($id >= 0 and $id < 256){ //intentionally excludes negatives because extended blocks aren't supported yet
-				/* Blocks must have a damage value 0-15, but items can have damage value -1 to indicate that they are
-				 * crafting ingredients with any-damage. */
-				$item = new ItemBlock($id, $meta);
-			}else{
-				$item = new Item($id, $meta);
-			}
-		}catch(\RuntimeException $e){
-			throw new \InvalidArgumentException("Item ID $id is invalid or out of bounds");
-		}
+		$listed = self::$list[$id] ?? null;
+		if($listed !== null) $item = clone $listed;
+		elseif($id < 256) $item = new ItemBlock($id < 0 ? 255 - $id : $id, $meta, $id);
+		else $item = new Item($id, $meta);
 
 		$item->setDamage($meta);
 		$item->setCount($count);
@@ -409,7 +403,7 @@ class ItemFactory{
 	 */
 	public static function isRegistered(int $id) : bool{
 		if($id < 256){
-			return BlockFactory::isRegistered($id);
+			return BlockFactory::isRegistered($id < 0 ? 255 - $id : $id);
 		}
 		return self::$list[self::getListOffset($id)] !== null;
 	}

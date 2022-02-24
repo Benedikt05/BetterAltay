@@ -82,15 +82,15 @@ class BlockFactory{
 	 * this if you need to reset the block factory back to its original defaults for whatever reason.
 	 */
 	public static function init() : void{
-		self::$fullList = new \SplFixedArray(4096);
+		self::$fullList = new \SplFixedArray(16384);
 
-		self::$light = new \SplFixedArray(256);
-		self::$lightFilter = new \SplFixedArray(256);
-		self::$solid = new \SplFixedArray(256);
-		self::$hardness = new \SplFixedArray(256);
-		self::$transparent = new \SplFixedArray(256);
-		self::$diffusesSkyLight = new \SplFixedArray(256);
-		self::$blastResistance = new \SplFixedArray(256);
+		self::$light = new \SplFixedArray(1024);
+		self::$lightFilter = new \SplFixedArray(1024);
+		self::$solid = new \SplFixedArray(1024);
+		self::$hardness = new \SplFixedArray(1024);
+		self::$transparent = new \SplFixedArray(1024);
+		self::$diffusesSkyLight = new \SplFixedArray(1024);
+		self::$blastResistance = new \SplFixedArray(1024);
 
 		self::registerBlock(new Air());
 		self::registerBlock(new Stone());
@@ -157,6 +157,7 @@ class BlockFactory{
 		self::registerBlock(new BurningFurnace());
 		self::registerBlock(new SignPost());
 		self::registerBlock(new WoodenDoor(Block::OAK_DOOR_BLOCK, 0, "Oak Door", Item::OAK_DOOR));
+		self::registerBlock(new NetheriteBlock());
 		self::registerBlock(new Ladder());
 		self::registerBlock(new Rail());
 		self::registerBlock(new CobblestoneStairs());
