@@ -65,6 +65,14 @@ abstract class Event{
 		$this->isCancelled = $value;
 	}
 
+        public function cancel() {
+               $this->setCancelled();
+        }
+
+        public function uncancel() {
+               $this->setCancelled(false);
+        }
+
 	/**
 	 * Calls event handlers registered for this event.
 	 *

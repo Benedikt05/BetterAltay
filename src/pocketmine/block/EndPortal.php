@@ -63,12 +63,10 @@ class EndPortal extends Transparent{
 	}
 
 	public function onEntityCollide(Entity $entity) : void{
-		if(Server::getInstance()->isAllowTheEnd()){
-			if($entity->getLevel()->getDimension() === DimensionIds::THE_END){
-				$entity->travelToDimension(DimensionIds::OVERWORLD);
-			}else{
-				$entity->travelToDimension(DimensionIds::THE_END);
-			}
+		if($entity->getLevel()->getDimension() === DimensionIds::THE_END){
+			$entity->travelToDimension(DimensionIds::OVERWORLD);
+		}else{
+			$entity->travelToDimension(DimensionIds::THE_END);
 		}
 	}
 
