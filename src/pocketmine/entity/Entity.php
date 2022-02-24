@@ -43,6 +43,7 @@ use pocketmine\entity\hostile\Spider;
 use pocketmine\entity\hostile\Stray;
 use pocketmine\entity\hostile\Zombie;
 use pocketmine\entity\object\AreaEffectCloud;//new
+use pocketmine\entity\object\EnderEyeEntity;//new
 use pocketmine\entity\object\ArmorStand;
 use pocketmine\entity\object\EnderCrystal;
 use pocketmine\entity\object\ExperienceOrb;
@@ -408,7 +409,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		//define legacy save IDs first - use them for saving for maximum compatibility with Minecraft PC
 		//TODO: index them by version to allow proper multi-save compatibility
 		
-        Entity::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingering_potion']);
+		Entity::registerEntity(EnderEyeEntity::class, false, ['EnderEyeEntity', 'minecraft:eye_of_ender_signal']);//new
+                Entity::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingering_potion']);
 		Entity::registerEntity(Arrow::class, false, ['Arrow', 'minecraft:arrow']);
 		Entity::registerEntity(Egg::class, false, ['Egg', 'minecraft:egg']);
 		Entity::registerEntity(EnderPearl::class, false, ['ThrownEnderpearl', 'minecraft:ender_pearl']);
