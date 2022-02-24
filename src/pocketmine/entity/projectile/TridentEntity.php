@@ -37,9 +37,9 @@ class TridentEntity extends Projectile{
 
 	protected $damage = 8;
 
-	public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $isCiritical = false) {
+	public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $isCritical = false) {
 		parent::__construct($level, $nbt, $shootingEntity);
-		$this->setCritical($isCiritical);
+		$this->setCritical($isCritical);
 	}
 
 	public function isCritical(): bool {
