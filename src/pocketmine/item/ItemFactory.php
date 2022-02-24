@@ -64,6 +64,11 @@ class ItemFactory{
 			$list->setValue(self::$list->toArray());
 		}
 
+		self::registerItem(new CrossBow());//new
+		self::registerItem(new LingeringPotion());//new
+		self::registerItem(new EnderEye(ItemIds::ENDER_EYE, 0, "Eye of Ender"));//new
+		self::registerItem(new CarrotStick(ItemIds::CARROTONASTICK, 0, "Carrot on a Stick"));//new
+		self::registerItem(new FungusStick(757, 0, "Warped Fungus on a Stick"));//new
 		self::registerItem(new Shovel(Item::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
 		self::registerItem(new Pickaxe(Item::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
 		self::registerItem(new Axe(Item::IRON_AXE, 0, "Iron Axe", TieredTool::TIER_IRON));
