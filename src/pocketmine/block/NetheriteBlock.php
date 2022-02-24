@@ -7,6 +7,7 @@ namespace pocketmine\block;
 use pocketmine\item\TieredTool;
 
 class NetheriteBlock extends Solid{
+	use PlaceholderTrait;
 
 	public function __construct(){
 		parent::__construct(self::NETHERITE_BLOCK, 0, "Block of Netherite");

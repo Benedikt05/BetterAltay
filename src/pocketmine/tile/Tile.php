@@ -116,6 +116,7 @@ abstract class Tile extends Position{
 		self::registerTile(Hopper::class, [self::HOPPER, "minecraft:hopper"]);
 		self::registerTile(Beacon::class, [self::BEACON, "minecraft:beacon"]);
 		self::registerTile(Cauldron::class, [self::CAULDRON, "minecraft:cauldron"]);
+		self::registerTile(Placeholder::class);
 	}
 
 	/**
