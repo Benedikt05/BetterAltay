@@ -26,6 +26,7 @@ namespace pocketmine\item;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\utils\SingletonTrait;
 use function constant;
@@ -276,7 +277,7 @@ class ItemFactory{
 		self::registerItem(new Item(Item::IRON_NUGGET, 0, "Iron Nugget"));
 		//TODO: ICE_BOMB
 
-//		self::registerItem(new Trident(Item::TRIDENT, 0, "Trident"));
+		self::registerItem(new Trident(Item::TRIDENT, 0, "Trident"));
 		self::registerItem(new Spyglass(ItemIds::SPYGLASS, 0, "Spyglass"));
 
 		self::registerItem(new Beetroot());

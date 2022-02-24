@@ -448,7 +448,9 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		//Def Easy = PAE=
 		//Def Normal = PAI=
 		//Def Hard = PAM=
-		$this->player->getLevelNonNull()->setDifficulty($packet->difficulty);
+		if($this->player->isOp()){
+			$this->player->getLevelNonNull()->setDifficulty($packet->difficulty);
+		}
 		return true;
 	}
 }

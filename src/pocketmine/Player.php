@@ -3465,9 +3465,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleSetPlayerGameType(SetPlayerGameTypePacket $packet) : bool{
-		if($packet->gamemode !== $this->gamemode){
-			$this->setGamemode($packet->gamemode);
-			$this->sendSettings();
+		if($this->isOp()){
+			if($packet->gamemode !== $this->gamemode){
+				$this->setGamemode($packet->gamemode);
+				$this->sendSettings();
+			}
 		}
 		return true;
 	}

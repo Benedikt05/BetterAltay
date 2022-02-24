@@ -6,41 +6,56 @@ namespace pocketmine\item;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\TridentEntity;
-use pocketmine\event\entity\ProjectileLaunchEvent;
-use pocketmine\level\sound\TridentThrowSound;
-use pocketmine\math\Vector3;
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 
-class Trident extends Tool
-{
+class Trident extends Tool{
 
 	public function getMaxDurability() : int{
 		return 251;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
-		$location = $player->getLocation();
+	public function onAttackEntity(Entity $victim) : bool{
+		return $this->applyDamage(1);
+	}
 
+	public function getAttackPoints() : int{
+		return 9;
+	}
+
+	public function onReleaseUsing(Player $player) : bool{
 		$diff = $player->getItemUseDuration();
 		$p = $diff / 20;
-		$baseForce = min((($p ** 2) + $p * 2) / 3, 1) * 3;
-		if($baseForce < 0.9 || $diff < 8){
+		$force = min((($p ** 2) + $p * 2) / 3, 1);
+
+		if($force < 0.5 or $diff < 5){
 			return false;
 		}
 
-		$entity = new TridentEntity($player->level, Entity::createBaseNBT($player->add(0, $player->getEyeHeight() - 0.1, 0), $player->getDirectionVector()->multiply(0.4)), $this, $player);
-		$entity->setMotion($player->getDirectionVector()->multiply($baseForce));
+		$player->getLevelNonNull()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_ITEM_TRIDENT_THROW);
 
-		$ev = new ProjectileLaunchEvent($entity);
-		$ev->call();
-		if($ev->isCancelled()){
-			$ev->getEntity()->flagForDespawn();
-			return false;
+		if($this->hasEnchantment(Enchantment::RIPTIDE)){
+			if(!$player->isCreative()){
+				$this->applyDamage(1);
+			}
+
+			return true;
 		}
-		$ev->getEntity()->spawnToAll();
-		$location->level->addSound(new TridentThrowSound());
-		$entity->item->applyDamage(1);
-		$this->pop();
+
+		if(!$player->isCreative()){
+			$this->applyDamage(1);
+			$this->pop();
+		}
+
+		$nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight()), $player->getDirectionVector()->multiply($force * 4), ($player->yaw > 180 ? 360 : 0) - $player->yaw, -$player->pitch);
+		$entity = new TridentEntity($player->getLevelNonNull(), $nbt, $player, $force >= 1);
+		$entity->namedtag->setInt("trident_damage", $this->meta);
+		foreach($this->getEnchantments() as $enchantment){
+			$entity->addEnchantment($enchantment);
+		}
+		$entity->spawnToAll();
+
 		return true;
 	}
 }
