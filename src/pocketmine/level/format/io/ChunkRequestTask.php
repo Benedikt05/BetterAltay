@@ -34,11 +34,11 @@ use function strlen;
 
 class ChunkRequestTask extends AsyncTask{
 
-	/** @var int */
-	protected $levelId;
-
 	/** @var string */
 	protected $chunk;
+
+	/** @var int */
+	protected $levelId;
 	/** @var int */
 	protected $chunkX;
 	/** @var int */
@@ -47,23 +47,22 @@ class ChunkRequestTask extends AsyncTask{
 	/** @var int */
 	protected $compressionLevel;
 
-	/** @var string */
-	private $tiles;
+	/** @var int */
+	protected $subChunkSendCount;
 
 	public function __construct(Level $level, int $chunkX, int $chunkZ, Chunk $chunk){
 		$this->levelId = $level->getId();
 		$this->compressionLevel = $level->getServer()->networkCompressionLevel;
 
-		$this->chunk = $chunk->fastSerialize();
-		$this->tiles = $chunk->networkSerializeTiles();
+		$this->chunk = $chunk->networkSerialize();
 
 		$this->chunkX = $chunkX;
 		$this->chunkZ = $chunkZ;
+		$this->subChunkSendCount = $chunk->getSubChunkSendCount();
 	}
 
 	public function onRun(){
-		$chunk = Chunk::fastDeserialize($this->chunk);
-		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, $chunk->getSubChunkSendCount() + 4, false, null, $chunk->networkSerialize($this->tiles));
+		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, $this->subChunkSendCount, false, null, $this->chunk);
 
 		$batch = new BatchPacket();
 		$batch->addPacket($pk);

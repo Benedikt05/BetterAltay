@@ -862,7 +862,7 @@ class Chunk{
 	/**
 	 * Serializes the chunk for sending to players
 	 */
-	public function networkSerialize(?string $networkSerializedTiles) : string{
+	/*public function networkSerialize(?string $networkSerializedTiles) : string{
 		$result = "";
 		$subChunkCount = $this->getSubChunkSendCount();
 
@@ -883,6 +883,26 @@ class Chunk{
 		//Border block entry format: 1 byte (4 bits X, 4 bits Z). These are however useless since they crash the regular client.
 
 		$result .= $networkSerializedTiles ?? $this->networkSerializeTiles();
+
+		return $result;
+	}*/
+
+	public function networkSerialize() : string{
+		$result = "";
+		$subChunkCount = $this->getSubChunkSendCount();
+
+		for($y = 0; $y < $subChunkCount; ++$y){
+			$result .= $this->subChunks[$y]->networkSerialize();
+		}
+		$result .= $this->biomeIds . chr(0); //border block array count
+
+		//Border block entry format: 1 byte (4 bits X, 4 bits Z). These are however useless since they crash the regular client.
+
+		foreach($this->tiles as $tile){
+			if($tile instanceof Spawnable){
+				$result .= $tile->getSerializedSpawnCompound();
+			}
+		}
 
 		return $result;
 	}
