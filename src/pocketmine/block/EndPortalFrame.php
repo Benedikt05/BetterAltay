@@ -32,6 +32,10 @@ class EndPortalFrame extends Solid{
 
 	protected $id = self::END_PORTAL_FRAME;
 
+	private const SIDES = [Vector3::SIDE_NORTH, Vector3::SIDE_EAST, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST];
+
+	private $eyes = [];
+
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
 	}
@@ -77,42 +81,85 @@ class EndPortalFrame extends Solid{
 		];
 		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
 		$this->getLevel()->setBlock($block, $this, true, true);
-
 		return true;
 	}
 
 	public function onActivate(Item $item, Player $player = null): bool{
 		if(($this->getDamage() & 0x04) === 0 && $player instanceof Player && $item->getId() === Item::ENDER_EYE){
+			if(!isset($this->eyes[$item->getDamage()])){
+				$this->eyes[$item->getDamage()] = 0;
+			}
+			$this->eyes[$item->getDamage()] += 1;
 			$this->setDamage($this->getDamage() + 4);
-			$this->getLevel()->setBlock($this, $this, true, true);
+			$this->getLevel()->setBlock($this, $this, false, true);
+			$this->tryCreatingPortal($this);
 			return true;
+		}elseif($item->getId() !== Item::ENDER_EYE && ($this->getDamage() & 0x04) === 4){
+			$this->setDamage($this->getDamage() & 0x04 - 4);
+			if(!isset($this->eyes[$item->getDamage()])){
+				return false;
+			}
+			$this->eyes[$item->getDamage()] -= 1;
+			$this->getLevel()->dropItem($this->add(0.5, 0.75, 0.5), Item::get(Item::ENDER_EYE));
+			$this->tryDestroyingPortal($this);
 		}
 		return false;
 	}
 
-	public function isValidPortal(): array{
-		return [
-			new Vector3(0, 0, 0),
-			new Vector3(0, 0, 0),
-			new Vector3(0, 0, 0),
-			new Vector3(0, 0, 0),
-		];
-	}
-	
-	private function createPortal(array $corners = null): bool{
-		if($corners === null){
-			return false;
-		}
-		$x1 = min($corners[0][0], $corners[1][0]);
-		$x2 = max($corners[0][0], $corners[1][0]);
-		$z1 = min($corners[0][1], $corners[1][1]);
-		$z2 = max($corners[0][1], $corners[1][1]);
-		$y = $corners[2];
-		for($curX = $x1; $curX <= $x2; $curX++){
-			for($curZ = $z1; $curZ <= $z2; $curZ++){
-				$this->getLevel()->setBlock($player->asVector3()->add(curX, $y, $curZ), Block::get(119));
+	public function isCompletedPortal(Block $center) : bool{
+		for($i = 0; $i < 4; ++$i){
+			for($j = -1; $j <= 1; ++$j){
+				$block = $center->getSide(self::SIDES[$i], 2)->getSide(self::SIDES[($i + 1) % 4], $j);
+				if(!($block instanceof EndPortalFrame)){
+					return false;
+				}
 			}
 		}
 		return true;
+	}
+
+	public function tryCreatingPortal(Block $block) : void{
+		for($i = 0; $i < 4; ++$i){
+			for($j = -1; $j <= 1; ++$j){
+				$center = $block->getSide(self::SIDES[$i], 2)->getSide(self::SIDES[($i + 1) % 4], $j);
+				foreach($this->eyes as $eyes){
+					if($this->isCompletedPortal($center) && $eyes >= 12){
+						$this->createPortal($center);
+					}
+				}
+			}
+		}
+	}
+
+	public function createPortal(Block $center) : void{
+		$pos = $center->asPosition();
+		for($i = -1; $i <= 1; ++$i){
+			for($j = -1; $j <= 1; ++$j){
+				$this->getLevel()->setBlock(new Vector3($pos->x + $i, $pos->y, $pos->z + $j), Block::get(Block::END_PORTAL, 0), false);
+			}
+		}
+	}
+
+	public function tryDestroyingPortal(Block $block) : void{
+		for($i = 0; $i < 4; ++$i){
+			for($j = -1; $j <= 1; ++$j){
+				$center = $block->getSide(self::SIDES[$i], 2)->getSide(self::SIDES[($i + 1) % 4], $j);
+				if(!$this->isCompletedPortal($center)){
+					$this->destroyPortal($center);
+				}
+			}
+		}
+	}
+
+	public function destroyPortal(Block $center) : void{
+		$pos = $center->asPosition();
+		$level = $pos->getLevel();
+		for($i = -1; $i <= 1; ++$i){
+			for($j = -1; $j <= 1; ++$j){
+				if($level->getBlockAt($pos->x + $i, $pos->y, $pos->z + $j)->getId() === Block::END_PORTAL){
+					$level->setBlock(new Vector3($pos->x + $i, $pos->y, $pos->z + $j), Block::get(Block::AIR), false);
+				}
+			}
+		}
 	}
 }

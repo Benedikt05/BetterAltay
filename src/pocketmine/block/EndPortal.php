@@ -66,6 +66,7 @@ class EndPortal extends Transparent{
 		if($entity->getLevel()->getDimension() === DimensionIds::THE_END){
 			$entity->travelToDimension(DimensionIds::OVERWORLD);
 		}else{
+			$entity->teleport(Server::getInstance()->getTheEndLevel()->getSafeSpawn());
 			$entity->travelToDimension(DimensionIds::THE_END);
 		}
 	}
@@ -73,12 +74,11 @@ class EndPortal extends Transparent{
 	public function onBreak(Item $item, Player $player = null) : bool{
 		$result = parent::onBreak($item, $player);
 
-		foreach($this->getHorizontalSides() as $side){
-			if($side instanceof EndPortal){
+		foreach($this->getAllSides() as $side){
+			if($side instanceof self){
 				$side->onBreak($item, $player);
 			}
 		}
-
 		return $result;
 	}
 }
