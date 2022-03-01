@@ -275,11 +275,11 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
 
+	public const SPYGLASS = 772;
+
 	public const NORMAL_CAMPFIRE_ITEM = 720;
 	public const SOUL_CAMPFIRE_ITEM = 801;
 
 	public const NETHERITE_BLOCK_ITEM = -270;
-
-	public const SPYGLASS = 772;
 
 }

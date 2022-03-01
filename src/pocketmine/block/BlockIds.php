@@ -285,4 +285,41 @@ interface BlockIds{
 
 	public const NETHERITE_BLOCK = 525;
 
+	public const CRIMSON_PLANKS = 497;
+
+	public const WARPED_PLANKS = 498;
+	public const BLACKSTONE_WALL = 532;
+	public const POLISHED_BLACKSTONE_WALL = 552;
+	public const POLISHED_BLACKSTONE_BRICK_WALL = 533;
+	public const COBBLED_DEEPSLATE_WALL = 637;
+	public const DEEPSLATE_TILE_WALL = 641;
+	public const POLISHED_DEEPSLATE_WALL = 649;
+
+	public const DEEPSLATE_BRICK_WALL = 649;
+
+	public const CRIMSON_FENCE = 511;
+	public const WARPED_FENCE = 512;
+
+	public const CRIMSON_FENCE_GATE = 513;
+	public const WARPED_FENCE_GATE = 514;
+
+	public const NORMAL_STONE_STAIRS = 435;
+	public const MOSSY_COBBLESTONE_STAIRS = 434;
+	public const MOSSY_STONE_BRICK_STAIRS = 430;
+	public const SMOOTH_SANDSTONE_STAIRS = 432;
+	public const SMOOTH_RED_SANDSTONE_STAIRS = 431;
+	public const GRANITE_STAIRS = 424;
+	public const POLISHED_GRANITE_STAIRS = 427;
+	public const DIORITE_STAIRS = 425;
+	public const POLISHED_DIORITE_STAIRS = 428;
+	public const ANDESITE_STAIRS = 428;
+	public const POLISHED_ANDESITE_STAIRS = 429;
+	public const RED_NETHER_BRICK_STAIRS = 439;
+	public const END_BRICK_STAIRS = 433;
+	public const SMOOTH_QUARTZ_STAIRS = 440;
+	public const PRISMARINE_STAIRS = 257;
+	public const DARK_PRISMARINE_STAIRS = 258;
+	public const PRISMARINE_BRICKS_STAIRS = 259;
+	public const CRIMSON_STAIRS = 509;
+
 }
