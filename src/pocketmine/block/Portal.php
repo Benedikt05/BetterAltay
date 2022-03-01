@@ -58,8 +58,8 @@ class Portal extends Flowable{
 	public function onBreak(Item $item, Player $player = null) : bool{
 		$result = parent::onBreak($item, $player);
 
-		foreach($this->getHorizontalSides() as $side){
-			if($side instanceof Portal){
+		foreach($this->getAllSides() as $side){
+			if($side instanceof self){
 				$side->onBreak($item, $player);
 			}
 		}
