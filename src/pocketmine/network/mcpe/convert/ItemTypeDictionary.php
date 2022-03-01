@@ -63,10 +63,10 @@ final class ItemTypeDictionary{
 
 		$params = [];
 		foreach($table as $name => $entry){
-			if(!is_array($entry) || !is_string($name) || !isset($entry["component_based"], $entry["runtime_id"]) || !is_bool($entry["component_based"]) || !is_int($entry["runtime_id"])){
+			if(!isset($entry["component_based"], $entry["runtime_id"]) || !is_bool($entry["component_based"]) || !is_int($entry["runtime_id"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
-			$params[] = new ItemTypeEntry($name, $entry["runtime_id"], $entry["component_based"]);
+			$params[] = new ItemTypeEntry($entry["name"], $entry["runtime_id"], $entry["component_based"]);
 		}
 		return new self($params);
 	}

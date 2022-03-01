@@ -312,7 +312,7 @@ interface BlockIds{
 	public const POLISHED_GRANITE_STAIRS = 427;
 	public const DIORITE_STAIRS = 425;
 	public const POLISHED_DIORITE_STAIRS = 428;
-	public const ANDESITE_STAIRS = 428;
+	public const ANDESITE_STAIRS = 426;
 	public const POLISHED_ANDESITE_STAIRS = 429;
 	public const RED_NETHER_BRICK_STAIRS = 439;
 	public const END_BRICK_STAIRS = 433;
@@ -321,5 +321,7 @@ interface BlockIds{
 	public const DARK_PRISMARINE_STAIRS = 258;
 	public const PRISMARINE_BRICKS_STAIRS = 259;
 	public const CRIMSON_STAIRS = 509;
+
+	public const AMETHYST_BLOCK = 582;
 
 }

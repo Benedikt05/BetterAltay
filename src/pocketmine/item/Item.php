@@ -33,6 +33,7 @@ use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\math\Vector3;
+use pocketmine\missingthings\MissingCreativeItemsAdder;
 use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
@@ -133,6 +134,7 @@ class Item implements ItemIds, \JsonSerializable{
 			}
 			self::addCreativeItem($item);
 		}
+		MissingCreativeItemsAdder::addEveryMissingItem();
 	}
 
 	/**
