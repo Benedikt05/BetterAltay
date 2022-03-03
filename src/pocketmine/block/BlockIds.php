@@ -324,4 +324,6 @@ interface BlockIds{
 
 	public const AMETHYST_BLOCK = 582;
 
+	public const BARRIER_BLOCK = 416;
+
 }

@@ -84,14 +84,6 @@ class BlockFactory{
 	public static function init() : void{
 		self::$fullList = new \SplFixedArray(16384);
 
-		self::$light = new \SplFixedArray(1024);
-		self::$lightFilter = new \SplFixedArray(1024);
-		self::$solid = new \SplFixedArray(1024);
-		self::$hardness = new \SplFixedArray(1024);
-		self::$transparent = new \SplFixedArray(1024);
-		self::$diffusesSkyLight = new \SplFixedArray(1024);
-		self::$blastResistance = new \SplFixedArray(1024);
-
 		self::registerBlock(new Air());
 		self::registerBlock(new Stone());
 		self::registerBlock(new Grass());
@@ -344,6 +336,7 @@ class BlockFactory{
 
 		self::registerBlock(new Reserved6(Block::RESERVED6, 0, "reserved6"));
 		self::registerBlock(new Placeholder(), true);
+		self::registerBlock(new Barrier());
 
 		for($id = 0, $size = self::$fullList->getSize() >> 4; $id < $size; ++$id){
 			if(self::$fullList[$id << 4] === null){

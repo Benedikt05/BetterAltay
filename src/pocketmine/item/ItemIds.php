@@ -282,4 +282,6 @@ interface ItemIds extends BlockIds{
 
 	public const NETHERITE_BLOCK_ITEM = -270;
 
+	public const BARRIER_ITEM = -161;
+
 }
