@@ -7,6 +7,7 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 
 class Barrier extends Solid{
+	use PlaceholderTrait;
 
 	protected $id = self::BARRIER_BLOCK;
 
