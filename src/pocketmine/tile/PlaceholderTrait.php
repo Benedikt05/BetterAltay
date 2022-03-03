@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use JavierLeon9966\ExtendedBlocks\block\Placeholder;
-use pocketmine\block\{Block, BlockFactory, Reserved6};
+use pocketmine\block\{Block, BlockFactory, Placeholder, Reserved6};
 use pocketmine\nbt\tag\{ByteTag, CompoundTag, ShortTag};
 
 trait PlaceholderTrait{
@@ -39,8 +39,8 @@ trait PlaceholderTrait{
 		return $tag;
 	}
 
-	public function getBlock(bool $extended = false) : Block{
-		if(!$extended){
+	public function getBlock(bool $ms = false) : Block{
+		if(!$ms){
 			return parent::getBlock();
 		}
 		return $this->block = $this->block ?? new Reserved6(Block::RESERVED6, 0, 'reserved6');
