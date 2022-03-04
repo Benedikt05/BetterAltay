@@ -67,6 +67,7 @@ use pocketmine\entity\passive\Wolf;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\LingeringPotion;//new
 use pocketmine\entity\projectile\Egg;
+use pocketmine\entity\projectile\TridentEntity; // fixed
 use pocketmine\entity\projectile\EnderPearl;
 use pocketmine\entity\projectile\ExperienceBottle;
 use pocketmine\entity\projectile\FishingHook;
@@ -410,7 +411,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		//TODO: index them by version to allow proper multi-save compatibility
 		
 		Entity::registerEntity(EnderEyeEntity::class, false, ['EnderEyeEntity', 'minecraft:eye_of_ender_signal']);//new
-                Entity::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingering_potion']);
+		Entity::registerEntity(LingeringPotion::class, false, ['LingeringPotion', 'minecraft:lingering_potion']);
 		Entity::registerEntity(Arrow::class, false, ['Arrow', 'minecraft:arrow']);
 		Entity::registerEntity(Egg::class, false, ['Egg', 'minecraft:egg']);
 		Entity::registerEntity(EnderPearl::class, false, ['ThrownEnderpearl', 'minecraft:ender_pearl']);
@@ -421,6 +422,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		Entity::registerEntity(Painting::class, false, ['Painting', 'minecraft:painting']);
 		Entity::registerEntity(PrimedTNT::class, false, ['PrimedTnt', 'PrimedTNT', 'minecraft:tnt']);
 		Entity::registerEntity(Snowball::class, false, ['Snowball', 'minecraft:snowball']);
+		Entity::registerEntity(TridentEntity::class, false, ['TridentEntity', 'minecraft:trident']);// fixed
 		Entity::registerEntity(SplashPotion::class, false, ['ThrownPotion', 'minecraft:potion', 'thrownpotion']);
 		Entity::registerEntity(Squid::class, false, ['Squid', 'minecraft:squid']);
 		Entity::registerEntity(Villager::class, false, ['Villager', 'minecraft:villager']);
