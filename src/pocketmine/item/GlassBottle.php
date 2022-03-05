@@ -23,8 +23,26 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use pocketmine\block\Block;
+use pocketmine\item\Item;
+use pocketmine\item\Potion;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
+
 class GlassBottle extends Item{
+	
 	public function __construct(int $meta = 0){
 		parent::__construct(self::GLASS_BOTTLE, $meta, "Glass Bottle");
+	}
+	
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
+		if(in_array($blockClicked->getId(), [Block::STILL_WATER, Block::FLOWING_WATER]) || in_array($blockReplace->getId(), [Block::STILL_WATER, Block::FLOWING_WATER])){
+			if($player->isSurvival()){
+				$this->count--;
+			}
+			$player->getInventory()->addItem(Item::get(Item::POTION, Potion::WATER, 1));
+		}
+
+		return true;
 	}
 }
