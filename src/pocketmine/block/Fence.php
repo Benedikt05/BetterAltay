@@ -117,7 +117,7 @@ abstract class Fence extends Transparent{
 	 * @return bool
 	 */
 	public function canConnect(Block $block){
-		return $block instanceof static or $block instanceof FenceGate or ($block->isSolid() and !$block->isTransparent());
+		return $block instanceof Placeholder or $block instanceof static or $block instanceof FenceGate or ($block->isSolid() and !$block->isTransparent());
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{

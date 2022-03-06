@@ -283,7 +283,7 @@ interface BlockIds{
 
 	public const BEEHIVE = 474;
 
-	public const NETHERITE_BLOCK = 525;
+	public const NETHERITE_BLOCK_BLOCK = 525;
 
 	public const CRIMSON_PLANKS = 497;
 
@@ -322,7 +322,7 @@ interface BlockIds{
 	public const PRISMARINE_BRICKS_STAIRS = 259;
 	public const CRIMSON_STAIRS = 509;
 
-	public const AMETHYST_BLOCK = 582;
+	public const AMETHYST_BLOCK_BLOCK = 582;
 
 	public const BARRIER_BLOCK = 416;
 

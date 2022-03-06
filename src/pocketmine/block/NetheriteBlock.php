@@ -10,7 +10,7 @@ class NetheriteBlock extends Solid{
 	use PlaceholderTrait;
 
 	public function __construct(){
-		parent::__construct(self::NETHERITE_BLOCK, 0, "Block of Netherite");
+		parent::__construct(self::NETHERITE_BLOCK_BLOCK, 0, "Block of Netherite");
 	}
 
 	public function getName() : string{
