@@ -330,6 +330,7 @@ class BlockFactory{
 
 		//TODO: CHORUS_PLANT
 		self::registerBlock(new StainedGlass());
+		self::registerBlock(new Campfire());
 
 		self::registerBlock(new Podzol());
 		self::registerBlock(new Beetroot());

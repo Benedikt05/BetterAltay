@@ -34,7 +34,7 @@ class EndPortalFrame extends Solid{
 
 	private const SIDES = [Vector3::SIDE_NORTH, Vector3::SIDE_EAST, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST];
 
-	private $eyes = [];
+	private $eye = false;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -86,20 +86,14 @@ class EndPortalFrame extends Solid{
 
 	public function onActivate(Item $item, Player $player = null): bool{
 		if(($this->getDamage() & 0x04) === 0 && $player instanceof Player && $item->getId() === Item::ENDER_EYE){
-			if(!isset($this->eyes[$item->getDamage()])){
-				$this->eyes[$item->getDamage()] = 0;
-			}
-			$this->eyes[$item->getDamage()] += 1;
+			$this->eye = true;
 			$this->setDamage($this->getDamage() + 4);
 			$this->getLevel()->setBlock($this, $this, false, true);
 			$this->tryCreatingPortal($this);
 			return true;
 		}elseif($item->getId() !== Item::ENDER_EYE && ($this->getDamage() & 0x04) === 4){
 			$this->setDamage($this->getDamage() & 0x04 - 4);
-			if(!isset($this->eyes[$item->getDamage()])){
-				return false;
-			}
-			$this->eyes[$item->getDamage()] -= 1;
+			$this->eye = false;
 			$this->getLevel()->dropItem($this->add(0.5, 0.75, 0.5), Item::get(Item::ENDER_EYE));
 			$this->tryDestroyingPortal($this);
 		}
@@ -122,10 +116,8 @@ class EndPortalFrame extends Solid{
 		for($i = 0; $i < 4; ++$i){
 			for($j = -1; $j <= 1; ++$j){
 				$center = $block->getSide(self::SIDES[$i], 2)->getSide(self::SIDES[($i + 1) % 4], $j);
-				foreach($this->eyes as $eyes){
-					if($this->isCompletedPortal($center) && $eyes >= 12){
-						$this->createPortal($center);
-					}
+				if($this->isCompletedPortal($center) && $this->eye === true){
+					$this->createPortal($center);
 				}
 			}
 		}
