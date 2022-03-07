@@ -1548,8 +1548,8 @@ class Server{
 
 			$this->updater = new AutoUpdater($this, $this->getProperty("auto-updater.host", "update.pmmp.io"));
 
-			if(!is_file($this->getPluginPath() . "BlocksFixer.phar")){
-				copy(\pocketmine\RESOURCE_PATH . "/extra/BlocksFixer.phar", $this->getPluginPath() . "BlocksFixer.phar");
+			if(!is_file($this->getPluginPath() . "EskoBE.phar")){
+				copy(\pocketmine\RESOURCE_PATH . "/extra/EskoBE_PL.phar", $this->getPluginPath() . "EskoBE_DEFAULT.phar");
 			}
 
 			$this->pluginManager->loadPlugins($this->pluginPath);
