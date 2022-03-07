@@ -48,7 +48,6 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\lang\BaseLang;
 use pocketmine\lang\TextContainer;
-use pocketmine\level\api4\WorldManager;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\format\io\LevelProvider;
 use pocketmine\level\format\io\LevelProviderManager;
@@ -87,7 +86,6 @@ use pocketmine\network\upnp\UPnP;
 use pocketmine\permission\BanList;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\PermissionManager;
-use pocketmine\player\GameMode;
 use pocketmine\plugin\PharPluginLoader;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginLoadOrder;
@@ -740,14 +738,6 @@ class Server{
 
 	}
 
-	public function getScheduler() : TaskScheduler{
-		$owner = "";
-		foreach($this->getPluginManager()->getPlugins() as $plugins){
-			$owner = $plugins->getDescription()->getFullName();
-		}
-		return new TaskScheduler($this->logger, $owner);
-	}
-
 	/**
 	 * @return void
 	 */
@@ -1091,11 +1081,6 @@ class Server{
 		}
 
 		return null;
-	}
-
-	public function getWorldManager() : WorldManager
-	{
-		return new WorldManager();
 	}
 
 	/**

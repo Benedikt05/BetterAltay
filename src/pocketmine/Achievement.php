@@ -131,10 +131,8 @@ abstract class Achievement{
 				"name" => $achievementName,
 				"requires" => $requires
 			];
-
 			return true;
 		}
-
 		return false;
 	}
 }

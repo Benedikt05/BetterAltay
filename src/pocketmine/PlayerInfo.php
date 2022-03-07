@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\player;
+namespace pocketmine;
 
 use pocketmine\entity\Skin;
-use pocketmine\Player;
 use pocketmine\utils\UUID;
 
 class PlayerInfo {

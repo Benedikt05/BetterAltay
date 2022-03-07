@@ -29,8 +29,7 @@ use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\Network;
-use pocketmine\Player as IPlayer;
-use pocketmine\player\Player as PM4Player;
+use pocketmine\Player as Player;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\utils\TextFormat;
@@ -69,7 +68,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	/** @var RakLibServer */
 	private $rakLib;
 
-	/** @var IPlayer[] */
+	/** @var Player[] */
 	private $players = [];
 
 	/** @var string[] */
@@ -128,7 +127,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		}
 	}
 
-	public function close(IPlayer $player, string $reason = "unknown reason"){
+	public function close(Player $player, string $reason = "unknown reason"){
 		if(isset($this->identifiers[$h = spl_object_hash($player)])){
 			unset($this->players[$this->identifiers[$h]]);
 			unset($this->identifiersACK[$this->identifiers[$h]]);
@@ -148,13 +147,13 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	}
 
 	public function openSession(string $identifier, string $address, int $port, int $clientID) : void{
-		$ev = new PlayerCreationEvent($this, IPlayer::class, PM4Player::class, $address, $port);
+		$ev = new PlayerCreationEvent($this, Player::class, Player::class, $address, $port);
 		$ev->call();
 		$class = $ev->getPlayerClass();
 
 		/**
-		 * @var IPlayer $player
-		 * @see IPlayer::__construct()
+		 * @var Player $player
+		 * @see Player::__construct()
 		 */
 		$player = new $class($this, $ev->getAddress(), $ev->getPort());
 		$this->players[$identifier] = $player;
@@ -224,7 +223,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$info->getMaxPlayerCount(),
 				$this->rakLib->getServerId(),
 				$this->server->getName(),
-				Server::getGamemodeName(IPlayer::getClientFriendlyGamemode($this->server->getGamemode()))
+				Server::getGamemodeName(Player::getClientFriendlyGamemode($this->server->getGamemode()))
 			]) . ";"
 		);
 	}
@@ -249,7 +248,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		}
 	}
 
-	public function putPacket(IPlayer $player, DataPacket $packet, bool $needACK = false, bool $immediate = true){
+	public function putPacket(Player $player, DataPacket $packet, bool $needACK = false, bool $immediate = true){
 		if(isset($this->identifiers[$h = spl_object_hash($player)])){
 			$identifier = $this->identifiers[$h];
 			if(!$packet->isEncoded){

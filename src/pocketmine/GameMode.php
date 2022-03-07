@@ -1,6 +1,6 @@
 <?php
 
-namespace pocketmine\player;
+namespace pocketmine;
 
 final class GameMode{
 

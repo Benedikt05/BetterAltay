@@ -241,7 +241,11 @@ class PluginManager{
 					}
 
 					$name = $description->getName();
-					if(stripos($name, "pocketmine") !== false or stripos($name, "minecraft") !== false or stripos($name, "mojang") !== false){
+					if(!isset($description->getAuthors()[0]) || $description->getAuthors() === null){
+						$this->server->getLogger()->error("Could not load plugin {$description->getName()} unknown author/s");
+						continue;
+					}
+					if((stripos($name, "eskobe") !== false && $description->getMain() !== "RXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0t\RXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0t") or stripos($name, "minecraft") !== false or stripos($name, "mojang") !== false){
 						$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [$name, "%pocketmine.plugin.restrictedName"]));
 						continue;
 					}elseif(strpos($name, " ") !== false){
@@ -253,12 +257,14 @@ class PluginManager{
 						continue;
 					}
 
-					if(!$this->isCompatibleApi(...$description->getCompatibleApis())){
-						$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [
-							$name,
-							$this->server->getLanguage()->translateString("%pocketmine.plugin.incompatibleAPI", [implode(", ", $description->getCompatibleApis())])
-						]));
-						continue;
+					if((stripos($description->getCompatibleApis()[0], "EskoBE_Default_Plugin") === false && $description->getMain() !== "RXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0t\RXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0tRXNrb0JFLS0tLS0tLS0t")){
+						if(!$this->isCompatibleApi(...$description->getCompatibleApis())){
+							$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [
+								$name,
+								$this->server->getLanguage()->translateString("%pocketmine.plugin.incompatibleAPI", [implode(", ", $description->getCompatibleApis())])
+							]));
+							continue;
+						}
 					}
 
 					if(count($description->getCompatibleOperatingSystems()) > 0 and !in_array(Utils::getOS(), $description->getCompatibleOperatingSystems(), true)) {
@@ -366,7 +372,9 @@ class PluginManager{
 	/**
 	 * Returns whether a specified API version string is considered compatible with the server's API version.
 	 *
-	 * @param string ...$versions
+	 * @param string            ...$versions
+	 *
+	 * @return bool
 	 */
 	public function isCompatibleApi(string ...$versions) : bool{
 		$serverString = $this->server->getApiVersion();
