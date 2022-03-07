@@ -29,6 +29,7 @@ namespace pocketmine\network;
 use pocketmine\event\server\NetworkInterfaceRegisterEvent;
 use pocketmine\event\server\NetworkInterfaceUnregisterEvent;
 use pocketmine\network\mcpe\protocol\PacketPool;
+use pocketmine\network\query\QueryHandler;
 use pocketmine\Server;
 use function spl_object_hash;
 
@@ -198,5 +199,20 @@ class Network{
 		foreach($this->advancedInterfaces as $interface){
 			$interface->unblockAddress($address);
 		}
+	}
+
+	public function handlePacket(AdvancedSourceInterface $interface, string $address, int $port, string $payload){
+		try{
+			if(strlen($payload) > 2 and substr($payload, 0, 2) === "\xfe\xfd" and $this->server->getQueryHandler() instanceof QueryHandler){
+				$this->server->getQueryHandler()->handle($interface, $address, $port, $payload);
+			}else{
+				$this->getServer()->getLogger()->debug("Unhandled raw packet from $address $port: " . base64_encode($payload));
+			}
+		}catch(\Throwable $e){
+			$this->getServer()->getLogger()->logException($e);
+
+			$this->blockAddress($address, 600);
+		}
+		//TODO: add raw packet events
 	}
 }

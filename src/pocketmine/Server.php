@@ -71,7 +71,6 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\CompressBatchedTask;
 use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\protocol\BatchPacket;
@@ -2017,6 +2016,10 @@ class Server{
 		return $this->queryRegenerateTask;
 	}
 
+	public function getQueryHandler(){
+		return $this->queryHandler;
+	}
+
 	/**
 	 * Starts the PocketMine-MP server and starts processing ticks and packets
 	 */
@@ -2390,26 +2393,6 @@ class Server{
 			" | Load " . $this->getTickUsageAverage() . "%\x07";
 
 		Timings::$titleTickTimer->stopTiming();
-	}
-
-	/**
-	 * @return void
-	 *
-	 * TODO: move this to Network
-	 */
-	public function handlePacket(AdvancedSourceInterface $interface, string $address, int $port, string $payload){
-		try{
-			if(strlen($payload) > 2 and substr($payload, 0, 2) === "\xfe\xfd" and $this->queryHandler instanceof QueryHandler){
-				$this->queryHandler->handle($interface, $address, $port, $payload);
-			}else{
-				$this->logger->debug("Unhandled raw packet from $address $port: " . base64_encode($payload));
-			}
-		}catch(\Throwable $e){
-			$this->logger->logException($e);
-
-			$this->getNetwork()->blockAddress($address, 600);
-		}
-		//TODO: add raw packet events
 	}
 
 	/**
