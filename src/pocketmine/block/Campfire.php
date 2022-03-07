@@ -119,6 +119,13 @@ class Campfire extends Transparent{
 		if($this->getSide(Vector3::SIDE_DOWN)->isTransparent()){
 			return false;
 		}
+		$faces = [
+			0 => 3,
+			1 => 0,
+			2 => 1,
+			3 => 2,
+		];
+		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
 		return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 	}
 
@@ -174,12 +181,10 @@ class Campfire extends Transparent{
 		}
 		if($entity instanceof SplashPotion && $entity->getPotionId()->getDisplayName() === Potion::WATER){
 			$this->extinguish();
-			return;
 		}elseif($entity instanceof Living){
 			$entity->attack(new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_FIRE, 1));
 			$entity->setOnFire(8);
 		}
-		return;
 	}
 
 	public function onScheduledUpdate() : void{

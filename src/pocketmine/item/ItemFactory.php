@@ -149,6 +149,7 @@ class ItemFactory{
 		self::registerItem(new Sign());
 		self::registerItem(new ItemBlock(Block::OAK_DOOR_BLOCK, 0, Item::OAK_DOOR));
 		self::registerItem(new Bucket());
+		self::registerItem(new Campfire());
 
 		self::registerItem(new Minecart());
 		self::registerItem(new Saddle());
