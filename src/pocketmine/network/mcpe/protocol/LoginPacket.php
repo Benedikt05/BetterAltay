@@ -146,7 +146,7 @@ class LoginPacket extends DataPacket{
 		$this->serverAddress = $this->clientData["ServerAddress"] ?? null;
 
 		$this->locale = $this->clientData["LanguageCode"] ?? null;
-		$this->playerInfo = new PlayerInfo($this->sessionAdapter->getPlayer(), $this->clientData);
+		//$this->playerInfo = new PlayerInfo($this->sessionAdapter->getPlayer(), $this->clientData);
 	}
 
 	protected function encodePayload(){
