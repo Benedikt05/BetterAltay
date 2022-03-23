@@ -696,10 +696,6 @@ abstract class Living extends Entity implements Damageable{
 				$deltaX = $this->x - $e->x;
 				$deltaZ = $this->z - $e->z;
 				$this->knockBack($e, $source->getBaseDamage(), $deltaX, $deltaZ, $source->getKnockBack());
-				
-				if(!$e instanceof Player){
-				$e->broadcastEntityEvent(ActorEventPacket::ARM_SWING);
-				}
 
 				$attacker = $source->getDamager();
 				if($attacker instanceof Living){
