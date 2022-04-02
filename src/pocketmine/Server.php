@@ -396,6 +396,10 @@ class Server{
 		return $this->isRunning;
 	}
 
+	public function getBetterAltayVersion() : string{
+	    return \pocketmine\FORK_VERSION;
+	}
+
 	public function getPocketMineVersion() : string{
 		return \pocketmine\VERSION;
 	}
