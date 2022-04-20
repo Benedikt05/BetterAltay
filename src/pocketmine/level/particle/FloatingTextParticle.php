@@ -115,6 +115,7 @@ class FloatingTextParticle extends Particle{
 			$pk->entityRuntimeId = $this->entityId;
 			$pk->position = $this->asVector3(); //TODO: check offset
 			$pk->item = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR, 0, 0));
+			$pk->gamemode = 0;
 
 			$flags = (
 				1 << Entity::DATA_FLAG_IMMOBILE
