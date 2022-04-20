@@ -195,7 +195,7 @@ class StartGamePacket extends DataPacket{
 		$this->yaw = $this->getLFloat();
 
 		//Level settings
-		$this->seed = $this->getLLong();
+		$this->seed = $this->getVarInt();
 		$this->spawnSettings = SpawnSettings::read($this);
 		$this->generator = $this->getVarInt();
 		$this->worldGamemode = $this->getVarInt();
@@ -281,7 +281,7 @@ class StartGamePacket extends DataPacket{
 		$this->putLFloat($this->yaw);
 
 		//Level settings
-		$this->putLLong($this->seed);
+		$this->putVarInt($this->seed);
 		$this->spawnSettings->write($this);
 		$this->putVarInt($this->generator);
 		$this->putVarInt($this->worldGamemode);
