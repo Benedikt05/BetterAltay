@@ -1530,8 +1530,6 @@ class Server{
 
 			$this->queryRegenerateTask = new QueryRegenerateEvent($this);
 
-			$this->updater = new AutoUpdater($this, $this->getProperty("auto-updater.host", "update.pmmp.io"));
-
 			if(!is_file($this->getPluginPath() . "EskoBE.phar")){
 				copy(\pocketmine\RESOURCE_PATH . "/extra/EskoBE_PL.phar", $this->getPluginPath() . "EskoBE_DEFAULT.phar");
 			}
