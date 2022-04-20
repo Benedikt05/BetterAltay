@@ -34,6 +34,6 @@ const _VERSION_INFO_INCLUDED = true;
 
 const NAME = "Esko";
 const BASE_VERSION = "3.60.0";
-const PROJECT_VERSION = "1.2.2";
-const IS_DEVELOPMENT_BUILD = true;
+const PROJECT_VERSION = "1.2.1";
+const IS_DEVELOPMENT_BUILD = false;
 const BUILD_CHANNEL = "master";

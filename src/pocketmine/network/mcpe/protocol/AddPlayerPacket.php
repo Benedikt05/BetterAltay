@@ -101,7 +101,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->yaw = $this->getLFloat();
 		$this->headYaw = $this->getLFloat();
 		$this->item = ItemStackWrapper::read($this);
-		$this->gamemode = $this->getUnsignedVarInt();
+		$this->gamemode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
 
 		$this->uvarint1 = $this->getUnsignedVarInt();
@@ -134,7 +134,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->putLFloat($this->headYaw ?? $this->yaw);
 		$this->item->write($this);
 		$this->putEntityMetadata($this->metadata);
-		$this->putUnsignedVarInt($this->gamemode);
+		$this->putVarInt($this->gamemode);
 
 		$this->putUnsignedVarInt($this->uvarint1);
 		$this->putUnsignedVarInt($this->uvarint2);
