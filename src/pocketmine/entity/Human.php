@@ -31,9 +31,9 @@ use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerExperienceChangeEvent;
 use pocketmine\inventory\EnderChestInventory;
 use pocketmine\inventory\EntityInventoryEventProcessor;
-use pocketmine\inventory\PlayerOffHandInventory;
-use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\InventoryHolder;
+use pocketmine\inventory\PlayerInventory;
+use pocketmine\inventory\PlayerOffHandInventory;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
@@ -56,21 +56,24 @@ use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
+use pocketmine\network\mcpe\protocol\types\Cape;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\types\SkinAnimation;
-use pocketmine\network\mcpe\protocol\types\Cape;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
 use function array_filter;
+use function array_map;
 use function array_merge;
 use function array_rand;
 use function array_values;
+use function boolval;
 use function ceil;
 use function count;
 use function in_array;
+use function intval;
 use function max;
 use function min;
 use function mt_rand;
@@ -411,9 +414,6 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		return $this->attributeMap->getAttribute(Attribute::EXPERIENCE)->getValue();
 	}
 
-	/**
-	 * @return PlayerOffHandInventory
-	 */
 	public function getOffHandInventory() : PlayerOffHandInventory{
 		return $this->offHandInventory;
 	}
@@ -915,6 +915,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		$pk->yaw = $this->yaw;
 		$pk->pitch = $this->pitch;
 		$pk->item = ItemStackWrapper::legacy($this->getInventory()->getItemInHand());
+		$pk->gamemode = 0;
 		$pk->metadata = $this->propertyManager->getAll();
 		$player->dataPacket($pk);
 
@@ -958,5 +959,12 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	 */
 	public function setPlayerFlag(int $flagId, bool $value = true) : void{
 		$this->setDataFlag(self::DATA_PLAYER_FLAGS, $flagId, $value, self::DATA_TYPE_BYTE);
+	}
+
+	public function setNewProgress(?float $newProgress) : void{
+		if($newProgress < 0.0 || $newProgress > 1.0){
+			throw new \InvalidArgumentException("XP progress must be in range 0-1");
+		}
+		$this->newProgress = $newProgress;
 	}
 }
