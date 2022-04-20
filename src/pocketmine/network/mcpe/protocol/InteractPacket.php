@@ -51,7 +51,7 @@ class InteractPacket extends DataPacket{
 		$this->action = $this->getByte();
 		$this->target = $this->getEntityRuntimeId();
 
-		if($this->action === self::ACTION_MOUSEOVER){
+		if($this->action === self::ACTION_MOUSEOVER || $this->action === self::ACTION_LEAVE_VEHICLE){
 			//TODO: should this be a vector3?
 			$this->x = $this->getLFloat();
 			$this->y = $this->getLFloat();
@@ -63,7 +63,7 @@ class InteractPacket extends DataPacket{
 		$this->putByte($this->action);
 		$this->putEntityRuntimeId($this->target);
 
-		if($this->action === self::ACTION_MOUSEOVER){
+		if($this->action === self::ACTION_MOUSEOVER || $this->action === self::ACTION_LEAVE_VEHICLE){
 			$this->putLFloat($this->x);
 			$this->putLFloat($this->y);
 			$this->putLFloat($this->z);
