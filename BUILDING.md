@@ -29,8 +29,8 @@ If you use a custom binary, you'll need to replace `composer` usages in this gui
 ### Note
 Preprocessor requires that the `cpp` (c preprocessor) is available in your PATH.
 
-## Building `PocketMine-MP.phar`
-Run `composer make-server` using your preferred PHP binary. It'll drop a `PocketMine-MP.phar` into the current working directory.
+## Building `BetterAltay.phar`
+Run `composer make-server` using your preferred PHP binary. It'll drop a `BetterAltay.phar` into the current working directory.
 
 You can also use the `--out` option to change the output filename.
 
@@ -40,5 +40,5 @@ Fatal error: Uncaught BadMethodCallException: unable to create temporary file in
 ```
 You can work around it by setting `ulimit -n` to some bigger number, e.g. `8192`, or by updating your PHP version to at least 8.0.3.
 
-## Running PocketMine-MP from source code
+## Running BetterAltay from source code
 Run `src/pocketmine/PocketMine.php` using your preferred PHP binary.
