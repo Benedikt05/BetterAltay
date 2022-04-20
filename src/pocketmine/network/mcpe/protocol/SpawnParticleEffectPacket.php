@@ -53,7 +53,7 @@ class SpawnParticleEffectPacket extends DataPacket{
 		$this->putEntityUniqueId($this->entityUniqueId);
 		$this->putVector3($this->position);
 		$this->putString($this->particleName);
-		$this->putBool(false);
+		$this->putString(""); //molang variables
 	}
 
 	public function handle(NetworkSession $session) : bool{
