@@ -137,7 +137,7 @@ class StartGamePacket extends DataPacket{
 	/** @var bool */
 	public $onlySpawnV1Villagers = false;
 	/** @var string */
-	public $vanillaVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
+	public $vanillaVersion = "1.17.40";
 	/** @var int */
 	public $limitedWorldWidth = 0;
 	/** @var int */
@@ -195,7 +195,7 @@ class StartGamePacket extends DataPacket{
 		$this->yaw = $this->getLFloat();
 
 		//Level settings
-		$this->seed = $this->getVarInt();
+		$this->seed = $this->getLLong();
 		$this->spawnSettings = SpawnSettings::read($this);
 		$this->generator = $this->getVarInt();
 		$this->worldGamemode = $this->getVarInt();
@@ -281,7 +281,7 @@ class StartGamePacket extends DataPacket{
 		$this->putLFloat($this->yaw);
 
 		//Level settings
-		$this->putVarInt($this->seed);
+		$this->putLLong($this->seed);
 		$this->spawnSettings->write($this);
 		$this->putVarInt($this->generator);
 		$this->putVarInt($this->worldGamemode);
