@@ -1,0 +1,12 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#2 \\$value \\(pocketmine\\\\nbt\\\\tag\\\\NamedTag\\) of method pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\:\\:offsetSet\\(\\) should be contravariant with parameter \\$value \\(mixed\\) of method ArrayAccess\\<string,mixed\\>\\:\\:offsetSet\\(\\)$#"
+			count: 1
+			path: ../../../src/tag/CompoundTag.php
+
+		-
+			message: "#^Parameter \\#2 \\$value \\(pocketmine\\\\nbt\\\\tag\\\\NamedTag\\) of method pocketmine\\\\nbt\\\\tag\\\\ListTag\\:\\:offsetSet\\(\\) should be contravariant with parameter \\$value \\(mixed\\) of method ArrayAccess\\<int,mixed\\>\\:\\:offsetSet\\(\\)$#"
+			count: 1
+			path: ../../../src/tag/ListTag.php
+

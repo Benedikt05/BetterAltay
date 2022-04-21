@@ -134,4 +134,8 @@ interface EntityIds{
 	public const HOGLIN = 124;
 	public const STRIDER = 125;
 	public const ZOGLIN = 126;
+	public const AXOLOTL = 130;
+	public const GLOW_SQUID = 139;
+	public const GOAT = 128;
+	public const PILLAGER = 114;
 }

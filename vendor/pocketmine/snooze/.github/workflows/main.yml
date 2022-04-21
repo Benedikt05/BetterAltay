@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    strategy:
+      matrix:
+        include:
+          - php: 7.2.34
+            pthreads-version: 46962cf9c2d30b6e1e1ea50ca36de3df5d6d4e58
+          - php: 7.3.25
+            pthreads-version: 34d7e6b91ed92a625760fedd667e7cba2009e463
+          - php: 7.4.13
+            pthreads-version: 34d7e6b91ed92a625760fedd667e7cba2009e463
+          - php: 8.0.1
+            pthreads-version: bc16ee7b5a21faee9bd1743f830f7135b763fb56
+
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore PHP build cache
+        id: php-build-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/php
+          key: php-build-${{ matrix.php }}-pthreads-${{ matrix.pthreads-version }}
+
+      - name: Compile PHP
+        if: steps.php-build-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/php-build/php-build.git
+          cd php-build
+          ./install-dependencies.sh
+          echo '"pthreads",,"https://github.com/pmmp/pthreads.git",,,"extension",' >> share/php-build/extension/definition
+          export CFLAGS="$CFLAGS -march=x86-64"
+          export CXXFLAGS="$CXXFLAGS -march=x86-64"
+          PHP_BUILD_INSTALL_EXTENSION='pthreads=@${{ matrix.pthreads-version }}' PHP_BUILD_ZTS_ENABLE=on ./bin/php-build "${{ matrix.php }}" "$GITHUB_WORKSPACE/php"
+          
+      - name: Prefix PHP to PATH
+        run: echo $GITHUB_WORKSPACE/php/bin >> $GITHUB_PATH
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/composer"
+          key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "php-${{ matrix.php }}-composer-"
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyze --no-progress

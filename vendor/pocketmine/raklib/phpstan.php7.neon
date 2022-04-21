@@ -1,0 +1,6 @@
+includes:
+	- phpstan.shared.neon
+
+parameters:
+	typeAliases:
+		PhpSocket: resource

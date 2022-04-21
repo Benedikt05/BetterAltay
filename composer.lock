@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "772d270efc96f97edf1bf00edbf7f0cd",
+    "content-hash": "54d9a432042a0a76373976fb839ee83a",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -60,6 +60,33 @@
                 }
             ],
             "time": "2021-04-09T03:06:06+00:00"
+        },
+        {
+            "name": "esko/betteraltay-p",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VaxPex/baep",
+                "reference": "1a9e72c70ec080b5e5475c39644bf564933a94ee"
+            },
+            "require": {
+                "php": "^8.0",
+                "pocketmine/binaryutils": "^0.1.9",
+                "pocketmine/math": "^0.2.0",
+                "pocketmine/nbt": "^0.2.19"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\network\\mcpe\\protocol\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "esko and petter altay protocol to not kill my self changing both",
+            "time": "2022-04-21T06:08:25+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -1148,21 +1175,21 @@
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "9eb88c9f689003a8a2a5ae9e010338ee94dc39b3"
+                "reference": "4a3c437c09075736285d1cabb5c75bf27ed0bc84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/9eb88c9f689003a8a2a5ae9e010338ee94dc39b3",
-                "reference": "9eb88c9f689003a8a2a5ae9e010338ee94dc39b3",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/4a3c437c09075736285d1cabb5c75bf27ed0bc84",
+                "reference": "4a3c437c09075736285d1cabb5c75bf27ed0bc84",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^1.0"
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.5.0"
             },
             "conflict": {
                 "phpunit/phpunit": "<7.0"
@@ -1175,9 +1202,6 @@
             },
             "type": "phpstan-extension",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
                 "phpstan": {
                     "includes": [
                         "extension.neon",
@@ -1197,9 +1221,9 @@
             "description": "PHPUnit extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.0.0"
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.1.1"
             },
-            "time": "2021-10-14T08:03:54+00:00"
+            "time": "2022-04-20T15:24:25+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -2830,7 +2854,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "esko/betteraltay-p": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

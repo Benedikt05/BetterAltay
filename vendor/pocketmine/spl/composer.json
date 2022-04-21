@@ -1,0 +1,15 @@
+{
+    "name": "pocketmine/spl",
+    "description": "Standard library files required by PocketMine-MP and related projects",
+    "type": "library",
+    "license": "LGPL-3.0",
+    "require": {
+        "php": "^7.2 || ^8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.8"
+    },
+    "autoload": {
+        "classmap": ["./src"]
+    }
+}

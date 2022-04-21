@@ -1,0 +1,9 @@
+includes:
+	- tests/phpstan/configs/design-problems.neon
+	- tests/phpstan/configs/phpstan-bugs.neon
+
+parameters:
+	level: 8
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- src

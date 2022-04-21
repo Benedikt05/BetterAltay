@@ -1,0 +1,19 @@
+{
+    "name": "pocketmine/log",
+    "description": "Logging components used by PocketMine-MP and related projects",
+    "type": "library",
+    "license": "LGPL-3.0",
+    "require": {
+        "php": "^7.2 || ^8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "0.12.67",
+        "phpstan/phpstan-strict-rules": "^0.12.2"
+    },
+    "conflict": {
+        "pocketmine/spl": "<0.4"
+    },
+    "autoload": {
+        "classmap": ["./src"]
+    }
+}
