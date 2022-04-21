@@ -33,6 +33,7 @@ use pocketmine\network\mcpe\protocol\AddPaintingPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\AddVolumeEntityPacket;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
+use pocketmine\network\mcpe\protocol\AgentActionEventPacket;
 use pocketmine\network\mcpe\protocol\AnimateEntityPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\AnvilDamagePacket;
@@ -48,6 +49,7 @@ use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\CameraPacket;
 use pocketmine\network\mcpe\protocol\CameraShakePacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\network\mcpe\protocol\ChangeMobPropertyPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
@@ -56,6 +58,7 @@ use pocketmine\network\mcpe\protocol\ClientCacheMissResponsePacket;
 use pocketmine\network\mcpe\protocol\ClientCacheStatusPacket;
 use pocketmine\network\mcpe\protocol\ClientToServerHandshakePacket;
 use pocketmine\network\mcpe\protocol\CodeBuilderPacket;
+use pocketmine\network\mcpe\protocol\CodeBuilderSourcePacket;
 use pocketmine\network\mcpe\protocol\CommandBlockUpdatePacket;
 use pocketmine\network\mcpe\protocol\CommandOutputPacket;
 use pocketmine\network\mcpe\protocol\CommandRequestPacket;
@@ -70,6 +73,7 @@ use pocketmine\network\mcpe\protocol\CreatePhotoPacket;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\DebugInfoPacket;
+use pocketmine\network\mcpe\protocol\DimensionDataPacket;
 use pocketmine\network\mcpe\protocol\DisconnectPacket;
 use pocketmine\network\mcpe\protocol\EducationSettingsPacket;
 use pocketmine\network\mcpe\protocol\EduUriResourcePacket;
@@ -128,6 +132,7 @@ use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
+use pocketmine\network\mcpe\protocol\PlayerStartItemCooldownPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\PositionTrackingDBClientRequestPacket;
@@ -146,6 +151,7 @@ use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
+use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
@@ -194,7 +200,6 @@ use pocketmine\network\mcpe\protocol\UpdatePlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;
 use pocketmine\network\mcpe\protocol\UpdateSubChunkBlocksPacket;
 use pocketmine\network\mcpe\protocol\UpdateTradePacket;
-use pocketmine\Server;
 
 abstract class NetworkSession{
 
@@ -880,6 +885,30 @@ abstract class NetworkSession{
 	}
 
 	public function handleSubChunkRequest(SubChunkRequestPacket $packet) : bool{
+		return false;
+	}
+
+	public function handlePlayerStartItemCooldown(PlayerStartItemCooldownPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleScriptMessage(ScriptMessagePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleCodeBuilderSource(CodeBuilderSourcePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleAgentActionEvent(AgentActionEventPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleChangeMobProperty(ChangeMobPropertyPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleDimensionData(DimensionDataPacket $packet) : bool{
 		return false;
 	}
 }
