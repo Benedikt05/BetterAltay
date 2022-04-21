@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4c08b1b6a5f45395f8d6db511f3c35b",
+    "content-hash": "0fa77c5ef28f786bcfd54ce1393f113e",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -63,11 +63,11 @@
         },
         {
             "name": "esko/betteraltay-p",
-            "version": "1.18.30",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/VaxPex/baep.git",
-                "reference": "deb84005fcdcc3321ade27eb171685deb7d2de14"
+                "url": "https://github.com/VaxPex/baep",
+                "reference": "1a9e72c70ec080b5e5475c39644bf564933a94ee"
             },
             "require": {
                 "php": "^8.0",
@@ -75,6 +75,7 @@
                 "pocketmine/math": "^0.2.0",
                 "pocketmine/nbt": "^0.2.19"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -85,7 +86,7 @@
                 "GPL-3.0"
             ],
             "description": "esko and petter altay protocol to not kill my self changing both",
-            "time": "2022-04-21T05:21:34+00:00"
+            "time": "2022-04-21T06:08:25+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -2861,7 +2862,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "esko/betteraltay-p": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

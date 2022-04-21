@@ -462,9 +462,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/** @var int */
 	protected $commandPermission = AdventureSettingsPacket::PERMISSION_NORMAL;
 
-	/** @var PlayerInfo */
-	protected $playerInfo;
-
 	/**
 	 * @return TranslationContainer|string
 	 */
@@ -1399,15 +1396,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 	}
 
-	public function getNetworkSession() : self
-	{
-		return $this->getPlayer();
-	}
-
-	public function getPlayerInfo() : PlayerInfo{
-		return $this->playerInfo;
-	}
-
 	public function getWorld() : Level
 	{
 		return $this->getLevelNonNull();
@@ -2163,9 +2151,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}else{
 			$this->onVerifyCompleted($packet, null, true);
 		}
-
-		$this->playerInfo = $packet->playerInfo;
-
 		return true;
 	}
 

@@ -65,7 +65,6 @@ use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\RiderJumpPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
@@ -119,10 +118,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		$timings = Timings::getReceiveDataPacketTimings($packet);
 		$timings->startTiming();
 
-		if($packet instanceof LoginPacket){
-			$packet->sessionAdapter = $this;
-		}
-
 		$packet->decode();
 		if(!$packet->feof() and !$packet->mayHaveUnreadBytes()){
 			$remains = substr($packet->buffer, $packet->offset);
@@ -139,9 +134,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 	}
 
 	public function handleLogin(LoginPacket $packet) : bool{
-		if($packet->sessionAdapter === null){
-			$packet->sessionAdapter = $this;
-		}
 		return $this->player->handleLogin($packet);
 	}
 
@@ -234,18 +226,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		$this->player->setMoveStrafing($packet->motionX);
 
 		return true;
-	}
-
-	public function handleRiderJump(RiderJumpPacket $packet) : bool{
-		if($this->player->isRiding()){
-			$horse = $this->player->getRidingEntity();
-			if($horse instanceof AbstractHorse){
-				$horse->setJumpPower($packet->jumpStrength);
-
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public function handleSetPlayerGameType(SetPlayerGameTypePacket $packet) : bool{
