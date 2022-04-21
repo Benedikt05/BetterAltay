@@ -888,7 +888,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	
 	public function handlePlayerStartItemCooldown(PlayerStartItemCooldownPacket $packet) : bool{
 		return false;
 	}
