@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c6e22ec679b44c9d1451b4f95a576b5",
+    "content-hash": "c4c08b1b6a5f45395f8d6db511f3c35b",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -60,6 +60,32 @@
                 }
             ],
             "time": "2021-04-09T03:06:06+00:00"
+        },
+        {
+            "name": "esko/betteraltay-p",
+            "version": "1.18.30",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VaxPex/baep.git",
+                "reference": "deb84005fcdcc3321ade27eb171685deb7d2de14"
+            },
+            "require": {
+                "php": "^8.0",
+                "pocketmine/binaryutils": "^0.1.9",
+                "pocketmine/math": "^0.2.0",
+                "pocketmine/nbt": "^0.2.19"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "pocketmine\\network\\mcpe\\protocol\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "esko and petter altay protocol to not kill my self changing both",
+            "time": "2022-04-21T05:21:34+00:00"
         },
         {
             "name": "fgrosse/phpasn1",

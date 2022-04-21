@@ -38,7 +38,8 @@
       "pocketmine/nbt": "^0.2.19",
       "pocketmine/raklib": "^0.12.7",
       "pocketmine/snooze": "^0.1.0",
-      "pocketmine/spl": "^0.4.0"
+      "pocketmine/spl": "^0.4.0",
+      "esko/betteraltay-p": "^1.18.30"
    },
    "require-dev": {
       "phpstan/phpstan": "1.2.0",
