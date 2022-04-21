@@ -885,6 +885,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
+	
 	public function handlePlayerStartItemCooldown(PlayerStartItemCooldownPacket $packet) : bool{
 		return false;
 	}
@@ -894,6 +895,18 @@ abstract class NetworkSession{
 	}
 
 	public function handleCodeBuilderSource(CodeBuilderSourcePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleAgentActionEvent(AgentActionEventPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleChangeMobProperty(ChangeMobPropertyPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleDimensionData(DimensionDataPacket $packet) : bool{
 		return false;
 	}
 }
