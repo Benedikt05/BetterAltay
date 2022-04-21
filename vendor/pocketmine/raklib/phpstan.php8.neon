@@ -1,8 +1,0 @@
-includes:
-	- phpstan.shared.neon
-	- tests/phpstan/configs/php8-changes.neon
-
-parameters:
-	phpVersion: 80000
-	typeAliases:
-		PhpSocket: '\Socket'
