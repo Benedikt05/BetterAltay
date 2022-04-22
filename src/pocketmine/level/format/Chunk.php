@@ -875,9 +875,8 @@ class Chunk{
 			$result .= $this->subChunks[$y]->networkSerialize();
 		}
 		//TODO: right now we don't support 3D natively, so we just 3Dify our 2D biomes so they fill the column
-//		$encodedBiomePalette = $this->networkSerializeBiomesAsPalette();
-//		$result .= str_repeat($encodedBiomePalette, 24);
-		$result .= str_repeat("\x00", 24); // -> not hardcoded
+		$encodedBiomePalette = $this->networkSerializeBiomesAsPalette();
+		$result .= str_repeat($encodedBiomePalette, 24);
 
 		$result .= chr(0); //border block array count
 

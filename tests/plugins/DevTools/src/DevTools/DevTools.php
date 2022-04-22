@@ -170,7 +170,7 @@ class DevTools extends PluginBase{
 			"main" => "FolderPluginLoader\\Main",
 			"api" => ["1.0.0", "2.0.0"],
 			"depend" => [],
-			"description" => "Loader of folder plugins",
+			"description" => "MultiEsko of folder plugins",
 			"authors" => ["PocketMine Team"],
 			"website" => "https://github.com/PocketMine/DevTools",
 			"creationDate" => time()
