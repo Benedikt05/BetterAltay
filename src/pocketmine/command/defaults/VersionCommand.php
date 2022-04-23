@@ -54,12 +54,15 @@ class VersionCommand extends VanillaCommand{
 		}
 
 		if(count($args) === 0){
-			$sender->sendMessage(new TranslationContainer("pocketmine.server.info.extended", [
+			$sender->sendMessage("This server is running " . $sender->getServer()->getName() . " " . $sender->getServer()->getBetterAltayVersion() . " based on PocketMine-MP " . $sender->getServer()->getPocketMineVersion() . " for Minecraft: Bedrock Edition " . $sender->getServer()->getVersion() . " (protocol version " . ProtocolInfo::CURRENT_PROTOCOL . ")");
+			/*$sender->sendMessage(new TranslationContainer("pocketmine.server.info.extended", [
 				$sender->getServer()->getName(),
+				$sender->getServer()->getBetterAltayVersion(),
 				$sender->getServer()->getPocketMineVersion(),
 				$sender->getServer()->getVersion(),
 				ProtocolInfo::CURRENT_PROTOCOL
-			]));
+			]));*/
+			//TODO: Update all lang files
 		}else{
 			$pluginName = implode(" ", $args);
 			$exactPlugin = $sender->getServer()->getPluginManager()->getPlugin($pluginName);

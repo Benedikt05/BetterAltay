@@ -397,7 +397,7 @@ class Server{
 	}
 
 	public function getBetterAltayVersion() : string{
-	        return \pocketmine\FORK_VERSION;
+		return \pocketmine\FORK_VERSION;
 	}
 
 	public function getPocketMineVersion() : string{
