@@ -122,7 +122,7 @@ class TimingsCommand extends VanillaCommand{
 			if($paste){
 				fseek($fileTimings, 0);
 				$data = [
-					"browser" => $agent = $sender->getServer()->getName() . " " . $sender->getServer()->getPocketMineVersion(),
+					"browser" => $agent = $sender->getServer()->getName() . " " . $sender->getServer()->getEskoVersion(),
 					"data" => $content = stream_get_contents($fileTimings)
 				];
 				fclose($fileTimings);
