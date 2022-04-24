@@ -67,7 +67,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VaxPex/baep",
-                "reference": "e1a33d0cfd5aeb44779708fcb7fd7e6b39255c44"
+                "reference": "244eeb0fc051f493ae248bf7ac591e91fcbf7a36"
             },
             "require": {
                 "php": "^8.0",
@@ -85,8 +85,8 @@
             "license": [
                 "GPL-3.0"
             ],
-            "description": "esko and petter altay protocol to not kill my self changing both",
-            "time": "2022-04-21T11:47:09+00:00"
+            "description": "Esko and BetterAltay protocol to not kill myself changing both",
+            "time": "2022-04-24T05:34:31+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
