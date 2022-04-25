@@ -67,7 +67,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VaxPex/baep",
-                "reference": "244eeb0fc051f493ae248bf7ac591e91fcbf7a36"
+                "reference": "e5b6de88bccb04bcc2dc9180ebf803f880061454"
             },
             "require": {
                 "php": "^8.0",
@@ -86,7 +86,7 @@
                 "GPL-3.0"
             ],
             "description": "Esko and BetterAltay protocol to not kill myself changing both",
-            "time": "2022-04-24T05:34:31+00:00"
+            "time": "2022-04-24T10:58:01+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
