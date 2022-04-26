@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f1c6357-d8f1-4636-9db8-aa228f28b182" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/EskoBE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EskoBE.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="3f1c6357-d8f1-4636-9db8-aa228f28b182" name="Changes" comment="fix chunkutils is missing + update composer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pocketmine/level/format/Chunk.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/pocketmine/level/format/Chunk.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pocketmine/level/format/io/ChunkRequestTask.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/pocketmine/level/format/io/ChunkRequestTask.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +87,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="2837ABNFgvJg20Yxh7nCOjyMmpR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -136,6 +137,7 @@
       <workItem from="1650784931175" duration="84000" />
       <workItem from="1650867398970" duration="4393000" />
       <workItem from="1650875896728" duration="8299000" />
+      <workItem from="1650958635640" duration="539000" />
     </task>
     <task id="LOCAL-00001" summary=" 1.18.30 (rid is wrong)">
       <created>1650435016742</created>
@@ -263,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650868102670</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="fix chunkutils is missing + update composer">
+      <created>1650958911154</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1650958911154</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +307,7 @@
     <MESSAGE value="1.2.4 release" />
     <MESSAGE value="next" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="fix chunkutils is missing + update composer" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix chunkutils is missing + update composer" />
   </component>
 </project>
