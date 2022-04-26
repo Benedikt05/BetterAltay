@@ -137,7 +137,7 @@ class StartGamePacket extends DataPacket{
 	/** @var bool */
 	public $onlySpawnV1Villagers = false;
 	/** @var string */
-	public $vanillaVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
+	public $vanillaVersion = "1.17.40"; //ProtocolInfo::MINECRAFT_VERSION_NETWORK;
 	/** @var int */
 	public $limitedWorldWidth = 0;
 	/** @var int */
