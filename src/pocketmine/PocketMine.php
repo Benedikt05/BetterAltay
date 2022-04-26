@@ -181,8 +181,8 @@ namespace pocketmine {
 		if(extension_loaded("xdebug")){
 			$logger->warning("Xdebug extension is enabled. This has a major impact on performance.");
 		}
-		if(!extension_loaded("pocketmine_chunkutils")){
-			$logger->warning("ChunkUtils extension is missing. Anvil-format worlds will experience degraded performance.");
+		if(!extension_loaded("chunkutils2")){//pocketmine_chunkutils
+			$logger->warning("ChunkUtils2 extension is missing. Anvil-format worlds will experience degraded performance.");
 		}
 		if(((int) ini_get('zend.assertions')) !== -1){
 			$logger->warning("Debugging assertions are enabled. This may degrade performance. To disable them, set `zend.assertions = -1` in php.ini.");
