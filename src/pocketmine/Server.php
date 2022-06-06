@@ -397,7 +397,7 @@ class Server{
 	}
 
 	public function getBetterAltayVersion() : string{
-	        return \pocketmine\FORK_VERSION;
+		return \pocketmine\FORK_VERSION;
 	}
 
 	public function getPocketMineVersion() : string{
@@ -1590,8 +1590,9 @@ class Server{
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.info", [
 				$this->getName(),
-				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getPocketMineVersion() . TextFormat::RESET
+				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getBetterAltayVersion() . TextFormat::RESET
 			]));
+			$this->logger->info("BetterAltay is based on PocketMine-MP " . $this->getPocketMineVersion());
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.license", [$this->getName()]));
 
 			Timings::init();
