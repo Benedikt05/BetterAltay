@@ -4,7 +4,6 @@
    "type": "project",
    "homepage": "https://pmmp.io",
    "license": "LGPL-3.0",
-   "repositories": [{"type": "git", "url": "https://github.com/VaxPex/baep"}],
    "require": {
       "php": "^8.0",
       "php-64bit": "*",
@@ -39,8 +38,7 @@
       "pocketmine/nbt": "^0.2.19",
       "pocketmine/raklib": "^0.12.7",
       "pocketmine/snooze": "^0.1.0",
-      "pocketmine/spl": "^0.4.0",
-      "esko/betteraltay-p": "dev-main"
+      "pocketmine/spl": "^0.4.0"
    },
    "require-dev": {
       "phpstan/phpstan": "1.5.7",

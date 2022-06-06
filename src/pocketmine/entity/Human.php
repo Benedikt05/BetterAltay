@@ -915,7 +915,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		$pk->yaw = $this->yaw;
 		$pk->pitch = $this->pitch;
 		$pk->item = ItemStackWrapper::legacy($this->getInventory()->getItemInHand());
-		$pk->gameType = 0;
+		$pk->gameMode = 0;
 		$pk->metadata = $this->propertyManager->getAll();
 		$player->dataPacket($pk);
 
