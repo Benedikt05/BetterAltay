@@ -781,6 +781,7 @@
     "minecraft:record_11": 510,
     "minecraft:record_wait": 511,
     "minecraft:shield": 513,
+    "minecraft:chest_boat": 646, //idk if its correct
     "minecraft:campfire": 720,
     "minecraft:suspicious_stew": 734,
     "minecraft:honeycomb": 736,

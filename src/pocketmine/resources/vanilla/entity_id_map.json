@@ -112,5 +112,10 @@
     "minecraft:goat": 128,
     "minecraft:glow_squid": 129,
     "minecraft:axolotl": 130,
+    "minecraft:warden": 131,
+    "minecraft:frog": 132,
+    "minecraft:tadpole": 133,
+    "minecraft:allay": 134,
+    "minecraft:chest_boat": 218,
     "minecraft:player": 257
 }
