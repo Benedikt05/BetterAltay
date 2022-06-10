@@ -681,6 +681,9 @@
 	"minecraft:sculk": 713,
 	"minecraft:sculk_vein": 714,
 	"minecraft:sculk_catalyst": 715,
-	"minecraft:sculk_shrieker": 716
+	"minecraft:sculk_shrieker": 716,
+	"minecraft:pearlescent_froglight": 724,
+	"minecraft:verdant_froglight": 725,
+	"minecraft:ochre_froglight": 726
 	
 }
