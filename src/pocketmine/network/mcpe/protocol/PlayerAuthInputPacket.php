@@ -59,6 +59,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 	private $tick;
 	/** @var Vector3 */
 	private $delta;
+	private int $interactionMode;
 
 	/**
 	 * @param int          $inputFlags @see InputFlags
@@ -152,6 +153,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		$this->inputFlags = $this->getUnsignedVarLong();
 		$this->inputMode = $this->getUnsignedVarInt();
 		$this->playMode = $this->getUnsignedVarInt();
+		$this->interactionMode = $this->getUnsignedVarInt();
 		if($this->playMode === PlayMode::VR){
 			$this->vrGazeDirection = $this->getVector3();
 		}
@@ -169,6 +171,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		$this->putUnsignedVarLong($this->inputFlags);
 		$this->putUnsignedVarInt($this->inputMode);
 		$this->putUnsignedVarInt($this->playMode);
+		$this->putUnsignedVarInt($this->interactionMode);
 		if($this->playMode === PlayMode::VR){
 			assert($this->vrGazeDirection !== null);
 			$this->putVector3($this->vrGazeDirection);

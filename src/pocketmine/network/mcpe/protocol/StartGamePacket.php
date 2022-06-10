@@ -39,6 +39,8 @@ use pocketmine\network\mcpe\protocol\types\MultiplayerGameVisibility;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementSettings;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\network\mcpe\protocol\types\SpawnSettings;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\utils\UUID;
 use function count;
 
 class StartGamePacket extends DataPacket{
@@ -349,8 +351,10 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);
 		$this->putString($this->serverSoftwareVersion);
+		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
 		$this->putLLong($this->blockPaletteChecksum);
-	}
+		$this->putUUID(UUID::fromBinary(str_repeat("\x00", 16), 0));
+    }
 
 	public function handle(NetworkSession $session) : bool{
 		return $session->handleStartGame($this);
