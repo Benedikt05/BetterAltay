@@ -26,6 +26,7 @@ namespace pocketmine\event\entity;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 
 /**
  * Called when an entity takes damage from another entity.
@@ -55,6 +56,10 @@ class EntityDamageByEntityEvent extends EntityDamageEvent{
 			if($damager->hasEffect(Effect::WEAKNESS)){
 				$this->setModifier(-($this->getBaseDamage() * 0.2 * $damager->getEffect(Effect::WEAKNESS)->getEffectLevel()), self::MODIFIER_WEAKNESS);
 			}
+			if(!$this instanceof EntityDamageByChildEntityEvent && $damager instanceof Living && $damager->isSprinting()){
+                                $this->setKnockback(1.3 * $this->getKnockback());
+                                $damager->setSprinting(false);
+                        }
 		}
 	}
 
