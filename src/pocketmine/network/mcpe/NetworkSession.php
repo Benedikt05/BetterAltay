@@ -188,6 +188,7 @@ use pocketmine\network\mcpe\protocol\SyncActorPropertyPacket;
 use pocketmine\network\mcpe\protocol\TakeItemActorPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\TickSyncPacket;
+use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
@@ -894,6 +895,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleCodeBuilderSource(CodeBuilderSourcePacket $packet) : bool{
+		return false;
+	}
+	
+	public function handleToastRequest(ToastRequestPacket $packet) : bool{
 		return false;
 	}
 }

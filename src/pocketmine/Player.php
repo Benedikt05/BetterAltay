@@ -163,6 +163,7 @@ use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\network\mcpe\protocol\SetTitlePacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
+use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
@@ -3992,6 +3993,19 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->type = TextPacket::TYPE_WHISPER;
 		$pk->sourceName = $sender;
 		$pk->message = $message;
+		$this->dataPacket($pk);
+	}
+	
+	/**
+	 * Sends Toast Notification to player.
+	 *
+	 * @param string $title
+	 * @param string $content
+	 */
+	public function sendToast(string $title, string $content) : void{
+		$pk = new ToastRequestPacket();
+		$pk->title = $title;
+		$pk->content = $content;
 		$this->dataPacket($pk);
 	}
 
