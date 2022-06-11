@@ -209,6 +209,7 @@ class PacketPool{
 		static::registerPacket(new PlayerStartItemCooldownPacket());
 		static::registerPacket(new ScriptMessagePacket());
 		static::registerPacket(new CodeBuilderSourcePacket());
+		static::registerPacket(new ToastRequestPacket());
 	}
 
 	/**
