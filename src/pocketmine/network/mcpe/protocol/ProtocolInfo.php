@@ -221,5 +221,6 @@ interface ProtocolInfo{
 	public const PLAYER_START_ITEM_COOLDOWN_PACKET = 0xb0;
 	public const SCRIPT_MESSAGE_PACKET = 0xb1;
 	public const CODE_BUILDER_SOURCE_PACKET = 0xb2;
+	public const TOAST_REQUEST_PACKET = 0xba;
 
 }
