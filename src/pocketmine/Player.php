@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine;
 
+use ErrorException;
 use pocketmine\block\Bed;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
@@ -149,6 +150,7 @@ use pocketmine\network\mcpe\protocol\NetworkChunkPublisherUpdatePacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkDataPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
@@ -1561,9 +1563,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * Sends all the option flags
 	 *
+	 * @param bool $checkNoClip
+	 * 
 	 * @return void
 	 */
-	public function sendSettings(){
+	public function sendSettings(bool $checkNoClip = false){
 		$pk = new AdventureSettingsPacket();
 
 		$pk->setFlag(AdventureSettingsPacket::WORLD_IMMUTABLE, $this->isSpectator());
@@ -1578,6 +1582,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->commandPermission = $pk->commandPermission;
 		$pk->playerPermission = ($this->isOp() ? PlayerPermissions::OPERATOR : PlayerPermissions::MEMBER);
 		$pk->entityUniqueId = $this->getId();
+
+		if ($checkNoClip) {
+			if($pk->getFlag(AdventureSettingsPacket::NO_CLIP) and !$this->allowMovementCheats and !$this->isSpectator()){
+				$this->kick($this->server->getLanguage()->translateString("kick.reason.cheat", ["%ability.noclip"]));
+				return true;
+			}
+		}
 
 		$this->dataPacket($pk);
 	}
@@ -3232,6 +3243,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case PlayerActionPacket::ACTION_CREATIVE_PLAYER_DESTROY_BLOCK:
 				//TODO: do we need to handle this?
 				break;
+			case PlayerActionPacket::ACTION_START_ITEM_USE_ON:
+			case PlayerActionPacket::ACTION_STOP_ITEM_USE_ON:
+				//TODO: this has no obvious use and seems only used for analytics in vanilla - ignore it
+				break;
 			default:
 				$this->server->getLogger()->debug("Unhandled/unknown player action type " . $packet->action . " from " . $this->getName());
 				return false;
@@ -3406,38 +3421,38 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleAdventureSettings(AdventureSettingsPacket $packet) : bool{
-		if(!$this->constructed or $packet->entityUniqueId !== $this->getId()){
-			return false; //TODO
-		}
+		return true;
+	}
 
-		$handled = false;
+	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
+		if($packet->getAbilityId() === RequestAbilityPacket::ABILITY_FLYING){
+			$isFlying = $packet->getAbilityValue();
+			if(!is_bool($isFlying)){
+				throw new ErrorException("Flying ability should always have a bool value");
+			}
+			if($isFlying !== $this->isFlying()){
+				if(!$this->constructed or $packet->entityUniqueId !== $this->getId()){
+					return false; //TODO
+				}
 
-		$isFlying = $packet->getFlag(AdventureSettingsPacket::FLYING);
-		if($isFlying !== $this->isFlying()){
-			$ev = new PlayerToggleFlightEvent($this, $isFlying);
-			if($isFlying and !$this->allowFlight){
-				$ev->setCancelled();
+				$ev = new PlayerToggleFlightEvent($this, $isFlying);
+				if($isFlying and !$this->allowFlight){
+					$ev->setCancelled();
+				}
+	
+				$ev->call();
+				if($ev->isCancelled()){
+					$this->sendSettings(true);
+				}else{ //don't use setFlying() here, to avoid feedback loops
+					$this->flying = $ev->isFlying();
+					$this->resetFallDistance();
+				}
 			}
 
-			$ev->call();
-			if($ev->isCancelled()){
-				$this->sendSettings();
-			}else{ //don't use setFlying() here, to avoid feedback loops
-				$this->flying = $ev->isFlying();
-				$this->resetFallDistance();
-			}
-
-			$handled = true;
-		}
-
-		if($packet->getFlag(AdventureSettingsPacket::NO_CLIP) and !$this->allowMovementCheats and !$this->isSpectator()){
-			$this->kick($this->server->getLanguage()->translateString("kick.reason.cheat", ["%ability.noclip"]));
 			return true;
 		}
 
-		//TODO: check other changes
-
-		return $handled;
+		return false;
 	}
 
 	public function handleBlockEntityData(BlockActorDataPacket $packet) : bool{

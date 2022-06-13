@@ -21,19 +21,12 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
-
-use function defined;
-
-// composer autoload doesn't use require_once and also pthreads can inherit things
-// TODO: drop this file and use a final class with constants
-if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
-	return;
+$ext = ".json";
+$extLen = strlen($ext);
+foreach(scandir(__DIR__, SCANDIR_SORT_NONE) as $file){
+	if(substr($file, -$extLen) === $ext){
+		$file = __DIR__ . "/$file";
+		file_put_contents($file, json_encode(json_decode(file_get_contents($file))));
+		echo "Minified JSON file $file\n";
+	}
 }
-const _VERSION_INFO_INCLUDED = true;
-
-const NAME = "Esko";
-const BASE_VERSION = "3.60.0";
-const PROJECT_VERSION = "1.3.1";
-const IS_DEVELOPMENT_BUILD = false;
-const BUILD_CHANNEL = "master";
