@@ -1331,6 +1331,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		}
 
 		$this->ticksLived += $tickDiff;
+		if($this instanceof Player){
+			if($this->isSpectator()){
+				$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, $this->temporalVector->lengthSquared() > 0);
+			}else{
+				$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
+			}
+		}
 
 		return $hasUpdate;
 	}
