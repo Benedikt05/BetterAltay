@@ -2454,7 +2454,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", \pocketmine\NAME, \pocketmine\VERSION);
+		$pk->playerActorProperites = (new NetworkLittleEndianNBTStream())->write(new CompoundTag());
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
+		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
 
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
@@ -3431,7 +3433,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				throw new ErrorException("Flying ability should always have a bool value");
 			}
 			if($isFlying !== $this->isFlying()){
-				if(!$this->constructed or $packet->entityUniqueId !== $this->getId()){
+				if(!$this->constructed){ // $packet->entityUniqueId !== $this->getId()
 					return false; //TODO
 				}
 
