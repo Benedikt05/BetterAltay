@@ -297,9 +297,20 @@ class FishingHook extends Projectile{
 				}
 			}elseif($this->ticksCatchable > 0){
 				// TODO: Random weighted items
-				$items = [
-					Item::RAW_FISH, Item::PUFFERFISH, Item::RAW_SALMON, Item::CLOWNFISH
-				];
+				$rndCatch = mt_rand(0, 100);
+				if($rndCatch < 91){
+				    $items = [
+					    Item::RAW_FISH, Item::PUFFERFISH, Item::RAW_SALMON, Item::CLOWNFISH
+				    ];
+				}elseif($rndCatch < 100){
+					$items = [
+					    Item::CLOCK, Item::COMPASS, Item::FLINT_STEEL, Item::GLASS_BOTTLE, Item::LEATHER_BOOTS, Item::ROTTEN_FLESH, Item::STICK, Item::FISHING_ROD, Item::RABBIT_FOOT, Item::EXPERIENCE_BOTTLE, Item::DEAD_BUSH, Item::BUCKET, Item::BONE, Item::FLOWER_POT
+				    ];
+				}elseif($rndCatch > 99){
+					$items = [
+					    Item::ENDER_PEARL, Item::TOTEM, Item::BEACON, Item::BLAZE_ROD, Item::GHAST_TEAR, Item::MAGMA_CREAM, Item::NETHERSTAR, Item::END_CRYSTAL, Item::CHORUS_FRUIT, Item::CHORUS_FRUIT_POPPED, Item::DRAGON_BREATH
+					];
+				}
 				$randomFish = $items[mt_rand(0, count($items) - 1)];
 				$result = ItemFactory::get($randomFish);
 
