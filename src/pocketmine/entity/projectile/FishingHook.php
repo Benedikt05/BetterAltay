@@ -313,11 +313,17 @@ class FishingHook extends Projectile{
 				}
 				$randomFish = $items[mt_rand(0, count($items) - 1)];
 				$result = ItemFactory::get($randomFish);
+				$name = $result->getName();
+				$lore = $result->getLore();
 
-				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_FISH, $this->random->nextBoundedInt(6) + 1);
+				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_FISH, $result, $name, $lore, $this->random->nextBoundedInt(6) + 1);
 				$ev->call();
 
 				if(!$ev->isCancelled()){
+					$result = $ev->getResult();
+					$name = null;
+				    $lore = null;
+					
 					$nbt = Entity::createBaseNBT($this);
 					$nbt->setTag($result->nbtSerialize(-1, "Item"));
 
@@ -329,6 +335,12 @@ class FishingHook extends Projectile{
 					$d8 = 0.1;
 					$entityitem->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + sqrt($d6) * 0.08, $d4 * $d8));
 					$entityitem->spawnToAll();
+					if($name !== null){
+					    $entityitem->getItem()->setCustomName($name);
+					}
+					if($lore !== null){
+					    $entityitem->getItem()->setLore([$lore]);
+					}
 					$this->level->dropExperience($angler, $ev->getXpDropAmount());
 				}
 			}
