@@ -313,16 +313,16 @@ class FishingHook extends Projectile{
 				}
 				$randomFish = $items[mt_rand(0, count($items) - 1)];
 				$result = ItemFactory::get($randomFish);
-				$name = $result->getName();
-				$lore = $result->getLore();
+				$name = null;
+				$lore = null;
 
 				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_FISH, $result, $name, $lore, $this->random->nextBoundedInt(6) + 1);
 				$ev->call();
 
 				if(!$ev->isCancelled()){
 					$result = $ev->getResult();
-					$name = null;
-				    $lore = null;
+					$name = $ev->getName();
+				    $lore = $ev->getLore();
 					
 					$nbt = Entity::createBaseNBT($this);
 					$nbt->setTag($result->nbtSerialize(-1, "Item"));
