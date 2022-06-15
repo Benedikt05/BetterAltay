@@ -45,9 +45,9 @@ class PlayerFishEvent extends PlayerEvent implements Cancellable{
 	
 	protected $result;
 	
-	protected $name;
+	protected $name = null;
 	
-	protected $lore;
+	protected $lore = null;
 
 	public function __construct(Player $fisher, FishingHook $hook, int $state, $result, $name, $lore, int $xpDropAmount = 0){
 		$this->player = $fisher;
@@ -67,11 +67,11 @@ class PlayerFishEvent extends PlayerEvent implements Cancellable{
 		$this->result = $result;
 	}
 	
-	public function getCustomName(){
+	public function getName(){
 		return $this->name;
 	}
 	
-	public function setCustomName($name){
+	public function setName($name){
 		$this->name = $name;
 	}
 	
