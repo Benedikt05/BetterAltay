@@ -298,7 +298,7 @@ class FishingHook extends Projectile{
 			}elseif($this->ticksCatchable > 0){
 				// TODO: Random weighted items
 				$rndCatch = mt_rand(0, 100);
-				if($rndCatch < 91){
+				if($rndCatch < 81){
 				    $items = [
 					    Item::RAW_FISH, Item::PUFFERFISH, Item::RAW_SALMON, Item::CLOWNFISH
 				    ];
