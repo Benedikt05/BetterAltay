@@ -42,12 +42,45 @@ class PlayerFishEvent extends PlayerEvent implements Cancellable{
 	protected $xpDropAmount = 0;
 	/** @var int */
 	protected $state = 0;
+	
+	protected $result;
+	
+	protected $name;
+	
+	protected $lore;
 
-	public function __construct(Player $fisher, FishingHook $hook, int $state, int $xpDropAmount = 0){
+	public function __construct(Player $fisher, FishingHook $hook, int $state, $result, $name, $lore, int $xpDropAmount = 0){
 		$this->player = $fisher;
 		$this->hook = $hook;
 		$this->state = $state;
 		$this->xpDropAmount = $xpDropAmount;
+		$this->result = $result;
+		$this->name = $name;
+		$this->lore = $lore;
+	}
+	
+	public function getResult(){
+		return $this->result;
+	}
+	
+	public function setResult($result){
+		$this->result = $result;
+	}
+	
+	public function getCustomName(){
+		return $this->name;
+	}
+	
+	public function setCustomName($name){
+		$this->name = $name;
+	}
+	
+	public function getLore(){
+		return $this->lore;
+	}
+	
+	public function setLore($lore){
+		$this->lore = $lore;
 	}
 
 	public function getCaughtEntity() : ?Entity{
