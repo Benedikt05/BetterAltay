@@ -51,9 +51,9 @@ class FishingRod extends Tool{
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
 		if($player->getFishingHook() === null){
 			$hook = new FishingHook($player->level, Entity::createBaseNBT($player->add(0, $player->getEyeHeight() - 0.1, 0), $player->getDirectionVector()->multiply(0.4)), $player);
-			$result = "";
-			$name = "";
-			$lore = "";
+			$result = null;
+			$name = null;
+			$lore = null;
 			($ev = new PlayerFishEvent($player, $hook, PlayerFishEvent::STATE_FISHING, $result, $name, $lore))->call();
 			if($ev->isCancelled()){
 				$hook->flagForDespawn();
