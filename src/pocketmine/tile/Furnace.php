@@ -26,6 +26,7 @@ namespace pocketmine\tile;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\event\inventory\FurnaceBurnEvent;
+use pocketmine\event\inventory\FurnaceCookEvent;
 use pocketmine\event\inventory\FurnaceSmeltEvent;
 use pocketmine\inventory\FurnaceRecipe;
 use pocketmine\inventory\FurnaceInventory;
@@ -59,6 +60,8 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 	private $cookTime;
 	/** @var int */
 	private $maxTime;
+	/** @var int */
+	private $reduceCookTime;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -186,9 +189,15 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 			--$this->burnTime;
 
 			if($smelt instanceof FurnaceRecipe and $canSmelt){
+				$reduceTime = 200;
+				$event = new FurnaceCookEvent($this, $reduceTime);
+				$event->call();
+				
+				$reduceCookTime = $event->getCookTime();
+				
 				++$this->cookTime;
 
-				if($this->cookTime >= 200){ //10 seconds
+				if($this->cookTime >= $reduceCookTime){ //10 seconds
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
 
 					$ev = new FurnaceSmeltEvent($this, $raw, $product);
@@ -200,7 +209,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 						$this->inventory->setSmelting($raw);
 					}
 
-					$this->cookTime -= 200;
+					$this->cookTime -= $reduceCookTime;
 				}
 			}elseif($this->burnTime <= 0){
 				$this->burnTime = $this->cookTime = $this->maxTime = 0;
@@ -220,7 +229,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($prevCookTime !== $this->cookTime){
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
-			$pk->value = $this->cookTime;
+			$pk->value = $this->cookTime + 200 - $reduceCookTime;
 			$packets[] = $pk;
 		}
 
