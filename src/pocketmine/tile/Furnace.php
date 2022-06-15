@@ -61,7 +61,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 	/** @var int */
 	private $maxTime;
 	/** @var int */
-	private $reduceCookTime;
+	private $givenCookTime;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -189,15 +189,15 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 			--$this->burnTime;
 
 			if($smelt instanceof FurnaceRecipe and $canSmelt){
-				$reduceTime = 200;
-				$event = new FurnaceCookEvent($this, $reduceTime);
+				$givenCookTime = 200;
+				$event = new FurnaceCookEvent($this, $givenCookTime);
 				$event->call();
 				
-				$reduceCookTime = $event->getCookTime();
+				$givenCookTime = $event->getCookTime();
 				
 				++$this->cookTime;
 
-				if($this->cookTime >= $reduceCookTime){ //10 seconds
+				if($this->cookTime >= $givenCookTime){ //10 seconds
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
 
 					$ev = new FurnaceSmeltEvent($this, $raw, $product);
@@ -209,7 +209,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 						$this->inventory->setSmelting($raw);
 					}
 
-					$this->cookTime -= $reduceCookTime;
+					$this->cookTime -= $givenCookTime;
 				}
 			}elseif($this->burnTime <= 0){
 				$this->burnTime = $this->cookTime = $this->maxTime = 0;
@@ -229,7 +229,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($prevCookTime !== $this->cookTime){
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
-			$pk->value = $this->cookTime + 200 - $reduceCookTime;
+			$pk->value = $this->cookTime + 200 - $givenCookTime;
 			$packets[] = $pk;
 		}
 
