@@ -60,8 +60,6 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 	private $cookTime;
 	/** @var int */
 	private $maxTime;
-	/** @var int */
-	private $givenCookTime;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
@@ -184,18 +182,20 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($this->burnTime <= 0 and $canSmelt and $fuel->getFuelTime() > 0 and $fuel->getCount() > 0){
 			$this->checkFuel($fuel);
 		}
+		$givenCookTime = 200;
 
 		if($this->burnTime > 0){
 			--$this->burnTime;
 
 			if($smelt instanceof FurnaceRecipe and $canSmelt){
-				$givenCookTime = 200;
 				$event = new FurnaceCookEvent($this, $givenCookTime);
 				$event->call();
 				
 				$givenCookTime = $event->getCookTime();
 				
-				++$this->cookTime;
+				if(!$event->isCancelled()){
+				    ++$this->cookTime;
+				}
 
 				if($this->cookTime >= $givenCookTime){ //10 seconds
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
@@ -229,7 +229,9 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($prevCookTime !== $this->cookTime){
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
-			$pk->value = $this->cookTime + 200 - $givenCookTime;
+			$prozent = round(($givenCookTime * 100) / 200); #% of the maxcooktime
+		    $realTime = round(($this->cookTime * 100) / $prozent);
+		    $pk->value = (int)$realTime;
 			$packets[] = $pk;
 		}
 
