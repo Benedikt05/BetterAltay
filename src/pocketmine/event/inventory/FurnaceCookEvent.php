@@ -28,16 +28,21 @@ use pocketmine\event\Cancellable;
 use pocketmine\item\Item;
 use pocketmine\tile\Furnace;
 
-/**
- * Called when a furnace is about to consume a new fuel item.
- */
 class FurnaceCookEvent extends BlockEvent implements Cancellable{
+	/** @var Furnace */
+	private $furnace;
 	/** @var int */
-	private $cookTime = 0;
+	private $cookTime;
+	
 
 	public function __construct(Furnace $furnace, int $cookTime){
-		parent::__construct($furnace->getBlock());
+		parent::__construct($furnace->getBlock());	
 		$this->cookTime = $cookTime;
+		$this->furnace = $furnace;
+	}
+	
+	public function getFurnace() : Furnace{
+		return $this->furnace;
 	}
     
 	public function getCookTime() : int{
