@@ -284,7 +284,7 @@ class FishingHook extends Projectile{
 		$angler = $this->getOwningEntity();
 		if($this->isValid() and $angler instanceof Player){
 			if($this->getRidingEntity() != null){
-				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_ENTITY);
+				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_ENTITY, null, null, null);
 				$ev->call();
 
 				if(!$ev->isCancelled()){
