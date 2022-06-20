@@ -26,6 +26,7 @@ namespace pocketmine\tile;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\event\inventory\FurnaceBurnEvent;
+use pocketmine\event\inventory\FurnaceCookEvent;
 use pocketmine\event\inventory\FurnaceSmeltEvent;
 use pocketmine\inventory\FurnaceRecipe;
 use pocketmine\inventory\FurnaceInventory;
@@ -181,14 +182,22 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($this->burnTime <= 0 and $canSmelt and $fuel->getFuelTime() > 0 and $fuel->getCount() > 0){
 			$this->checkFuel($fuel);
 		}
+		$givenCookTime = 200;
 
 		if($this->burnTime > 0){
 			--$this->burnTime;
 
 			if($smelt instanceof FurnaceRecipe and $canSmelt){
-				++$this->cookTime;
+				$event = new FurnaceCookEvent($this, $givenCookTime);
+				$event->call();
+				
+				$givenCookTime = $event->getCookTime();
+				
+				if(!$event->isCancelled()){
+				    ++$this->cookTime;
+				}
 
-				if($this->cookTime >= 200){ //10 seconds
+				if($this->cookTime >= $givenCookTime){ //10 seconds
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
 
 					$ev = new FurnaceSmeltEvent($this, $raw, $product);
@@ -200,7 +209,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 						$this->inventory->setSmelting($raw);
 					}
 
-					$this->cookTime -= 200;
+					$this->cookTime -= $givenCookTime;
 				}
 			}elseif($this->burnTime <= 0){
 				$this->burnTime = $this->cookTime = $this->maxTime = 0;
@@ -220,7 +229,9 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($prevCookTime !== $this->cookTime){
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
-			$pk->value = $this->cookTime;
+			$prozent = round(($givenCookTime * 100) / 200); #% of the maxcooktime
+		    $realTime = round(($this->cookTime * 100) / $prozent);
+		    $pk->value = (int)$realTime;
 			$packets[] = $pk;
 		}
 
