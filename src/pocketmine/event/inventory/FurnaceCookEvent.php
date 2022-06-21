@@ -32,12 +32,12 @@ class FurnaceCookEvent extends BlockEvent implements Cancellable{
 	/** @var Furnace */
 	private $furnace;
 	/** @var int */
-	private $cookTime;
+	private $maxCookTime;
 	
 
-	public function __construct(Furnace $furnace, int $cookTime){
+	public function __construct(Furnace $furnace, int $maxCookTime){
 		parent::__construct($furnace->getBlock());	
-		$this->cookTime = $cookTime;
+		$this->maxCookTime = $maxCookTime;
 		$this->furnace = $furnace;
 	}
 	
@@ -45,11 +45,11 @@ class FurnaceCookEvent extends BlockEvent implements Cancellable{
 		return $this->furnace;
 	}
     
-	public function getCookTime() : int{
-		return $this->cookTime;
+	public function getMaxCookTime() : int{
+		return $this->maxCookTime;
 	}
 
-	public function setCookTime(int $cookTime) : void{
-		$this->cookTime = $cookTime;
+	public function setMaxCookTime(int $maxCookTime) : void{
+		$this->maxCookTime = $maxCookTime;
 	}
 }
