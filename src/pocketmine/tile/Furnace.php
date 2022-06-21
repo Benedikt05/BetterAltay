@@ -182,22 +182,22 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($this->burnTime <= 0 and $canSmelt and $fuel->getFuelTime() > 0 and $fuel->getCount() > 0){
 			$this->checkFuel($fuel);
 		}
-		$givenCookTime = 200;
+		$maxCookTime = 200;
 
 		if($this->burnTime > 0){
 			--$this->burnTime;
 
 			if($smelt instanceof FurnaceRecipe and $canSmelt){
-				$event = new FurnaceCookEvent($this, $givenCookTime);
+				$event = new FurnaceCookEvent($this, $maxCookTime);
 				$event->call();
 				
-				$givenCookTime = $event->getCookTime();
+				$maxCookTime = $event->getMaxCookTime();
 				
 				if(!$event->isCancelled()){
 				    ++$this->cookTime;
 				}
 
-				if($this->cookTime >= $givenCookTime){ //10 seconds
+				if($this->cookTime >= $maxCookTime){ //10 seconds
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
 
 					$ev = new FurnaceSmeltEvent($this, $raw, $product);
@@ -209,7 +209,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 						$this->inventory->setSmelting($raw);
 					}
 
-					$this->cookTime -= $givenCookTime;
+					$this->cookTime -= $maxCookTime;
 				}
 			}elseif($this->burnTime <= 0){
 				$this->burnTime = $this->cookTime = $this->maxTime = 0;
@@ -229,7 +229,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($prevCookTime !== $this->cookTime){
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
-			$percent = round(($givenCookTime * 100) / 200); #% of the maxcooktime
+			$percent = round(($maxCookTime * 100) / 200); #% of the maxcooktime
 		    $realTime = round(($this->cookTime * 100) / $percent);
 		    $pk->value = (int)$realTime;
 			$packets[] = $pk;
