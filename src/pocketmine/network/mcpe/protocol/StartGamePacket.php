@@ -354,7 +354,7 @@ class StartGamePacket extends DataPacket{
 		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID(UUID::fromBinary(str_repeat("\x00", 16), 0));
-    }
+	}
 
 	public function handle(NetworkSession $session) : bool{
 		return $session->handleStartGame($this);
