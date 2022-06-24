@@ -5,6 +5,11 @@
 # |____/ \___|\__|\__\___|_|/_/   \_\_|\__\__,_|\__, |
 #                                               |___/ 
 
+general:
+  # This setting allows to customize the unknown command message
+  custom-unknown-command-message:
+    enabled: false
+    message: "§cThis command was not found!"
 developer:
   # This setting allows to disable the internal server error kick
   internal-server-error-kick: false

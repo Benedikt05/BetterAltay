@@ -365,6 +365,8 @@ class Server{
 	private $levelNether = null;
 	/** @var Level */
 	private $levelTheEnd = null;
+	/** @var bool */
+	private $customUnknownCommandMessage = false;
 
 	/** @var bool */
 	public $keepInventory = false;
@@ -379,6 +381,7 @@ class Server{
 
 	public function loadBetteraltayConfig(){
 		$this->internalErrorKick = $this->getBetteraltayProperty("developer.internal-server-error-kick", false);
+		$this->customUnknownCommandMessage = $this->getBetteraltayProperty("general.custom-unknown-command-message.enabled", false);
 	}
 
 	public function loadAltayConfig(){
@@ -1956,7 +1959,12 @@ class Server{
 			return true;
 		}
 
-		$sender->sendMessage($this->getLanguage()->translateString(TextFormat::RED . "%commands.generic.notFound"));
+		if($this->customUnknownCommandMessage === false){
+			$unknownCommandMessage = $this->getLanguage()->translateString(TextFormat::RED . "%commands.generic.notFound");
+		}else{
+			$unknownCommandMessage = (string)$this->getBetteraltayProperty("general.custom-unknown-command-message.message");
+		}
+		$sender->sendMessage($unknownCommandMessage);
 
 		return false;
 	}
