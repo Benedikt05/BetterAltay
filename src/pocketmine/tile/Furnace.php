@@ -230,8 +230,8 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 			$pk = new ContainerSetDataPacket();
 			$pk->property = ContainerSetDataPacket::PROPERTY_FURNACE_TICK_COUNT;
 			$percent = round(($maxCookTime * 100) / 200); #% of the maxcooktime
-		    $realTime = round(($this->cookTime * 100) / $percent);
-		    $pk->value = (int)$realTime;
+		        $realTime = round(($this->cookTime * 100) / $percent);
+		        $pk->value = (int)$realTime;
 			$packets[] = $pk;
 		}
 
