@@ -318,7 +318,7 @@ class FishingHook extends Projectile{
 				if(!$ev->isCancelled()){
 					$result = $ev->getResult();
 					$name = $ev->getName();
-				    $lore = $ev->getLore();
+				        $lore = $ev->getLore();
 					
 					$nbt = Entity::createBaseNBT($this);
 					$nbt->setTag($result->nbtSerialize(-1, "Item"));
