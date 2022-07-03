@@ -18,3 +18,4 @@ server.properties
 /vendor/
 /worlds/
 /crashdumps/
+bin*/*
