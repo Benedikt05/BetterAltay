@@ -2275,12 +2275,6 @@ class Server{
 		$this->forceShutdown();
 		$this->isRunning = false;
 
-		//Force minimum uptime to be >= 120 seconds, to reduce the impact of spammy crash loops
-		$spacing = ((int) \pocketmine\START_TIME) - time() + 120;
-		if($spacing > 0){
-			echo "--- Waiting $spacing seconds to throttle automatic restart (you can kill the process safely now) ---" . PHP_EOL;
-			sleep($spacing);
-		}
 		@Process::kill(Process::pid());
 		exit(1);
 	}
