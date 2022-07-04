@@ -138,7 +138,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 
 	public function getInteractionMode() : int{
 	    return $this->interactionMode;
-    }
+	}
 
 	public function getVrGazeDirection() : ?Vector3{
 		return $this->vrGazeDirection;
