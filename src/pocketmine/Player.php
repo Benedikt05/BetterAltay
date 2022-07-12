@@ -1024,7 +1024,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->dimension = $dimension;
 		$pk->position = $position ?? $this;
 		$pk->respawn = $respawn;
-		$this->sendDataPacket($pk);
+		//$this->sendDataPacket($pk);
 	}
 
 	public function getMaxInPortalTime() : int{
