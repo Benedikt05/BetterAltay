@@ -1526,8 +1526,6 @@ class Server{
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
 
-			//SkinAdapterSingleton::set(new LegacySkinAdapter());
-
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
 					$this->rcon = new RCON(
@@ -1592,7 +1590,7 @@ class Server{
 				$this->getName(),
 				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getBetterAltayVersion() . TextFormat::RESET
 			]));
-			$this->logger->info("BetterAltay is based on PocketMine-MP " . $this->getPocketMineVersion());
+			$this->logger->info($this->getName() . " is based on PocketMine-MP " . $this->getPocketMineVersion());
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.license", [$this->getName()]));
 
 			Timings::init();
