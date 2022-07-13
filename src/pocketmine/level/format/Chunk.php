@@ -867,22 +867,23 @@ class Chunk{
 		$subChunkCount = $this->getSubChunkSendCount();
 
 		//TODO: HACK! fill in fake subchunks to make up for the new negative space client-side
-		/*for($y = 0; $y < 4; ++$y){
+		for($y = 0; $y < 4; ++$y){
 			$result .= chr(8); //subchunk version 8
 			$result .= chr(0); //0 layers - client will treat this as all-air
-		}*/
+		}
 		for($y = 0; $y < $subChunkCount; ++$y){
 			$result .= $this->subChunks[$y]->networkSerialize();
 		}
+
 		//TODO: right now we don't support 3D natively, so we just 3Dify our 2D biomes so they fill the column
-		//$encodedBiomePalette = $this->networkSerializeBiomesAsPalette();
-		//$result .= str_repeat($encodedBiomePalette, 24);
+		$encodedBiomePalette = $this->networkSerializeBiomesAsPalette();
+		$result .= str_repeat($encodedBiomePalette, 24);
 
-		$result .= $this->biomeIds . chr(0); //border block array count
-
+		$result .= chr(0); //border block array count
 		//Border block entry format: 1 byte (4 bits X, 4 bits Z). These are however useless since they crash the regular client.
 
 		$result .= $networkSerializedTiles ?? $this->networkSerializeTiles();
+
 		return $result;
 	}
 
@@ -897,6 +898,7 @@ class Chunk{
 				$result .= $tile->getSerializedSpawnCompound();
 			}
 		}
+
 		return $result;
 	}
 

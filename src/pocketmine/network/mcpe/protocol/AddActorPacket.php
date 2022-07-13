@@ -174,6 +174,7 @@ class AddActorPacket extends DataPacket{
 	public $yaw = 0.0;
 	/** @var float */
 	public $headYaw = 0.0;
+	public float $bodyYaw = 0.0;
 
 	/** @var Attribute[] */
 	public $attributes = [];
@@ -194,6 +195,7 @@ class AddActorPacket extends DataPacket{
 		$this->pitch = $this->getLFloat();
 		$this->yaw = $this->getLFloat();
 		$this->headYaw = $this->getLFloat();
+		$this->bodyYaw = $this->getLFloat();
 
 		$attrCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $attrCount; ++$i){
@@ -229,6 +231,7 @@ class AddActorPacket extends DataPacket{
 		$this->putLFloat($this->pitch);
 		$this->putLFloat($this->yaw);
 		$this->putLFloat($this->headYaw);
+		$this->putLFloat($this->bodyYaw);
 
 		$this->putUnsignedVarInt(count($this->attributes));
 		foreach($this->attributes as $attribute){

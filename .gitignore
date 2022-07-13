@@ -1,20 +1,55 @@
-altay.yml
-betteraltay.yml
-banned-ips.txt
-banned-players.txt
-BetterAltay.phar
-ops.txt
-pocketmine.yml
-server.lock
-server.log
-white-list.txt
+players/*
+worlds/*
+plugin_data/*
+plugins/*
+bin*/*
+maps/*
+timings/*
+crashdumps/*
+*.log
+*.txt
+*.phar
 server.properties
-/.idea/
-/players/
-/plugin_data/
-/plugins/
-/resource_packs/
-/maps/
-/vendor/
-/worlds/
-/crashdumps/
+/pocketmine.yml
+/altay.yml
+/betteraltay.yml
+memory_dumps/*
+resource_packs/
+server.lock
+/phpstan.neon
+
+# Common IDEs
+.idea/*
+!.idea/codeStyles/
+!.idea/fileTemplates/
+nbproject/*
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Mac crap
+.DS_Store
+/nbproject/private/
+
+# Sphinx-doc
+/docs/build/
+!/docs/requirements.txt
+
+# Composer
+vendor/*
+
+# Travis files
+test_data/*
+
+# Doxygen
+Documentation/*
+
+# PHPUnit
+/.phpunit.result.cache
+
+# php-cs-fixer
+/.php_cs.cache
+/.php-cs-fixer.cache
