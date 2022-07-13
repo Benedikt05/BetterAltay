@@ -124,7 +124,6 @@ class AddPlayerPacket extends DataPacket{
 	protected function encodePayload(){
 		$this->putUUID($this->uuid);
 		$this->putString($this->username);
-		$this->putEntityUniqueId($this->entityUniqueId ?? $this->entityRuntimeId);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putString($this->platformChatId);
 		$this->putVector3($this->position);
@@ -136,13 +135,15 @@ class AddPlayerPacket extends DataPacket{
 		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
 
-		$this->putUnsignedVarInt($this->uvarint1);
-		$this->putUnsignedVarInt($this->uvarint2);
-		$this->putUnsignedVarInt($this->uvarint3);
-		$this->putUnsignedVarInt($this->uvarint4);
-		$this->putUnsignedVarInt($this->uvarint5);
-
 		$this->putLLong($this->long1);
+ 		$this->putUnsignedVarInt(0); // playerPermission
+  		$this->putUnsignedVarInt(0); // commandPermission
+ 		$this->putUnsignedVarInt(1); // abilityLayers size
+		$this->putLShort(1); // BASE layer type
+ 		$this->putLInt(262143); // abilitiesSet (all)
+		$this->putLInt(63); // abilityValues  (survival)
+		$this->putLFloat(0.1); // flySpeed
+		$this->putLFloat(0.05); // walkSpeed
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){
