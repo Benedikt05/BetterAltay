@@ -65,22 +65,6 @@ class AddPlayerPacket extends DataPacket{
 	public $metadata = [];
 	/** @var int */
 	public $gameMode = 0;
-
-	//TODO: adventure settings stuff
-	/** @var int */
-	public $uvarint1 = 0;
-	/** @var int */
-	public $uvarint2 = 0;
-	/** @var int */
-	public $uvarint3 = 0;
-	/** @var int */
-	public $uvarint4 = 0;
-	/** @var int */
-	public $uvarint5 = 0;
-
-	/** @var int */
-	public $long1 = 0;
-
 	/** @var EntityLink[] */
 	public $links = [];
 
@@ -92,7 +76,6 @@ class AddPlayerPacket extends DataPacket{
 	protected function decodePayload(){
 		$this->uuid = $this->getUUID();
 		$this->username = $this->getString();
-		$this->entityUniqueId = $this->getEntityUniqueId();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->platformChatId = $this->getString();
 		$this->position = $this->getVector3();
@@ -103,14 +86,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->item = ItemStackWrapper::read($this);
 		$this->gameMode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
-
-		$this->uvarint1 = $this->getUnsignedVarInt();
-		$this->uvarint2 = $this->getUnsignedVarInt();
-		$this->uvarint3 = $this->getUnsignedVarInt();
-		$this->uvarint4 = $this->getUnsignedVarInt();
-		$this->uvarint5 = $this->getUnsignedVarInt();
-
-		$this->long1 = $this->getLLong();
+		$this->entityUniqueId = $this->getEntityUniqueId();
 
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
@@ -124,7 +100,6 @@ class AddPlayerPacket extends DataPacket{
 	protected function encodePayload(){
 		$this->putUUID($this->uuid);
 		$this->putString($this->username);
-		$this->putEntityUniqueId($this->entityUniqueId ?? $this->entityRuntimeId);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putString($this->platformChatId);
 		$this->putVector3($this->position);
@@ -135,14 +110,15 @@ class AddPlayerPacket extends DataPacket{
 		$this->item->write($this);
 		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
-
-		$this->putUnsignedVarInt($this->uvarint1);
-		$this->putUnsignedVarInt($this->uvarint2);
-		$this->putUnsignedVarInt($this->uvarint3);
-		$this->putUnsignedVarInt($this->uvarint4);
-		$this->putUnsignedVarInt($this->uvarint5);
-
-		$this->putLLong($this->long1);
+		$this->putLLong($this->entityUniqueId ?? $this->entityRuntimeId);// targetActorUniqueId
+		$this->putUnsignedVarInt(0); // playerPermission
+		$this->putUnsignedVarInt(0); // commandPermission
+ 		$this->putUnsignedVarInt(1); // abilityLayers size
+		$this->putLShort(1); // BASE layer type
+ 		$this->putLInt(262143); // abilitiesSet (all)
+		$this->putLInt(63); // abilityValues  (survival)
+		$this->putLFloat(0.1); // flySpeed
+		$this->putLFloat(0.05); // walkSpeed
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){

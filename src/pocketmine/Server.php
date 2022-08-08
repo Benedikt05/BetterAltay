@@ -1529,8 +1529,6 @@ class Server{
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
 
-			//SkinAdapterSingleton::set(new LegacySkinAdapter());
-
 			if($this->getConfigBool("enable-rcon", false)){
 				try{
 					$this->rcon = new RCON(
@@ -1595,7 +1593,7 @@ class Server{
 				$this->getName(),
 				(\pocketmine\IS_DEVELOPMENT_BUILD ? TextFormat::YELLOW : "") . $this->getBetterAltayVersion() . TextFormat::RESET
 			]));
-			$this->logger->info("BetterAltay is based on PocketMine-MP " . $this->getPocketMineVersion());
+			$this->logger->info($this->getName() . " is based on PocketMine-MP " . $this->getPocketMineVersion());
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.license", [$this->getName()]));
 
 			Timings::init();
@@ -2283,12 +2281,6 @@ class Server{
 		$this->forceShutdown();
 		$this->isRunning = false;
 
-		//Force minimum uptime to be >= 120 seconds, to reduce the impact of spammy crash loops
-		$spacing = ((int) \pocketmine\START_TIME) - time() + 120;
-		if($spacing > 0){
-			echo "--- Waiting $spacing seconds to throttle automatic restart (you can kill the process safely now) ---" . PHP_EOL;
-			sleep($spacing);
-		}
 		@Process::kill(Process::pid());
 		exit(1);
 	}
