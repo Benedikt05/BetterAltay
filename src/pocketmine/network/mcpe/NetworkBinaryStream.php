@@ -550,6 +550,7 @@ class NetworkBinaryStream extends BinaryStream{
 			$this->putLFloat($attribute->getValue());
 			$this->putLFloat($attribute->getDefaultValue());
 			$this->putString($attribute->getName());
+			$this->putUnsignedVarInt(0); //Modifiers
 		}
 	}
 
