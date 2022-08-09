@@ -35,6 +35,10 @@ class MapInfoRequestPacket extends DataPacket{
 
 	protected function decodePayload(){
 		$this->mapId = $this->getEntityUniqueId();
+        for ($i = 0, $count = $this->getVarInt(); $i < $count; $i++) {
+            $this->getLInt();
+            $this->getLShort();
+        }
 	}
 
 	protected function encodePayload(){

@@ -184,8 +184,12 @@ class StartGamePacket extends DataPacket{
 	public $enableNewInventorySystem = false; //TODO
 	/** @var string */
 	public $serverSoftwareVersion;
-
 	public int $blockPaletteChecksum;
+	public bool $personaDisabled = false;
+	public bool $customSkinsDisabled = false;
+	public int $chatRestrictionLevel = 0; //0: None
+	public bool $disablePlayerInteractions = false;
+ 	public bool $clientSideGeneration = false;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -232,6 +236,8 @@ class StartGamePacket extends DataPacket{
 		$this->isFromWorldTemplate = $this->getBool();
 		$this->isWorldTemplateOptionLocked = $this->getBool();
 		$this->onlySpawnV1Villagers = $this->getBool();
+		$this->personaDisabled = $this->getBool();
+		$this->customSkinsDisabled = $this->getBool();
 		$this->vanillaVersion = $this->getString();
 		$this->limitedWorldWidth = $this->getLInt();
 		$this->limitedWorldLength = $this->getLInt();
@@ -243,6 +249,8 @@ class StartGamePacket extends DataPacket{
 			$this->experimentalGameplayOverride = null;
 		}
 
+		$this->chatRestrictionLevel = $this->getByte();
+		$this->disablePlayerInteractions = $this->getBool();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -271,8 +279,11 @@ class StartGamePacket extends DataPacket{
 		$this->multiplayerCorrelationId = $this->getString();
 		$this->enableNewInventorySystem = $this->getBool();
 		$this->serverSoftwareVersion = $this->getString();
+		$this->getNbtCompoundRoot();
 		$this->blockPaletteChecksum = $this->getLLong();
-	}
+		$this->getUUID();
+		$this->clientSideGeneration = $this->getBool();
+    }
 
 	protected function encodePayload(){
 		$this->putEntityUniqueId($this->entityUniqueId);
@@ -319,6 +330,8 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->isFromWorldTemplate);
 		$this->putBool($this->isWorldTemplateOptionLocked);
 		$this->putBool($this->onlySpawnV1Villagers);
+		$this->putBool($this->personaDisabled);
+ 		$this->putBool($this->customSkinsDisabled);
 		$this->putString($this->vanillaVersion);
 		$this->putLInt($this->limitedWorldWidth);
 		$this->putLInt($this->limitedWorldLength);
@@ -329,6 +342,8 @@ class StartGamePacket extends DataPacket{
 			$this->putBool($this->experimentalGameplayOverride);
 		}
 
+		$this->putByte($this->chatRestrictionLevel);
+		$this->putBool($this->disablePlayerInteractions);
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);
@@ -357,6 +372,7 @@ class StartGamePacket extends DataPacket{
 		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID(UUID::fromBinary(str_repeat("\x00", 16), 0));
+		$this->putBool($this->clientSideGeneration);
 	}
 
 	public function handle(NetworkSession $session) : bool{
