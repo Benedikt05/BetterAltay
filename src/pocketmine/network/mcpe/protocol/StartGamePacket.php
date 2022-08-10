@@ -283,7 +283,7 @@ class StartGamePacket extends DataPacket{
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
-    }
+	}
 
 	protected function encodePayload(){
 		$this->putEntityUniqueId($this->entityUniqueId);
