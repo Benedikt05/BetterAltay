@@ -304,7 +304,11 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 	}
 
 	public function handleModalFormResponse(ModalFormResponsePacket $packet) : bool{
-		return $this->player->onFormSubmit($packet->formId, self::stupid_json_decode($packet->formData, true));
+		if($packet->cancelReason !== null){
+			return $this->player->onFormSubmit($packet->formId, null);
+		}else{
+			return $this->player->onFormSubmit($packet->formId, self::stupid_json_decode($packet->formData, true));
+		}
 	}
 
 	/**
