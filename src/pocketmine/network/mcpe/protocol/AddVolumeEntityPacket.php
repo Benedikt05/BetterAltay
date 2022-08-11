@@ -33,25 +33,21 @@ use pocketmine\level\Position;
 class AddVolumeEntityPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_VOLUME_ENTITY_PACKET;
 
-	/** @var int */
-	private $entityNetId;
-	/** @var CompoundTag */
-	private $data;
-	/** @var Position */
-	private $minBound;
-	/** @var Position */
-	private $maxBound;
-	/** @var int */
-	private $dimension;
-	/** @var string */
-	private $engineVersion;
+	private int $entityNetId;
+	private CompoundTag $data;
+	private int $minBoundX;
+	private int $minBoundY;
+	private int $minBoundZ;
+	private int $maxBoundX;
+	private int $maxBoundY;
+	private int $maxBoundZ;
+	private int $dimension;
+	private string $engineVersion;
 
-	public static function create(int $entityNetId, CompoundTag $data, Position $minBound, Position $maxBound, int $dimension, string $engineVersion) : self{
+	public static function create(int $entityNetId, CompoundTag $data, int $dimension, string $engineVersion) : self{
 		$result = new self;
 		$result->entityNetId = $entityNetId;
 		$result->data = $data;
-		$result->minBound = $minBound;
-		$result->maxBound = $maxBound;
 		$result->dimension = $dimension;
 		$result->engineVersion = $engineVersion;
 		return $result;
@@ -61,10 +57,6 @@ class AddVolumeEntityPacket extends DataPacket{
 
 	public function getData() : CompoundTag{ return $this->data; }
 
-	public function getMinBound() : Position{ return $this->minBound; }
-
-	public function getMaxBound() : Position{ return $this->maxBound; }
-
 	public function getDimension(): int{ return $this->dimension; }
 
 	public function getEngineVersion() : string{ return $this->engineVersion; }
@@ -72,8 +64,8 @@ class AddVolumeEntityPacket extends DataPacket{
 	protected function decodePayload() : void{
 		$this->entityNetId = $this->getUnsignedVarInt();
 		$this->data = $this->getNbtCompoundRoot();
-		$this->minBound = $this->getBlockPosition();
-		$this->maxBound = $this->getBlockPosition();
+		$this->getBlockPosition($this->minBoundX, $this->minBoundY, $this->minBoundZ);
+		$this->getBlockPosition($this->maxBoundX, $this->maxBoundY, $this->maxBoundZ);
 		$this->dimension = $this->getVarInt();
 		$this->engineVersion = $this->getString();
 	}
@@ -81,8 +73,8 @@ class AddVolumeEntityPacket extends DataPacket{
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->entityNetId);
 		$this->put((new NetworkLittleEndianNBTStream())->write($this->data));
-		$this->putBlockPosition($this->minBound);
-		$this->putBlockPosition($this->maxBound);
+		$this->putBlockPosition($this->minBoundX, $this->minBoundY, $this->minBoundZ);
+		$this->putBlockPosition($this->maxBoundX, $this->maxBoundY, $this->maxBoundZ);
 		$this->putVarInt($this->dimension);
 		$this->putString($this->engineVersion);
 	}

@@ -185,6 +185,7 @@ class StartGamePacket extends DataPacket{
 	/** @var string */
 	public $serverSoftwareVersion;
 	public int $blockPaletteChecksum;
+	public UUID $worldTemplateId;
 	public bool $personaDisabled = false;
 	public bool $customSkinsDisabled = false;
 	public int $chatRestrictionLevel = 0; //0: None
@@ -281,7 +282,7 @@ class StartGamePacket extends DataPacket{
 		$this->serverSoftwareVersion = $this->getString();
 		$this->getNbtCompoundRoot();
 		$this->blockPaletteChecksum = $this->getLLong();
-		$this->getUUID();
+		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
 	}
 
@@ -371,7 +372,7 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->serverSoftwareVersion);
 		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
 		$this->putLLong($this->blockPaletteChecksum);
-		$this->putUUID(UUID::fromBinary(str_repeat("\x00", 16), 0));
+		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 	}
 
