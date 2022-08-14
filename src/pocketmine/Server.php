@@ -1576,7 +1576,7 @@ class Server{
 			}
 
 			if(\pocketmine\DEBUG >= 0){
-				@cli_set_process_title($this->getName() . " " . $this->getPocketMineVersion());
+				@cli_set_process_title($this->getName() . " " . $this->getBetterAltayVersion());
 			}
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.networkStart", [$this->getIp(), $this->getPort()]));
@@ -2472,7 +2472,7 @@ class Server{
 		$usage = sprintf("%g/%g/%g/%g MB @ %d threads", round(($u[0] / 1024) / 1024, 2), round(($d[0] / 1024) / 1024, 2), round(($u[1] / 1024) / 1024, 2), round(($u[2] / 1024) / 1024, 2), Process::getThreadCount());
 
 		echo "\x1b]0;" . $this->getName() . " " .
-			$this->getPocketMineVersion() .
+			$this->getBetterAltayVersion() .
 			" | Online " . count($this->players) . "/" . $this->getMaxPlayers() .
 			" | Memory " . $usage .
 			" | U " . round($this->network->getUpload() / 1024, 2) .
