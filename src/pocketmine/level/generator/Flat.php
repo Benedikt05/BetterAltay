@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator;
 
+use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\item\ItemFactory;
@@ -70,7 +71,8 @@ class Flat extends Generator{
 	}
 
 	/**
-	 * @param mixed[] $options
+	 * @param mixed[]                      $options
+	 *
 	 * @phpstan-param array<string, mixed> $options
 	 *
 	 * @throws InvalidGeneratorOptionsException
@@ -121,7 +123,7 @@ class Flat extends Generator{
 			$cnt = $matches[1] !== "" ? (int) $matches[1] : 1;
 			try{
 				$b = ItemFactory::fromStringSingle($matches[2])->getBlock();
-			}catch(\InvalidArgumentException $e){
+			}catch(InvalidArgumentException $e){
 				throw new InvalidGeneratorOptionsException("Invalid preset layer \"$line\": " . $e->getMessage(), 0, $e);
 			}
 			for($cY = $y, $y += $cnt; $cY < $y; ++$cY){
@@ -173,7 +175,7 @@ class Flat extends Generator{
 		for($sy = 0; $sy < $count; $sy += 16){
 			$subchunk = $this->chunk->getSubChunk($sy >> 4, true);
 			for($y = 0; $y < 16 and isset($this->structure[$y | $sy]); ++$y){
-				list($id, $meta) = $this->structure[$y | $sy];
+				[$id, $meta] = $this->structure[$y | $sy];
 
 				for($Z = 0; $Z < 16; ++$Z){
 					for($X = 0; $X < 16; ++$X){

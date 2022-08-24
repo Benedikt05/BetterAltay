@@ -31,7 +31,8 @@ final class SubChunkPosition{
 		private int $x,
 		private int $y,
 		private int $z,
-	){}
+	){
+	}
 
 	public function getX() : int{ return $this->x; }
 

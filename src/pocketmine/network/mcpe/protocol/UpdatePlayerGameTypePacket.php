@@ -28,7 +28,8 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\GameMode;
 
-class UpdatePlayerGameTypePacket extends DataPacket/* implements ClientboundPacket*/{
+class UpdatePlayerGameTypePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::UPDATE_PLAYER_GAME_TYPE_PACKET;
 
 	/**

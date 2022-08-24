@@ -32,6 +32,7 @@ use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\item\Bucket;
 use pocketmine\item\Dye;
 use pocketmine\item\GlassBottle;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\LeatherBoots;
 use pocketmine\item\LeatherCap;
@@ -40,7 +41,6 @@ use pocketmine\item\LeatherTunic;
 use pocketmine\item\Potion;
 use pocketmine\item\SplashPotion;
 use pocketmine\item\TieredTool;
-use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
@@ -204,11 +204,11 @@ class Cauldron extends Solid{
 						$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_ADD_DYE, Binary::signInt($color->toABGR()));
 					}
 				}elseif($item instanceof Potion or $item instanceof SplashPotion){
-					if((!$this->isEmpty()  and (($tile->getPotionId() !== $item->getDamage() and $item->getDamage() !== Potion::WATER) or
-							($item->getId() === Item::POTION and $tile->isSplashPotion()) or
-							($item->getId() === Item::SPLASH_POTION and !$tile->isSplashPotion()) and $item->getDamage() !== 0 or
-							($item->getDamage() === Potion::WATER and $tile->hasPotion()))
-					) or $this->getDamage() >= 9){
+					if((!$this->isEmpty() and (($tile->getPotionId() !== $item->getDamage() and $item->getDamage() !== Potion::WATER) or
+								($item->getId() === Item::POTION and $tile->isSplashPotion()) or
+								($item->getId() === Item::SPLASH_POTION and !$tile->isSplashPotion()) and $item->getDamage() !== 0 or
+								($item->getDamage() === Potion::WATER and $tile->hasPotion()))
+						) or $this->getDamage() >= 9){
 						$this->explodeCauldron($tile);
 
 						$this->level->setBlock($this, $this, true, true);

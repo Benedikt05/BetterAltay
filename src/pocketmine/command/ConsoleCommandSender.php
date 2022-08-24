@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\command;
 
+use InvalidArgumentException;
 use pocketmine\lang\TextContainer;
 use pocketmine\permission\PermissibleBase;
 use pocketmine\permission\Permission;
@@ -128,7 +129,7 @@ class ConsoleCommandSender implements CommandSender{
 
 	public function setScreenLineHeight(int $height = null){
 		if($height !== null and $height < 1){
-			throw new \InvalidArgumentException("Line height must be at least 1");
+			throw new InvalidArgumentException("Line height must be at least 1");
 		}
 		$this->lineHeight = $height;
 	}

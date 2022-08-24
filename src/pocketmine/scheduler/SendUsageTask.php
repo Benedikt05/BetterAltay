@@ -40,6 +40,9 @@ use function microtime;
 use function php_uname;
 use function strlen;
 use const PHP_VERSION;
+use const pocketmine\BASE_VERSION;
+use const pocketmine\BUILD_NUMBER;
+use const pocketmine\IS_DEVELOPMENT_BUILD;
 
 class SendUsageTask extends AsyncTask{
 
@@ -53,7 +56,8 @@ class SendUsageTask extends AsyncTask{
 	public $data;
 
 	/**
-	 * @param string[] $playerList
+	 * @param string[]                      $playerList
+	 *
 	 * @phpstan-param array<string, string> $playerList
 	 */
 	public function __construct(Server $server, int $type, array $playerList = []){
@@ -68,7 +72,7 @@ class SendUsageTask extends AsyncTask{
 			case self::TYPE_OPEN:
 				$data["event"] = "open";
 
-				$version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
+				$version = new VersionString(BASE_VERSION, IS_DEVELOPMENT_BUILD, BUILD_NUMBER);
 
 				$data["server"] = [
 					"port" => $server->getPort(),

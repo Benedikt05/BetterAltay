@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use InvalidArgumentException;
 use pocketmine\item\Item;
 use function array_map;
 use function count;
@@ -58,11 +59,11 @@ class ShapelessRecipe implements CraftingRecipe{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function addIngredient(Item $item) : ShapelessRecipe{
 		if(count($this->ingredients) + $item->getCount() > 9){
-			throw new \InvalidArgumentException("Shapeless recipes cannot have more than 9 ingredients");
+			throw new InvalidArgumentException("Shapeless recipes cannot have more than 9 ingredients");
 		}
 
 		while($item->getCount() > 0){

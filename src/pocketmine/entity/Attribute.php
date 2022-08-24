@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use InvalidArgumentException;
 use function max;
 use function min;
 
@@ -89,11 +90,11 @@ class Attribute{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public static function addAttribute(int $id, string $name, float $minValue, float $maxValue, float $defaultValue, bool $shouldSend = true) : Attribute{
 		if($minValue > $maxValue or $defaultValue > $maxValue or $defaultValue < $minValue){
-			throw new \InvalidArgumentException("Invalid ranges: min value: $minValue, max value: $maxValue, $defaultValue: $defaultValue");
+			throw new InvalidArgumentException("Invalid ranges: min value: $minValue, max value: $maxValue, $defaultValue: $defaultValue");
 		}
 
 		return self::$attributes[$id] = new Attribute($id, $name, $minValue, $maxValue, $defaultValue, $shouldSend);
@@ -133,7 +134,7 @@ class Attribute{
 	 */
 	public function setMinValue(float $minValue){
 		if($minValue > ($max = $this->getMaxValue())){
-			throw new \InvalidArgumentException("Minimum $minValue is greater than the maximum $max");
+			throw new InvalidArgumentException("Minimum $minValue is greater than the maximum $max");
 		}
 
 		if($this->minValue != $minValue){
@@ -152,7 +153,7 @@ class Attribute{
 	 */
 	public function setMaxValue(float $maxValue){
 		if($maxValue < ($min = $this->getMinValue())){
-			throw new \InvalidArgumentException("Maximum $maxValue is less than the minimum $min");
+			throw new InvalidArgumentException("Maximum $maxValue is less than the minimum $min");
 		}
 
 		if($this->maxValue != $maxValue){
@@ -171,7 +172,7 @@ class Attribute{
 	 */
 	public function setDefaultValue(float $defaultValue){
 		if($defaultValue > $this->getMaxValue() or $defaultValue < $this->getMinValue()){
-			throw new \InvalidArgumentException("Default $defaultValue is outside the range " . $this->getMinValue() . " - " . $this->getMaxValue());
+			throw new InvalidArgumentException("Default $defaultValue is outside the range " . $this->getMinValue() . " - " . $this->getMaxValue());
 		}
 
 		if($this->defaultValue !== $defaultValue){
@@ -195,7 +196,7 @@ class Attribute{
 	public function setValue(float $value, bool $fit = false, bool $forceSend = false){
 		if($value > $this->getMaxValue() or $value < $this->getMinValue()){
 			if(!$fit){
-				throw new \InvalidArgumentException("Value $value is outside the range " . $this->getMinValue() . " - " . $this->getMaxValue());
+				throw new InvalidArgumentException("Value $value is outside the range " . $this->getMinValue() . " - " . $this->getMaxValue());
 			}
 			$value = min(max($value, $this->getMinValue()), $this->getMaxValue());
 		}

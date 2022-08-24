@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\block;
 
+use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
@@ -61,11 +62,11 @@ class SignChangeEvent extends BlockEvent implements Cancellable{
 	/**
 	 * @param int $index 0-3
 	 *
-	 * @throws \InvalidArgumentException if the index is out of bounds
+	 * @throws InvalidArgumentException if the index is out of bounds
 	 */
 	public function getLine(int $index) : string{
 		if($index < 0 or $index > 3){
-			throw new \InvalidArgumentException("Index must be in the range 0-3!");
+			throw new InvalidArgumentException("Index must be in the range 0-3!");
 		}
 
 		return $this->lines[$index];
@@ -74,24 +75,24 @@ class SignChangeEvent extends BlockEvent implements Cancellable{
 	/**
 	 * @param string[] $lines
 	 *
-	 * @throws \InvalidArgumentException if there are more or less than 4 lines in the passed array
+	 * @throws InvalidArgumentException if there are more or less than 4 lines in the passed array
 	 */
 	public function setLines(array $lines) : void{
 		if(count($lines) !== 4){
-			throw new \InvalidArgumentException("Array size must be 4!");
+			throw new InvalidArgumentException("Array size must be 4!");
 		}
-		Utils::validateArrayValueType($lines, function(string $_) : void{});
+		Utils::validateArrayValueType($lines, function(string $_) : void{ });
 		$this->lines = $lines;
 	}
 
 	/**
-	 * @param int    $index 0-3
+	 * @param int $index 0-3
 	 *
-	 * @throws \InvalidArgumentException if the index is out of bounds
+	 * @throws InvalidArgumentException if the index is out of bounds
 	 */
 	public function setLine(int $index, string $line) : void{
 		if($index < 0 or $index > 3){
-			throw new \InvalidArgumentException("Index must be in the range 0-3!");
+			throw new InvalidArgumentException("Index must be in the range 0-3!");
 		}
 		$this->lines[$index] = $line;
 	}

@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class PositionTrackingDBClientRequestPacket extends DataPacket/* implements ServerboundPacket*/{
+class PositionTrackingDBClientRequestPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::POSITION_TRACKING_D_B_CLIENT_REQUEST_PACKET;
 
 	public const ACTION_QUERY = 0;

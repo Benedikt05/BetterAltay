@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use InvalidArgumentException;
+
 abstract class TieredTool extends Tool{
 	public const TIER_WOODEN = 1;
 	public const TIER_GOLD = 2;
@@ -58,7 +60,7 @@ abstract class TieredTool extends Tool{
 		];
 
 		if(!isset($levels[$tier])){
-			throw new \InvalidArgumentException("Unknown tier '$tier'");
+			throw new InvalidArgumentException("Unknown tier '$tier'");
 		}
 
 		return $levels[$tier];
@@ -75,7 +77,7 @@ abstract class TieredTool extends Tool{
 		];
 
 		if(!isset($levels[$tier])){
-			throw new \InvalidArgumentException("Unknown tier '$tier'");
+			throw new InvalidArgumentException("Unknown tier '$tier'");
 		}
 
 		return $levels[$tier];
@@ -92,7 +94,7 @@ abstract class TieredTool extends Tool{
 		];
 
 		if(!isset($levels[$tier])){
-			throw new \InvalidArgumentException("Unknown tier '$tier'");
+			throw new InvalidArgumentException("Unknown tier '$tier'");
 		}
 
 		return $levels[$tier];

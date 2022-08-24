@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\behavior;
 
+use Closure;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
@@ -36,7 +37,7 @@ class NearestAttackableTargetBehavior extends TargetBehavior{
 	protected $targetEntity;
 	protected $targetEntitySelector;
 
-	public function __construct(Mob $mob, string $classTarget, bool $checkSight = true, int $chance = 10, bool $onlyNearby = false, ?\Closure $targetSelector = null){
+	public function __construct(Mob $mob, string $classTarget, bool $checkSight = true, int $chance = 10, bool $onlyNearby = false, ?Closure $targetSelector = null){
 		parent::__construct($mob, $checkSight, $onlyNearby);
 
 		$this->targetClass = $classTarget;

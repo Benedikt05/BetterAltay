@@ -25,7 +25,6 @@ namespace pocketmine\entity;
 
 use pocketmine\block\Block;
 use pocketmine\entity\object\LeashKnot;
-use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -45,10 +44,10 @@ use pocketmine\math\VoxelRayTrace;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\nbt\tag\StringTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\MobEffectPacket;
@@ -666,8 +665,8 @@ abstract class Living extends Entity implements Damageable{
 		$this->applyDamageModifiers($source);
 
 		if($source instanceof EntityDamageByEntityEvent and (
-			$source->getCause() === EntityDamageEvent::CAUSE_BLOCK_EXPLOSION or
-			$source->getCause() === EntityDamageEvent::CAUSE_ENTITY_EXPLOSION)
+				$source->getCause() === EntityDamageEvent::CAUSE_BLOCK_EXPLOSION or
+				$source->getCause() === EntityDamageEvent::CAUSE_ENTITY_EXPLOSION)
 		){
 			//TODO: knockback should not just apply for entity damage sources
 			//this doesn't matter for TNT right now because the PrimedTNT entity is considered the source, not the block.
@@ -946,7 +945,8 @@ abstract class Living extends Entity implements Damageable{
 	}
 
 	/**
-	 * @param true[] $transparent
+	 * @param true[]                   $transparent
+	 *
 	 * @phpstan-param array<int, true> $transparent
 	 *
 	 * @return Block[]
@@ -989,7 +989,8 @@ abstract class Living extends Entity implements Damageable{
 	}
 
 	/**
-	 * @param true[] $transparent
+	 * @param true[]                   $transparent
+	 *
 	 * @phpstan-param array<int, true> $transparent
 	 */
 	public function getTargetBlock(int $maxDistance, array $transparent = []) : ?Block{

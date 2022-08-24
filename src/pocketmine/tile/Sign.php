@@ -23,11 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
+use InvalidArgumentException;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use UnexpectedValueException;
 use function array_map;
 use function array_pad;
 use function array_slice;
@@ -102,14 +104,14 @@ class Sign extends Spawnable{
 	}
 
 	/**
-	 * @param int    $index 0-3
+	 * @param int $index 0-3
 	 */
 	public function setLine(int $index, string $line, bool $update = true) : void{
 		if($index < 0 or $index > 3){
-			throw new \InvalidArgumentException("Index must be in the range 0-3!");
+			throw new InvalidArgumentException("Index must be in the range 0-3!");
 		}
 		if(!mb_check_encoding($line, 'UTF-8')){
-			throw new \InvalidArgumentException("Text must be valid UTF-8");
+			throw new InvalidArgumentException("Text must be valid UTF-8");
 		}
 
 		$this->text[$index] = $line;
@@ -123,7 +125,7 @@ class Sign extends Spawnable{
 	 */
 	public function getLine(int $index) : string{
 		if($index < 0 or $index > 3){
-			throw new \InvalidArgumentException("Index must be in the range 0-3!");
+			throw new InvalidArgumentException("Index must be in the range 0-3!");
 		}
 		return $this->text[$index];
 	}
@@ -171,7 +173,7 @@ class Sign extends Spawnable{
 		}
 		if($size > 1000){
 			//trigger kick + IP ban - TODO: on 4.0 this will require a better fix
-			throw new \UnexpectedValueException($player->getName() . " tried to write $size bytes of text onto a sign (bigger than max 1000)");
+			throw new UnexpectedValueException($player->getName() . " tried to write $size bytes of text onto a sign (bigger than max 1000)");
 		}
 
 		$removeFormat = $player->getRemoveFormat();

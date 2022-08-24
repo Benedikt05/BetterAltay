@@ -25,17 +25,23 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use ErrorException;
+use Generator;
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\Binary;
+use UnexpectedValueException;
 use function assert;
 use function get_class;
 use function strlen;
 use function zlib_decode;
 use function zlib_encode;
 use const ZLIB_ENCODING_RAW;
+
 #ifndef COMPILE
-use pocketmine\utils\Binary;
+
 #endif
 
 class BatchPacket extends DataPacket{
@@ -63,7 +69,7 @@ class BatchPacket extends DataPacket{
 		$data = $this->getRemaining();
 		try{
 			$this->payload = zlib_decode($data, 1024 * 1024 * 2); //Max 2MB
-		}catch(\ErrorException $e){ //zlib decode error
+		}catch(ErrorException $e){ //zlib decode error
 			$this->payload = "";
 		}
 	}
@@ -83,7 +89,7 @@ class BatchPacket extends DataPacket{
 	 */
 	public function addPacket(DataPacket $packet){
 		if(!$packet->canBeBatched()){
-			throw new \InvalidArgumentException(get_class($packet) . " cannot be put inside a BatchPacket");
+			throw new InvalidArgumentException(get_class($packet) . " cannot be put inside a BatchPacket");
 		}
 		if(!$packet->isEncoded){
 			$packet->encode();
@@ -93,15 +99,15 @@ class BatchPacket extends DataPacket{
 	}
 
 	/**
-	 * @return \Generator
-	 * @phpstan-return \Generator<int, string, void, void>
+	 * @return Generator
+	 * @phpstan-return Generator<int, string, void, void>
 	 */
 	public function getPackets(){
 		$stream = new NetworkBinaryStream($this->payload);
 		$count = 0;
 		while(!$stream->feof()){
 			if($count++ >= 500){
-				throw new \UnexpectedValueException("Too many packets in a single batch");
+				throw new UnexpectedValueException("Too many packets in a single batch");
 			}
 			yield $stream->getString();
 		}
@@ -127,7 +133,7 @@ class BatchPacket extends DataPacket{
 			$pk = PacketPool::getPacket($buf);
 
 			if(!$pk->canBeBatched()){
-				throw new \UnexpectedValueException("Received invalid " . get_class($pk) . " inside BatchPacket");
+				throw new UnexpectedValueException("Received invalid " . get_class($pk) . " inside BatchPacket");
 			}
 
 			$session->handleDataPacket($pk);

@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use InvalidArgumentException;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
@@ -91,7 +92,7 @@ class WritableBook extends Item{
 	 */
 	public function addPage(int $pageId) : void{
 		if($pageId < 0){
-			throw new \InvalidArgumentException("Page number \"$pageId\" is out of range");
+			throw new InvalidArgumentException("Page number \"$pageId\" is out of range");
 		}
 
 		$pagesTag = $this->getPagesTag();

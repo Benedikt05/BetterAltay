@@ -27,6 +27,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\Level;
 use pocketmine\level\utils\SubChunkIteratorManager;
+use SplQueue;
 
 //TODO: make light updates asynchronous
 abstract class LightUpdate{
@@ -41,8 +42,8 @@ abstract class LightUpdate{
 	protected $updateNodes = [];
 
 	/**
-	 * @var \SplQueue
-	 * @phpstan-var \SplQueue<array{int, int, int}>
+	 * @var SplQueue
+	 * @phpstan-var SplQueue<array{int, int, int}>
 	 */
 	protected $spreadQueue;
 	/**
@@ -52,8 +53,8 @@ abstract class LightUpdate{
 	protected $spreadVisited = [];
 
 	/**
-	 * @var \SplQueue
-	 * @phpstan-var \SplQueue<array{int, int, int, int}>
+	 * @var SplQueue
+	 * @phpstan-var SplQueue<array{int, int, int, int}>
 	 */
 	protected $removalQueue;
 	/**
@@ -66,8 +67,8 @@ abstract class LightUpdate{
 
 	public function __construct(ChunkManager $level){
 		$this->level = $level;
-		$this->removalQueue = new \SplQueue();
-		$this->spreadQueue = new \SplQueue();
+		$this->removalQueue = new SplQueue();
+		$this->spreadQueue = new SplQueue();
 
 		$this->subChunkHandler = new SubChunkIteratorManager($this->level);
 	}
@@ -112,7 +113,7 @@ abstract class LightUpdate{
 		$this->prepareNodes();
 
 		while(!$this->removalQueue->isEmpty()){
-			list($x, $y, $z, $oldAdjacentLight) = $this->removalQueue->dequeue();
+			[$x, $y, $z, $oldAdjacentLight] = $this->removalQueue->dequeue();
 
 			$points = [
 				[$x + 1, $y, $z],
@@ -123,7 +124,7 @@ abstract class LightUpdate{
 				[$x, $y, $z - 1]
 			];
 
-			foreach($points as list($cx, $cy, $cz)){
+			foreach($points as [$cx, $cy, $cz]){
 				if($this->subChunkHandler->moveTo($cx, $cy, $cz)){
 					$this->computeRemoveLight($cx, $cy, $cz, $oldAdjacentLight);
 				}
@@ -131,7 +132,7 @@ abstract class LightUpdate{
 		}
 
 		while(!$this->spreadQueue->isEmpty()){
-			list($x, $y, $z) = $this->spreadQueue->dequeue();
+			[$x, $y, $z] = $this->spreadQueue->dequeue();
 
 			unset($this->spreadVisited[Level::blockHash($x, $y, $z)]);
 
@@ -153,7 +154,7 @@ abstract class LightUpdate{
 				[$x, $y, $z - 1]
 			];
 
-			foreach($points as list($cx, $cy, $cz)){
+			foreach($points as [$cx, $cy, $cz]){
 				if($this->subChunkHandler->moveTo($cx, $cy, $cz)){
 					$this->computeSpreadLight($cx, $cy, $cz, $newAdjacentLight);
 				}

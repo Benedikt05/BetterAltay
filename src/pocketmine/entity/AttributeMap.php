@@ -23,12 +23,15 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use ArrayAccess;
+use InvalidArgumentException;
+use RuntimeException;
 use function array_filter;
 
 /**
- * @phpstan-implements \ArrayAccess<int, float>
+ * @phpstan-implements ArrayAccess<int, float>
  */
-class AttributeMap implements \ArrayAccess{
+class AttributeMap implements ArrayAccess{
 	/** @var Attribute[] */
 	private $attributes = [];
 
@@ -76,7 +79,7 @@ class AttributeMap implements \ArrayAccess{
 	 */
 	public function offsetSet($offset, $value) : void{
 		if($offset === null){
-			throw new \InvalidArgumentException("Array push syntax is not supported");
+			throw new InvalidArgumentException("Array push syntax is not supported");
 		}
 		$this->attributes[$offset]->setValue($value);
 	}
@@ -85,6 +88,6 @@ class AttributeMap implements \ArrayAccess{
 	 * @param int $offset
 	 */
 	public function offsetUnset($offset) : void{
-		throw new \RuntimeException("Could not unset an attribute from an attribute map");
+		throw new RuntimeException("Could not unset an attribute from an attribute map");
 	}
 }

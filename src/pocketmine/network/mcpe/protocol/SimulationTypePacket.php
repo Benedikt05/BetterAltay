@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class SimulationTypePacket extends DataPacket/* implements ClientboundPacket*/{
+class SimulationTypePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::SIMULATION_TYPE_PACKET;
 
 	public const GAME = 0;

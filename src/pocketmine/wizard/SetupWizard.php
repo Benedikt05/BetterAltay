@@ -25,6 +25,7 @@ declare(strict_types=1);
  * Set-up wizard used on the first run
  * Can be disabled with --no-wizard
  */
+
 namespace pocketmine\wizard;
 
 use pocketmine\lang\BaseLang;
@@ -41,10 +42,12 @@ use function strtolower;
 use function substr;
 use function trim;
 use const PHP_EOL;
+use const pocketmine\DATA;
+use const pocketmine\NAME;
 use const STDIN;
 
 class SetupWizard{
-	public const DEFAULT_NAME = \pocketmine\NAME . " Server";
+	public const DEFAULT_NAME = NAME . " Server";
 	public const DEFAULT_PORT = 19132;
 	public const DEFAULT_PLAYERS = 20;
 	public const DEFAULT_GAMEMODE = Player::SURVIVAL;
@@ -57,7 +60,7 @@ class SetupWizard{
 	}
 
 	public function run() : bool{
-		$this->message(\pocketmine\NAME . " set-up wizard");
+		$this->message(NAME . " set-up wizard");
 
 		$langs = BaseLang::getLanguageList();
 		if(count($langs) === 0){
@@ -87,7 +90,7 @@ class SetupWizard{
 		}
 
 		//this has to happen here to prevent user avoiding agreeing to license
-		$config = new Config(\pocketmine\DATA . "server.properties", Config::PROPERTIES);
+		$config = new Config(DATA . "server.properties", Config::PROPERTIES);
 		$config->set("language", $lang);
 		$config->save();
 
@@ -110,7 +113,7 @@ class SetupWizard{
 	}
 
 	private function showLicense() : bool{
-		$this->message($this->lang->translateString("welcome_to_pocketmine", [\pocketmine\NAME]));
+		$this->message($this->lang->translateString("welcome_to_pocketmine", [NAME]));
 		echo <<<LICENSE
 
   This program is free software: you can redistribute it and/or modify
@@ -121,7 +124,7 @@ class SetupWizard{
 LICENSE;
 		$this->writeLine();
 		if(strtolower($this->getInput($this->lang->get("accept_license"), "n", "y/N")) !== "y"){
-			$this->error($this->lang->translateString("you_have_to_accept_the_license", [\pocketmine\NAME]));
+			$this->error($this->lang->translateString("you_have_to_accept_the_license", [NAME]));
 			sleep(5);
 
 			return false;
@@ -137,7 +140,7 @@ LICENSE;
 	}
 
 	private function generateBaseConfig() : void{
-		$config = new Config(\pocketmine\DATA . "server.properties", Config::PROPERTIES);
+		$config = new Config(DATA . "server.properties", Config::PROPERTIES);
 
 		$config->set("motd", ($name = $this->getInput($this->lang->get("name_your_server"), self::DEFAULT_NAME)));
 		$config->set("server-name", $name);
@@ -182,14 +185,14 @@ LICENSE;
 		if($op === ""){
 			$this->error($this->lang->get("op_warning"));
 		}else{
-			$ops = new Config(\pocketmine\DATA . "ops.txt", Config::ENUM);
+			$ops = new Config(DATA . "ops.txt", Config::ENUM);
 			$ops->set($op, true);
 			$ops->save();
 		}
 
 		$this->message($this->lang->get("whitelist_info"));
 
-		$config = new Config(\pocketmine\DATA . "server.properties", Config::PROPERTIES);
+		$config = new Config(DATA . "server.properties", Config::PROPERTIES);
 		if(strtolower($this->getInput($this->lang->get("whitelist_enable"), "n", "y/N")) === "y"){
 			$this->error($this->lang->get("whitelist_warning"));
 			$config->set("white-list", true);
@@ -200,7 +203,7 @@ LICENSE;
 	}
 
 	private function networkFunctions() : void{
-		$config = new Config(\pocketmine\DATA . "server.properties", Config::PROPERTIES);
+		$config = new Config(DATA . "server.properties", Config::PROPERTIES);
 		$this->error($this->lang->get("query_warning1"));
 		$this->error($this->lang->get("query_warning2"));
 		if(strtolower($this->getInput($this->lang->get("query_disable"), "n", "y/N")) === "y"){
@@ -243,7 +246,7 @@ LICENSE;
 	private function endWizard() : void{
 		$this->message($this->lang->get("you_have_finished"));
 		$this->message($this->lang->get("pocketmine_plugins"));
-		$this->message($this->lang->translateString("pocketmine_will_start", [\pocketmine\NAME]));
+		$this->message($this->lang->translateString("pocketmine_will_start", [NAME]));
 
 		$this->writeLine();
 		$this->writeLine();

@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\ItemStackRequest;
 use function count;
 
-class ItemStackRequestPacket extends DataPacket/* implements ServerboundPacket*/{
+class ItemStackRequestPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::ITEM_STACK_REQUEST_PACKET;
 
 	/** @var ItemStackRequest[] */

@@ -97,6 +97,7 @@ class PluginDescription{
 
 	/**
 	 * @param mixed[] $plugin
+	 *
 	 * @throws PluginException
 	 */
 	private function loadMap(array $plugin) : void{

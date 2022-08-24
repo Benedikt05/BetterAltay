@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use InvalidArgumentException;
 use pocketmine\math\Vector3;
 
 class Rail extends BaseRail{
@@ -61,7 +62,7 @@ class Rail extends BaseRail{
 	protected function getMetaForState(array $connections) : int{
 		try{
 			return self::searchState($connections, self::CURVE_CONNECTIONS);
-		}catch(\InvalidArgumentException $e){
+		}catch(InvalidArgumentException $e){
 			return parent::getMetaForState($connections);
 		}
 	}

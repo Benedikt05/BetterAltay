@@ -58,7 +58,8 @@ class Nether extends Generator{
 	private $noiseBase;
 
 	/**
-	 * @param mixed[] $options
+	 * @param mixed[]                      $options
+	 *
 	 * @phpstan-param array<string, mixed> $options
 	 *
 	 * @throws InvalidGeneratorOptionsException
@@ -75,10 +76,10 @@ class Nether extends Generator{
 
 		$ores = new Ore();
 		$ores->setOreTypes([
-		    new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
-            new OreType(new SoulSand(), 5, 64, 0, 128),
-            new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(), 1, 16, 0, $this->waterHeight)
+			new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
+			new OreType(new SoulSand(), 5, 64, 0, 128),
+			new OreType(new Gravel(), 5, 64, 0, 128),
+			new OreType(new Lava(), 1, 16, 0, $this->waterHeight)
 		]);
 		$this->populators[] = $ores;
 	}

@@ -25,10 +25,13 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
+use UnexpectedValueException;
 
-class ClientboundDebugRendererPacket extends DataPacket/* implements ClientboundPacket*/{
+class ClientboundDebugRendererPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CLIENTBOUND_DEBUG_RENDERER_PACKET;
 
 	public const TYPE_CLEAR = 1;
@@ -106,7 +109,7 @@ class ClientboundDebugRendererPacket extends DataPacket/* implements Clientbound
 				$this->durationMillis = $this->getLLong();
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown type " . $this->type);
+				throw new UnexpectedValueException("Unknown type " . $this->type);
 		}
 	}
 
@@ -127,7 +130,7 @@ class ClientboundDebugRendererPacket extends DataPacket/* implements Clientbound
 				$this->putLLong($this->durationMillis);
 				break;
 			default:
-				throw new \InvalidArgumentException("Unknown type " . $this->type);
+				throw new InvalidArgumentException("Unknown type " . $this->type);
 		}
 	}
 

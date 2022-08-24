@@ -28,7 +28,8 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use function count;
 
-class PlayerFogPacket extends DataPacket/* implements ClientboundPacket*/{
+class PlayerFogPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_FOG_PACKET;
 
 	/**
@@ -38,7 +39,8 @@ class PlayerFogPacket extends DataPacket/* implements ClientboundPacket*/{
 	private $fogLayers;
 
 	/**
-	 * @param string[] $fogLayers
+	 * @param string[]             $fogLayers
+	 *
 	 * @phpstan-param list<string> $fogLayers
 	 */
 	public static function create(array $fogLayers) : self{

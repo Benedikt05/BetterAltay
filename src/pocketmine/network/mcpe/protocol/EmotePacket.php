@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class EmotePacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/{
+class EmotePacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::EMOTE_PACKET;
 
 	public const FLAG_SERVER = 1 << 0;

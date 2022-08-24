@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class PacketViolationWarningPacket extends DataPacket/* implements ServerboundPacket*/{
+class PacketViolationWarningPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::PACKET_VIOLATION_WARNING_PACKET;
 
 	public const TYPE_MALFORMED = 0;

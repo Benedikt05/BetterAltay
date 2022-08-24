@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class MultiplayerSettingsPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/{
+class MultiplayerSettingsPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::MULTIPLAYER_SETTINGS_PACKET;
 
 	public const ACTION_ENABLE_MULTIPLAYER = 0;

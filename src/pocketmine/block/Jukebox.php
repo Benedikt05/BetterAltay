@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\Record;
 use pocketmine\item\Item;
+use pocketmine\item\Record;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Jukebox as TileJukebox;

@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\entity;
 
+use InvalidArgumentException;
 use pocketmine\entity\Living;
 use pocketmine\item\Item;
 use pocketmine\utils\Utils;
@@ -63,7 +64,7 @@ class EntityDeathEvent extends EntityEvent{
 	 * @param Item[] $drops
 	 */
 	public function setDrops(array $drops) : void{
-		Utils::validateArrayValueType($drops, function(Item $_) : void{});
+		Utils::validateArrayValueType($drops, function(Item $_) : void{ });
 		$this->drops = $drops;
 	}
 
@@ -75,11 +76,11 @@ class EntityDeathEvent extends EntityEvent{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function setXpDropAmount(int $xp) : void{
 		if($xp < 0){
-			throw new \InvalidArgumentException("XP drop amount must not be negative");
+			throw new InvalidArgumentException("XP drop amount must not be negative");
 		}
 		$this->xp = $xp;
 	}

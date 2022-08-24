@@ -46,8 +46,8 @@ class Location extends Position{
 	}
 
 	/**
-	 * @param float      $yaw   default 0.0
-	 * @param float      $pitch default 0.0
+	 * @param float $yaw default 0.0
+	 * @param float $pitch default 0.0
 	 */
 	public static function fromObject(Vector3 $pos, Level $level = null, $yaw = 0.0, $pitch = 0.0) : Location{
 		return new Location($pos->x, $pos->y, $pos->z, $yaw, $pitch, $level ?? (($pos instanceof Position) ? $pos->level : null));

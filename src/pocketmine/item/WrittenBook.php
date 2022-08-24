@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use InvalidArgumentException;
+
 class WrittenBook extends WritableBook{
 
 	public const GENERATION_ORIGINAL = 0;
@@ -55,7 +57,7 @@ class WrittenBook extends WritableBook{
 	 */
 	public function setGeneration(int $generation) : void{
 		if($generation < 0 or $generation > 3){
-			throw new \InvalidArgumentException("Generation \"$generation\" is out of range");
+			throw new InvalidArgumentException("Generation \"$generation\" is out of range");
 		}
 		$namedTag = $this->getNamedTag();
 		$namedTag->setInt(self::TAG_GENERATION, $generation);

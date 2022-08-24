@@ -27,6 +27,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\BlockPaletteEntry;
 use pocketmine\network\mcpe\protocol\types\EducationEditionOffer;
@@ -39,7 +40,6 @@ use pocketmine\network\mcpe\protocol\types\MultiplayerGameVisibility;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementSettings;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\network\mcpe\protocol\types\SpawnSettings;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\utils\UUID;
 use function count;
 
@@ -190,7 +190,7 @@ class StartGamePacket extends DataPacket{
 	public bool $customSkinsDisabled = false;
 	public int $chatRestrictionLevel = 0; //0: None
 	public bool $disablePlayerInteractions = false;
- 	public bool $clientSideGeneration = false;
+	public bool $clientSideGeneration = false;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -332,7 +332,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->isWorldTemplateOptionLocked);
 		$this->putBool($this->onlySpawnV1Villagers);
 		$this->putBool($this->personaDisabled);
- 		$this->putBool($this->customSkinsDisabled);
+		$this->putBool($this->customSkinsDisabled);
 		$this->putString($this->vanillaVersion);
 		$this->putLInt($this->limitedWorldWidth);
 		$this->putLInt($this->limitedWorldLength);

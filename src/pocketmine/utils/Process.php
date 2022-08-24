@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use LogicException;
 use pocketmine\ThreadManager;
 use function count;
 use function exec;
@@ -181,7 +182,7 @@ final class Process{
 	public static function pid() : int{
 		$result = getmypid();
 		if($result === false){
-			throw new \LogicException("getmypid() doesn't work on this platform");
+			throw new LogicException("getmypid() doesn't work on this platform");
 		}
 		return $result;
 	}
@@ -189,7 +190,7 @@ final class Process{
 	public static function uid() : int{
 		$result = getmyuid();
 		if($result === false){
-			throw new \LogicException("getmyuid() doesn't work on this platform");
+			throw new LogicException("getmyuid() doesn't work on this platform");
 		}
 		return $result;
 	}

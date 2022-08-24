@@ -26,9 +26,8 @@ namespace pocketmine\level;
 
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
-
-use function strval;
 use function is_bool;
+use function strval;
 
 class GameRules{
 

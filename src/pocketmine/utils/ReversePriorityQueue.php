@@ -23,16 +23,19 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use SplPriorityQueue;
+
 /**
  * @phpstan-template TPriority
  * @phpstan-template TValue
- * @phpstan-extends \SplPriorityQueue<TPriority, TValue>
+ * @phpstan-extends SplPriorityQueue<TPriority, TValue>
  */
-class ReversePriorityQueue extends \SplPriorityQueue{
+class ReversePriorityQueue extends SplPriorityQueue{
 
 	/**
-	 * @param mixed $priority1
-	 * @param mixed $priority2
+	 * @param mixed             $priority1
+	 * @param mixed             $priority2
+	 *
 	 * @phpstan-param TPriority $priority1
 	 * @phpstan-param TPriority $priority2
 	 *

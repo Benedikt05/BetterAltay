@@ -35,7 +35,7 @@ abstract class MapRenderer{
 	 * Renders a map
 	 *
 	 * @param MapData $mapData
-	 * @param Player $player
+	 * @param Player  $player
 	 */
 	public abstract function render(MapData $mapData, Player $player) : void;
 

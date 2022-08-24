@@ -44,7 +44,7 @@ class BaneOfArthropodsEnchantment extends MeleeWeaponEnchantment{
 	}
 
 	public function getDamageBonus(int $enchantmentLevel) : float{
-		return  $enchantmentLevel * 2.5;
+		return $enchantmentLevel * 2.5;
 	}
 
 	public function onPostAttack(Entity $attacker, Entity $victim, int $enchantmentLevel) : void{

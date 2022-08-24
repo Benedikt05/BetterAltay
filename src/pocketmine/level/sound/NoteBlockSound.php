@@ -54,8 +54,8 @@ class NoteBlockSound extends Sound{
 	 * NoteBlockSound constructor.
 	 *
 	 * @param Vector3 $pos
-	 * @param int $instrument
-	 * @param int $note
+	 * @param int     $instrument
+	 * @param int     $note
 	 */
 	public function __construct(Vector3 $pos, int $instrument = self::INSTRUMENT_PIANO, int $note = 0){
 		parent::__construct($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ());

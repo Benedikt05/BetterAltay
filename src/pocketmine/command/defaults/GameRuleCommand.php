@@ -76,7 +76,7 @@ class GameRuleCommand extends VanillaCommand{
 				$sender->sendMessage(new TranslationContainer("commands.generic.syntax", ["/gamerule " . $args[0] . " ", $args[1], " "]));
 			}
 		}else{
-			$sender->sendMessage(new TranslationContainer("commands.generic.syntax", ["/gamerule ", $args[0] . " ",  " " . $args[1]]));
+			$sender->sendMessage(new TranslationContainer("commands.generic.syntax", ["/gamerule ", $args[0] . " ", " " . $args[1]]));
 		}
 
 		return true;

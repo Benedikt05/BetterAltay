@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeContentEntry;
 use function count;
 
-class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/{
+class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CREATIVE_CONTENT_PACKET;
 
 	/** @var CreativeContentEntry[] */

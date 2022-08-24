@@ -23,9 +23,16 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use AttachableThreadedLogger;
+use DateTime;
+use DateTimeZone;
 use LogLevel;
 use pocketmine\Thread;
 use pocketmine\Worker;
+use ReflectionClass;
+use RuntimeException;
+use Threaded;
+use Throwable;
 use function fclose;
 use function fopen;
 use function fwrite;
@@ -54,11 +61,11 @@ use const E_WARNING;
 use const PHP_EOL;
 use const PTHREADS_INHERIT_NONE;
 
-class MainLogger extends \AttachableThreadedLogger{
+class MainLogger extends AttachableThreadedLogger{
 
 	/** @var string */
 	protected $logFile;
-	/** @var \Threaded */
+	/** @var Threaded */
 	protected $logStream;
 	/** @var bool */
 	protected $shutdown = false;
@@ -79,17 +86,17 @@ class MainLogger extends \AttachableThreadedLogger{
 	private $timezone;
 
 	/**
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function __construct(string $logFile, bool $logDebug = false){
 		parent::__construct();
 		if(static::$logger instanceof MainLogger){
-			throw new \RuntimeException("MainLogger has been already created");
+			throw new RuntimeException("MainLogger has been already created");
 		}
 		touch($logFile);
 		$this->logFile = $logFile;
 		$this->logDebug = $logDebug;
-		$this->logStream = new \Threaded;
+		$this->logStream = new Threaded;
 
 		//Child threads may not inherit command line arguments, so if there's an override it needs to be recorded here
 		$this->mainThreadHasFormattingCodes = Terminal::hasFormattingCodes();
@@ -146,38 +153,38 @@ class MainLogger extends \AttachableThreadedLogger{
 	}
 
 	public function emergency($message){
-		$this->send($message, \LogLevel::EMERGENCY, "EMERGENCY", TextFormat::GOLD);
+		$this->send($message, LogLevel::EMERGENCY, "EMERGENCY", TextFormat::GOLD);
 	}
 
 	public function alert($message){
-		$this->send($message, \LogLevel::ALERT, "ALERT", TextFormat::DARK_PURPLE);
+		$this->send($message, LogLevel::ALERT, "ALERT", TextFormat::DARK_PURPLE);
 	}
 
 	public function critical($message){
-		$this->send($message, \LogLevel::CRITICAL, "CRITICAL", TextFormat::DARK_RED);
+		$this->send($message, LogLevel::CRITICAL, "CRITICAL", TextFormat::DARK_RED);
 	}
 
 	public function error($message){
-		$this->send($message, \LogLevel::ERROR, "ERROR", TextFormat::RED);
+		$this->send($message, LogLevel::ERROR, "ERROR", TextFormat::RED);
 	}
 
 	public function warning($message){
-		$this->send($message, \LogLevel::WARNING, "WARNING", TextFormat::YELLOW);
+		$this->send($message, LogLevel::WARNING, "WARNING", TextFormat::YELLOW);
 	}
 
 	public function notice($message){
-		$this->send($message, \LogLevel::NOTICE, "NOTICE", TextFormat::LIGHT_PURPLE);
+		$this->send($message, LogLevel::NOTICE, "NOTICE", TextFormat::LIGHT_PURPLE);
 	}
 
 	public function info($message){
-		$this->send($message, \LogLevel::INFO, "INFO", TextFormat::WHITE);
+		$this->send($message, LogLevel::INFO, "INFO", TextFormat::WHITE);
 	}
 
 	public function debug($message, bool $force = false){
 		if(!$this->logDebug and !$force){
 			return;
 		}
-		$this->send($message, \LogLevel::DEBUG, "DEBUG", TextFormat::GRAY);
+		$this->send($message, LogLevel::DEBUG, "DEBUG", TextFormat::GRAY);
 	}
 
 	/**
@@ -188,12 +195,13 @@ class MainLogger extends \AttachableThreadedLogger{
 	}
 
 	/**
-	 * @param mixed[][]|null $trace
+	 * @param mixed[][]|null                          $trace
+	 *
 	 * @phpstan-param list<array<string, mixed>>|null $trace
 	 *
 	 * @return void
 	 */
-	public function logException(\Throwable $e, $trace = null){
+	public function logException(Throwable $e, $trace = null){
 		if($trace === null){
 			$trace = $e->getTrace();
 		}
@@ -214,7 +222,7 @@ class MainLogger extends \AttachableThreadedLogger{
 		$this->syncFlushBuffer();
 	}
 
-	private static function printExceptionMessage(\Throwable $e) : string{
+	private static function printExceptionMessage(Throwable $e) : string{
 		static $errorConversion = [
 			0 => "EXCEPTION",
 			E_ERROR => "E_ERROR",
@@ -293,10 +301,10 @@ class MainLogger extends \AttachableThreadedLogger{
 	 * @return void
 	 */
 	protected function send($message, $level, $prefix, $color){
-		/** @var \DateTime|null $time */
+		/** @var DateTime|null $time */
 		static $time = null;
 		if($time === null){ //thread-local
-			$time = new \DateTime('now', new \DateTimeZone($this->timezone));
+			$time = new DateTime('now', new DateTimeZone($this->timezone));
 		}
 		$time->setTimestamp(time());
 
@@ -306,7 +314,7 @@ class MainLogger extends \AttachableThreadedLogger{
 		}elseif($thread instanceof Thread or $thread instanceof Worker){
 			$threadName = $thread->getThreadName();
 		}else{
-			$threadName = (new \ReflectionClass($thread))->getShortName();
+			$threadName = (new ReflectionClass($thread))->getShortName();
 		}
 
 		$message = sprintf($this->format, $time->format("H:i:s"), $color, $threadName, $prefix, TextFormat::clean($message, false));
@@ -366,7 +374,7 @@ class MainLogger extends \AttachableThreadedLogger{
 	public function run(){
 		$logResource = fopen($this->logFile, "ab");
 		if(!is_resource($logResource)){
-			throw new \RuntimeException("Couldn't open log file");
+			throw new RuntimeException("Couldn't open log file");
 		}
 
 		while(!$this->shutdown){

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
-use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\ProtectionEnchantment;
@@ -112,7 +111,7 @@ abstract class Armor extends Durable{
 			$player->getArmorInventory()->setItem($this->getArmorSlot(), $this->pop());
 
 			return true;
-		}elseif(!$current->equals($this) and $player->getInventory()->canAddItem($current)) {
+		}elseif(!$current->equals($this) and $player->getInventory()->canAddItem($current)){
 			$player->getArmorInventory()->setItem($this->getArmorSlot(), $this->pop());
 			$player->getInventory()->addItem($current);
 

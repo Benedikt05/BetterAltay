@@ -27,18 +27,22 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
+use BadMethodCallException;
+use InvalidStateException;
 use pocketmine\block\Block;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\StringTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
+use ReflectionClass;
+use ReflectionException;
 use function get_class;
 use function in_array;
 use function is_a;
@@ -119,8 +123,8 @@ abstract class Tile extends Position{
 	}
 
 	/**
-	 * @param string      $type
-	 * @param mixed       ...$args
+	 * @param string $type
+	 * @param mixed  ...$args
 	 */
 	public static function createTile($type, Level $level, CompoundTag $nbt, ...$args) : ?Tile{
 		if(isset(self::$knownTiles[$type])){
@@ -133,13 +137,14 @@ abstract class Tile extends Position{
 	}
 
 	/**
-	 * @param string[] $saveNames
+	 * @param string[]                   $saveNames
+	 *
 	 * @phpstan-param class-string<Tile> $className
 	 *
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public static function registerTile(string $className, array $saveNames = []) : bool{
-		$class = new \ReflectionClass($className);
+		$class = new ReflectionClass($className);
 		if(is_a($className, Tile::class, true) and !$class->isAbstract()){
 			$shortName = $class->getShortName();
 			if(!in_array($shortName, $saveNames, true)){
@@ -163,7 +168,7 @@ abstract class Tile extends Position{
 	 */
 	public static function getSaveId() : string{
 		if(!isset(self::$saveNames[static::class])){
-			throw new \InvalidStateException("Tile is not registered");
+			throw new InvalidStateException("Tile is not registered");
 		}
 
 		return self::$saveNames[static::class];
@@ -217,7 +222,7 @@ abstract class Tile extends Position{
 	 */
 	public static function createNBT(Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null) : CompoundTag{
 		if(static::class === self::class){
-			throw new \BadMethodCallException(__METHOD__ . " must be called from the scope of a child class");
+			throw new BadMethodCallException(__METHOD__ . " must be called from the scope of a child class");
 		}
 		$nbt = new CompoundTag("", [
 			new StringTag(self::TAG_ID, static::getSaveId()),
@@ -257,7 +262,7 @@ abstract class Tile extends Position{
 
 	final public function scheduleUpdate() : void{
 		if($this->closed){
-			throw new \InvalidStateException("Cannot schedule update on garbage tile " . get_class($this));
+			throw new InvalidStateException("Cannot schedule update on garbage tile " . get_class($this));
 		}
 		$this->level->updateTiles[$this->id] = $this;
 	}

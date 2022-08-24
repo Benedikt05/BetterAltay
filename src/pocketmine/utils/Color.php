@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use ArgumentCountError;
+use SplFixedArray;
 use function count;
 
 class Color{
@@ -53,7 +55,7 @@ class Color{
 	/** @var int */
 	protected $b;
 
-	/** @var \SplFixedArray */
+	/** @var SplFixedArray */
 	public static $dyeColors = null;
 
 	public function __construct(int $r, int $g, int $b, int $a = 0xff){
@@ -65,7 +67,7 @@ class Color{
 
 	public static function initDyeColors(){
 		if(self::$dyeColors === null){
-			self::$dyeColors = new \SplFixedArray(16);
+			self::$dyeColors = new SplFixedArray(16);
 
 			self::$dyeColors[self::COLOR_DYE_BLACK] = new Color(30, 27, 27);
 			self::$dyeColors[self::COLOR_DYE_RED] = new Color(179, 49, 44);
@@ -160,7 +162,7 @@ class Color{
 	public static function mix(Color ...$colors) : Color{
 		$count = count($colors);
 		if($count < 1){
-			throw new \ArgumentCountError("No colors given");
+			throw new ArgumentCountError("No colors given");
 		}
 
 		$a = $r = $g = $b = 0;
@@ -176,7 +178,7 @@ class Color{
 	}
 
 	public function equals(Color $color) : bool{
-		return  $this->r === $color->r and $this->g === $color->g and $this->b === $color->b and $this->a === $color->a;
+		return $this->r === $color->r and $this->g === $color->g and $this->b === $color->b and $this->a === $color->a;
 	}
 
 	/**

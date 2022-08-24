@@ -23,11 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\build\generate_known_translation_apis;
 
+use Error;
+use FilesystemIterator;
+use RegexIterator;
 use function count;
 use function fwrite;
 use function in_array;
 use function parse_ini_file;
-use function preg_match;
 use function preg_match_all;
 use const INI_SCANNER_RAW;
 use const PHP_EOL;
@@ -54,7 +56,7 @@ function verify_translations(array $baseLanguageDef, string $altLanguageName, ar
 		$baseParams = preg_match_all($parameterRegex, $baseString, $baseMatches);
 		$altParams = preg_match_all($parameterRegex, $altString, $altMatches);
 		if($baseParams === false || $altParams === false){
-			throw new \Error("preg_match_all() should not have failed here");
+			throw new Error("preg_match_all() should not have failed here");
 		}
 		foreach($baseMatches[1] as $paramName){
 			if(!in_array($paramName, $altMatches[1], true)){
@@ -96,7 +98,7 @@ if($eng === null){
 	exit(1);
 }
 $exit = 0;
-foreach(new \RegexIterator(new \FilesystemIterator($argv[1], \FilesystemIterator::CURRENT_AS_PATHNAME), "/([a-z]+)\.ini$/", \RegexIterator::GET_MATCH) as $match){
+foreach(new RegexIterator(new FilesystemIterator($argv[1], FilesystemIterator::CURRENT_AS_PATHNAME), "/([a-z]+)\.ini$/", RegexIterator::GET_MATCH) as $match){
 	$code = $match[1];
 	if($code === "eng"){
 		continue;

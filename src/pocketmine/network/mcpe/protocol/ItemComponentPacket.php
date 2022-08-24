@@ -30,7 +30,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\ItemComponentPacketEntry;
 use function count;
 
-class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/{
+class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::ITEM_COMPONENT_PACKET;
 
 	/**
@@ -40,7 +41,8 @@ class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/{
 	private $entries;
 
 	/**
-	 * @param ItemComponentPacketEntry[] $entries
+	 * @param ItemComponentPacketEntry[]             $entries
+	 *
 	 * @phpstan-param list<ItemComponentPacketEntry> $entries
 	 */
 	public static function create(array $entries) : self{

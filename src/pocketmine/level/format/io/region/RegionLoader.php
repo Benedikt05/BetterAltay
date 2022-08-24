@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format\io\region;
 
+use InvalidArgumentException;
 use pocketmine\level\format\ChunkException;
 use pocketmine\level\format\io\exception\CorruptedChunkException;
 use pocketmine\utils\AssumptionFailedError;
@@ -132,7 +133,7 @@ class RegionLoader{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException if invalid coordinates are given
+	 * @throws InvalidArgumentException if invalid coordinates are given
 	 * @throws CorruptedChunkException if chunk corruption is detected
 	 */
 	public function readChunk(int $x, int $z) : ?string{
@@ -177,7 +178,7 @@ class RegionLoader{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function chunkExists(int $x, int $z) : bool{
 		return $this->isChunkGenerated(self::getChunkOffset($x, $z));
@@ -203,7 +204,7 @@ class RegionLoader{
 	/**
 	 * @return void
 	 * @throws ChunkException
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function writeChunk(int $x, int $z, string $chunkData){
 		$this->lastUsed = time();
@@ -250,7 +251,7 @@ class RegionLoader{
 
 	/**
 	 * @return void
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function removeChunk(int $x, int $z){
 		$index = self::getChunkOffset($x, $z);
@@ -263,11 +264,11 @@ class RegionLoader{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	protected static function getChunkOffset(int $x, int $z) : int{
 		if($x < 0 or $x > 31 or $z < 0 or $z > 31){
-			throw new \InvalidArgumentException("Invalid chunk position in region, expected x/z in range 0-31, got x=$x, z=$z");
+			throw new InvalidArgumentException("Invalid chunk position in region, expected x/z in range 0-31, got x=$x, z=$z");
 		}
 		return $x | ($z << 5);
 	}

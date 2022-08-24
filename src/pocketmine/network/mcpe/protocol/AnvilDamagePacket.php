@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/{
+class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::ANVIL_DAMAGE_PACKET;
 
 	/** @var int */

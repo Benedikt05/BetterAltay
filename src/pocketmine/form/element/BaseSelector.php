@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\form\element;
 
+use InvalidArgumentException;
 use pocketmine\form\FormValidationException;
-
 use function array_values;
 use function is_int;
 
@@ -40,14 +40,14 @@ abstract class BaseSelector extends CustomFormElement{
 	 * @param string[] $options
 	 * @param int      $defaultOptionIndex
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function __construct(string $name, string $text, array $options, int $defaultOptionIndex = 0){
 		parent::__construct($name, $text);
 		$this->options = array_values($options);
 
 		if(!isset($this->options[$defaultOptionIndex])){
-			throw new \InvalidArgumentException("No option at index $defaultOptionIndex, cannot set as default");
+			throw new InvalidArgumentException("No option at index $defaultOptionIndex, cannot set as default");
 		}
 		$this->defaultOptionIndex = $defaultOptionIndex;
 	}

@@ -28,7 +28,8 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use function count;
 
-class AnimateEntityPacket extends DataPacket/* implements ClientboundPacket*/{
+class AnimateEntityPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::ANIMATE_ENTITY_PACKET;
 
 	/** @var string */
@@ -50,7 +51,8 @@ class AnimateEntityPacket extends DataPacket/* implements ClientboundPacket*/{
 	private $actorRuntimeIds;
 
 	/**
-	 * @param int[] $actorRuntimeIds
+	 * @param int[]             $actorRuntimeIds
+	 *
 	 * @phpstan-param list<int> $actorRuntimeIds
 	 */
 	public static function create(string $animation, string $nextState, string $stopExpression, int $stopExpressionVersion, string $controller, float $blendOutTime, array $actorRuntimeIds) : self{

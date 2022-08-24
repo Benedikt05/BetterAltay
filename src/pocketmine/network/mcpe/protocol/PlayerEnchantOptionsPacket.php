@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\EnchantOption;
 use function count;
 
-class PlayerEnchantOptionsPacket extends DataPacket/* implements ClientboundPacket*/{
+class PlayerEnchantOptionsPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_ENCHANT_OPTIONS_PACKET;
 
 	/** @var EnchantOption[] */

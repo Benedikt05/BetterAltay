@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\InputMode;
@@ -32,7 +33,8 @@ use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
 use pocketmine\network\mcpe\protocol\types\PlayMode;
 use function assert;
 
-class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
+class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_AUTH_INPUT_PACKET;
 
 	/** @var Vector3 */
@@ -70,7 +72,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 	public static function create(Vector3 $position, float $pitch, float $yaw, float $headYaw, float $moveVecX, float $moveVecZ, int $inputFlags, int $inputMode, int $playMode, int $interactionMode, ?Vector3 $vrGazeDirection, int $tick, Vector3 $delta) : self{
 		if($playMode === PlayMode::VR and $vrGazeDirection === null){
 			//yuck, can we get a properly written packet just once? ...
-			throw new \InvalidArgumentException("Gaze direction must be provided for VR play mode");
+			throw new InvalidArgumentException("Gaze direction must be provided for VR play mode");
 		}
 		$result = new self;
 		$result->position = $position->asVector3();
@@ -137,7 +139,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 	}
 
 	public function getInteractionMode() : int{
-	    return $this->interactionMode;
+		return $this->interactionMode;
 	}
 
 	public function getVrGazeDirection() : ?Vector3{

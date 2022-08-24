@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use UnexpectedValueException;
 
 final class SubChunkPacketEntryCommon{
 
@@ -32,7 +33,8 @@ final class SubChunkPacketEntryCommon{
 		private int $requestResult,
 		private string $terrainData,
 		private ?SubChunkPacketHeightMapInfo $heightMap
-	){}
+	){
+	}
 
 	public function getOffset() : SubChunkPositionOffset{ return $this->offset; }
 
@@ -56,7 +58,7 @@ final class SubChunkPacketEntryCommon{
 			SubChunkPacketHeightMapType::DATA => SubChunkPacketHeightMapInfo::read($in),
 			SubChunkPacketHeightMapType::ALL_TOO_HIGH => SubChunkPacketHeightMapInfo::allTooHigh(),
 			SubChunkPacketHeightMapType::ALL_TOO_LOW => SubChunkPacketHeightMapInfo::allTooLow(),
-			default => throw new \UnexpectedValueException("Unknown heightmap data type $heightMapDataType")
+			default => throw new UnexpectedValueException("Unknown heightmap data type $heightMapDataType")
 		};
 
 		return new self(

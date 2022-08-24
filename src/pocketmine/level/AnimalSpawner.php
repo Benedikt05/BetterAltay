@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level;
 
+use Exception;
 use pocketmine\block\Block;
 use pocketmine\block\Leaves;
 use pocketmine\block\Liquid;
@@ -43,7 +44,6 @@ use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\WeightedRandomItem;
-
 use function array_filter;
 use function count;
 use function is_a;
@@ -72,7 +72,7 @@ class AnimalSpawner{
 			$spawn = $level->getSpawnLocation();
 
 			foreach(self::$creatureTypes as $creatureType){
-				if((!$creatureType->isPeacefulCreature() or $spawnPeacefulMobs) and ($creatureType->isPeacefulCreature() or $spawnHostileMobs) and ($creatureType->getCreatureClass() !== Animal::class or $level->isDayTime())) {
+				if((!$creatureType->isPeacefulCreature() or $spawnPeacefulMobs) and ($creatureType->isPeacefulCreature() or $spawnHostileMobs) and ($creatureType->getCreatureClass() !== Animal::class or $level->isDayTime())){
 					$a = $creatureType->getCreatureClass();
 					$j4 = count(array_filter($level->getEntities(), function(Entity $entity) use ($a){
 						return is_a($entity, $a);
@@ -118,7 +118,7 @@ class AnimalSpawner{
 														$class = $entry->entityClass;
 														/** @var Living $entity */
 														$entity = new $class($level, Entity::createBaseNBT($pos1->add(0.5, 0, 0.5)));
-													}catch(\Exception $e){
+													}catch(Exception $e){
 														return;
 													}
 
@@ -241,7 +241,7 @@ class AnimalSpawner{
 								$class = $entry->entityClass;
 								/** @var Entity $entity */
 								$entity = new $class($level, Entity::createBaseNBT($pos->add(0.5, 0, 0.5)));
-							}catch(\Exception $e){
+							}catch(Exception $e){
 								continue;
 							}
 

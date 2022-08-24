@@ -28,7 +28,6 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkSession;
-use pocketmine\level\Position;
 
 class AddVolumeEntityPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_VOLUME_ENTITY_PACKET;
@@ -57,7 +56,7 @@ class AddVolumeEntityPacket extends DataPacket{
 
 	public function getData() : CompoundTag{ return $this->data; }
 
-	public function getDimension(): int{ return $this->dimension; }
+	public function getDimension() : int{ return $this->dimension; }
 
 	public function getEngineVersion() : string{ return $this->engineVersion; }
 

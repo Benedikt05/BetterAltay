@@ -50,9 +50,10 @@ class GeneratorRegisterTask extends AsyncTask{
 	public $worldHeight = Level::Y_MAX;
 
 	/**
-	 * @param mixed[] $generatorSettings
+	 * @param mixed[]                         $generatorSettings
+	 *
 	 * @phpstan-param class-string<Generator> $generatorClass
-	 * @phpstan-param array<string, mixed> $generatorSettings
+	 * @phpstan-param array<string, mixed>    $generatorSettings
 	 */
 	public function __construct(Level $level, string $generatorClass, array $generatorSettings = []){
 		$this->generatorClass = $generatorClass;

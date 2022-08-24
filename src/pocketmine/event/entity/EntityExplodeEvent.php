@@ -44,7 +44,7 @@ class EntityExplodeEvent extends EntityEvent implements Cancellable{
 	protected $yield;
 
 	/**
-	 * @param Block[]  $blocks
+	 * @param Block[] $blocks
 	 */
 	public function __construct(Entity $entity, Position $position, array $blocks, float $yield){
 		$this->entity = $entity;
@@ -68,7 +68,7 @@ class EntityExplodeEvent extends EntityEvent implements Cancellable{
 	 * @param Block[] $blocks
 	 */
 	public function setBlockList(array $blocks) : void{
-		Utils::validateArrayValueType($blocks, function(Block $_) : void{});
+		Utils::validateArrayValueType($blocks, function(Block $_) : void{ });
 		$this->blocks = $blocks;
 	}
 

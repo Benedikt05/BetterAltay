@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe;
 
 #include <rules/DataPacket.h>
 
+use Closure;
 use pocketmine\block\BlockIds;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
@@ -53,6 +54,7 @@ use pocketmine\network\mcpe\protocol\types\StructureEditorData;
 use pocketmine\network\mcpe\protocol\types\StructureSettings;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\UUID;
+use UnexpectedValueException;
 use function assert;
 use function count;
 use function strlen;
@@ -215,9 +217,9 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param \Closure(NetworkBinaryStream) : void $readExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream) : void $readExtraCrapInTheMiddle
 	 */
-	public function getItemStack(\Closure $readExtraCrapInTheMiddle) : Item{
+	public function getItemStack(Closure $readExtraCrapInTheMiddle) : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
 			return ItemFactory::get(0, 0, 0);
@@ -241,15 +243,15 @@ class NetworkBinaryStream extends BinaryStream{
 			if($nbtLen === 0xffff){
 				$nbtDataVersion = $extraData->getByte();
 				if($nbtDataVersion !== 1){
-					throw new \UnexpectedValueException("Unexpected NBT data version $nbtDataVersion");
+					throw new UnexpectedValueException("Unexpected NBT data version $nbtDataVersion");
 				}
 				$decodedNBT = (new LittleEndianNBTStream())->read($extraData->buffer, false, $extraData->offset, 512);
 				if(!($decodedNBT instanceof CompoundTag)){
-					throw new \UnexpectedValueException("Unexpected root tag type for itemstack");
+					throw new UnexpectedValueException("Unexpected root tag type for itemstack");
 				}
 				$nbt = $decodedNBT;
 			}elseif($nbtLen !== 0){
-				throw new \UnexpectedValueException("Unexpected fake NBT length $nbtLen");
+				throw new UnexpectedValueException("Unexpected fake NBT length $nbtLen");
 			}
 
 			//TODO
@@ -267,7 +269,7 @@ class NetworkBinaryStream extends BinaryStream{
 			}
 
 			if(!$extraData->feof()){
-				throw new \UnexpectedValueException("Unexpected trailing extradata for network item $netId");
+				throw new UnexpectedValueException("Unexpected trailing extradata for network item $netId");
 			}
 
 			if($nbt !== null){
@@ -297,9 +299,9 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param \Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
 	 */
-	public function putItemStack(Item $item, \Closure $writeExtraCrapInTheMiddle) : void{
+	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle) : void{
 		if($item->getId() === 0){
 			$this->putVarInt(0);
 
@@ -351,25 +353,25 @@ class NetworkBinaryStream extends BinaryStream{
 		}
 
 		$this->putString(
-		(static function() use ($nbt, $netId) : string{
-			$extraData = new NetworkBinaryStream();
+			(static function() use ($nbt, $netId) : string{
+				$extraData = new NetworkBinaryStream();
 
-			if($nbt !== null){
-				$extraData->putLShort(0xffff);
-				$extraData->putByte(1); //TODO: NBT data version (?)
-				$extraData->put((new LittleEndianNBTStream())->write($nbt));
-			}else{
-				$extraData->putLShort(0);
-			}
+				if($nbt !== null){
+					$extraData->putLShort(0xffff);
+					$extraData->putByte(1); //TODO: NBT data version (?)
+					$extraData->put((new LittleEndianNBTStream())->write($nbt));
+				}else{
+					$extraData->putLShort(0);
+				}
 
-			$extraData->putLInt(0); //CanPlaceOn entry count (TODO)
-			$extraData->putLInt(0); //CanDestroy entry count (TODO)
+				$extraData->putLInt(0); //CanPlaceOn entry count (TODO)
+				$extraData->putLInt(0); //CanDestroy entry count (TODO)
 
-			if($netId === ItemTypeDictionary::getInstance()->fromStringId("minecraft:shield")){
-				$extraData->putLLong(0); //"blocking tick" (ffs mojang)
-			}
-			return $extraData->getBuffer();
-		})());
+				if($netId === ItemTypeDictionary::getInstance()->fromStringId("minecraft:shield")){
+					$extraData->putLLong(0); //"blocking tick" (ffs mojang)
+				}
+				return $extraData->getBuffer();
+			})());
 	}
 
 	public function getRecipeIngredient() : Item{
@@ -388,7 +390,7 @@ class NetworkBinaryStream extends BinaryStream{
 			$this->putVarInt(0);
 		}else{
 			if($item->hasAnyDamageValue()){
-				[$netId, ] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
+				[$netId,] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
 				$netData = 0x7fff;
 			}else{
 				[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
@@ -444,7 +446,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$value = $this->getVector3();
 					break;
 				default:
-					throw new \UnexpectedValueException("Invalid data type " . $type);
+					throw new UnexpectedValueException("Invalid data type " . $type);
 			}
 			if($types){
 				$data[$key] = [$type, $value];
@@ -459,7 +461,8 @@ class NetworkBinaryStream extends BinaryStream{
 	/**
 	 * Writes entity metadata to the packet buffer.
 	 *
-	 * @param mixed[][] $metadata
+	 * @param mixed[][]                                   $metadata
+	 *
 	 * @phpstan-param array<int, array{0: int, 1: mixed}> $metadata
 	 */
 	public function putEntityMetadata(array $metadata) : void{
@@ -501,7 +504,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$this->putVector3Nullable($d[1]);
 					break;
 				default:
-					throw new \UnexpectedValueException("Invalid data type " . $d[0]);
+					throw new UnexpectedValueException("Invalid data type " . $d[0]);
 			}
 		}
 	}
@@ -510,7 +513,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * Reads a list of Attributes from the stream.
 	 * @return Attribute[]
 	 *
-	 * @throws \UnexpectedValueException if reading an attribute with an unrecognized name
+	 * @throws UnexpectedValueException if reading an attribute with an unrecognized name
 	 */
 	public function getAttributeList() : array{
 		$list = [];
@@ -532,7 +535,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 				$list[] = $attr;
 			}else{
-				throw new \UnexpectedValueException("Unknown attribute type \"$name\"");
+				throw new UnexpectedValueException("Unknown attribute type \"$name\"");
 			}
 		}
 
@@ -708,7 +711,8 @@ class NetworkBinaryStream extends BinaryStream{
 	 * Writes a gamerule array, members should be in the structure [name => [type, value, isPlayerModifiable]]
 	 * TODO: implement this properly
 	 *
-	 * @param mixed[][] $rules
+	 * @param mixed[][]                                                        $rules
+	 *
 	 * @phpstan-param array<string, array{0: int, 1: bool|int|float, 2: bool}> $rules
 	 */
 	public function putGameRules(array $rules) : void{
@@ -856,7 +860,7 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getNbtCompoundRoot() : CompoundTag{
 		$root = $this->getNbtRoot();
 		if(!($root instanceof CompoundTag)){
-			throw new \UnexpectedValueException("Expected TAG_Compound root");
+			throw new UnexpectedValueException("Expected TAG_Compound root");
 		}
 		return $root;
 	}

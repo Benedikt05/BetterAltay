@@ -147,7 +147,7 @@ class PermissibleBase implements Permissible{
 	}
 
 	/**
-	 * @param bool[]                    $children
+	 * @param bool[] $children
 	 */
 	private function calculateChildPermissions(array $children, bool $invert, ?PermissionAttachment $attachment) : void{
 		$permManager = PermissionManager::getInstance();

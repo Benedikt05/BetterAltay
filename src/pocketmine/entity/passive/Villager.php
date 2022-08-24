@@ -24,10 +24,10 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
+use InvalidArgumentException;
 use pocketmine\entity\Ageable;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
-use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
 use pocketmine\entity\NPC;
 use pocketmine\inventory\TradeInventory;
@@ -118,14 +118,14 @@ class Villager extends Mob implements NPC, Ageable{
 		try{
 			$this->setTradeTier($tradeTier);
 			$this->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), mt_rand(2, 5) * 20));
-		}catch(\InvalidArgumentException $exception){
+		}catch(InvalidArgumentException $exception){
 		}
 	}
 
 	public function setTradeTier(int $tradeTier) : void{
 		$items = []; // TODO
 		if(count($items) < ($tradeTier + 1)){
-			throw new \InvalidArgumentException("Trade tier $tradeTier is not available");
+			throw new InvalidArgumentException("Trade tier $tradeTier is not available");
 		}
 
 		$this->tradeTier = $tradeTier;
@@ -143,7 +143,7 @@ class Villager extends Mob implements NPC, Ageable{
 	public function setCareer(int $career) : void{
 		$pro = $this->getProfession();
 		if(!isset(self::$names[$pro][$career])){
-			throw new \InvalidArgumentException("$career is not found on $pro profession.");
+			throw new InvalidArgumentException("$career is not found on $pro profession.");
 		}
 
 		$this->career = $career;
@@ -157,7 +157,7 @@ class Villager extends Mob implements NPC, Ageable{
 		return $this->offers;
 	}
 
-	public function saveNBT() : void {
+	public function saveNBT() : void{
 		parent::saveNBT();
 
 		$this->namedtag->setInt("Profession", $this->getProfession());
@@ -214,7 +214,7 @@ class Villager extends Mob implements NPC, Ageable{
 		if($player === null){
 			$this->propertyManager->setLong(self::DATA_TRADING_PLAYER_EID, -1);
 		}elseif($player->closed){
-			throw new \InvalidArgumentException("Supplied trading player is garbage and cannot be used");
+			throw new InvalidArgumentException("Supplied trading player is garbage and cannot be used");
 		}else{
 			$this->propertyManager->setLong(self::DATA_TRADING_PLAYER_EID, $player->getId());
 		}

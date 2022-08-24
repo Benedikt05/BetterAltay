@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use InvalidArgumentException;
 use function is_array;
 use function json_encode;
 use function json_last_error_msg;
@@ -74,21 +75,21 @@ abstract class TextFormat{
 	public const ITALIC = TextFormat::ESCAPE . "o";
 	public const RESET = TextFormat::ESCAPE . "r";
 
-	private static function makePcreError() : \InvalidArgumentException{
+	private static function makePcreError() : InvalidArgumentException{
 		$errorCode = preg_last_error();
 		$message = [
-			PREG_INTERNAL_ERROR => "Internal error",
-			PREG_BACKTRACK_LIMIT_ERROR => "Backtrack limit reached",
-			PREG_RECURSION_LIMIT_ERROR => "Recursion limit reached",
-			PREG_BAD_UTF8_ERROR => "Malformed UTF-8",
-			PREG_BAD_UTF8_OFFSET_ERROR => "Bad UTF-8 offset",
-			PREG_JIT_STACKLIMIT_ERROR => "PCRE JIT stack limit reached"
-		][$errorCode] ?? "Unknown (code $errorCode)";
-		throw new \InvalidArgumentException("PCRE error: $message");
+				PREG_INTERNAL_ERROR => "Internal error",
+				PREG_BACKTRACK_LIMIT_ERROR => "Backtrack limit reached",
+				PREG_RECURSION_LIMIT_ERROR => "Recursion limit reached",
+				PREG_BAD_UTF8_ERROR => "Malformed UTF-8",
+				PREG_BAD_UTF8_OFFSET_ERROR => "Bad UTF-8 offset",
+				PREG_JIT_STACKLIMIT_ERROR => "PCRE JIT stack limit reached"
+			][$errorCode] ?? "Unknown (code $errorCode)";
+		throw new InvalidArgumentException("PCRE error: $message");
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	private static function preg_replace(string $pattern, string $replacement, string $string) : string{
 		$result = preg_replace($pattern, $replacement, $string);
@@ -316,7 +317,7 @@ abstract class TextFormat{
 
 		$result = json_encode($newString, JSON_UNESCAPED_SLASHES);
 		if($result === false){
-			throw new \InvalidArgumentException("Failed to encode result JSON: " . json_last_error_msg());
+			throw new InvalidArgumentException("Failed to encode result JSON: " . json_last_error_msg());
 		}
 		return $result;
 	}

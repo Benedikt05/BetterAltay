@@ -26,7 +26,6 @@ namespace pocketmine\entity\vehicle;
 
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Mob;
 use pocketmine\entity\Vehicle;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -100,7 +99,7 @@ class Boat extends Vehicle{
 				$this->clientMoveTicks = $clientMoveTicks + 5;
 			}else{
 				if($this->distanceSquared($pos) > 1){
-					$this->clientMoveTicks  = 3;
+					$this->clientMoveTicks = 3;
 				}else{
 					return;
 				}
@@ -199,7 +198,6 @@ class Boat extends Vehicle{
 				}
 
 
-
 			}else{
 				if($this->onGround){
 					$this->motion = $this->motion->multiply(0.5);
@@ -262,9 +260,9 @@ class Boat extends Vehicle{
 		return $this->propertyManager->getFloat(self::DATA_PADDLE_TIME_RIGHT) ?? 0.0;
 	}
 
-	protected function broadcastLink(Player $player = null, int $type = EntityLink::TYPE_RIDER): void{
-		foreach($this->getViewers() as $viewer) {
-			if (!isset($viewer->getViewers()[$player->getLoaderId()])) {
+	protected function broadcastLink(Player $player = null, int $type = EntityLink::TYPE_RIDER) : void{
+		foreach($this->getViewers() as $viewer){
+			if(!isset($viewer->getViewers()[$player->getLoaderId()])){
 				$player->spawnTo($viewer);
 			}
 			$pk = new SetActorLinkPacket();

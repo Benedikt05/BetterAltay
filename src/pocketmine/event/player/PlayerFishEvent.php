@@ -27,11 +27,10 @@ namespace pocketmine\event\player;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\event\Cancellable;
-use pocketmine\item\Item;
 use pocketmine\Player;
 
 class PlayerFishEvent extends PlayerEvent implements Cancellable{
-	
+
 	public const STATE_FISHING = 0;
 	public const STATE_CAUGHT_FISH = 1;
 	public const STATE_CAUGHT_ENTITY = 2;

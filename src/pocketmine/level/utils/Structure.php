@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\level\utils;
 
+use Exception;
+use InvalidStateException;
 use pocketmine\entity\Entity;
 use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
@@ -31,10 +33,10 @@ use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\tag\IntTag;
-
+use UnexpectedValueException;
 use function is_file;
 
 class Structure{
@@ -67,13 +69,13 @@ class Structure{
 				if($this->verifyStructureNbt($data)){
 					$this->nbt = $data;
 				}else{
-					throw new \InvalidStateException("Structure: Given Nbt is not verified");
+					throw new InvalidStateException("Structure: Given Nbt is not verified");
 				}
 			}else{
-				throw new \UnexpectedValueException("Structure: Unexpected nbt data is given");
+				throw new UnexpectedValueException("Structure: Unexpected nbt data is given");
 			}
 		}else{
-			throw new \Exception("Structure: Wrong path is given");
+			throw new Exception("Structure: Wrong path is given");
 		}
 	}
 
@@ -154,7 +156,7 @@ class Structure{
 						if($type instanceof CompoundTag and $type->hasTag(self::TAG_BLOCK_NAME, StringTag::class)){
 							try{
 								$item = ItemFactory::fromString($type->getString(self::TAG_BLOCK_NAME));
-							}catch(\Exception $e){
+							}catch(Exception $e){
 								continue; // unexpected block id given, continue
 							}
 

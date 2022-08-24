@@ -30,7 +30,8 @@ final class SubChunkPacketEntryWithCache{
 	public function __construct(
 		private SubChunkPacketEntryCommon $base,
 		private int $usedBlobHash
-	){}
+	){
+	}
 
 	public function getBase() : SubChunkPacketEntryCommon{ return $this->base; }
 

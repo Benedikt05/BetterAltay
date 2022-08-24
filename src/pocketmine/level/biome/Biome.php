@@ -43,6 +43,7 @@ use pocketmine\entity\WaterAnimal;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\utils\Random;
+use SplFixedArray;
 
 abstract class Biome{
 
@@ -67,8 +68,8 @@ abstract class Biome{
 	public const MAX_BIOMES = 256;
 
 	/**
-	 * @var Biome[]|\SplFixedArray
-	 * @phpstan-var \SplFixedArray<Biome>
+	 * @var Biome[]|SplFixedArray
+	 * @phpstan-var SplFixedArray<Biome>
 	 */
 	private static $biomes;
 
@@ -132,7 +133,7 @@ abstract class Biome{
 	 * @return void
 	 */
 	public static function init(){
-		self::$biomes = new \SplFixedArray(self::MAX_BIOMES);
+		self::$biomes = new SplFixedArray(self::MAX_BIOMES);
 
 		self::register(self::OCEAN, new OceanBiome());
 		self::register(self::PLAINS, new PlainBiome());

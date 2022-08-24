@@ -24,11 +24,12 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use BadMethodCallException;
 use pocketmine\entity\Human;
 use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\ContainerIds;
-use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\Player;
 
@@ -62,7 +63,7 @@ class PlayerOffHandInventory extends BaseInventory{
 	}
 
 	public function setSize(int $size){
-		throw new \BadMethodCallException("OffHand can only carry one item at a time");
+		throw new BadMethodCallException("OffHand can only carry one item at a time");
 	}
 
 	public function sendSlot(int $index, $target) : void{

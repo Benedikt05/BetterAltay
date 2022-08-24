@@ -23,8 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\permission;
 
+use DateTime;
 use pocketmine\Server;
 use pocketmine\utils\MainLogger;
+use Throwable;
 use function fclose;
 use function fgets;
 use function fopen;
@@ -94,7 +96,7 @@ class BanList{
 		$this->save();
 	}
 
-	public function addBan(string $target, string $reason = null, \DateTime $expires = null, string $source = null) : BanEntry{
+	public function addBan(string $target, string $reason = null, DateTime $expires = null, string $source = null) : BanEntry{
 		$entry = new BanEntry($target);
 		$entry->setSource($source ?? $entry->getSource());
 		$entry->setExpires($expires);
@@ -142,7 +144,7 @@ class BanList{
 						if($entry instanceof BanEntry){
 							$this->list[$entry->getName()] = $entry;
 						}
-					}catch(\Throwable $e){
+					}catch(Throwable $e){
 						$logger = MainLogger::getLogger();
 						$logger->critical("Failed to parse ban entry from string \"$line\": " . $e->getMessage());
 						$logger->logException($e);
@@ -163,7 +165,7 @@ class BanList{
 		$fp = @fopen($this->file, "w");
 		if(is_resource($fp)){
 			if($writeHeader){
-				fwrite($fp, "# Updated " . strftime("%x %H:%M", time()) . " by " . Server::getInstance()->getName() . " " . Server::getInstance()->getBetterAltayVersion(). "\n");
+				fwrite($fp, "# Updated " . strftime("%x %H:%M", time()) . " by " . Server::getInstance()->getName() . " " . Server::getInstance()->getBetterAltayVersion() . "\n");
 				fwrite($fp, "# victim name | ban date | banned by | banned until | reason\n\n");
 			}
 

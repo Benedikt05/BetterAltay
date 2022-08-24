@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\player;
 
+use InvalidArgumentException;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
@@ -44,7 +45,7 @@ class PlayerRespawnEvent extends PlayerEvent{
 
 	public function setRespawnPosition(Position $position) : void{
 		if(!$position->isValid()){
-			throw new \InvalidArgumentException("Spawn position must reference a valid and loaded World");
+			throw new InvalidArgumentException("Spawn position must reference a valid and loaded World");
 		}
 		$this->position = $position;
 	}

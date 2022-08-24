@@ -170,7 +170,7 @@ class VerifyLoginTask extends AsyncTask{
 
 	public function onCompletion(Server $server){
 		/**
-		 * @var Player $player
+		 * @var Player      $player
 		 * @var LoginPacket $packet
 		 */
 		[$player, $packet] = $this->fetchLocal();

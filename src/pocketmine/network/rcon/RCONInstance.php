@@ -26,6 +26,8 @@ namespace pocketmine\network\rcon;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\Thread;
 use pocketmine\utils\Binary;
+use Socket;
+use ThreadedLogger;
 use function count;
 use function ltrim;
 use function microtime;
@@ -60,20 +62,20 @@ class RCONInstance extends Thread{
 
 	/** @var bool */
 	private $stop;
-	/** @var \Socket */
+	/** @var Socket */
 	private $socket;
 	/** @var string */
 	private $password;
 	/** @var int */
 	private $maxClients;
-	/** @var \ThreadedLogger */
+	/** @var ThreadedLogger */
 	private $logger;
-	/** @var \Socket */
+	/** @var Socket */
 	private $ipcSocket;
 	/** @var SleeperNotifier|null */
 	private $notifier;
 
-	public function __construct(\Socket $socket, string $password, int $maxClients, \ThreadedLogger $logger, \Socket $ipcSocket, ?SleeperNotifier $notifier){
+	public function __construct(Socket $socket, string $password, int $maxClients, ThreadedLogger $logger, Socket $ipcSocket, ?SleeperNotifier $notifier){
 		$this->stop = false;
 		$this->cmd = "";
 		$this->response = "";
@@ -90,7 +92,7 @@ class RCONInstance extends Thread{
 	/**
 	 * @return int|false
 	 */
-	private function writePacket(\Socket $client, int $requestID, int $packetType, string $payload){
+	private function writePacket(Socket $client, int $requestID, int $packetType, string $payload){
 		$pk = Binary::writeLInt($requestID)
 			. Binary::writeLInt($packetType)
 			. $payload
@@ -99,13 +101,13 @@ class RCONInstance extends Thread{
 	}
 
 	/**
-	 * @param int      $requestID reference parameter
-	 * @param int      $packetType reference parameter
-	 * @param string   $payload reference parameter
+	 * @param int    $requestID reference parameter
+	 * @param int    $packetType reference parameter
+	 * @param string $payload reference parameter
 	 *
 	 * @return bool
 	 */
-	private function readPacket(\Socket $client, ?int &$requestID, ?int &$packetType, ?string &$payload){
+	private function readPacket(Socket $client, ?int &$requestID, ?int &$packetType, ?string &$payload){
 		$d = @socket_read($client, 4);
 
 		socket_getpeername($client, $ip, $port);
@@ -159,8 +161,8 @@ class RCONInstance extends Thread{
 		$this->registerClassLoader();
 
 		/**
-		 * @var \Socket[] $clients
-		 * @phpstan-var array<int, \Socket> $clients
+		 * @var Socket[]                   $clients
+		 * @phpstan-var array<int, Socket> $clients
 		 */
 		$clients = [];
 		/** @var bool[] $authenticated */
@@ -260,7 +262,7 @@ class RCONInstance extends Thread{
 		}
 	}
 
-	private function disconnectClient(\Socket $client) : void{
+	private function disconnectClient(Socket $client) : void{
 		socket_getpeername($client, $ip, $port);
 		@socket_set_option($client, SOL_SOCKET, SO_LINGER, ["l_onoff" => 1, "l_linger" => 1]);
 		@socket_shutdown($client, 2);

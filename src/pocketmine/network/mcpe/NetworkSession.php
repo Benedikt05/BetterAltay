@@ -897,7 +897,7 @@ abstract class NetworkSession{
 	public function handleCodeBuilderSource(CodeBuilderSourcePacket $packet) : bool{
 		return false;
 	}
-	
+
 	public function handleToastRequest(ToastRequestPacket $packet) : bool{
 		return false;
 	}

@@ -23,10 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory\transaction;
 
+use InvalidArgumentException;
 use pocketmine\event\inventory\InventoryTransactionEvent;
-use pocketmine\inventory\transaction\action\SlotChangeAction;
-use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\Inventory;
+use pocketmine\inventory\transaction\action\InventoryAction;
+use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Item;
 use pocketmine\Player;
 use function array_keys;
@@ -103,7 +104,7 @@ class InventoryTransaction{
 			$this->actions[$hash] = $action;
 			$action->onAddToTransaction($this);
 		}else{
-			throw new \InvalidArgumentException("Tried to add the same action to a transaction twice");
+			throw new InvalidArgumentException("Tried to add the same action to a transaction twice");
 		}
 	}
 

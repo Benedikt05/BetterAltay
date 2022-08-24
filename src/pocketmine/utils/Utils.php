@@ -27,7 +27,17 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use Closure;
 use DaveRandom\CallbackValidator\CallbackType;
+use DaveRandom\CallbackValidator\InvalidCallbackException;
+use ErrorException;
+use Exception;
+use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
+use RuntimeException;
+use TypeError;
 use function array_combine;
 use function array_map;
 use function array_reverse;
@@ -91,6 +101,8 @@ use const PHP_EOL;
 use const PHP_INT_MAX;
 use const PHP_INT_SIZE;
 use const PHP_MAXPATHLEN;
+use const pocketmine\PATH;
+use const pocketmine\PLUGIN_PATH;
 use const SCANDIR_SORT_NONE;
 use const STR_PAD_LEFT;
 use const STR_PAD_RIGHT;
@@ -136,10 +148,10 @@ class Utils{
 	 * Returns a readable identifier for the given Closure, including file and line.
 	 *
 	 * @phpstan-param anyClosure $closure
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
-	public static function getNiceClosureName(\Closure $closure) : string{
-		$func = new \ReflectionFunction($closure);
+	public static function getNiceClosureName(Closure $closure) : string{
+		$func = new ReflectionFunction($closure);
 		if(substr($func->getName(), -strlen('{closure}')) !== '{closure}'){
 			//closure wraps a named function, can be done with reflection or fromCallable()
 			//isClosure() is useless here because it just tells us if $func is reflecting a Closure object
@@ -166,10 +178,10 @@ class Utils{
 	/**
 	 * Returns a readable identifier for the class of the given object. Sanitizes class names for anonymous classes.
 	 *
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public static function getNiceClassName(object $obj) : string{
-		$reflect = new \ReflectionClass($obj);
+		$reflect = new ReflectionClass($obj);
 		if($reflect->isAnonymous()){
 			$filename = $reflect->getFileName();
 
@@ -256,12 +268,12 @@ class Utils{
 	}
 
 	/**
-	 * @deprecated
-	 * @see Internet::getIP()
-	 *
 	 * @param bool $force default false, force IP check even when cached
 	 *
 	 * @return string|bool
+	 * @deprecated
+	 * @see Internet::getIP()
+	 *
 	 */
 	public static function getIP(bool $force = false){
 		return Internet::getIP($force);
@@ -305,21 +317,21 @@ class Utils{
 	}
 
 	/**
-	 * @deprecated
+	 * @return int[]
 	 * @see Process::getRealMemoryUsage()
 	 *
-	 * @return int[]
+	 * @deprecated
 	 */
 	public static function getRealMemoryUsage() : array{
 		return Process::getRealMemoryUsage();
 	}
 
 	/**
-	 * @deprecated
+	 * @return int[]|int
 	 * @see Process::getMemoryUsage()
 	 * @see Process::getAdvancedMemoryUsage()
 	 *
-	 * @return int[]|int
+	 * @deprecated
 	 */
 	public static function getMemoryUsage(bool $advanced = false){
 		return $advanced ? Process::getAdvancedMemoryUsage() : Process::getMemoryUsage();
@@ -409,58 +421,61 @@ class Utils{
 	}*/
 
 	/**
-	 * @deprecated
-	 * @see Internet::getURL()
+	 * @param int                           $timeout default 10
+	 * @param string[]                      $extraHeaders
+	 * @param string                        $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
+	 * @param string[]                      $headers reference parameter
+	 * @param int                           $httpCode reference parameter
 	 *
-	 * @param int      $timeout default 10
-	 * @param string[] $extraHeaders
-	 * @param string   $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
-	 * @param string[] $headers reference parameter
-	 * @param int      $httpCode reference parameter
 	 * @phpstan-param list<string>          $extraHeaders
 	 * @phpstan-param array<string, string> $headers
 	 *
 	 * @return string|false
+	 * @deprecated
+	 * @see Internet::getURL()
+	 *
 	 */
 	public static function getURL(string $page, int $timeout = 10, array $extraHeaders = [], &$err = null, &$headers = null, &$httpCode = null){
 		return Internet::getURL($page, $timeout, $extraHeaders, $err, $headers, $httpCode);
 	}
 
 	/**
-	 * @deprecated
-	 * @see Internet::postURL()
+	 * @param string[]|string                      $args
+	 * @param string[]                             $extraHeaders
+	 * @param string                               $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
+	 * @param string[]                             $headers reference parameter
+	 * @param int                                  $httpCode reference parameter
 	 *
-	 * @param string[]|string $args
-	 * @param string[]        $extraHeaders
-	 * @param string          $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
-	 * @param string[]        $headers reference parameter
-	 * @param int             $httpCode reference parameter
 	 * @phpstan-param string|array<string, string> $args
 	 * @phpstan-param list<string>                 $extraHeaders
 	 * @phpstan-param array<string, string>        $headers
 	 *
 	 * @return string|false
+	 * @deprecated
+	 * @see Internet::postURL()
+	 *
 	 */
 	public static function postURL(string $page, $args, int $timeout = 10, array $extraHeaders = [], &$err = null, &$headers = null, &$httpCode = null){
 		return Internet::postURL($page, $args, $timeout, $extraHeaders, $err, $headers, $httpCode);
 	}
 
 	/**
-	 * @deprecated
-	 * @see Internet::simpleCurl()
+	 * @param float|int                 $timeout The maximum connect timeout and timeout in seconds, correct to ms.
+	 * @param string[]                  $extraHeaders extra headers to send as a plain string array
+	 * @param array                     $extraOpts extra CURLOPT_* to set as an [opt => value] map
+	 * @param callable|null             $onSuccess function to be called if there is no error. Accepts a resource argument as the cURL handle.
 	 *
-	 * @param float|int     $timeout      The maximum connect timeout and timeout in seconds, correct to ms.
-	 * @param string[]      $extraHeaders extra headers to send as a plain string array
-	 * @param array         $extraOpts    extra CURLOPT_* to set as an [opt => value] map
-	 * @param callable|null $onSuccess    function to be called if there is no error. Accepts a resource argument as the cURL handle.
-	 * @phpstan-param array<int, mixed>                $extraOpts
-	 * @phpstan-param list<string>                     $extraHeaders
+	 * @phpstan-param array<int, mixed> $extraOpts
+	 * @phpstan-param list<string>      $extraHeaders
 	 * @phpstan-param (callable(\CurlHandle) : void)|null $onSuccess
 	 *
 	 * @return array a plain array of three [result body : string, headers : string[][], HTTP response code : int]. Headers are grouped by requests with strtolower(header name) as keys and header value as values
 	 * @phpstan-return array{string, list<array<string, string>>, int}
 	 *
-	 * @throws \RuntimeException if a cURL error occurs
+	 * @throws RuntimeException if a cURL error occurs
+	 * @deprecated
+	 * @see Internet::simpleCurl()
+	 *
 	 */
 	public static function simpleCurl(string $page, $timeout = 10, array $extraHeaders = [], array $extraOpts = [], callable $onSuccess = null){
 		return Internet::simpleCurl($page, $timeout, $extraHeaders, $extraOpts, $onSuccess);
@@ -486,14 +501,14 @@ class Utils{
 	}
 
 	/**
-	 * @deprecated
-	 * @see Process::execute()
-	 *
 	 * @param string      $command Command to execute
 	 * @param string|null $stdout Reference parameter to write stdout to
 	 * @param string|null $stderr Reference parameter to write stderr to
 	 *
 	 * @return int process exit code
+	 * @deprecated
+	 * @see Process::execute()
+	 *
 	 */
 	public static function execute(string $command, string &$stdout = null, string &$stderr = null) : int{
 		return Process::execute($command, $stdout, $stderr);
@@ -508,21 +523,22 @@ class Utils{
 
 		$rawPayloadJSON = base64_decode(strtr($payloadB64, '-_', '+/'), true);
 		if($rawPayloadJSON === false){
-			throw new \InvalidArgumentException("Payload base64 is invalid and cannot be decoded");
+			throw new InvalidArgumentException("Payload base64 is invalid and cannot be decoded");
 		}
 		$decodedPayload = json_decode($rawPayloadJSON, true);
 		if(!is_array($decodedPayload)){
-			throw new \InvalidArgumentException("Decoded payload should be array, " . gettype($decodedPayload) . " received");
+			throw new InvalidArgumentException("Decoded payload should be array, " . gettype($decodedPayload) . " received");
 		}
 
 		return $decodedPayload;
 	}
 
 	/**
-	 * @deprecated
+	 * @param int $pid
+	 *
 	 * @see Process::kill()
 	 *
-	 * @param int $pid
+	 * @deprecated
 	 */
 	public static function kill($pid) : void{
 		Process::kill($pid);
@@ -548,7 +564,8 @@ class Utils{
 	}
 
 	/**
-	 * @param mixed[][] $trace
+	 * @param mixed[][]                          $trace
+	 *
 	 * @phpstan-param list<array<string, mixed>> $trace
 	 *
 	 * @return string[]
@@ -564,7 +581,7 @@ class Utils{
 					$args = $trace[$i]["params"];
 				}
 
-				$params = implode(", ", array_map(function($value) use($maxStringLength) : string{
+				$params = implode(", ", array_map(function($value) use ($maxStringLength) : string{
 					if(is_object($value)){
 						return "object " . self::getNiceClassName($value);
 					}
@@ -591,7 +608,7 @@ class Utils{
 		if(function_exists("xdebug_get_function_stack")){
 			$trace = array_reverse(xdebug_get_function_stack());
 		}else{
-			$e = new \Exception();
+			$e = new Exception();
 			$trace = $e->getTrace();
 		}
 		for($i = 0; $i < $skipFrames; ++$i){
@@ -618,8 +635,8 @@ class Utils{
 		//remove relative paths
 		//TODO: make these paths dynamic so they can be unit-tested against
 		static $cleanPaths = [
-			\pocketmine\PLUGIN_PATH => self::CLEAN_PATH_PLUGINS_PREFIX, //this has to come BEFORE \pocketmine\PATH because it's inside that by default on src installations
-			\pocketmine\PATH => self::CLEAN_PATH_SRC_PREFIX
+			PLUGIN_PATH => self::CLEAN_PATH_PLUGINS_PREFIX, //this has to come BEFORE \pocketmine\PATH because it's inside that by default on src installations
+			PATH => self::CLEAN_PATH_SRC_PREFIX
 		];
 		foreach($cleanPaths as $cleanPath => $replacement){
 			$cleanPath = rtrim(str_replace([DIRECTORY_SEPARATOR, "phar://"], ["/", ""], $cleanPath), "/");
@@ -647,11 +664,11 @@ class Utils{
 	}
 
 	/**
-	 * @throws \ErrorException
+	 * @throws ErrorException
 	 */
 	public static function errorExceptionHandler(int $severity, string $message, string $file, int $line) : bool{
 		if((error_reporting() & $severity) !== 0){
-			throw new \ErrorException($message, 0, $severity, $file, $line);
+			throw new ErrorException($message, 0, $severity, $file, $line);
 		}
 
 		return true; //stfu operator
@@ -663,22 +680,22 @@ class Utils{
 	 */
 	public static function testValidInstance(string $className, string $baseName) : void{
 		try{
-			$base = new \ReflectionClass($baseName);
-		}catch(\ReflectionException $e){
-			throw new \InvalidArgumentException("Base class $baseName does not exist");
+			$base = new ReflectionClass($baseName);
+		}catch(ReflectionException $e){
+			throw new InvalidArgumentException("Base class $baseName does not exist");
 		}
 
 		try{
-			$class = new \ReflectionClass($className);
-		}catch(\ReflectionException $e){
-			throw new \InvalidArgumentException("Class $className does not exist");
+			$class = new ReflectionClass($className);
+		}catch(ReflectionException $e){
+			throw new InvalidArgumentException("Class $className does not exist");
 		}
 
 		if(!$class->isSubclassOf($baseName)){
-			throw new \InvalidArgumentException("Class $className does not " . ($base->isInterface() ? "implement" : "extend") . " " . $baseName);
+			throw new InvalidArgumentException("Class $className does not " . ($base->isInterface() ? "implement" : "extend") . " " . $baseName);
 		}
 		if(!$class->isInstantiable()){
-			throw new \InvalidArgumentException("Class $className cannot be constructed");
+			throw new InvalidArgumentException("Class $className cannot be constructed");
 		}
 	}
 
@@ -686,31 +703,32 @@ class Utils{
 	 * Verifies that the given callable is compatible with the desired signature. Throws a TypeError if they are
 	 * incompatible.
 	 *
-	 * @param callable $signature Dummy callable with the required parameters and return type
-	 * @param callable $subject Callable to check the signature of
+	 * @param callable            $signature Dummy callable with the required parameters and return type
+	 * @param callable            $subject Callable to check the signature of
+	 *
 	 * @phpstan-param anyCallable $signature
 	 * @phpstan-param anyCallable $subject
 	 *
-	 * @throws \DaveRandom\CallbackValidator\InvalidCallbackException
-	 * @throws \TypeError
+	 * @throws InvalidCallbackException
+	 * @throws TypeError
 	 */
 	public static function validateCallableSignature(callable $signature, callable $subject) : void{
 		if(!($sigType = CallbackType::createFromCallable($signature))->isSatisfiedBy($subject)){
-			throw new \TypeError("Declaration of callable `" . CallbackType::createFromCallable($subject) . "` must be compatible with `" . $sigType . "`");
+			throw new TypeError("Declaration of callable `" . CallbackType::createFromCallable($subject) . "` must be compatible with `" . $sigType . "`");
 		}
 	}
 
 	/**
 	 * @phpstan-template TMemberType
 	 * @phpstan-param array<mixed, TMemberType> $array
-	 * @phpstan-param \Closure(TMemberType) : void $validator
+	 * @phpstan-param Closure(TMemberType) : void $validator
 	 */
-	public static function validateArrayValueType(array $array, \Closure $validator) : void{
+	public static function validateArrayValueType(array $array, Closure $validator) : void{
 		foreach($array as $k => $v){
 			try{
 				$validator($v);
-			}catch(\TypeError $e){
-				throw new \TypeError("Incorrect type of element at \"$k\": " . $e->getMessage(), 0, $e);
+			}catch(TypeError $e){
+				throw new TypeError("Incorrect type of element at \"$k\": " . $e->getMessage(), 0, $e);
 			}
 		}
 	}

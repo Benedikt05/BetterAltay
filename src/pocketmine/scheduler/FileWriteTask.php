@@ -38,7 +38,7 @@ class FileWriteTask extends AsyncTask{
 	private $flags;
 
 	/**
-	 * @param mixed  $contents
+	 * @param mixed $contents
 	 */
 	public function __construct(string $path, $contents, int $flags = 0){
 		$this->path = $path;

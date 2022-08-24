@@ -25,8 +25,10 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
+use UnexpectedValueException;
 use function count;
 
 class SetScorePacket extends DataPacket{
@@ -58,7 +60,7 @@ class SetScorePacket extends DataPacket{
 						$entry->customName = $this->getString();
 						break;
 					default:
-						throw new \UnexpectedValueException("Unknown entry type $entry->type");
+						throw new UnexpectedValueException("Unknown entry type $entry->type");
 				}
 			}
 			$this->entries[] = $entry;
@@ -83,7 +85,7 @@ class SetScorePacket extends DataPacket{
 						$this->putString($entry->customName);
 						break;
 					default:
-						throw new \InvalidArgumentException("Unknown entry type $entry->type");
+						throw new InvalidArgumentException("Unknown entry type $entry->type");
 				}
 			}
 		}

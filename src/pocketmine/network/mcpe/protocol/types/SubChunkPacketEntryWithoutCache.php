@@ -29,7 +29,8 @@ final class SubChunkPacketEntryWithoutCache{
 
 	public function __construct(
 		private SubChunkPacketEntryCommon $base
-	){}
+	){
+	}
 
 	public function getBase() : SubChunkPacketEntryCommon{ return $this->base; }
 

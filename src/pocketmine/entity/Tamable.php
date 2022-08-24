@@ -31,7 +31,7 @@ use function intval;
 
 abstract class Tamable extends Animal{
 
-	public function saveNBT() : void {
+	public function saveNBT() : void{
 		parent::saveNBT();
 
 		$this->namedtag->setByte("Tamed", intval($this->isTamed()));

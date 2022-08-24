@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Level related events
  */
+
 namespace pocketmine\event\level;
 
 use pocketmine\event\Event;

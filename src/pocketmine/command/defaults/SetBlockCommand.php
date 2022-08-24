@@ -24,8 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\command\defaults;
 
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockIds;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\item\ItemFactory;

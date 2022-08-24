@@ -26,6 +26,7 @@ namespace pocketmine\event\player;
 use pocketmine\event\Event;
 use pocketmine\network\SourceInterface;
 use pocketmine\Player;
+use RuntimeException;
 use function is_a;
 
 /**
@@ -51,8 +52,9 @@ class PlayerCreationEvent extends Event{
 	private $playerClass;
 
 	/**
-	 * @param string          $baseClass
-	 * @param string          $playerClass
+	 * @param string                       $baseClass
+	 * @param string                       $playerClass
+	 *
 	 * @phpstan-param class-string<Player> $baseClass
 	 * @phpstan-param class-string<Player> $playerClass
 	 */
@@ -62,13 +64,13 @@ class PlayerCreationEvent extends Event{
 		$this->port = $port;
 
 		if(!is_a($baseClass, Player::class, true)){
-			throw new \RuntimeException("Base class $baseClass must extend " . Player::class);
+			throw new RuntimeException("Base class $baseClass must extend " . Player::class);
 		}
 
 		$this->baseClass = $baseClass;
 
 		if(!is_a($playerClass, Player::class, true)){
-			throw new \RuntimeException("Class $playerClass must extend " . Player::class);
+			throw new RuntimeException("Class $playerClass must extend " . Player::class);
 		}
 
 		$this->playerClass = $playerClass;
@@ -95,14 +97,15 @@ class PlayerCreationEvent extends Event{
 	}
 
 	/**
-	 * @param string $class
+	 * @param string                       $class
+	 *
 	 * @phpstan-param class-string<Player> $class
 	 *
 	 * @return void
 	 */
 	public function setBaseClass($class){
 		if(!is_a($class, $this->baseClass, true)){
-			throw new \RuntimeException("Base class $class must extend " . $this->baseClass);
+			throw new RuntimeException("Base class $class must extend " . $this->baseClass);
 		}
 
 		$this->baseClass = $class;
@@ -117,14 +120,15 @@ class PlayerCreationEvent extends Event{
 	}
 
 	/**
-	 * @param string $class
+	 * @param string                       $class
+	 *
 	 * @phpstan-param class-string<Player> $class
 	 *
 	 * @return void
 	 */
 	public function setPlayerClass($class){
 		if(!is_a($class, $this->baseClass, true)){
-			throw new \RuntimeException("Class $class must extend " . $this->baseClass);
+			throw new RuntimeException("Class $class must extend " . $this->baseClass);
 		}
 
 		$this->playerClass = $class;

@@ -23,13 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\form;
 
+use Closure;
+use InvalidArgumentException;
 use pocketmine\form\element\CustomFormElement;
 use pocketmine\Player;
 use pocketmine\utils\Utils;
-
 use function array_values;
-use function is_array;
 use function count;
+use function is_array;
 
 abstract class CustomForm extends BaseForm{
 
@@ -37,33 +38,33 @@ abstract class CustomForm extends BaseForm{
 	private $elements;
 	/** @var CustomFormElement[] */
 	private $elementMap = [];
-	/** @var \Closure */
+	/** @var Closure */
 	private $onSubmit;
-	/** @var \Closure|null */
+	/** @var Closure|null */
 	private $onClose = null;
 
 	/**
 	 * @param string              $title
 	 * @param CustomFormElement[] $elements
-	 * @param \Closure            $onSubmit signature `function(Player $player, CustomFormResponse $data)`
-	 * @param \Closure|null       $onClose signature `function(Player $player)`
+	 * @param Closure            $onSubmit signature `function(Player $player, CustomFormResponse $data)`
+	 * @param Closure|null       $onClose signature `function(Player $player)`
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
-	public function __construct(string $title, array $elements, \Closure $onSubmit, ?\Closure $onClose = null){
+	public function __construct(string $title, array $elements, Closure $onSubmit, ?Closure $onClose = null){
 		parent::__construct($title);
 		$this->elements = array_values($elements);
 		foreach($this->elements as $element){
 			if(isset($this->elements[$element->getName()])){
-				throw new \InvalidArgumentException("Multiple elements cannot have the same name, found \"" . $element->getName() . "\" more than once");
+				throw new InvalidArgumentException("Multiple elements cannot have the same name, found \"" . $element->getName() . "\" more than once");
 			}
 			$this->elementMap[$element->getName()] = $element;
 		}
 
-		Utils::validateCallableSignature(function(Player $player, CustomFormResponse $response) : void{}, $onSubmit);
+		Utils::validateCallableSignature(function(Player $player, CustomFormResponse $response) : void{ }, $onSubmit);
 		$this->onSubmit = $onSubmit;
 		if($onClose !== null){
-			Utils::validateCallableSignature(function(Player $player) : void{}, $onClose);
+			Utils::validateCallableSignature(function(Player $player) : void{ }, $onClose);
 			$this->onClose = $onClose;
 		}
 	}

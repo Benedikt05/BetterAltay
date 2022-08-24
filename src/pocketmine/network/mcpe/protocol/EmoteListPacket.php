@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\UUID;
 use function count;
 
-class EmoteListPacket extends DataPacket/* implements ClientboundPacket*/{
+class EmoteListPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::EMOTE_LIST_PACKET;
 
 	/** @var int */

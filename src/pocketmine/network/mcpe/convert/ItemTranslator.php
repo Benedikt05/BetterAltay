@@ -23,14 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\convert;
 
+use InvalidArgumentException;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
+use UnexpectedValueException;
 use function array_key_exists;
 use function file_get_contents;
 use function is_array;
 use function is_numeric;
 use function is_string;
 use function json_decode;
+use const pocketmine\RESOURCE_PATH;
 
 /**
  * This class handles translation between network item ID+metadata to PocketMine-MP internal ID+metadata and vice versa.
@@ -63,14 +66,14 @@ final class ItemTranslator{
 	private $complexNetToCoreMapping = [];
 
 	private static function make() : self{
-		$data = file_get_contents(\pocketmine\RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
+		$data = file_get_contents(RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
 		if($data === false) throw new AssumptionFailedError("Missing required resource file");
 		$json = json_decode($data, true);
 		if(!is_array($json) or !isset($json["simple"], $json["complex"]) || !is_array($json["simple"]) || !is_array($json["complex"])){
 			throw new AssumptionFailedError("Invalid item table format");
 		}
 
-		$legacyStringToIntMapRaw = file_get_contents(\pocketmine\RESOURCE_PATH . '/vanilla/item_id_map.json');
+		$legacyStringToIntMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla/item_id_map.json');
 		if($legacyStringToIntMapRaw === false){
 			throw new AssumptionFailedError("Missing required resource file");
 		}
@@ -93,7 +96,7 @@ final class ItemTranslator{
 		}
 		foreach($legacyStringToIntMap as $stringId => $intId){
 			if(isset($simpleMappings[$stringId])){
-				throw new \UnexpectedValueException("Old ID $stringId collides with new ID");
+				throw new UnexpectedValueException("Old ID $stringId collides with new ID");
 			}
 			$simpleMappings[$stringId] = $intId;
 		}
@@ -116,9 +119,10 @@ final class ItemTranslator{
 	}
 
 	/**
-	 * @param int[] $simpleMappings
-	 * @param int[][] $complexMappings
-	 * @phpstan-param array<string, int> $simpleMappings
+	 * @param int[]                                  $simpleMappings
+	 * @param int[][]                                $complexMappings
+	 *
+	 * @phpstan-param array<string, int>             $simpleMappings
 	 * @phpstan-param array<string, array<int, int>> $complexMappings
 	 */
 	public function __construct(ItemTypeDictionary $dictionary, array $simpleMappings, array $complexMappings){
@@ -154,7 +158,7 @@ final class ItemTranslator{
 			return [$this->simpleCoreToNetMapping[$internalId], $internalMeta];
 		}
 
-		throw new \InvalidArgumentException("Unmapped ID/metadata combination $internalId:$internalMeta");
+		throw new InvalidArgumentException("Unmapped ID/metadata combination $internalId:$internalMeta");
 	}
 
 	/**
@@ -164,7 +168,7 @@ final class ItemTranslator{
 	public function fromNetworkId(int $networkId, int $networkMeta, ?bool &$isComplexMapping = null) : array{
 		if(isset($this->complexNetToCoreMapping[$networkId])){
 			if($networkMeta !== 0){
-				throw new \UnexpectedValueException("Unexpected non-zero network meta on complex item mapping");
+				throw new UnexpectedValueException("Unexpected non-zero network meta on complex item mapping");
 			}
 			$isComplexMapping = true;
 			return $this->complexNetToCoreMapping[$networkId];
@@ -173,7 +177,7 @@ final class ItemTranslator{
 		if(isset($this->simpleNetToCoreMapping[$networkId])){
 			return [$this->simpleNetToCoreMapping[$networkId], $networkMeta];
 		}
-		throw new \UnexpectedValueException("Unmapped network ID/metadata combination $networkId:$networkMeta");
+		throw new UnexpectedValueException("Unmapped network ID/metadata combination $networkId:$networkMeta");
 	}
 
 	/**

@@ -84,7 +84,7 @@ class Arrow extends Projectile{
 			$this->random->nextFloat() * ($this->random->nextBoolean() ? 1 : -1) * 0.0075 * $inaccuracy,
 			$this->random->nextFloat() * ($this->random->nextBoolean() ? 1 : -1) * 0.0075 * $inaccuracy,
 			$this->random->nextFloat() * ($this->random->nextBoolean() ? 1 : -1) * 0.0075 * $inaccuracy)
-		->multiply($velocity));
+			->multiply($velocity));
 	}
 
 	public function saveNBT() : void{

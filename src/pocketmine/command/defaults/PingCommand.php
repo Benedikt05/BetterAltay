@@ -36,10 +36,10 @@ class PingCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.ping.description", "%commands.ping.usage", [], [
-				[
-					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
-				]
-			]);
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
+			]
+		]);
 		$this->setPermission("altay.command.ping");
 	}
 

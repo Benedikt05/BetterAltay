@@ -23,9 +23,12 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use InvalidArgumentException;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use RuntimeException;
+use SplFixedArray;
 use function min;
 
 /**
@@ -33,44 +36,44 @@ use function min;
  */
 class BlockFactory{
 	/**
-	 * @var \SplFixedArray|Block[]
-	 * @phpstan-var \SplFixedArray<Block>
+	 * @var SplFixedArray|Block[]
+	 * @phpstan-var SplFixedArray<Block>
 	 */
 	private static $fullList;
 
 	/**
-	 * @var \SplFixedArray|bool[]
-	 * @phpstan-var \SplFixedArray<bool>
+	 * @var SplFixedArray|bool[]
+	 * @phpstan-var SplFixedArray<bool>
 	 */
 	public static $solid;
 	/**
-	 * @var \SplFixedArray|bool[]
-	 * @phpstan-var \SplFixedArray<bool>
+	 * @var SplFixedArray|bool[]
+	 * @phpstan-var SplFixedArray<bool>
 	 */
 	public static $transparent;
 	/**
-	 * @var \SplFixedArray|float[]
-	 * @phpstan-var \SplFixedArray<float>
+	 * @var SplFixedArray|float[]
+	 * @phpstan-var SplFixedArray<float>
 	 */
 	public static $hardness;
 	/**
-	 * @var \SplFixedArray|int[]
-	 * @phpstan-var \SplFixedArray<int>
+	 * @var SplFixedArray|int[]
+	 * @phpstan-var SplFixedArray<int>
 	 */
 	public static $light;
 	/**
-	 * @var \SplFixedArray|int[]
-	 * @phpstan-var \SplFixedArray<int>
+	 * @var SplFixedArray|int[]
+	 * @phpstan-var SplFixedArray<int>
 	 */
 	public static $lightFilter;
 	/**
-	 * @var \SplFixedArray|bool[]
-	 * @phpstan-var \SplFixedArray<bool>
+	 * @var SplFixedArray|bool[]
+	 * @phpstan-var SplFixedArray<bool>
 	 */
 	public static $diffusesSkyLight;
 	/**
-	 * @var \SplFixedArray|float[]
-	 * @phpstan-var \SplFixedArray<float>
+	 * @var SplFixedArray|float[]
+	 * @phpstan-var SplFixedArray<float>
 	 */
 	public static $blastResistance;
 
@@ -79,15 +82,15 @@ class BlockFactory{
 	 * this if you need to reset the block factory back to its original defaults for whatever reason.
 	 */
 	public static function init() : void{
-		self::$fullList = new \SplFixedArray(4096);
+		self::$fullList = new SplFixedArray(4096);
 
-		self::$light = new \SplFixedArray(256);
-		self::$lightFilter = new \SplFixedArray(256);
-		self::$solid = new \SplFixedArray(256);
-		self::$hardness = new \SplFixedArray(256);
-		self::$transparent = new \SplFixedArray(256);
-		self::$diffusesSkyLight = new \SplFixedArray(256);
-		self::$blastResistance = new \SplFixedArray(256);
+		self::$light = new SplFixedArray(256);
+		self::$lightFilter = new SplFixedArray(256);
+		self::$solid = new SplFixedArray(256);
+		self::$hardness = new SplFixedArray(256);
+		self::$transparent = new SplFixedArray(256);
+		self::$diffusesSkyLight = new SplFixedArray(256);
+		self::$blastResistance = new SplFixedArray(256);
 
 		self::registerBlock(new Air());
 		self::registerBlock(new Stone());
@@ -186,7 +189,7 @@ class BlockFactory{
 		//TODO: POWERED_REPEATER
 		self::registerBlock(new InvisibleBedrock());
 		self::registerBlock(new Trapdoor());
-		self::registerBlock(new MonsterEgg());;
+		self::registerBlock(new MonsterEgg());
 		self::registerBlock(new StoneBricks());
 		self::registerBlock(new BrownMushroomBlock());
 		self::registerBlock(new RedMushroomBlock());
@@ -358,16 +361,16 @@ class BlockFactory{
 	 * NOTE: If you are registering a new block type, you will need to add it to the creative inventory yourself - it
 	 * will not automatically appear there.
 	 *
-	 * @param bool  $override Whether to override existing registrations
+	 * @param bool $override Whether to override existing registrations
 	 *
-	 * @throws \RuntimeException if something attempted to override an already-registered block without specifying the
+	 * @throws RuntimeException if something attempted to override an already-registered block without specifying the
 	 * $override parameter.
 	 */
 	public static function registerBlock(Block $block, bool $override = false) : void{
 		$id = $block->getId();
 
 		if(!$override and self::isRegistered($id)){
-			throw new \RuntimeException("Trying to overwrite an already registered block");
+			throw new RuntimeException("Trying to overwrite an already registered block");
 		}
 
 		for($meta = 0; $meta < 16; ++$meta){
@@ -390,7 +393,7 @@ class BlockFactory{
 	 */
 	public static function get(int $id, int $meta = 0, Position $pos = null) : Block{
 		if($meta < 0 or $meta > 0xf){
-			throw new \InvalidArgumentException("Block meta value $meta is out of bounds");
+			throw new InvalidArgumentException("Block meta value $meta is out of bounds");
 		}
 
 		try{
@@ -399,8 +402,8 @@ class BlockFactory{
 			}else{
 				$block = new UnknownBlock($id, $meta);
 			}
-		}catch(\RuntimeException $e){
-			throw new \InvalidArgumentException("Block ID $id is out of bounds");
+		}catch(RuntimeException $e){
+			throw new InvalidArgumentException("Block ID $id is out of bounds");
 		}
 
 		if($pos !== null){
@@ -415,9 +418,9 @@ class BlockFactory{
 
 	/**
 	 * @internal
-	 * @phpstan-return \SplFixedArray<Block>
+	 * @phpstan-return SplFixedArray<Block>
 	 */
-	public static function getBlockStatesArray() : \SplFixedArray{
+	public static function getBlockStatesArray() : SplFixedArray{
 		return self::$fullList;
 	}
 
@@ -438,10 +441,10 @@ class BlockFactory{
 	}
 
 	/**
-	 * @deprecated
+	 * @return int[] [id, meta]
 	 * @internal
 	 *
-	 * @return int[] [id, meta]
+	 * @deprecated
 	 */
 	public static function fromStaticRuntimeId(int $runtimeId) : array{
 		return RuntimeBlockMapping::fromStaticRuntimeId($runtimeId);

@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\ChunkCacheBlob;
 use function count;
 
-class ClientCacheMissResponsePacket extends DataPacket/* implements ClientboundPacket*/{
+class ClientCacheMissResponsePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CLIENT_CACHE_MISS_RESPONSE_PACKET;
 
 	/** @var ChunkCacheBlob[] */
@@ -40,7 +41,7 @@ class ClientCacheMissResponsePacket extends DataPacket/* implements ClientboundP
 	 */
 	public static function create(array $blobs) : self{
 		//type check
-		(static function(ChunkCacheBlob ...$blobs) : void{})(...$blobs);
+		(static function(ChunkCacheBlob ...$blobs) : void{ })(...$blobs);
 
 		$result = new self;
 		$result->blobs = $blobs;

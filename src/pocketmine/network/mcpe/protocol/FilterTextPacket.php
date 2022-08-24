@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class FilterTextPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/{
+class FilterTextPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::FILTER_TEXT_PACKET;
 
 	/** @var string */

@@ -26,7 +26,6 @@ namespace pocketmine\entity\helper;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class EntityLookHelper{
 

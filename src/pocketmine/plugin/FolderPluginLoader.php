@@ -24,12 +24,14 @@ declare(strict_types=1);
 
 namespace pocketmine\plugin;
 
+use ClassLoader;
+
 class FolderPluginLoader implements PluginLoader{
 
-	/** @var \ClassLoader */
+	/** @var ClassLoader */
 	private $loader;
 
-	public function __construct(\ClassLoader $loader){
+	public function __construct(ClassLoader $loader){
 		$this->loader = $loader;
 	}
 

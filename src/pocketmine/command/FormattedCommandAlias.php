@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\command;
 
+use InvalidArgumentException;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use function count;
@@ -51,7 +52,7 @@ class FormattedCommandAlias extends Command{
 		foreach($this->formatStrings as $formatString){
 			try{
 				$commands[] = $this->buildCommand($formatString, $args);
-			}catch(\InvalidArgumentException $e){
+			}catch(InvalidArgumentException $e){
 				$sender->sendMessage(TextFormat::RED . $e->getMessage());
 				return false;
 			}
@@ -93,13 +94,13 @@ class FormattedCommandAlias extends Command{
 			}
 
 			if($argStart === $index){
-				throw new \InvalidArgumentException("Invalid replacement token");
+				throw new InvalidArgumentException("Invalid replacement token");
 			}
 
 			$position = (int) substr($formatString, $argStart, $index);
 
 			if($position === 0){
-				throw new \InvalidArgumentException("Invalid replacement token");
+				throw new InvalidArgumentException("Invalid replacement token");
 			}
 
 			--$position;
@@ -114,7 +115,7 @@ class FormattedCommandAlias extends Command{
 			$end = $index;
 
 			if($required and $position >= count($args)){
-				throw new \InvalidArgumentException("Missing required argument " . ($position + 1));
+				throw new InvalidArgumentException("Missing required argument " . ($position + 1));
 			}
 
 			$replacement = "";

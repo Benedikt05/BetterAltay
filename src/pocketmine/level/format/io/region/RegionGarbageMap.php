@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format\io\region;
 
+use InvalidArgumentException;
 use pocketmine\utils\AssumptionFailedError;
 use function end;
 use function ksort;
@@ -114,7 +115,7 @@ final class RegionGarbageMap{
 
 	public function add(RegionLocationTableEntry $entry) : void{
 		if(isset($this->entries[$k = $entry->getFirstSector()])){
-			throw new \InvalidArgumentException("Overlapping entry starting at " . $k);
+			throw new InvalidArgumentException("Overlapping entry starting at " . $k);
 		}
 		$this->entries[$k] = $entry;
 		$this->clean = false;

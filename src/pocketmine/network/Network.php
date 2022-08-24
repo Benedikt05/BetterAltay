@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Network-related classes
  */
+
 namespace pocketmine\network;
 
 use pocketmine\event\server\NetworkInterfaceRegisterEvent;

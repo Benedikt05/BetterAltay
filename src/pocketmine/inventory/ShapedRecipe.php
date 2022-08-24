@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use InvalidArgumentException;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use function array_map;
@@ -63,24 +64,24 @@ class ShapedRecipe implements CraftingRecipe{
 	public function __construct(array $shape, array $ingredients, array $results){
 		$this->height = count($shape);
 		if($this->height > 3 or $this->height <= 0){
-			throw new \InvalidArgumentException("Shaped recipes may only have 1, 2 or 3 rows, not $this->height");
+			throw new InvalidArgumentException("Shaped recipes may only have 1, 2 or 3 rows, not $this->height");
 		}
 
 		$shape = array_values($shape);
 
 		$this->width = strlen($shape[0]);
 		if($this->width > 3 or $this->width <= 0){
-			throw new \InvalidArgumentException("Shaped recipes may only have 1, 2 or 3 columns, not $this->width");
+			throw new InvalidArgumentException("Shaped recipes may only have 1, 2 or 3 columns, not $this->width");
 		}
 
 		foreach($shape as $y => $row){
 			if(strlen($row) !== $this->width){
-				throw new \InvalidArgumentException("Shaped recipe rows must all have the same length (expected $this->width, got " . strlen($row) . ")");
+				throw new InvalidArgumentException("Shaped recipe rows must all have the same length (expected $this->width, got " . strlen($row) . ")");
 			}
 
 			for($x = 0; $x < $this->width; ++$x){
 				if($row[$x] !== ' ' and !isset($ingredients[$row[$x]])){
-					throw new \InvalidArgumentException("No item specified for symbol '" . $row[$x] . "'");
+					throw new InvalidArgumentException("No item specified for symbol '" . $row[$x] . "'");
 				}
 			}
 		}
@@ -118,11 +119,11 @@ class ShapedRecipe implements CraftingRecipe{
 
 	/**
 	 * @return $this
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function setIngredient(string $key, Item $item){
 		if(strpos(implode($this->shape), $key) === false){
-			throw new \InvalidArgumentException("Symbol '$key' does not appear in the recipe shape");
+			throw new InvalidArgumentException("Symbol '$key' does not appear in the recipe shape");
 		}
 
 		$this->ingredientList[$key] = clone $item;

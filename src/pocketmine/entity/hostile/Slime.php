@@ -39,7 +39,6 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\biome\Biome;
-use pocketmine\level\generator\Flat;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\level\particle\Particle;
 use pocketmine\nbt\tag\ByteTag;

@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class TickSyncPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/{
+class TickSyncPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::TICK_SYNC_PACKET;
 
 	/** @var int */

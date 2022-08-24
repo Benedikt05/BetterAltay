@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe;
 
+use Exception;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\mcpe\protocol\BatchPacket;
@@ -39,6 +40,8 @@ use raklib\server\RakLibServer;
 use raklib\server\ServerHandler;
 use raklib\server\ServerInstance;
 use raklib\utils\InternetAddress;
+use Throwable;
+use UnexpectedValueException;
 use function addcslashes;
 use function base64_encode;
 use function get_class;
@@ -47,6 +50,7 @@ use function rtrim;
 use function spl_object_hash;
 use function substr;
 use function unserialize;
+use const pocketmine\COMPOSER_AUTOLOADER_PATH;
 use const PTHREADS_INHERIT_CONSTANTS;
 
 class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
@@ -88,7 +92,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		$this->sleeper = new SleeperNotifier();
 		$this->rakLib = new RakLibServer(
 			$this->server->getLogger(),
-			\pocketmine\COMPOSER_AUTOLOADER_PATH,
+			COMPOSER_AUTOLOADER_PATH,
 			new InternetAddress($this->server->getIp(), $this->server->getPort(), 4),
 			(int) $this->server->getProperty("network.max-mtu-size", 1492),
 			self::MCPE_RAKNET_PROTOCOL_VERSION,
@@ -109,10 +113,11 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	}
 
 	public function process() : void{
-		while($this->interface->handlePacket()){}
+		while($this->interface->handlePacket()){
+		}
 
 		if(!$this->rakLib->isRunning() and !$this->rakLib->isShutdown()){
-			throw new \Exception("RakLib Thread crashed");
+			throw new Exception("RakLib Thread crashed");
 		}
 	}
 
@@ -169,7 +174,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 			try{
 				if($packet->buffer !== ""){
 					if($packet->buffer[0] !== self::MCPE_RAKNET_PACKET_ID){
-						throw new \UnexpectedValueException("Unexpected non-FE packet");
+						throw new UnexpectedValueException("Unexpected non-FE packet");
 					}
 
 					$cipher = $player->getCipher();
@@ -179,7 +184,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 					$pk = new BatchPacket(self::MCPE_RAKNET_PACKET_ID . $buffer);
 					$player->handleDataPacket($pk);
 				}
-			}catch(\Throwable $e){
+			}catch(Throwable $e){
 				$logger = $this->server->getLogger();
 				$logger->debug("Packet " . (isset($pk) ? get_class($pk) : "unknown") . ": " . base64_encode($packet->buffer));
 				$logger->logException($e);
@@ -219,17 +224,17 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		$info = $this->server->getQueryInformation();
 
 		$this->interface->sendOption("name", implode(";",
-			[
-				"MCPE",
-				rtrim(addcslashes($name, ";"), '\\'),
-				ProtocolInfo::CURRENT_PROTOCOL,
-				ProtocolInfo::MINECRAFT_VERSION_NETWORK,
-				$info->getPlayerCount(),
-				$info->getMaxPlayerCount(),
-				$this->rakLib->getServerId(),
-				$this->server->getName(),
-				Server::getGamemodeName(Player::getClientFriendlyGamemode($this->server->getGamemode()))
-			]) . ";"
+				[
+					"MCPE",
+					rtrim(addcslashes($name, ";"), '\\'),
+					ProtocolInfo::CURRENT_PROTOCOL,
+					ProtocolInfo::MINECRAFT_VERSION_NETWORK,
+					$info->getPlayerCount(),
+					$info->getMaxPlayerCount(),
+					$this->rakLib->getServerId(),
+					$this->server->getName(),
+					Server::getGamemodeName(Player::getClientFriendlyGamemode($this->server->getGamemode()))
+				]) . ";"
 		);
 	}
 

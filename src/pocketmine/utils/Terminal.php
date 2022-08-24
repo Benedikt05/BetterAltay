@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use InvalidStateException;
 use function fclose;
 use function fopen;
 use function function_exists;
@@ -86,7 +87,7 @@ abstract class Terminal{
 
 	public static function hasFormattingCodes() : bool{
 		if(self::$formattingCodes === null){
-			throw new \InvalidStateException("Formatting codes have not been initialized");
+			throw new InvalidStateException("Formatting codes have not been initialized");
 		}
 		return self::$formattingCodes;
 	}

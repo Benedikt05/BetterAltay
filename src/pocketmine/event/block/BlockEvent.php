@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Block related events
  */
+
 namespace pocketmine\event\block;
 
 use pocketmine\block\Block;

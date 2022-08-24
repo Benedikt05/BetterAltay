@@ -25,7 +25,9 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkSession;
+use UnexpectedValueException;
 
 class BookEditPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::BOOK_EDIT_PACKET;
@@ -81,7 +83,7 @@ class BookEditPacket extends DataPacket{
 				$this->xuid = $this->getString();
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown book edit type $this->type!");
+				throw new UnexpectedValueException("Unknown book edit type $this->type!");
 		}
 	}
 
@@ -109,7 +111,7 @@ class BookEditPacket extends DataPacket{
 				$this->putString($this->xuid);
 				break;
 			default:
-				throw new \InvalidArgumentException("Unknown book edit type $this->type!");
+				throw new InvalidArgumentException("Unknown book edit type $this->type!");
 		}
 	}
 

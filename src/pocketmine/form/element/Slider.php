@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\form\element;
 
+use InvalidArgumentException;
 use pocketmine\form\FormValidationException;
-
+use function gettype;
 use function is_float;
 use function is_int;
-use function gettype;
 
 class Slider extends CustomFormElement{
 	/** @var float */
@@ -43,14 +43,14 @@ class Slider extends CustomFormElement{
 		parent::__construct($name, $text);
 
 		if($this->min > $this->max){
-			throw new \InvalidArgumentException("Slider min value should be less than max value");
+			throw new InvalidArgumentException("Slider min value should be less than max value");
 		}
 		$this->min = $min;
 		$this->max = $max;
 
 		if($default !== null){
 			if($default > $this->max or $default < $this->min){
-				throw new \InvalidArgumentException("Default must be in range $this->min ... $this->max");
+				throw new InvalidArgumentException("Default must be in range $this->min ... $this->max");
 			}
 			$this->default = $default;
 		}else{
@@ -58,7 +58,7 @@ class Slider extends CustomFormElement{
 		}
 
 		if($step <= 0){
-			throw new \InvalidArgumentException("Step must be greater than zero");
+			throw new InvalidArgumentException("Step must be greater than zero");
 		}
 		$this->step = $step;
 	}

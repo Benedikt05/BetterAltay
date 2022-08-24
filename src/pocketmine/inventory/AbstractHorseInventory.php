@@ -23,8 +23,8 @@
 namespace pocketmine\inventory;
 
 use pocketmine\entity\passive\AbstractHorse;
-use pocketmine\item\Saddle;
 use pocketmine\item\Item;
+use pocketmine\item\Saddle;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 abstract class AbstractHorseInventory extends ContainerInventory{

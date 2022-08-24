@@ -27,8 +27,8 @@ developer:
   folder-plugin-loader: false
 
 additional-plugin-dirs:
-  # Example:
-  # - plugins2/
+# Example:
+# - plugins2/
 
 level:
   # If enabled, mobs can move around

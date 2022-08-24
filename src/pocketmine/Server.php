@@ -25,6 +25,7 @@ declare(strict_types=1);
  * PocketMine-MP is the Minecraft: PE multiplayer server software
  * Homepage: http://www.pocketmine.net/
  */
+
 namespace pocketmine;
 
 use pocketmine\block\BlockFactory;
@@ -829,9 +830,9 @@ class Server{
 	 * Returns an online player whose name begins with or equals the given string (case insensitive).
 	 * The closest match will be returned, or null if there are no online matches.
 	 *
+	 * @return Player|null
 	 * @see Server::getPlayerExact()
 	 *
-	 * @return Player|null
 	 */
 	public function getPlayer(string $name){
 		$found = null;
@@ -1051,7 +1052,8 @@ class Server{
 	/**
 	 * Generates a new level if it does not exist
 	 *
-	 * @param string|null $generator Class name that extends pocketmine\level\generator\Generator
+	 * @param string|null                     $generator Class name that extends pocketmine\level\generator\Generator
+	 *
 	 * @phpstan-param class-string<Generator> $generator
 	 * @phpstan-param array<string, mixed>    $options
 	 */
@@ -1124,8 +1126,8 @@ class Server{
 		$path = $this->getDataPath() . "worlds/" . $name . "/";
 		if(!($this->getLevelByName($name) instanceof Level)){
 			return is_dir($path) and count(array_filter(scandir($path, SCANDIR_SORT_NONE), function(string $v) : bool{
-				return $v !== ".." and $v !== ".";
-			})) > 0;
+					return $v !== ".." and $v !== ".";
+				})) > 0;
 		}
 
 		return true;
@@ -1151,7 +1153,7 @@ class Server{
 	}
 
 	/**
-	 * @param mixed  $defaultValue
+	 * @param mixed $defaultValue
 	 *
 	 * @return mixed
 	 */
@@ -1844,7 +1846,7 @@ class Server{
 	/**
 	 * Broadcasts a Minecraft packet to a list of players
 	 *
-	 * @param Player[]   $players
+	 * @param Player[] $players
 	 *
 	 * @return void
 	 */
@@ -1895,7 +1897,7 @@ class Server{
 	}
 
 	/**
-	 * @param Player[]    $players
+	 * @param Player[] $players
 	 *
 	 * @return void
 	 */
@@ -1960,7 +1962,7 @@ class Server{
 		if($this->customUnknownCommandMessage === false){
 			$unknownCommandMessage = $this->getLanguage()->translateString(TextFormat::RED . "%commands.generic.notFound");
 		}else{
-			$unknownCommandMessage = (string)$this->getBetteraltayProperty("general.custom-unknown-command-message.message");
+			$unknownCommandMessage = (string) $this->getBetteraltayProperty("general.custom-unknown-command-message.message");
 		}
 		$sender->sendMessage($unknownCommandMessage);
 
@@ -2004,7 +2006,7 @@ class Server{
 		}
 		$this->pluginManager->registerInterface(new PharPluginLoader($this->autoloader));
 		$this->pluginManager->registerInterface(new ScriptPluginLoader());
-        $this->pluginManager->loadPlugins($this->pluginPath);
+		$this->pluginManager->loadPlugins($this->pluginPath);
 
 		foreach($this->getAdditionalPluginDirs() as $path){
 			$this->pluginManager->loadPlugins($path);
@@ -2165,13 +2167,15 @@ class Server{
 	}
 
 	/**
-	 * @param mixed[][]|null $trace
+	 * @param mixed[][]|null                          $trace
+	 *
 	 * @phpstan-param list<array<string, mixed>>|null $trace
 	 *
 	 * @return void
 	 */
 	public function exceptionHandler(\Throwable $e, $trace = null){
-		while(@ob_end_flush()){}
+		while(@ob_end_flush()){
+		}
 		global $lastError;
 
 		if($trace === null){
@@ -2206,7 +2210,8 @@ class Server{
 	 * @return void
 	 */
 	public function crashDump(){
-		while(@ob_end_flush()){}
+		while(@ob_end_flush()){
+		}
 		if(!$this->isRunning){
 			return;
 		}
@@ -2275,7 +2280,8 @@ class Server{
 			$this->logger->logException($e);
 			try{
 				$this->logger->critical($this->getLanguage()->translateString("pocketmine.crash.error", [$e->getMessage()]));
-			}catch(\Throwable $e){}
+			}catch(\Throwable $e){
+			}
 		}
 
 		$this->forceShutdown();
@@ -2503,9 +2509,9 @@ class Server{
 		//TODO: add raw packet events
 	}
 
-    private function getAdditionalPluginDirs() : array{
-        return $this->getAltayProperty("additional-plugin-dirs", []);
-    }
+	private function getAdditionalPluginDirs() : array{
+		return $this->getAltayProperty("additional-plugin-dirs", []);
+	}
 
 	/**
 	 * Tries to execute a server tick

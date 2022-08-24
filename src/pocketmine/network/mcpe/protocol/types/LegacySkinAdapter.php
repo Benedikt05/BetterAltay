@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use Exception;
 use pocketmine\entity\Skin;
 
 class LegacySkinAdapter implements SkinAdapter{
@@ -31,21 +32,21 @@ class LegacySkinAdapter implements SkinAdapter{
 
 	public function toSkinData(Skin $skin) : SkinData{
 		return $this->personaSkins[$skin->getSkinId()] ?? new SkinData(
-			$skin->getSkinId(),
-			"", //TODO: playfab ID
-			$skin->getResourcePatch(),
-			$skin->getSkinImage(),
-			$skin->getAnimations(),
-			$skin->getCape()->getImage(),
-			$skin->getGeometryData()
-		);
+				$skin->getSkinId(),
+				"", //TODO: playfab ID
+				$skin->getResourcePatch(),
+				$skin->getSkinImage(),
+				$skin->getAnimations(),
+				$skin->getCape()->getImage(),
+				$skin->getGeometryData()
+			);
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function fromSkinData(SkinData $data) : Skin{
-		if ($data->isPersona()) {
+		if($data->isPersona()){
 			$id = $data->getSkinId();
 			$this->personaSkins[$id] = $data;
 			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 2048));

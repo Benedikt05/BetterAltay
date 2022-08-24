@@ -64,7 +64,7 @@ class TextPacket extends DataPacket{
 		switch($this->type){
 			case self::TYPE_CHAT:
 			case self::TYPE_WHISPER:
-			/** @noinspection PhpMissingBreakStatementInspection */
+				/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_ANNOUNCEMENT:
 				$this->sourceName = $this->getString();
 			case self::TYPE_RAW:
@@ -96,7 +96,7 @@ class TextPacket extends DataPacket{
 		switch($this->type){
 			case self::TYPE_CHAT:
 			case self::TYPE_WHISPER:
-			/** @noinspection PhpMissingBreakStatementInspection */
+				/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_ANNOUNCEMENT:
 				$this->putString($this->sourceName);
 			case self::TYPE_RAW:

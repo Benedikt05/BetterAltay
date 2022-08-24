@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class CodeBuilderPacket extends DataPacket/* implements ClientboundPacket*/{
+class CodeBuilderPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CODE_BUILDER_PACKET;
 
 	/** @var string */

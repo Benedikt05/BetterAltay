@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Inventory related events
  */
+
 namespace pocketmine\event\inventory;
 
 use pocketmine\entity\Human;

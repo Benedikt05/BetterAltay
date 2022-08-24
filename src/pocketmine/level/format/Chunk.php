@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format;
 
+use InvalidArgumentException;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\level\biome\Biome;
@@ -40,6 +41,8 @@ use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryStream;
 use pocketmine\world\format\PalettedBlockArray;
+use SplFixedArray;
+use Throwable;
 use function array_fill;
 use function array_filter;
 use function array_flip;
@@ -55,6 +58,7 @@ use function pack;
 use function str_repeat;
 use function strlen;
 use function unpack;
+use const pocketmine\RESOURCE_PATH;
 
 class Chunk{
 
@@ -84,8 +88,8 @@ class Chunk{
 	protected $height = Chunk::MAX_SUBCHUNKS;
 
 	/**
-	 * @var \SplFixedArray|SubChunkInterface[]
-	 * @phpstan-var \SplFixedArray<SubChunkInterface>
+	 * @var SplFixedArray|SubChunkInterface[]
+	 * @phpstan-var SplFixedArray<SubChunkInterface>
 	 */
 	protected $subChunks;
 
@@ -101,8 +105,8 @@ class Chunk{
 	protected $entities = [];
 
 	/**
-	 * @var \SplFixedArray|int[]
-	 * @phpstan-var \SplFixedArray<int>
+	 * @var SplFixedArray|int[]
+	 * @phpstan-var SplFixedArray<int>
 	 */
 	protected $heightMap;
 
@@ -120,7 +124,8 @@ class Chunk{
 	 * @param CompoundTag[]       $entities
 	 * @param CompoundTag[]       $tiles
 	 * @param int[]               $heightMap
-	 * @phpstan-param list<int> $heightMap
+	 *
+	 * @phpstan-param list<int>   $heightMap
 	 */
 	public function __construct(int $chunkX, int $chunkZ, array $subChunks = [], array $entities = [], array $tiles = [], string $biomeIds = "", array $heightMap = []){
 		$this->x = $chunkX;
@@ -128,7 +133,7 @@ class Chunk{
 
 		$this->height = Chunk::MAX_SUBCHUNKS; //TODO: add a way of changing this
 
-		$this->subChunks = new \SplFixedArray($this->height);
+		$this->subChunks = new SplFixedArray($this->height);
 		$this->emptySubChunk = EmptySubChunk::getInstance();
 
 		foreach($this->subChunks as $y => $null){
@@ -136,11 +141,11 @@ class Chunk{
 		}
 
 		if(count($heightMap) === 256){
-			$this->heightMap = \SplFixedArray::fromArray($heightMap);
+			$this->heightMap = SplFixedArray::fromArray($heightMap);
 		}else{
 			assert(count($heightMap) === 0, "Wrong HeightMap value count, expected 256, got " . count($heightMap));
 			$val = ($this->height * 16);
-			$this->heightMap = \SplFixedArray::fromArray(array_fill(0, 256, $val));
+			$this->heightMap = SplFixedArray::fromArray(array_fill(0, 256, $val));
 		}
 
 		if(strlen($biomeIds) === 256){
@@ -606,7 +611,7 @@ class Chunk{
 	 */
 	public function addEntity(Entity $entity){
 		if($entity->isClosed()){
-			throw new \InvalidArgumentException("Attempted to add a garbage closed Entity to a chunk");
+			throw new InvalidArgumentException("Attempted to add a garbage closed Entity to a chunk");
 		}
 		$this->entities[$entity->getId()] = $entity;
 		if(!($entity instanceof Player) and $this->isInit){
@@ -629,7 +634,7 @@ class Chunk{
 	 */
 	public function addTile(Tile $tile){
 		if($tile->isClosed()){
-			throw new \InvalidArgumentException("Attempted to add a garbage closed Tile to a chunk");
+			throw new InvalidArgumentException("Attempted to add a garbage closed Tile to a chunk");
 		}
 		$this->tiles[$tile->getId()] = $tile;
 		if(isset($this->tileList[$index = (($tile->x & 0x0f) << 12) | (($tile->z & 0x0f) << 8) | ($tile->y & 0xff)]) and $this->tileList[$index] !== $tile){
@@ -728,7 +733,7 @@ class Chunk{
 						$changed = true;
 						continue;
 					}
-				}catch(\Throwable $t){
+				}catch(Throwable $t){
 					$level->getServer()->getLogger()->logException($t);
 					$changed = true;
 					continue;
@@ -799,7 +804,7 @@ class Chunk{
 	/**
 	 * Sets a subchunk in the chunk index
 	 *
-	 * @param bool                   $allowEmpty Whether to check if the chunk is empty, and if so replace it with an empty stub
+	 * @param bool $allowEmpty Whether to check if the chunk is empty, and if so replace it with an empty stub
 	 */
 	public function setSubChunk(int $y, SubChunkInterface $subChunk = null, bool $allowEmpty = false) : bool{
 		if($y < 0 or $y >= $this->height){
@@ -815,10 +820,10 @@ class Chunk{
 	}
 
 	/**
-	 * @return \SplFixedArray|SubChunkInterface[]
-	 * @phpstan-return \SplFixedArray<SubChunkInterface>
+	 * @return SplFixedArray|SubChunkInterface[]
+	 * @phpstan-return SplFixedArray<SubChunkInterface>
 	 */
-	public function getSubChunks() : \SplFixedArray{
+	public function getSubChunks() : SplFixedArray{
 		return $this->subChunks;
 	}
 
@@ -906,7 +911,7 @@ class Chunk{
 		/** @var string[]|null $biomeIdMap */
 		static $biomeIdMap = null;
 		if($biomeIdMap === null){
-			$biomeIdMapRaw = file_get_contents(\pocketmine\RESOURCE_PATH . '/vanilla/biome_id_map.json');
+			$biomeIdMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla/biome_id_map.json');
 			if($biomeIdMapRaw === false) throw new AssumptionFailedError();
 			$biomeIdMapDecoded = json_decode($biomeIdMapRaw, true);
 			if(!is_array($biomeIdMapDecoded)) throw new AssumptionFailedError();

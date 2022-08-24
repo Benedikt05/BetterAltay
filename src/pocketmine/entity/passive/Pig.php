@@ -31,8 +31,8 @@ use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
+use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
@@ -111,7 +111,7 @@ class Pig extends Animal{
 		$this->setGenericFlag(self::DATA_FLAG_SADDLED, $value);
 	}
 
-	public function saveNBT() : void {
+	public function saveNBT() : void{
 		parent::saveNBT();
 
 		$this->namedtag->setByte("Saddle", intval($this->isSaddled()));

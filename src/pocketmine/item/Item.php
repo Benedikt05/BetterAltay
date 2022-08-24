@@ -24,8 +24,11 @@ declare(strict_types=1);
 /**
  * All the Item classes
  */
+
 namespace pocketmine\item;
 
+use InvalidArgumentException;
+use JsonSerializable;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockToolType;
@@ -37,11 +40,11 @@ use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
@@ -55,8 +58,9 @@ use function is_string;
 use function json_decode;
 use function strlen;
 use const DIRECTORY_SEPARATOR;
+use const pocketmine\RESOURCE_PATH;
 
-class Item implements ItemIds, \JsonSerializable{
+class Item implements ItemIds, JsonSerializable{
 	public const TAG_ENCH = "ench";
 	public const TAG_DISPLAY = "display";
 	public const TAG_BLOCK_ENTITY_TAG = "BlockEntityTag";
@@ -70,7 +74,7 @@ class Item implements ItemIds, \JsonSerializable{
 
 	private static function parseCompoundTag(string $tag) : CompoundTag{
 		if($tag === ""){
-			throw new \InvalidArgumentException("No NBT data found in supplied string");
+			throw new InvalidArgumentException("No NBT data found in supplied string");
 		}
 
 		if(self::$cachedParser === null){
@@ -79,7 +83,7 @@ class Item implements ItemIds, \JsonSerializable{
 
 		$data = self::$cachedParser->read($tag);
 		if(!($data instanceof CompoundTag)){
-			throw new \InvalidArgumentException("Invalid item NBT string given, it could not be deserialized");
+			throw new InvalidArgumentException("Invalid item NBT string given, it could not be deserialized");
 		}
 
 		return $data;
@@ -124,7 +128,7 @@ class Item implements ItemIds, \JsonSerializable{
 	public static function initCreativeItems(){
 		self::clearCreativeItems();
 
-		$creativeItems = json_decode(file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "creativeitems.json"), true);
+		$creativeItems = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "creativeitems.json"), true);
 
 		foreach($creativeItems as $data){
 			$item = Item::jsonDeserialize($data);
@@ -218,7 +222,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 */
 	public function __construct(int $id, int $meta = 0, string $name = "Unknown"){
 		if($id < -0x8000 or $id > 0x7fff){ //signed short range
-			throw new \InvalidArgumentException("ID must be in range " . -0x8000 . " - " . 0x7fff);
+			throw new InvalidArgumentException("ID must be in range " . -0x8000 . " - " . 0x7fff);
 		}
 		$this->id = $id;
 		$this->setDamage($meta);
@@ -226,12 +230,12 @@ class Item implements ItemIds, \JsonSerializable{
 	}
 
 	/**
-	 * @deprecated This method accepts NBT serialized in a network-dependent format.
-	 * @see Item::setNamedTag()
-	 *
 	 * @param CompoundTag|string|null $tags
 	 *
 	 * @return $this
+	 * @deprecated This method accepts NBT serialized in a network-dependent format.
+	 * @see Item::setNamedTag()
+	 *
 	 */
 	public function setCompoundTag($tags) : Item{
 		if($tags instanceof CompoundTag){
@@ -580,11 +584,11 @@ class Item implements ItemIds, \JsonSerializable{
 	 * Pops an item from the stack and returns it, decreasing the stack count of this item stack by one.
 	 *
 	 * @return static A clone of this itemstack containing the amount of items that were removed from this stack.
-	 * @throws \InvalidArgumentException if trying to pop more items than are on the stack
+	 * @throws InvalidArgumentException if trying to pop more items than are on the stack
 	 */
 	public function pop(int $count = 1) : Item{
 		if($count > $this->count){
-			throw new \InvalidArgumentException("Cannot pop $count items from a stack of $this->count");
+			throw new InvalidArgumentException("Cannot pop $count items from a stack of $this->count");
 		}
 
 		$item = clone $this;
@@ -821,15 +825,17 @@ class Item implements ItemIds, \JsonSerializable{
 
 	/**
 	 * Returns an Item from properties created in an array by {@link Item#jsonSerialize}
+	 *
 	 * @param mixed[] $data
+	 *
 	 * @phpstan-param array{
-	 * 	id: int,
-	 * 	damage?: int,
-	 * 	count?: int,
-	 * 	nbt?: string,
-	 * 	nbt_hex?: string,
-	 * 	nbt_b64?: string
-	 * } $data
+	 *    id: int,
+	 *    damage?: int,
+	 *    count?: int,
+	 *    nbt?: string,
+	 *    nbt_hex?: string,
+	 *    nbt_b64?: string
+	 * }              $data
 	 */
 	final public static function jsonDeserialize(array $data) : Item{
 		$nbt = "";
@@ -893,14 +899,14 @@ class Item implements ItemIds, \JsonSerializable{
 		}elseif($idTag instanceof StringTag){ //PC item save format
 			try{
 				$item = ItemFactory::fromStringSingle($idTag->getValue());
-			}catch(\InvalidArgumentException $e){
+			}catch(InvalidArgumentException $e){
 				//TODO: improve error handling
 				return ItemFactory::get(Item::AIR, 0, 0);
 			}
 			$item->setDamage($meta);
 			$item->setCount($count);
 		}else{
-			throw new \InvalidArgumentException("Item CompoundTag ID must be an instance of StringTag or ShortTag, " . get_class($idTag) . " given");
+			throw new InvalidArgumentException("Item CompoundTag ID must be an instance of StringTag or ShortTag, " . get_class($idTag) . " given");
 		}
 
 		$itemNBT = $tag->getCompoundTag("tag");

@@ -28,7 +28,8 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\StructureEditorData;
 
-class StructureBlockUpdatePacket extends DataPacket/* implements ServerboundPacket*/{
+class StructureBlockUpdatePacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::STRUCTURE_BLOCK_UPDATE_PACKET;
 
 	/** @var int */

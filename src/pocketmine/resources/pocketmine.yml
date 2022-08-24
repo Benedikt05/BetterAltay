@@ -130,7 +130,7 @@ chunk-ticking:
   clear-tick-list: true
   #IDs of blocks not to perform random ticking on.
   disable-block-ticking:
-    #- 2 # grass
+  #- 2 # grass
 
 chunk-generation:
   #Max. amount of chunks in the waiting queue to be populated
@@ -158,16 +158,16 @@ console:
   title-tick: true
 
 aliases:
-  #Examples:
-  #showtheversion: version
-  #savestop: [save-all, stop]
+#Examples:
+#showtheversion: version
+#savestop: [save-all, stop]
 
 worlds:
-  #These settings will override the generator set in server.properties and allows loading multiple worlds
-  #Example:
-  #world:
-  # seed: 404
-  # generator: FLAT:2;7,59x1,3x3,2;1;decoration(treecount=80 grasscount=45)
+#These settings will override the generator set in server.properties and allows loading multiple worlds
+#Example:
+#world:
+# seed: 404
+# generator: FLAT:2;7,59x1,3x3,2;1;decoration(treecount=80 grasscount=45)
 
 plugins:
   #Setting this to true will cause the legacy structure to be used where plugin data is placed inside the --plugins dir.
