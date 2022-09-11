@@ -39,11 +39,9 @@ interface ProtocolInfo{
 	/** Actual Minecraft: PE protocol version */
 	public const CURRENT_PROTOCOL = 545;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
-	public const MINECRAFT_VERSION = 'v1.19.20 - ' . self::MINECRAFT_VERSION_NETWORK;
+	public const MINECRAFT_VERSION = 'v1.19.21';
 	/** Version number sent to clients in ping responses. */
 	public const MINECRAFT_VERSION_NETWORK = '1.19.21';
-	public const PROTOCOL_1_19_20 = 544;
-	public const ACCEPTED_PROTOCOL = [self::PROTOCOL_1_19_20, self::CURRENT_PROTOCOL];
 
 	public const LOGIN_PACKET = 0x01;
 	public const PLAY_STATUS_PACKET = 0x02;
