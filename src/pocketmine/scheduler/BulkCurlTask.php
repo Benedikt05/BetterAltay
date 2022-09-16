@@ -44,8 +44,9 @@ class BulkCurlTask extends AsyncTask{
 	 * "timeout", "extraHeaders" and "extraOpts". Documentation of these options are same as those in
 	 * {@link Utils::simpleCurl}.
 	 *
-	 * @param mixed[][]  $operations
-	 * @param mixed|null $complexData
+	 * @param mixed[][]                                                                                                      $operations
+	 * @param mixed|null                                                                                                     $complexData
+	 *
 	 * @phpstan-param list<array{page: string, timeout?: float, extraHeaders?: list<string>, extraOpts?: array<int, mixed>}> $operations
 	 */
 	public function __construct(array $operations, $complexData = null){

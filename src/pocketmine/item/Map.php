@@ -25,8 +25,8 @@ namespace pocketmine\item;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
 use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\LongTag;
 use pocketmine\Player;
 
 class Map extends Item{

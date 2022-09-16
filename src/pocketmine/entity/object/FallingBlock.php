@@ -33,6 +33,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
+use UnexpectedValueException;
 use function abs;
 use function get_class;
 
@@ -66,7 +67,7 @@ class FallingBlock extends Entity{
 		}
 
 		if($blockId === 0){
-			throw new \UnexpectedValueException("Invalid " . get_class($this) . " entity: block ID is 0 or missing");
+			throw new UnexpectedValueException("Invalid " . get_class($this) . " entity: block ID is 0 or missing");
 		}
 
 		$damage = $this->namedtag->getByte("Data", 0);

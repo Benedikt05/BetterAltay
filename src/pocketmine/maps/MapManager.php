@@ -64,7 +64,7 @@ class MapManager{
 		$stream = new LittleEndianNBTStream();
 
 		if(is_file($path . "idcounts.dat")){
-			/** @var \pocketmine\nbt\tag\CompoundTag $data */
+			/** @var CompoundTag $data */
 			$data = $stream->read(file_get_contents($path . "idcounts.dat"));
 			self::$mapIdCounter = $data->getInt("map", 0);
 		}
@@ -75,7 +75,7 @@ class MapManager{
 		$stream = new BigEndianNBTStream();
 
 		if(is_file($fp = $path . "map_" . strval($id) . ".dat")){
-			/** @var \pocketmine\nbt\tag\CompoundTag $data */
+			/** @var CompoundTag $data */
 			$data = $stream->readCompressed(file_get_contents($fp));
 			$mp = new MapData($id);
 			$mp->readSaveData($data);

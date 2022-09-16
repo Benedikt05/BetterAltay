@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\scheduler;
 
+use InvalidArgumentException;
 use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
 
@@ -56,7 +57,7 @@ class TaskHandler{
 
 	public function __construct(Task $task, int $taskId, int $delay = -1, int $period = -1, ?string $ownerName = null){
 		if($task->getHandler() !== null){
-			throw new \InvalidArgumentException("Cannot assign multiple handlers to the same task");
+			throw new InvalidArgumentException("Cannot assign multiple handlers to the same task");
 		}
 		$this->task = $task;
 		$this->taskId = $taskId;

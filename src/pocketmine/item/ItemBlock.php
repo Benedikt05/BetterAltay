@@ -34,7 +34,7 @@ class ItemBlock extends Item{
 	protected $blockId;
 
 	/**
-	 * @param int      $meta usually 0-15 (placed blocks may only have meta values 0-15)
+	 * @param int $meta usually 0-15 (placed blocks may only have meta values 0-15)
 	 */
 	public function __construct(int $blockId, int $meta = 0, int $itemId = null){
 		$this->blockId = $blockId;

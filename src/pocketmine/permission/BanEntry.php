@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\permission;
 
+use DateTime;
 use pocketmine\utils\AssumptionFailedError;
+use RuntimeException;
 use function array_shift;
 use function count;
 use function explode;
@@ -38,32 +40,32 @@ class BanEntry{
 
 	/** @var string */
 	private $name;
-	/** @var \DateTime */
+	/** @var DateTime */
 	private $creationDate;
 	/** @var string */
 	private $source = "(Unknown)";
-	/** @var \DateTime|null */
+	/** @var DateTime|null */
 	private $expirationDate = null;
 	/** @var string */
 	private $reason = "Banned by an operator.";
 
 	public function __construct(string $name){
 		$this->name = strtolower($name);
-		$this->creationDate = new \DateTime();
+		$this->creationDate = new DateTime();
 	}
 
 	public function getName() : string{
 		return $this->name;
 	}
 
-	public function getCreated() : \DateTime{
+	public function getCreated() : DateTime{
 		return $this->creationDate;
 	}
 
 	/**
 	 * @return void
 	 */
-	public function setCreated(\DateTime $date){
+	public function setCreated(DateTime $date){
 		self::validateDate($date);
 		$this->creationDate = $date;
 	}
@@ -80,7 +82,7 @@ class BanEntry{
 	}
 
 	/**
-	 * @return \DateTime|null
+	 * @return DateTime|null
 	 */
 	public function getExpires(){
 		return $this->expirationDate;
@@ -89,7 +91,7 @@ class BanEntry{
 	/**
 	 * @return void
 	 */
-	public function setExpires(\DateTime $date = null){
+	public function setExpires(DateTime $date = null){
 		if($date !== null){
 			self::validateDate($date);
 		}
@@ -97,7 +99,7 @@ class BanEntry{
 	}
 
 	public function hasExpired() : bool{
-		$now = new \DateTime();
+		$now = new DateTime();
 
 		return $this->expirationDate === null ? false : $this->expirationDate < $now;
 	}
@@ -134,28 +136,28 @@ class BanEntry{
 	 *
 	 * @link https://bugs.php.net/bug.php?id=75992
 	 *
-	 * @throws \RuntimeException if the argument can't be parsed from a formatted date string
+	 * @throws RuntimeException if the argument can't be parsed from a formatted date string
 	 */
-	private static function validateDate(\DateTime $dateTime) : void{
+	private static function validateDate(DateTime $dateTime) : void{
 		self::parseDate($dateTime->format(self::$format));
 	}
 
 	/**
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
-	private static function parseDate(string $date) : \DateTime{
-		$datetime = \DateTime::createFromFormat(self::$format, $date);
-		if(!($datetime instanceof \DateTime)){
-			$lastErrors = \DateTime::getLastErrors();
+	private static function parseDate(string $date) : DateTime{
+		$datetime = DateTime::createFromFormat(self::$format, $date);
+		if(!($datetime instanceof DateTime)){
+			$lastErrors = DateTime::getLastErrors();
 			if($lastErrors === false) throw new AssumptionFailedError("DateTime::getLastErrors() should not be returning false in here");
-			throw new \RuntimeException("Error parsing date for BanEntry: " . implode(", ", $lastErrors["errors"]));
+			throw new RuntimeException("Error parsing date for BanEntry: " . implode(", ", $lastErrors["errors"]));
 		}
 
 		return $datetime;
 	}
 
 	/**
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public static function fromString(string $str) : ?BanEntry{
 		if(strlen($str) < 2){

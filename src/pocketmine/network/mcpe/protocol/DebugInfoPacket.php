@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class DebugInfoPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/{
+class DebugInfoPacket extends DataPacket/* implements ClientboundPacket, ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::DEBUG_INFO_PACKET;
 
 	/** @var int */

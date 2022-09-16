@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Handles the creation of virtual inventories or mapped to an InventoryHolder
  */
+
 namespace pocketmine\inventory;
 
 use pocketmine\item\Item;

@@ -33,7 +33,6 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\utils\Random;
-
 use function is_null;
 
 class FireworksUtils{

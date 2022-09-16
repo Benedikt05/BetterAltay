@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use InvalidArgumentException;
+
 class CommandEnumConstraint{
 	/** @var CommandEnum */
 	private $enum;
@@ -32,12 +34,12 @@ class CommandEnumConstraint{
 	private $constraints; //TODO: find constants
 
 	/**
-	 * @param int[]       $constraints
+	 * @param int[] $constraints
 	 */
 	public function __construct(CommandEnum $enum, int $valueOffset, array $constraints){
-		(static function(int ...$_) : void{})(...$constraints);
+		(static function(int ...$_) : void{ })(...$constraints);
 		if(!isset($enum->enumValues[$valueOffset])){
-			throw new \InvalidArgumentException("Invalid enum value offset $valueOffset");
+			throw new InvalidArgumentException("Invalid enum value offset $valueOffset");
 		}
 		$this->enum = $enum;
 		$this->valueOffset = $valueOffset;

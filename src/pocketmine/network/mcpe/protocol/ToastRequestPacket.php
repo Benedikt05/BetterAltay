@@ -29,22 +29,22 @@ use pocketmine\network\mcpe\NetworkSession;
 
 class ToastRequestPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::TOAST_REQUEST_PACKET;
-	
-	/** @var string  */
+
+	/** @var string */
 	public string $title = "";
-	/** @var string  */
+	/** @var string */
 	public string $content = "";
-	
+
 	protected function decodePayload(){
 		$this->title = $this->getString();
 		$this->content = $this->getString();
 	}
-	
+
 	protected function encodePayload(){
 		$this->putString($this->title);
 		$this->putString($this->content);
 	}
-	
+
 	public function handle(NetworkSession $session) : bool{
 		return $session->handleToastRequest($this);
 	}

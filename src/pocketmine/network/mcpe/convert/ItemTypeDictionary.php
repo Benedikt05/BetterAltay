@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\convert;
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
@@ -33,6 +34,7 @@ use function is_bool;
 use function is_int;
 use function is_string;
 use function json_decode;
+use const pocketmine\RESOURCE_PATH;
 
 final class ItemTypeDictionary{
 	use SingletonTrait;
@@ -54,7 +56,7 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$data = file_get_contents(\pocketmine\RESOURCE_PATH . '/vanilla/required_item_list.json');
+		$data = file_get_contents(RESOURCE_PATH . '/vanilla/required_item_list.json');
 		if($data === false) throw new AssumptionFailedError("Missing required resource file");
 		$table = json_decode($data, true);
 		if(!is_array($table)){
@@ -92,14 +94,14 @@ final class ItemTypeDictionary{
 
 	public function fromStringId(string $stringId) : int{
 		if(!array_key_exists($stringId, $this->stringToIntMap)){
-			throw new \InvalidArgumentException("Unmapped string ID \"$stringId\"");
+			throw new InvalidArgumentException("Unmapped string ID \"$stringId\"");
 		}
 		return $this->stringToIntMap[$stringId];
 	}
 
 	public function fromIntId(int $intId) : string{
 		if(!array_key_exists($intId, $this->intToStringIdMap)){
-			throw new \InvalidArgumentException("Unmapped int ID $intId");
+			throw new InvalidArgumentException("Unmapped int ID $intId");
 		}
 		return $this->intToStringIdMap[$intId];
 	}

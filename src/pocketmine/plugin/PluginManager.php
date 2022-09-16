@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\plugin;
 
+use FilesystemIterator;
+use InvalidArgumentException;
 use pocketmine\command\PluginCommand;
 use pocketmine\command\SimpleCommandMap;
 use pocketmine\event\Event;
@@ -39,6 +41,12 @@ use pocketmine\Server;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Utils;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionNamedType;
+use RuntimeException;
+use Throwable;
 use function array_intersect;
 use function array_map;
 use function array_merge;
@@ -101,7 +109,7 @@ class PluginManager{
 			if(!file_exists($this->pluginDataDirectory)){
 				@mkdir($this->pluginDataDirectory, 0777, true);
 			}elseif(!is_dir($this->pluginDataDirectory)){
-				throw new \RuntimeException("Plugin data path $this->pluginDataDirectory exists and is not a directory");
+				throw new RuntimeException("Plugin data path $this->pluginDataDirectory exists and is not a directory");
 			}
 		}
 	}
@@ -189,7 +197,7 @@ class PluginManager{
 						}
 
 						return $plugin;
-					}catch(\Throwable $e){
+					}catch(Throwable $e){
 						$this->server->getLogger()->logException($e);
 						return null;
 					}
@@ -201,7 +209,8 @@ class PluginManager{
 	}
 
 	/**
-	 * @param string[]|null $newLoaders
+	 * @param string[]|null                            $newLoaders
+	 *
 	 * @phpstan-param list<class-string<PluginLoader>> $newLoaders
 	 *
 	 * @return Plugin[]
@@ -226,7 +235,7 @@ class PluginManager{
 			$loaders = $this->fileAssociations;
 		}
 
-		$files = iterator_to_array(new \FilesystemIterator($directory, \FilesystemIterator::CURRENT_AS_PATHNAME | \FilesystemIterator::SKIP_DOTS));
+		$files = iterator_to_array(new FilesystemIterator($directory, FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS));
 		shuffle($files); //this prevents plugins implicitly relying on the filesystem name order when they should be using dependency properties
 		foreach($loaders as $loader){
 			foreach($files as $file){
@@ -261,7 +270,7 @@ class PluginManager{
 						continue;
 					}
 
-					if(count($description->getCompatibleOperatingSystems()) > 0 and !in_array(Utils::getOS(), $description->getCompatibleOperatingSystems(), true)) {
+					if(count($description->getCompatibleOperatingSystems()) > 0 and !in_array(Utils::getOS(), $description->getCompatibleOperatingSystems(), true)){
 						$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [
 							$name,
 							$this->server->getLanguage()->translateString("%pocketmine.plugin.incompatibleOS", [implode(", ", $description->getCompatibleOperatingSystems())])
@@ -292,7 +301,7 @@ class PluginManager{
 							$softDependencies[$before] = [$name];
 						}
 					}
-				}catch(\Throwable $e){
+				}catch(Throwable $e){
 					$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.fileError", [$file, $directory, $e->getMessage()]));
 					$this->server->getLogger()->logException($e);
 				}
@@ -403,10 +412,10 @@ class PluginManager{
 	}
 
 	/**
-	 * @deprecated
+	 * @return null|Permission
 	 * @see PermissionManager::getPermission()
 	 *
-	 * @return null|Permission
+	 * @deprecated
 	 */
 	public function getPermission(string $name){
 		return PermissionManager::getInstance()->getPermission($name);
@@ -421,52 +430,52 @@ class PluginManager{
 	}
 
 	/**
-	 * @deprecated
-	 * @see PermissionManager::removePermission()
-	 *
 	 * @param string|Permission $permission
 	 *
 	 * @return void
+	 * @deprecated
+	 * @see PermissionManager::removePermission()
+	 *
 	 */
 	public function removePermission($permission){
 		PermissionManager::getInstance()->removePermission($permission);
 	}
 
 	/**
-	 * @deprecated
+	 * @return Permission[]
 	 * @see PermissionManager::getDefaultPermissions()
 	 *
-	 * @return Permission[]
+	 * @deprecated
 	 */
 	public function getDefaultPermissions(bool $op) : array{
 		return PermissionManager::getInstance()->getDefaultPermissions($op);
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see PermissionManager::recalculatePermissionDefaults()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function recalculatePermissionDefaults(Permission $permission){
 		PermissionManager::getInstance()->recalculatePermissionDefaults($permission);
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see PermissionManager::subscribeToPermission()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function subscribeToPermission(string $permission, Permissible $permissible){
 		PermissionManager::getInstance()->subscribeToPermission($permission, $permissible);
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see PermissionManager::unsubscribeFromPermission()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function unsubscribeFromPermission(string $permission, Permissible $permissible){
 		PermissionManager::getInstance()->unsubscribeFromPermission($permission, $permissible);
@@ -481,50 +490,50 @@ class PluginManager{
 	}
 
 	/**
-	 * @deprecated
+	 * @return array|Permissible[]
 	 * @see PermissionManager::getPermissionSubscriptions()
 	 *
-	 * @return array|Permissible[]
+	 * @deprecated
 	 */
 	public function getPermissionSubscriptions(string $permission) : array{
 		return PermissionManager::getInstance()->getPermissionSubscriptions($permission);
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see PermissionManager::subscribeToDefaultPerms()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function subscribeToDefaultPerms(bool $op, Permissible $permissible){
 		PermissionManager::getInstance()->subscribeToDefaultPerms($op, $permissible);
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see PermissionManager::unsubscribeFromDefaultPerms()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function unsubscribeFromDefaultPerms(bool $op, Permissible $permissible){
 		PermissionManager::getInstance()->unsubscribeFromDefaultPerms($op, $permissible);
 	}
 
 	/**
-	 * @deprecated
+	 * @return Permissible[]
 	 * @see PermissionManager::getDefaultPermSubscriptions()
 	 *
-	 * @return Permissible[]
+	 * @deprecated
 	 */
 	public function getDefaultPermSubscriptions(bool $op) : array{
 		return PermissionManager::getInstance()->getDefaultPermSubscriptions($op);
 	}
 
 	/**
-	 * @deprecated
+	 * @return Permission[]
 	 * @see PermissionManager::getPermissions()
 	 *
-	 * @return Permission[]
+	 * @deprecated
 	 */
 	public function getPermissions() : array{
 		return PermissionManager::getInstance()->getPermissions();
@@ -552,7 +561,7 @@ class PluginManager{
 				$this->enabledPlugins[$plugin->getDescription()->getName()] = $plugin;
 
 				(new PluginEnableEvent($plugin))->call();
-			}catch(\Throwable $e){
+			}catch(Throwable $e){
 				$this->server->getLogger()->logException($e);
 				$this->disablePlugin($plugin);
 			}
@@ -599,7 +608,7 @@ class PluginManager{
 					}elseif(is_string($data["permission"])){
 						$newCmd->setPermission($data["permission"]);
 					}else{
-						throw new \InvalidArgumentException("Permission must be a string or boolean, " . gettype($data["permission"]) . " given");
+						throw new InvalidArgumentException("Permission must be a string or boolean, " . gettype($data["permission"]) . " given");
 					}
 				}
 
@@ -635,7 +644,7 @@ class PluginManager{
 
 			try{
 				$plugin->setEnabled(false);
-			}catch(\Throwable $e){
+			}catch(Throwable $e){
 				$this->server->getLogger()->logException($e);
 			}
 			$plugin->getScheduler()->shutdown();
@@ -666,10 +675,10 @@ class PluginManager{
 	/**
 	 * Calls an event
 	 *
-	 * @deprecated
+	 * @return void
 	 * @see Event::call()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function callEvent(Event $event){
 		$event->call();
@@ -685,8 +694,8 @@ class PluginManager{
 			throw new PluginException("Plugin attempted to register " . get_class($listener) . " while not enabled");
 		}
 
-		$reflection = new \ReflectionClass(get_class($listener));
-		foreach($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method){
+		$reflection = new ReflectionClass(get_class($listener));
+		foreach($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method){
 			if(!$method->isStatic() and $method->getDeclaringClass()->implementsInterface(Listener::class)){
 				$tags = Utils::parseDocComment((string) $method->getDocComment());
 				if(isset($tags["notHandler"])){
@@ -704,14 +713,14 @@ class PluginManager{
 				try{
 					$paramType = $parameters[0]->getType();
 					//isBuiltin() returns false for builtin classes ..................
-					if($paramType instanceof \ReflectionNamedType && !$paramType->isBuiltin()){
+					if($paramType instanceof ReflectionNamedType && !$paramType->isBuiltin()){
 						/** @phpstan-var class-string $paramClass */
 						$paramClass = $paramType->getName();
-						$eventClass = new \ReflectionClass($paramClass);
+						$eventClass = new ReflectionClass($paramClass);
 					}else{
 						$eventClass = null;
 					}
-				}catch(\ReflectionException $e){ //class doesn't exist
+				}catch(ReflectionException $e){ //class doesn't exist
 					if(isset($tags["softDepend"]) && !isset($this->plugins[$tags["softDepend"]])){
 						$this->server->getLogger()->debug("Not registering @softDepend listener " . Utils::getNiceClosureName($handlerClosure) . "() because plugin \"" . $tags["softDepend"] . "\" not found");
 						continue;
@@ -725,7 +734,7 @@ class PluginManager{
 
 				try{
 					$priority = isset($tags["priority"]) ? EventPriority::fromString($tags["priority"]) : EventPriority::NORMAL;
-				}catch(\InvalidArgumentException $e){
+				}catch(InvalidArgumentException $e){
 					throw new PluginException("Event handler " . Utils::getNiceClosureName($handlerClosure) . "() declares invalid/unknown priority \"" . $tags["priority"] . "\"");
 				}
 
@@ -750,7 +759,8 @@ class PluginManager{
 	}
 
 	/**
-	 * @param string $event Class name that extends Event
+	 * @param string                      $event Class name that extends Event
+	 *
 	 * @phpstan-param class-string<Event> $event
 	 *
 	 * @throws PluginException
@@ -764,7 +774,7 @@ class PluginManager{
 			throw new PluginException("Plugin attempted to register " . $event . " while not enabled");
 		}
 
-		$timings = new TimingsHandler("Plugin: " . $plugin->getDescription()->getFullName() . " Event: " . get_class($listener) . "::" . ($executor instanceof MethodEventExecutor ? $executor->getMethod() : "???") . "(" . (new \ReflectionClass($event))->getShortName() . ")");
+		$timings = new TimingsHandler("Plugin: " . $plugin->getDescription()->getFullName() . " Event: " . get_class($listener) . "::" . ($executor instanceof MethodEventExecutor ? $executor->getMethod() : "???") . "(" . (new ReflectionClass($event))->getShortName() . ")");
 
 		$this->getEventListeners($event)->register(new RegisteredListener($listener, $executor, $priority, $plugin, $ignoreCancelled, $timings));
 	}

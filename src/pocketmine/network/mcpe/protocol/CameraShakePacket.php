@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class CameraShakePacket extends DataPacket/* implements ClientboundPacket*/{
+class CameraShakePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CAMERA_SHAKE_PACKET;
 
 	public const TYPE_POSITIONAL = 0;

@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\form;
 
+use Closure;
+
 /**
  * Represents a custom form which can be shown in the Settings menu on the client. This is exactly the same as a regular
  * CustomForm, except that this type can also have an icon which can be shown on the settings section button.
@@ -36,7 +38,7 @@ abstract class ServerSettingsForm extends CustomForm{
 	 */
 	private $icon;
 
-	public function __construct(string $title, array $elements, ?FormIcon $icon, \Closure $onSubmit, ?\Closure $onClose = null){
+	public function __construct(string $title, array $elements, ?FormIcon $icon, Closure $onSubmit, ?Closure $onClose = null){
 		parent::__construct($title, $elements, $onSubmit, $onClose);
 		$this->icon = $icon;
 	}

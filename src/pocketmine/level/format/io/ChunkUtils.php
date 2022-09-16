@@ -97,7 +97,8 @@ if(!extension_loaded('pocketmine_chunkutils')){
 		/**
 		 * Converts pre-MCPE-1.0 biome color array to biome ID array.
 		 *
-		 * @param int[] $array of biome color values
+		 * @param int[]             $array of biome color values
+		 *
 		 * @phpstan-param list<int> $array
 		 */
 		public static function convertBiomeColors(array $array) : string{

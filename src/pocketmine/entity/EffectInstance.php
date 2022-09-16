@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use InvalidArgumentException;
 use pocketmine\utils\Color;
 use function max;
 use const INT32_MAX;
@@ -47,7 +48,7 @@ class EffectInstance{
 	private $color;
 
 	/**
-	 * @param int|null   $duration Passing null will use the effect type's default duration
+	 * @param int|null $duration Passing null will use the effect type's default duration
 	 */
 	public function __construct(Effect $effectType, ?int $duration = null, int $amplifier = 0, bool $visible = true, bool $ambient = false, ?Color $overrideColor = null){
 		$this->effectType = $effectType;
@@ -76,13 +77,13 @@ class EffectInstance{
 	/**
 	 * Sets the number of ticks remaining until the effect expires.
 	 *
-	 * @throws \InvalidArgumentException
-	 *
 	 * @return $this
+	 * @throws InvalidArgumentException
+	 *
 	 */
 	public function setDuration(int $duration) : EffectInstance{
 		if($duration < 0 or $duration > INT32_MAX){
-			throw new \InvalidArgumentException("Effect duration must be in range 0 - " . INT32_MAX . ", got $duration");
+			throw new InvalidArgumentException("Effect duration must be in range 0 - " . INT32_MAX . ", got $duration");
 		}
 		$this->duration = $duration;
 

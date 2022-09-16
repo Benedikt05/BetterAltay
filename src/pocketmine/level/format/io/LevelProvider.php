@@ -55,7 +55,8 @@ interface LevelProvider{
 	/**
 	 * Generate the needed files in the path given
 	 *
-	 * @param mixed[] $options
+	 * @param mixed[]                         $options
+	 *
 	 * @phpstan-param class-string<Generator> $generator
 	 * @phpstan-param array<string, mixed>    $options
 	 *

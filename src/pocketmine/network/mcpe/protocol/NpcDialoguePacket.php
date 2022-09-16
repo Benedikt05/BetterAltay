@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class NpcDialoguePacket extends DataPacket/* implements ClientboundPacket*/{
+class NpcDialoguePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::NPC_DIALOGUE_PACKET;
 
 	public const ACTION_OPEN = 0;

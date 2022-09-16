@@ -69,9 +69,9 @@ class SubChunk implements SubChunkInterface{
 		return (
 			substr_count($this->ids, "\x00") === 4096 and
 			(!$checkLight or (
-				substr_count($this->skyLight, "\xff") === 2048 and
-				$this->blockLight === self::ZERO_NIBBLE_ARRAY
-			))
+					substr_count($this->skyLight, "\xff") === 2048 and
+					$this->blockLight === self::ZERO_NIBBLE_ARRAY
+				))
 		);
 	}
 

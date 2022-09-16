@@ -37,12 +37,13 @@ use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use ReflectionClass;
 
 class ClearCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		$itemNames = [];
-		foreach((new \ReflectionClass(ItemIds::class))->getConstants() as $n => $id){
+		foreach((new ReflectionClass(ItemIds::class))->getConstants() as $n => $id){
 			if(ItemFactory::isRegistered($id)){
 				for($i = 0; $i < 15; $i++){
 					if(ItemFactory::isRegistered($id)){

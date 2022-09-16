@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe;
 
-final class JwtException extends \RuntimeException{
+use RuntimeException;
+
+final class JwtException extends RuntimeException{
 
 }

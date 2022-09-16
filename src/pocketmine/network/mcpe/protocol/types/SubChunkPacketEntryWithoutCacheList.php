@@ -30,7 +30,8 @@ final class SubChunkPacketEntryWithoutCacheList{
 	 */
 	public function __construct(
 		private array $entries
-	){}
+	){
+	}
 
 	/**
 	 * @return SubChunkPacketEntryWithoutCache[]

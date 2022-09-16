@@ -29,7 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\stackresponse\ItemStackResponse;
 use function count;
 
-class ItemStackResponsePacket extends DataPacket/* implements ClientboundPacket*/{
+class ItemStackResponsePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::ITEM_STACK_RESPONSE_PACKET;
 
 	/** @var ItemStackResponse[] */

@@ -27,7 +27,6 @@ namespace pocketmine\entity\passive;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EntityIds;
-use pocketmine\entity\helper\EntityLookHelper;
 use pocketmine\entity\Living;
 use pocketmine\entity\Tamable;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -117,14 +116,14 @@ abstract class AbstractHorse extends Tamable{
 		if($damage > 0){
 			$this->attack(new EntityDamageEvent($this, EntityDamageEvent::CAUSE_FALL, $damage));
 
-			if(($rider = $this->getRiddenByEntity())!== null){
+			if(($rider = $this->getRiddenByEntity()) !== null){
 				$rider->attack(new EntityDamageEvent($rider, EntityDamageEvent::CAUSE_FALL, $damage));
 			}
 		}
 	}
 
 	public function onUpdate(int $currentTick) : bool{
-		if ($this->clientMoveTicks > 0){
+		if($this->clientMoveTicks > 0){
 			$this->setPositionAndRotation($this->clientPos, $this->clientYaw, $this->clientPitch);
 
 			$this->clientMoveTicks--;

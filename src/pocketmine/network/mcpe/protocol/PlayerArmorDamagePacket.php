@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class PlayerArmorDamagePacket extends DataPacket/* implements ClientboundPacket*/{
+class PlayerArmorDamagePacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_ARMOR_DAMAGE_PACKET;
 
 	private const FLAG_HEAD = 0;

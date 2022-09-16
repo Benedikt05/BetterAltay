@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\player;
 
+use InvalidArgumentException;
 use pocketmine\entity\Human;
 use pocketmine\event\Cancellable;
 use pocketmine\event\entity\EntityEvent;
@@ -80,7 +81,7 @@ class PlayerExperienceChangeEvent extends EntityEvent implements Cancellable{
 
 	public function setNewProgress(?float $newProgress) : void{
 		if($newProgress < 0.0 || $newProgress > 1.0){
-			throw new \InvalidArgumentException("XP progress must be in range 0-1");
+			throw new InvalidArgumentException("XP progress must be in range 0-1");
 		}
 		$this->newProgress = $newProgress;
 	}

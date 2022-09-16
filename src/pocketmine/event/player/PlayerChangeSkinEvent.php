@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\player;
 
+use InvalidArgumentException;
 use pocketmine\entity\Skin;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
@@ -51,7 +52,7 @@ class PlayerChangeSkinEvent extends PlayerEvent implements Cancellable{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException if the specified skin is not valid
+	 * @throws InvalidArgumentException if the specified skin is not valid
 	 */
 	public function setNewSkin(Skin $skin) : void{
 		$skin->validate();

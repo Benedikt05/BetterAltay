@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class LecternUpdatePacket extends DataPacket/* implements ServerboundPacket*/{
+class LecternUpdatePacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::LECTERN_UPDATE_PACKET;
 
 	/** @var int */

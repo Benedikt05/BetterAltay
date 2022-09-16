@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level;
 
+use InvalidArgumentException;
 use pocketmine\math\Vector3;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\MainLogger;
@@ -90,11 +91,11 @@ class Position extends Vector3{
 	 *
 	 * @return $this
 	 *
-	 * @throws \InvalidArgumentException if the specified Level has been closed
+	 * @throws InvalidArgumentException if the specified Level has been closed
 	 */
 	public function setLevel(Level $level = null){
 		if($level !== null and $level->isClosed()){
-			throw new \InvalidArgumentException("Specified world has been unloaded and cannot be used");
+			throw new InvalidArgumentException("Specified world has been unloaded and cannot be used");
 		}
 
 		$this->level = $level;

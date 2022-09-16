@@ -31,7 +31,8 @@ use pocketmine\network\mcpe\protocol\types\SubChunkPacketEntryWithoutCacheList a
 use pocketmine\network\mcpe\protocol\types\SubChunkPosition;
 use function count;
 
-class SubChunkPacket extends DataPacket/* implements ClientboundPacket*/{
+class SubChunkPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::SUB_CHUNK_PACKET;
 
 	private int $dimension;

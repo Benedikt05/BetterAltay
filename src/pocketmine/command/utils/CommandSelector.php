@@ -48,9 +48,9 @@ class CommandSelector{
 	 * @param string        $entityType
 	 * @param Vector3|null  $pos
 	 *
+	 * @return Entity[]
 	 * @throws NoSelectorMatchException
 	 *
-	 * @return Entity[]
 	 */
 	public static function findTargets(CommandSender $sender, string $selector, string $entityType = Entity::class, ?Vector3 $pos = null) : array{
 		if(!($pos instanceof Position) and $pos !== null){

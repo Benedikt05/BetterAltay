@@ -28,7 +28,8 @@ use pocketmine\network\mcpe\protocol\types\SubChunkPosition;
 use pocketmine\network\mcpe\protocol\types\SubChunkPositionOffset;
 use function count;
 
-class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/{
+class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::SUB_CHUNK_REQUEST_PACKET;
 
 	private int $dimension;
@@ -41,7 +42,9 @@ class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/{
 
 	/**
 	 * @generate-create-func
-	 * @param SubChunkPositionOffset[] $entries
+	 *
+	 * @param SubChunkPositionOffset[]             $entries
+	 *
 	 * @phpstan-param list<SubChunkPositionOffset> $entries
 	 */
 	public static function create(int $dimension, SubChunkPosition $basePosition, array $entries) : self{

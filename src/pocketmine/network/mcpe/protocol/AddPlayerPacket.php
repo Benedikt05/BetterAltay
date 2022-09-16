@@ -113,9 +113,9 @@ class AddPlayerPacket extends DataPacket{
 		$this->putLLong($this->entityUniqueId ?? $this->entityRuntimeId);// targetActorUniqueId
 		$this->putUnsignedVarInt(0); // playerPermission
 		$this->putUnsignedVarInt(0); // commandPermission
- 		$this->putUnsignedVarInt(1); // abilityLayers size
+		$this->putUnsignedVarInt(1); // abilityLayers size
 		$this->putLShort(1); // BASE layer type
- 		$this->putLInt(262143); // abilitiesSet (all)
+		$this->putLInt(262143); // abilitiesSet (all)
 		$this->putLInt(63); // abilityValues  (survival)
 		$this->putLFloat(0.1); // flySpeed
 		$this->putLFloat(0.05); // walkSpeed

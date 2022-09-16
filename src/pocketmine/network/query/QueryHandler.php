@@ -25,6 +25,7 @@ declare(strict_types=1);
  * Implementation of the UT3 Query Protocol (GameSpot)
  * Source: http://wiki.unrealadmin.org/UT3_query_protocol
  */
+
 namespace pocketmine\network\query;
 
 use pocketmine\network\AdvancedSourceInterface;
@@ -75,9 +76,9 @@ class QueryHandler{
 	}
 
 	/**
+	 * @return void
 	 * @deprecated
 	 *
-	 * @return void
 	 */
 	public function regenerateInfo(){
 

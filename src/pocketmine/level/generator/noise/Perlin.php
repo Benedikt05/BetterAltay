@@ -34,9 +34,9 @@ class Perlin extends Noise{
 	];
 
 	/**
-	 * @param int    $octaves
-	 * @param float  $persistence
-	 * @param float  $expansion
+	 * @param int   $octaves
+	 * @param float $persistence
+	 * @param float $expansion
 	 */
 	public function __construct(Random $random, $octaves, $persistence, $expansion = 1){
 		$this->octaves = $octaves;

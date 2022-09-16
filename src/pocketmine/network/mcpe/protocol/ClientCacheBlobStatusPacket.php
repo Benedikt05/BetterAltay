@@ -28,7 +28,8 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use function count;
 
-class ClientCacheBlobStatusPacket extends DataPacket/* implements ServerboundPacket*/{
+class ClientCacheBlobStatusPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::CLIENT_CACHE_BLOB_STATUS_PACKET;
 
 	/** @var int[] xxHash64 subchunk data hashes */
@@ -42,8 +43,8 @@ class ClientCacheBlobStatusPacket extends DataPacket/* implements ServerboundPac
 	 */
 	public static function create(array $hitHashes, array $missHashes) : self{
 		//type checks
-		(static function(int ...$hashes) : void{})(...$hitHashes);
-		(static function(int ...$hashes) : void{})(...$missHashes);
+		(static function(int ...$hashes) : void{ })(...$hitHashes);
+		(static function(int ...$hashes) : void{ })(...$missHashes);
 
 		$result = new self;
 		$result->hitHashes = $hitHashes;

@@ -25,12 +25,14 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidStateException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\CommandData;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandEnumConstraint;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\BinaryDataException;
+use UnexpectedValueException;
 use function array_search;
 use function count;
 use function dechex;
@@ -155,7 +157,7 @@ class AvailableCommandsPacket extends DataPacket{
 	/**
 	 * @param string[] $enumValueList
 	 *
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 * @throws BinaryDataException
 	 */
 	protected function getEnum(array $enumValueList) : CommandEnum{
@@ -167,7 +169,7 @@ class AvailableCommandsPacket extends DataPacket{
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			$index = $this->getEnumValueIndex($listSize);
 			if(!isset($enumValueList[$index])){
-				throw new \UnexpectedValueException("Invalid enum value index $index");
+				throw new UnexpectedValueException("Invalid enum value index $index");
 			}
 			//Get the enum value from the initial pile of mess
 			$retval->enumValues[] = $enumValueList[$index];
@@ -189,7 +191,7 @@ class AvailableCommandsPacket extends DataPacket{
 	}
 
 	/**
-	 * @param int[]       $enumValueMap string enum name -> int index
+	 * @param int[] $enumValueMap string enum name -> int index
 	 */
 	protected function putEnum(CommandEnum $enum, array $enumValueMap) : void{
 		$this->putString($enum->enumName);
@@ -199,7 +201,7 @@ class AvailableCommandsPacket extends DataPacket{
 		foreach($enum->enumValues as $value){
 			$index = $enumValueMap[$value] ?? -1;
 			if($index === -1){
-				throw new \InvalidStateException("Enum value '$value' not found");
+				throw new InvalidStateException("Enum value '$value' not found");
 			}
 			$this->putEnumValueIndex($index, $listSize);
 		}
@@ -245,16 +247,16 @@ class AvailableCommandsPacket extends DataPacket{
 		//wtf, what was wrong with an offset inside the enum? :(
 		$valueIndex = $this->getLInt();
 		if(!isset($enumValues[$valueIndex])){
-			throw new \UnexpectedValueException("Enum constraint refers to unknown enum value index $valueIndex");
+			throw new UnexpectedValueException("Enum constraint refers to unknown enum value index $valueIndex");
 		}
 		$enumIndex = $this->getLInt();
 		if(!isset($enums[$enumIndex])){
-			throw new \UnexpectedValueException("Enum constraint refers to unknown enum index $enumIndex");
+			throw new UnexpectedValueException("Enum constraint refers to unknown enum index $enumIndex");
 		}
 		$enum = $enums[$enumIndex];
 		$valueOffset = array_search($enumValues[$valueIndex], $enum->enumValues, true);
 		if($valueOffset === false){
-			throw new \UnexpectedValueException("Value \"" . $enumValues[$valueIndex] . "\" does not belong to enum \"$enum->enumName\"");
+			throw new UnexpectedValueException("Value \"" . $enumValues[$valueIndex] . "\" does not belong to enum \"$enum->enumName\"");
 		}
 
 		$constraintIds = [];
@@ -266,8 +268,8 @@ class AvailableCommandsPacket extends DataPacket{
 	}
 
 	/**
-	 * @param int[]                 $enumIndexes string enum name -> int index
-	 * @param int[]                 $enumValueIndexes string value -> int index
+	 * @param int[] $enumIndexes string enum name -> int index
+	 * @param int[] $enumValueIndexes string value -> int index
 	 */
 	protected function putEnumConstraint(CommandEnumConstraint $constraint, array $enumIndexes, array $enumValueIndexes) : void{
 		$this->putLInt($enumValueIndexes[$constraint->getAffectedValue()]);
@@ -282,7 +284,7 @@ class AvailableCommandsPacket extends DataPacket{
 	 * @param CommandEnum[] $enums
 	 * @param string[]      $postfixes
 	 *
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 * @throws BinaryDataException
 	 */
 	protected function getCommandData(array $enums, array $postfixes) : CommandData{
@@ -306,16 +308,16 @@ class AvailableCommandsPacket extends DataPacket{
 					$index = ($parameter->paramType & 0xffff);
 					$parameter->enum = $enums[$index] ?? null;
 					if($parameter->enum === null){
-						throw new \UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: expected enum at $index, but got none");
+						throw new UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: expected enum at $index, but got none");
 					}
 				}elseif(($parameter->paramType & self::ARG_FLAG_POSTFIX) !== 0){
 					$index = ($parameter->paramType & 0xffff);
 					$parameter->postfix = $postfixes[$index] ?? null;
 					if($parameter->postfix === null){
-						throw new \UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: expected postfix at $index, but got none");
+						throw new UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: expected postfix at $index, but got none");
 					}
 				}elseif(($parameter->paramType & self::ARG_FLAG_VALID) === 0){
-					throw new \UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: Invalid parameter type 0x" . dechex($parameter->paramType));
+					throw new UnexpectedValueException("deserializing $retval->commandName parameter $parameter->paramName: Invalid parameter type 0x" . dechex($parameter->paramType));
 				}
 
 				$retval->overloads[$overloadIndex][$paramIndex] = $parameter;
@@ -326,8 +328,8 @@ class AvailableCommandsPacket extends DataPacket{
 	}
 
 	/**
-	 * @param int[]       $enumIndexes string enum name -> int index
-	 * @param int[]       $postfixIndexes
+	 * @param int[] $enumIndexes string enum name -> int index
+	 * @param int[] $postfixIndexes
 	 */
 	protected function putCommandData(CommandData $data, array $enumIndexes, array $postfixIndexes) : void{
 		$this->putString($data->commandName);
@@ -353,7 +355,7 @@ class AvailableCommandsPacket extends DataPacket{
 				}elseif($parameter->postfix !== null){
 					$key = $postfixIndexes[$parameter->postfix] ?? -1;
 					if($key === -1){
-						throw new \InvalidStateException("Postfix '$parameter->postfix' not in postfixes array");
+						throw new InvalidStateException("Postfix '$parameter->postfix' not in postfixes array");
 					}
 					$type = self::ARG_FLAG_POSTFIX | $key;
 				}else{

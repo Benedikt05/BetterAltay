@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format\io;
 
+use InvalidStateException;
 use pocketmine\level\format\Chunk;
 use pocketmine\level\format\io\exception\CorruptedChunkException;
 use pocketmine\level\format\io\exception\UnsupportedChunkFormatException;
@@ -32,6 +33,7 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
+use UnexpectedValueException;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
@@ -66,7 +68,7 @@ abstract class BaseLevelProvider implements LevelProvider{
 		$nbt = new BigEndianNBTStream();
 		try{
 			$levelData = $nbt->read($rawLevelData);
-		}catch(\UnexpectedValueException $e){
+		}catch(UnexpectedValueException $e){
 			throw new LevelException("Failed to decode level.dat (" . $e->getMessage() . ")", 0, $e);
 		}
 
@@ -194,7 +196,7 @@ abstract class BaseLevelProvider implements LevelProvider{
 
 	public function saveChunk(Chunk $chunk) : void{
 		if(!$chunk->isGenerated()){
-			throw new \InvalidStateException("Cannot save un-generated chunk");
+			throw new InvalidStateException("Cannot save un-generated chunk");
 		}
 		$this->writeChunk($chunk);
 	}

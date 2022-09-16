@@ -25,16 +25,17 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryDataException;
+use SplFixedArray;
 
 class PacketPool{
-	/** @var \SplFixedArray<DataPacket> */
+	/** @var SplFixedArray<DataPacket> */
 	protected static $pool;
 
 	/**
 	 * @return void
 	 */
 	public static function init(){
-		static::$pool = new \SplFixedArray(256);
+		static::$pool = new SplFixedArray(256);
 
 		static::registerPacket(new LoginPacket());
 		static::registerPacket(new PlayStatusPacket());

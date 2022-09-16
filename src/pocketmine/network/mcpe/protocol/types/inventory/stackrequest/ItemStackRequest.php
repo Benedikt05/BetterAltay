@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types\inventory\stackrequest;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use UnexpectedValueException;
 use function count;
 
 final class ItemStackRequest{
@@ -41,7 +42,8 @@ final class ItemStackRequest{
 	/**
 	 * @param ItemStackRequestAction[] $actions
 	 * @param string[]                 $filterStrings
-	 * @phpstan-param list<string> $filterStrings
+	 *
+	 * @phpstan-param list<string>     $filterStrings
 	 */
 	public function __construct(int $requestId, array $actions, array $filterStrings){
 		$this->requestId = $requestId;
@@ -62,28 +64,48 @@ final class ItemStackRequest{
 
 	private static function readAction(NetworkBinaryStream $in, int $typeId) : ItemStackRequestAction{
 		switch($typeId){
-			case TakeStackRequestAction::getTypeId(): return TakeStackRequestAction::read($in);
-			case PlaceStackRequestAction::getTypeId(): return PlaceStackRequestAction::read($in);
-			case SwapStackRequestAction::getTypeId(): return SwapStackRequestAction::read($in);
-			case DropStackRequestAction::getTypeId(): return DropStackRequestAction::read($in);
-			case DestroyStackRequestAction::getTypeId(): return DestroyStackRequestAction::read($in);
-			case CraftingConsumeInputStackRequestAction::getTypeId(): return CraftingConsumeInputStackRequestAction::read($in);
-			case CraftingMarkSecondaryResultStackRequestAction::getTypeId(): return CraftingMarkSecondaryResultStackRequestAction::read($in);
-			case PlaceIntoBundleStackRequestAction::getTypeId(): return PlaceIntoBundleStackRequestAction::read($in);
-			case TakeFromBundleStackRequestAction::getTypeId(): return TakeFromBundleStackRequestAction::read($in);
-			case LabTableCombineStackRequestAction::getTypeId(): return LabTableCombineStackRequestAction::read($in);
-			case BeaconPaymentStackRequestAction::getTypeId(): return BeaconPaymentStackRequestAction::read($in);
-			case MineBlockStackRequestAction::getTypeId(): return MineBlockStackRequestAction::read($in);
-			case CraftRecipeStackRequestAction::getTypeId(): return CraftRecipeStackRequestAction::read($in);
-			case CraftRecipeAutoStackRequestAction::getTypeId(): return CraftRecipeAutoStackRequestAction::read($in);
-			case CreativeCreateStackRequestAction::getTypeId(): return CreativeCreateStackRequestAction::read($in);
-			case CraftRecipeOptionalStackRequestAction::getTypeId(): return CraftRecipeOptionalStackRequestAction::read($in);
-			case GrindstoneStackRequestAction::getTypeId(): return GrindstoneStackRequestAction::read($in);
-			case LoomStackRequestAction::getTypeId(): return LoomStackRequestAction::read($in);
-			case DeprecatedCraftingNonImplementedStackRequestAction::getTypeId(): return DeprecatedCraftingNonImplementedStackRequestAction::read($in);
-			case DeprecatedCraftingResultsStackRequestAction::getTypeId(): return DeprecatedCraftingResultsStackRequestAction::read($in);
+			case TakeStackRequestAction::getTypeId():
+				return TakeStackRequestAction::read($in);
+			case PlaceStackRequestAction::getTypeId():
+				return PlaceStackRequestAction::read($in);
+			case SwapStackRequestAction::getTypeId():
+				return SwapStackRequestAction::read($in);
+			case DropStackRequestAction::getTypeId():
+				return DropStackRequestAction::read($in);
+			case DestroyStackRequestAction::getTypeId():
+				return DestroyStackRequestAction::read($in);
+			case CraftingConsumeInputStackRequestAction::getTypeId():
+				return CraftingConsumeInputStackRequestAction::read($in);
+			case CraftingMarkSecondaryResultStackRequestAction::getTypeId():
+				return CraftingMarkSecondaryResultStackRequestAction::read($in);
+			case PlaceIntoBundleStackRequestAction::getTypeId():
+				return PlaceIntoBundleStackRequestAction::read($in);
+			case TakeFromBundleStackRequestAction::getTypeId():
+				return TakeFromBundleStackRequestAction::read($in);
+			case LabTableCombineStackRequestAction::getTypeId():
+				return LabTableCombineStackRequestAction::read($in);
+			case BeaconPaymentStackRequestAction::getTypeId():
+				return BeaconPaymentStackRequestAction::read($in);
+			case MineBlockStackRequestAction::getTypeId():
+				return MineBlockStackRequestAction::read($in);
+			case CraftRecipeStackRequestAction::getTypeId():
+				return CraftRecipeStackRequestAction::read($in);
+			case CraftRecipeAutoStackRequestAction::getTypeId():
+				return CraftRecipeAutoStackRequestAction::read($in);
+			case CreativeCreateStackRequestAction::getTypeId():
+				return CreativeCreateStackRequestAction::read($in);
+			case CraftRecipeOptionalStackRequestAction::getTypeId():
+				return CraftRecipeOptionalStackRequestAction::read($in);
+			case GrindstoneStackRequestAction::getTypeId():
+				return GrindstoneStackRequestAction::read($in);
+			case LoomStackRequestAction::getTypeId():
+				return LoomStackRequestAction::read($in);
+			case DeprecatedCraftingNonImplementedStackRequestAction::getTypeId():
+				return DeprecatedCraftingNonImplementedStackRequestAction::read($in);
+			case DeprecatedCraftingResultsStackRequestAction::getTypeId():
+				return DeprecatedCraftingResultsStackRequestAction::read($in);
 		}
-		throw new \UnexpectedValueException("Unhandled item stack request action type $typeId");
+		throw new UnexpectedValueException("Unhandled item stack request action type $typeId");
 	}
 
 	public static function read(NetworkBinaryStream $in) : self{

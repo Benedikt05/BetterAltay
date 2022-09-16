@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\updater;
 
+use InvalidArgumentException;
+use LogLevel;
 use pocketmine\event\server\UpdateNotifyEvent;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -34,6 +36,9 @@ use function str_repeat;
 use function strlen;
 use function strtolower;
 use function ucfirst;
+use const pocketmine\BASE_VERSION;
+use const pocketmine\BUILD_NUMBER;
+use const pocketmine\IS_DEVELOPMENT_BUILD;
 
 class AutoUpdater{
 
@@ -54,14 +59,15 @@ class AutoUpdater{
 		$this->endpoint = "http://$endpoint/api/";
 
 		//if((bool) $server->getProperty("auto-updater.enabled", true)){
-			//$this->doCheck();
+		//$this->doCheck();
 		//}
 	}
 
 	/**
 	 * Callback used at the end of the update checking task
 	 *
-	 * @param mixed[] $updateInfo
+	 * @param mixed[]                      $updateInfo
+	 *
 	 * @phpstan-param array<string, mixed> $updateInfo
 	 *
 	 * @return void
@@ -75,9 +81,9 @@ class AutoUpdater{
 				$this->showConsoleUpdate();
 			}
 		}else{
-			if(!\pocketmine\IS_DEVELOPMENT_BUILD and $this->getChannel() !== "stable"){
+			if(!IS_DEVELOPMENT_BUILD and $this->getChannel() !== "stable"){
 				$this->showChannelSuggestionStable();
-			}elseif(\pocketmine\IS_DEVELOPMENT_BUILD and $this->getChannel() === "stable"){
+			}elseif(IS_DEVELOPMENT_BUILD and $this->getChannel() === "stable"){
 				$this->showChannelSuggestionBeta();
 			}
 		}
@@ -104,7 +110,7 @@ class AutoUpdater{
 		}
 		$messages[] = "Download: " . $this->updateInfo["download_url"];
 
-		$this->printConsoleMessage($messages, \LogLevel::WARNING);
+		$this->printConsoleMessage($messages, LogLevel::WARNING);
 	}
 
 	/**
@@ -142,7 +148,7 @@ class AutoUpdater{
 	 *
 	 * @return void
 	 */
-	protected function printConsoleMessage(array $lines, string $logLevel = \LogLevel::INFO){
+	protected function printConsoleMessage(array $lines, string $logLevel = LogLevel::INFO){
 		$logger = $this->server->getLogger();
 
 		$title = $this->server->getName() . ' Auto Updater';
@@ -181,10 +187,10 @@ class AutoUpdater{
 		if($this->updateInfo === null){
 			return;
 		}
-		$currentVersion = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
+		$currentVersion = new VersionString(BASE_VERSION, IS_DEVELOPMENT_BUILD, BUILD_NUMBER);
 		try{
 			$newVersion = new VersionString($this->updateInfo["base_version"], $this->updateInfo["is_dev"], $this->updateInfo["build"]);
-		}catch(\InvalidArgumentException $e){
+		}catch(InvalidArgumentException $e){
 			//Invalid version returned from API, assume there's no update
 			$this->server->getLogger()->debug("[AutoUpdater] Assuming no update because \"" . $e->getMessage() . "\"");
 			return;

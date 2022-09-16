@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Noise classes used in Levels
  */
+
 namespace pocketmine\level\generator;
 
 use pocketmine\level\ChunkManager;
@@ -55,10 +56,11 @@ abstract class Generator{
 	protected $random;
 
 	/**
+	 * @param mixed[]                      $settings
+	 *
+	 * @phpstan-param array<string, mixed> $settings
 	 * @throws InvalidGeneratorOptionsException
 	 *
-	 * @param mixed[] $settings
-	 * @phpstan-param array<string, mixed> $settings
 	 */
 	abstract public function __construct(array $settings = []);
 

@@ -30,6 +30,9 @@ use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Config;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use function dirname;
 use function fclose;
 use function file_exists;
@@ -153,7 +156,7 @@ abstract class PluginBase implements Plugin{
 	}
 
 	/**
-	 * @param string[]      $args
+	 * @param string[] $args
 	 */
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		return false;
@@ -210,12 +213,12 @@ abstract class PluginBase implements Plugin{
 	/**
 	 * Returns all the resources packaged with the plugin in the form ["path/in/resources" => SplFileInfo]
 	 *
-	 * @return \SplFileInfo[]
+	 * @return SplFileInfo[]
 	 */
 	public function getResources() : array{
 		$resources = [];
 		if(is_dir($this->file . "resources/")){
-			foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->file . "resources/")) as $resource){
+			foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->file . "resources/")) as $resource){
 				if($resource->isFile()){
 					$path = str_replace(DIRECTORY_SEPARATOR, "/", substr((string) $resource, strlen($this->file . "resources/")));
 					$resources[$path] = $resource;

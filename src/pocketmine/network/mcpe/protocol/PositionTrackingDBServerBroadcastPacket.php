@@ -28,8 +28,10 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkSession;
+use UnexpectedValueException;
 
-class PositionTrackingDBServerBroadcastPacket extends DataPacket/* implements ClientboundPacket*/{
+class PositionTrackingDBServerBroadcastPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::POSITION_TRACKING_D_B_SERVER_BROADCAST_PACKET;
 
 	public const ACTION_UPDATE = 0;
@@ -64,7 +66,7 @@ class PositionTrackingDBServerBroadcastPacket extends DataPacket/* implements Cl
 		$nbt = (new NetworkLittleEndianNBTStream())->read($this->getBuffer(), false, $offset);
 		$this->setOffset($offset);
 		if(!($nbt instanceof CompoundTag)){
-			throw new \UnexpectedValueException("Expected TAG_Compound");
+			throw new UnexpectedValueException("Expected TAG_Compound");
 		}
 		$this->nbt = $nbt;
 	}

@@ -45,6 +45,8 @@ use function strtolower;
 use function substr;
 use function trim;
 use const AF_INET;
+use const CURLINFO_HEADER_SIZE;
+use const CURLINFO_HTTP_CODE;
 use const CURLOPT_AUTOREFERER;
 use const CURLOPT_CONNECTTIMEOUT_MS;
 use const CURLOPT_FOLLOWLOCATION;
@@ -58,8 +60,8 @@ use const CURLOPT_RETURNTRANSFER;
 use const CURLOPT_SSL_VERIFYHOST;
 use const CURLOPT_SSL_VERIFYPEER;
 use const CURLOPT_TIMEOUT_MS;
-use const CURLINFO_HEADER_SIZE;
-use const CURLINFO_HTTP_CODE;
+use const pocketmine\NAME;
+use const pocketmine\VERSION;
 use const SOCK_DGRAM;
 use const SOL_UDP;
 
@@ -139,11 +141,12 @@ class Internet{
 	 * GETs an URL using cURL
 	 * NOTE: This is a blocking operation and can take a significant amount of time. It is inadvisable to use this method on the main thread.
 	 *
-	 * @param int      $timeout default 10
-	 * @param string[] $extraHeaders
-	 * @param string   $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
-	 * @param string[] $headers reference parameter
-	 * @param int      $httpCode reference parameter
+	 * @param int                           $timeout default 10
+	 * @param string[]                      $extraHeaders
+	 * @param string                        $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
+	 * @param string[]                      $headers reference parameter
+	 * @param int                           $httpCode reference parameter
+	 *
 	 * @phpstan-param list<string>          $extraHeaders
 	 * @phpstan-param array<string, string> $headers
 	 *
@@ -151,7 +154,7 @@ class Internet{
 	 */
 	public static function getURL(string $page, int $timeout = 10, array $extraHeaders = [], &$err = null, &$headers = null, &$httpCode = null){
 		try{
-			list($ret, $headers, $httpCode) = self::simpleCurl($page, $timeout, $extraHeaders);
+			[$ret, $headers, $httpCode] = self::simpleCurl($page, $timeout, $extraHeaders);
 			return $ret;
 		}catch(InternetException $ex){
 			$err = $ex->getMessage();
@@ -163,11 +166,12 @@ class Internet{
 	 * POSTs data to an URL
 	 * NOTE: This is a blocking operation and can take a significant amount of time. It is inadvisable to use this method on the main thread.
 	 *
-	 * @param string[]|string $args
-	 * @param string[]        $extraHeaders
-	 * @param string          $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
-	 * @param string[]        $headers reference parameter
-	 * @param int             $httpCode reference parameter
+	 * @param string[]|string                      $args
+	 * @param string[]                             $extraHeaders
+	 * @param string                               $err reference parameter, will be set to the output of curl_error(). Use this to retrieve errors that occured during the operation.
+	 * @param string[]                             $headers reference parameter
+	 * @param int                                  $httpCode reference parameter
+	 *
 	 * @phpstan-param string|array<string, string> $args
 	 * @phpstan-param list<string>                 $extraHeaders
 	 * @phpstan-param array<string, string>        $headers
@@ -176,7 +180,7 @@ class Internet{
 	 */
 	public static function postURL(string $page, $args, int $timeout = 10, array $extraHeaders = [], &$err = null, &$headers = null, &$httpCode = null){
 		try{
-			list($ret, $headers, $httpCode) = self::simpleCurl($page, $timeout, $extraHeaders, [
+			[$ret, $headers, $httpCode] = self::simpleCurl($page, $timeout, $extraHeaders, [
 				CURLOPT_POST => 1,
 				CURLOPT_POSTFIELDS => $args
 			]);
@@ -191,12 +195,13 @@ class Internet{
 	 * General cURL shorthand function.
 	 * NOTE: This is a blocking operation and can take a significant amount of time. It is inadvisable to use this method on the main thread.
 	 *
-	 * @param float|int     $timeout      The maximum connect timeout and timeout in seconds, correct to ms.
-	 * @param string[]      $extraHeaders extra headers to send as a plain string array
-	 * @param array         $extraOpts    extra CURLOPT_* to set as an [opt => value] map
-	 * @param callable|null $onSuccess    function to be called if there is no error. Accepts a resource argument as the cURL handle.
-	 * @phpstan-param array<int, mixed>                $extraOpts
-	 * @phpstan-param list<string>                     $extraHeaders
+	 * @param float|int                 $timeout The maximum connect timeout and timeout in seconds, correct to ms.
+	 * @param string[]                  $extraHeaders extra headers to send as a plain string array
+	 * @param array                     $extraOpts extra CURLOPT_* to set as an [opt => value] map
+	 * @param callable|null             $onSuccess function to be called if there is no error. Accepts a resource argument as the cURL handle.
+	 *
+	 * @phpstan-param array<int, mixed> $extraOpts
+	 * @phpstan-param list<string>      $extraHeaders
 	 * @phpstan-param (callable(\CurlHandle) : void)|null $onSuccess
 	 *
 	 * @return array a plain array of three [result body : string, headers : string[][], HTTP response code : int]. Headers are grouped by requests with strtolower(header name) as keys and header value as values
@@ -215,18 +220,18 @@ class Internet{
 		}
 
 		curl_setopt_array($ch, $extraOpts + [
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_FORBID_REUSE => 1,
-			CURLOPT_FRESH_CONNECT => 1,
-			CURLOPT_AUTOREFERER => true,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_CONNECTTIMEOUT_MS => (int) ($timeout * 1000),
-			CURLOPT_TIMEOUT_MS => (int) ($timeout * 1000),
-			CURLOPT_HTTPHEADER => array_merge(["User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0 " . \pocketmine\NAME . "/" . \pocketmine\VERSION], $extraHeaders),
-			CURLOPT_HEADER => true
-		]);
+				CURLOPT_SSL_VERIFYPEER => false,
+				CURLOPT_SSL_VERIFYHOST => 2,
+				CURLOPT_FORBID_REUSE => 1,
+				CURLOPT_FRESH_CONNECT => 1,
+				CURLOPT_AUTOREFERER => true,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_CONNECTTIMEOUT_MS => (int) ($timeout * 1000),
+				CURLOPT_TIMEOUT_MS => (int) ($timeout * 1000),
+				CURLOPT_HTTPHEADER => array_merge(["User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0 " . NAME . "/" . VERSION], $extraHeaders),
+				CURLOPT_HEADER => true
+			]);
 		try{
 			$raw = curl_exec($ch);
 			if($raw === false){

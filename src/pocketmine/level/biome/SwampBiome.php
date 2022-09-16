@@ -30,9 +30,9 @@ class SwampBiome extends GrassyBiome{
 	public function __construct(){
 		parent::__construct();
 
-        $mushrooms = new Mushroom();
-        $mushrooms->setBaseAmount(1);
-        $this->addPopulator($mushrooms);
+		$mushrooms = new Mushroom();
+		$mushrooms->setBaseAmount(1);
+		$this->addPopulator($mushrooms);
 
 		$this->setElevation(62, 63);
 

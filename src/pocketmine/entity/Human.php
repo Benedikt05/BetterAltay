@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use InvalidArgumentException;
+use InvalidStateException;
 use pocketmine\entity\projectile\ProjectileSource;
 use pocketmine\entity\utils\ExperienceUtils;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -64,6 +66,7 @@ use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
+use ReflectionClass;
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -121,7 +124,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		if($this->skin === null){
 			$skinTag = $nbt->getCompoundTag("Skin");
 			if($skinTag === null){
-				throw new \InvalidStateException((new \ReflectionClass($this))->getShortName() . " must have a valid skin set");
+				throw new InvalidStateException((new ReflectionClass($this))->getShortName() . " must have a valid skin set");
 			}
 			$this->skin = self::deserializeSkinNBT($skinTag); //this throws if the skin is invalid
 		}
@@ -130,7 +133,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	protected static function deserializeSkinNBT(CompoundTag $skinTag) : Skin{
 		if($skinTag->hasTag("SkinImageHeight", IntTag::class)){
@@ -172,7 +175,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 			"",
 			$skinTag->hasTag("SkinResourcePatch", ByteArrayTag::class) ? $skinTag->getByteArray("SkinResourcePatch") : $skinTag->getString("GeometryName", ""),
 			$skinTag->getByteArray("GeometryData", "")
-			))->setSkinImage($skinImage)
+		))->setSkinImage($skinImage)
 			->setAnimations($animations)
 			->setAnimationData($skinTag->getByteArray("SkinAnimationData", ""))
 			->setCape($cape)
@@ -247,7 +250,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	 * WARNING: This method does not check if full and may throw an exception if out of bounds.
 	 * Use {@link Human::addFood()} for this purpose
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function setFood(float $new) : void{
 		$attr = $this->attributeMap->getAttribute(Attribute::HUNGER);
@@ -289,7 +292,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	 * WARNING: This method does not check if saturated and may throw an exception if out of bounds.
 	 * Use {@link Human::addSaturation()} for this purpose
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function setSaturation(float $saturation) : void{
 		$this->attributeMap->getAttribute(Attribute::SATURATION)->setValue($saturation);
@@ -536,7 +539,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	 */
 	public function setLifetimeTotalXp(int $amount) : void{
 		if($amount < 0 || $amount > INT32_MAX){
-			throw new \InvalidArgumentException("XP must be greater than 0 and less than " . INT32_MAX);
+			throw new InvalidArgumentException("XP must be greater than 0 and less than " . INT32_MAX);
 		}
 
 		$this->totalXp = $amount;
@@ -963,7 +966,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 
 	public function setNewProgress(?float $newProgress) : void{
 		if($newProgress < 0.0 || $newProgress > 1.0){
-			throw new \InvalidArgumentException("XP progress must be in range 0-1");
+			throw new InvalidArgumentException("XP progress must be in range 0-1");
 		}
 		$this->newProgress = $newProgress;
 	}

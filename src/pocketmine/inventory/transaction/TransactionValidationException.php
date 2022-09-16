@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory\transaction;
 
-class TransactionValidationException extends \RuntimeException{
+use RuntimeException;
+
+class TransactionValidationException extends RuntimeException{
 
 }

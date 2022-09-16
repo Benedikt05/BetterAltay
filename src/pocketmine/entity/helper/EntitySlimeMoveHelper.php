@@ -54,19 +54,19 @@ class EntitySlimeMoveHelper extends EntityMoveHelper{
 		$this->entity->headYaw = $this->entity->yaw;
 		$this->entity->yawOffset = $this->entity->yaw;
 
-		if (!$this->needsUpdate){
+		if(!$this->needsUpdate){
 			$this->entity->setMoveForward(0);
 		}else{
 			$this->needsUpdate = false;
 
-			if ($this->entity->onGround){
+			if($this->entity->onGround){
 				$this->entity->setAIMoveSpeed($s = $this->speedMultiplier * $this->entity->getMovementSpeed());
 				$this->entity->setMoveForward($s);
 
-				if ($this->jumpTimer-- <= 0){
+				if($this->jumpTimer-- <= 0){
 					$this->jumpTimer = $this->entity->getJumpDelay();
 
-					if ($this->speedJump){
+					if($this->speedJump){
 						$this->jumpTimer /= 3;
 					}
 

@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\form;
 
+use InvalidArgumentException;
+
 class CustomFormResponse{
 	/** @var array */
 	private $data;
@@ -57,7 +59,7 @@ class CustomFormResponse{
 
 	private function checkExists(string $name) : void{
 		if(!isset($this->data[$name])){
-			throw new \InvalidArgumentException("Value \"$name\" not found");
+			throw new InvalidArgumentException("Value \"$name\" not found");
 		}
 	}
 }

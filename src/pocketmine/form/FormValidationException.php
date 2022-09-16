@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\form;
 
-class FormValidationException extends \RuntimeException{
+use RuntimeException;
+
+class FormValidationException extends RuntimeException{
 
 }

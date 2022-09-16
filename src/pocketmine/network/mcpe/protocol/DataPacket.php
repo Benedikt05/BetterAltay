@@ -25,10 +25,14 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use Error;
+use OutOfBoundsException;
 use pocketmine\network\mcpe\CachedEncapsulatedPacket;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\Utils;
+use ReflectionClass;
+use UnexpectedValueException;
 use function bin2hex;
 use function get_class;
 use function is_object;
@@ -63,7 +67,7 @@ abstract class DataPacket extends NetworkBinaryStream{
 	}
 
 	public function getName() : string{
-		return (new \ReflectionClass($this))->getShortName();
+		return (new ReflectionClass($this))->getShortName();
 	}
 
 	public function canBeBatched() : bool{
@@ -83,8 +87,8 @@ abstract class DataPacket extends NetworkBinaryStream{
 
 	/**
 	 * @return void
-	 * @throws \OutOfBoundsException
-	 * @throws \UnexpectedValueException
+	 * @throws OutOfBoundsException
+	 * @throws UnexpectedValueException
 	 */
 	public function decode(){
 		$this->offset = 0;
@@ -94,14 +98,14 @@ abstract class DataPacket extends NetworkBinaryStream{
 
 	/**
 	 * @return void
-	 * @throws \OutOfBoundsException
-	 * @throws \UnexpectedValueException
+	 * @throws OutOfBoundsException
+	 * @throws UnexpectedValueException
 	 */
 	protected function decodeHeader(){
 		$header = $this->getUnsignedVarInt();
 		$pid = $header & self::PID_MASK;
 		if($pid !== static::NETWORK_ID){
-			throw new \UnexpectedValueException("Expected " . static::NETWORK_ID . " for packet ID, got $pid");
+			throw new UnexpectedValueException("Expected " . static::NETWORK_ID . " for packet ID, got $pid");
 		}
 		$this->senderSubId = ($header >> self::SENDER_SUBCLIENT_ID_SHIFT) & self::SUBCLIENT_ID_MASK;
 		$this->recipientSubId = ($header >> self::RECIPIENT_SUBCLIENT_ID_SHIFT) & self::SUBCLIENT_ID_MASK;
@@ -111,8 +115,8 @@ abstract class DataPacket extends NetworkBinaryStream{
 	 * Note for plugin developers: If you're adding your own packets, you should perform decoding in here.
 	 *
 	 * @return void
-	 * @throws \OutOfBoundsException
-	 * @throws \UnexpectedValueException
+	 * @throws OutOfBoundsException
+	 * @throws UnexpectedValueException
 	 */
 	protected function decodePayload(){
 
@@ -192,7 +196,7 @@ abstract class DataPacket extends NetworkBinaryStream{
 	 * @return mixed
 	 */
 	public function __get($name){
-		throw new \Error("Undefined property: " . get_class($this) . "::\$" . $name);
+		throw new Error("Undefined property: " . get_class($this) . "::\$" . $name);
 	}
 
 	/**
@@ -202,6 +206,6 @@ abstract class DataPacket extends NetworkBinaryStream{
 	 * @return void
 	 */
 	public function __set($name, $value){
-		throw new \Error("Undefined property: " . get_class($this) . "::\$" . $name);
+		throw new Error("Undefined property: " . get_class($this) . "::\$" . $name);
 	}
 }

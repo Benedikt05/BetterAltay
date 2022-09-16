@@ -38,6 +38,7 @@ use pocketmine\item\Pickaxe;
 use pocketmine\item\Shears;
 use pocketmine\item\Shovel;
 use pocketmine\item\Sword;
+use SplFixedArray;
 use function constant;
 use function defined;
 use function mb_strtoupper;
@@ -116,13 +117,13 @@ class Enchantment{
 	public const SLOT_CROSSBOW = 0x64000;
 
 	/**
-	 * @var \SplFixedArray|Enchantment[]
-	 * @phpstan-var \SplFixedArray<Enchantment>
+	 * @var SplFixedArray|Enchantment[]
+	 * @phpstan-var SplFixedArray<Enchantment>
 	 */
 	protected static $enchantments;
 
 	public static function init() : void{
-		self::$enchantments = new \SplFixedArray(256);
+		self::$enchantments = new SplFixedArray(256);
 
 		self::registerEnchantment(new ProtectionEnchantment(self::PROTECTION, "%enchantment.protect.all", self::RARITY_COMMON, self::SLOT_ARMOR, self::SLOT_NONE, 4, 0.75, null));
 		self::registerEnchantment(new ProtectionEnchantment(self::FIRE_PROTECTION, "%enchantment.protect.fire", self::RARITY_UNCOMMON, self::SLOT_ARMOR, self::SLOT_NONE, 4, 1.25, [

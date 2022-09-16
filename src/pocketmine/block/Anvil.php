@@ -25,8 +25,8 @@ namespace pocketmine\block;
 
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\inventory\AnvilInventory;
-use pocketmine\item\TieredTool;
 use pocketmine\item\Item;
+use pocketmine\item\TieredTool;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;

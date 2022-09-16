@@ -27,7 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class SettingsCommandPacket extends DataPacket/* implements ServerboundPacket*/{
+class SettingsCommandPacket extends DataPacket/* implements ServerboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::SETTINGS_COMMAND_PACKET;
 
 	/** @var string */

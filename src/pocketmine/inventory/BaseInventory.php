@@ -33,6 +33,7 @@ use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\types\ContainerIds;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\Player;
+use SplFixedArray;
 use function array_map;
 use function array_slice;
 use function count;
@@ -49,8 +50,8 @@ abstract class BaseInventory implements Inventory{
 	/** @var string */
 	protected $title;
 	/**
-	 * @var \SplFixedArray|(Item|null)[]
-	 * @phpstan-var \SplFixedArray<Item|null>
+	 * @var SplFixedArray|(Item|null)[]
+	 * @phpstan-var SplFixedArray<Item|null>
 	 */
 	protected $slots;
 	/** @var Player[] */
@@ -62,7 +63,7 @@ abstract class BaseInventory implements Inventory{
 	 * @param Item[] $items
 	 */
 	public function __construct(array $items = [], int $size = null, string $title = null){
-		$this->slots = new \SplFixedArray($size ?? $this->getDefaultSize());
+		$this->slots = new SplFixedArray($size ?? $this->getDefaultSize());
 		$this->title = $title ?? $this->getName();
 
 		$this->setContents($items, false);
@@ -101,6 +102,7 @@ abstract class BaseInventory implements Inventory{
 	 * Checks whether the inventory can store item
 	 *
 	 * @param Item $item
+	 *
 	 * @return bool
 	 */
 	public function canStoreItem(Item $item) : bool{

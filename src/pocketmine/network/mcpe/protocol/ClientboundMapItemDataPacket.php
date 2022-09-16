@@ -25,11 +25,13 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\MapDecoration;
 use pocketmine\network\mcpe\protocol\types\MapTrackedObject;
 use pocketmine\utils\Color;
+use UnexpectedValueException;
 use function count;
 
 class ClientboundMapItemDataPacket extends DataPacket{
@@ -97,7 +99,7 @@ class ClientboundMapItemDataPacket extends DataPacket{
 				}elseif($object->type === MapTrackedObject::TYPE_PLAYER){
 					$object->entityUniqueId = $this->getEntityUniqueId();
 				}else{
-					throw new \UnexpectedValueException("Unknown map object type $object->type");
+					throw new UnexpectedValueException("Unknown map object type $object->type");
 				}
 				$this->trackedEntities[] = $object;
 			}
@@ -121,7 +123,7 @@ class ClientboundMapItemDataPacket extends DataPacket{
 
 			$count = $this->getUnsignedVarInt();
 			if($count !== $this->width * $this->height){
-				throw new \UnexpectedValueException("Expected colour count of " . ($this->height * $this->width) . " (height $this->height * width $this->width), got $count");
+				throw new UnexpectedValueException("Expected colour count of " . ($this->height * $this->width) . " (height $this->height * width $this->width), got $count");
 			}
 
 			for($y = 0; $y < $this->height; ++$y){
@@ -171,7 +173,7 @@ class ClientboundMapItemDataPacket extends DataPacket{
 				}elseif($object->type === MapTrackedObject::TYPE_PLAYER){
 					$this->putEntityUniqueId($object->entityUniqueId);
 				}else{
-					throw new \InvalidArgumentException("Unknown map object type $object->type");
+					throw new InvalidArgumentException("Unknown map object type $object->type");
 				}
 			}
 

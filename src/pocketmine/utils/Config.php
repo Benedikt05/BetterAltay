@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use InvalidStateException;
+use RuntimeException;
 use function array_change_key_case;
 use function array_keys;
 use function array_pop;
@@ -112,10 +114,11 @@ class Config{
 	];
 
 	/**
-	 * @param string  $file    Path of the file to be loaded
-	 * @param int     $type    Config type to load, -1 by default (detect)
-	 * @param mixed[] $default Array with the default values that will be written to the file if it did not exist
-	 * @param null    $correct reference parameter, Sets correct to true if everything has been loaded correctly
+	 * @param string                       $file Path of the file to be loaded
+	 * @param int                          $type Config type to load, -1 by default (detect)
+	 * @param mixed[]                      $default Array with the default values that will be written to the file if it did not exist
+	 * @param null                         $correct reference parameter, Sets correct to true if everything has been loaded correctly
+	 *
 	 * @phpstan-param array<string, mixed> $default
 	 */
 	public function __construct(string $file, int $type = Config::DETECT, array $default = [], &$correct = null){
@@ -148,7 +151,8 @@ class Config{
 	}
 
 	/**
-	 * @param mixed[] $default
+	 * @param mixed[]                      $default
+	 *
 	 * @phpstan-param array<string, mixed> $default
 	 */
 	public function load(string $file, int $type = Config::DETECT, array $default = []) : bool{
@@ -235,7 +239,7 @@ class Config{
 					$content = implode("\r\n", array_keys($this->config));
 					break;
 				default:
-					throw new \InvalidStateException("Config type is unknown, has not been set or not detected");
+					throw new InvalidStateException("Config type is unknown, has not been set or not detected");
 			}
 
 			file_put_contents($this->file, $content);
@@ -259,12 +263,12 @@ class Config{
 	 * Sets the options for the JSON encoding when saving
 	 *
 	 * @return $this
-	 * @throws \RuntimeException if the Config is not in JSON
+	 * @throws RuntimeException if the Config is not in JSON
 	 * @see json_encode
 	 */
 	public function setJsonOptions(int $options) : Config{
 		if($this->type !== Config::JSON){
-			throw new \RuntimeException("Attempt to set JSON options for non-JSON config");
+			throw new RuntimeException("Attempt to set JSON options for non-JSON config");
 		}
 		$this->jsonOptions = $options;
 		$this->changed = true;
@@ -276,12 +280,12 @@ class Config{
 	 * Enables the given option in addition to the currently set JSON options
 	 *
 	 * @return $this
-	 * @throws \RuntimeException if the Config is not in JSON
+	 * @throws RuntimeException if the Config is not in JSON
 	 * @see json_encode
 	 */
 	public function enableJsonOption(int $option) : Config{
 		if($this->type !== Config::JSON){
-			throw new \RuntimeException("Attempt to enable JSON option for non-JSON config");
+			throw new RuntimeException("Attempt to enable JSON option for non-JSON config");
 		}
 		$this->jsonOptions |= $option;
 		$this->changed = true;
@@ -293,12 +297,12 @@ class Config{
 	 * Disables the given option for the JSON encoding when saving
 	 *
 	 * @return $this
-	 * @throws \RuntimeException if the Config is not in JSON
+	 * @throws RuntimeException if the Config is not in JSON
 	 * @see json_encode
 	 */
 	public function disableJsonOption(int $option) : Config{
 		if($this->type !== Config::JSON){
-			throw new \RuntimeException("Attempt to disable JSON option for non-JSON config");
+			throw new RuntimeException("Attempt to disable JSON option for non-JSON config");
 		}
 		$this->jsonOptions &= ~$option;
 		$this->changed = true;
@@ -309,12 +313,12 @@ class Config{
 	/**
 	 * Returns the options for the JSON encoding when saving
 	 *
-	 * @throws \RuntimeException if the Config is not in JSON
+	 * @throws RuntimeException if the Config is not in JSON
 	 * @see json_encode
 	 */
 	public function getJsonOptions() : int{
 		if($this->type !== Config::JSON){
-			throw new \RuntimeException("Attempt to get JSON options for non-JSON config");
+			throw new RuntimeException("Attempt to get JSON options for non-JSON config");
 		}
 		return $this->jsonOptions;
 	}
@@ -462,7 +466,8 @@ class Config{
 	}
 
 	/**
-	 * @param mixed[] $v
+	 * @param mixed[]                      $v
+	 *
 	 * @phpstan-param array<string, mixed> $v
 	 *
 	 * @return void
@@ -505,7 +510,8 @@ class Config{
 	}
 
 	/**
-	 * @param mixed[] $defaults
+	 * @param mixed[]                      $defaults
+	 *
 	 * @phpstan-param array<string, mixed> $defaults
 	 *
 	 * @return void
@@ -515,8 +521,9 @@ class Config{
 	}
 
 	/**
-	 * @param mixed[] $default
-	 * @param mixed[] $data reference parameter
+	 * @param mixed[]                      $default
+	 * @param mixed[]                      $data reference parameter
+	 *
 	 * @phpstan-param array<string, mixed> $default
 	 * @phpstan-param array<string, mixed> $data
 	 */

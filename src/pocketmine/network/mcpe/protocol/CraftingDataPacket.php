@@ -36,11 +36,14 @@ use pocketmine\network\mcpe\protocol\types\MaterialReducerRecipe;
 use pocketmine\network\mcpe\protocol\types\MaterialReducerRecipeOutput;
 use pocketmine\network\mcpe\protocol\types\PotionContainerChangeRecipe;
 use pocketmine\network\mcpe\protocol\types\PotionTypeRecipe;
-#ifndef COMPILE
 use pocketmine\utils\Binary;
-#endif
+use UnexpectedValueException;
 use function count;
 use function str_repeat;
+
+#ifndef COMPILE
+
+#endif
 
 class CraftingDataPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
@@ -147,7 +150,7 @@ class CraftingDataPacket extends DataPacket{
 					$entry["net_id"] = $this->getUnsignedVarInt();
 					break;
 				default:
-					throw new \UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
+					throw new UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
 			}
 			$this->decodedEntries[] = $entry;
 		}
@@ -166,11 +169,11 @@ class CraftingDataPacket extends DataPacket{
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			//TODO: we discard inbound ID here, not safe because netID on its own might map to internalID+internalMeta for us
 			$inputIdNet = $this->getVarInt();
-			[$input, ] = ItemTranslator::getInstance()->fromNetworkId($inputIdNet, 0);
+			[$input,] = ItemTranslator::getInstance()->fromNetworkId($inputIdNet, 0);
 			$ingredientIdNet = $this->getVarInt();
-			[$ingredient, ] = ItemTranslator::getInstance()->fromNetworkId($ingredientIdNet, 0);
+			[$ingredient,] = ItemTranslator::getInstance()->fromNetworkId($ingredientIdNet, 0);
 			$outputIdNet = $this->getVarInt();
-			[$output, ] = ItemTranslator::getInstance()->fromNetworkId($outputIdNet, 0);
+			[$output,] = ItemTranslator::getInstance()->fromNetworkId($outputIdNet, 0);
 			$this->potionContainerRecipes[] = new PotionContainerChangeRecipe($input, $ingredient, $output);
 		}
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
@@ -188,7 +191,7 @@ class CraftingDataPacket extends DataPacket{
 	}
 
 	/**
-	 * @param object              $entry
+	 * @param object $entry
 	 */
 	private static function writeEntry($entry, NetworkBinaryStream $stream, int $pos) : int{
 		if($entry instanceof ShapelessRecipe){
@@ -252,7 +255,7 @@ class CraftingDataPacket extends DataPacket{
 	private static function writeFurnaceRecipe(FurnaceRecipe $recipe, NetworkBinaryStream $stream) : int{
 		$input = $recipe->getInput();
 		if($input->hasAnyDamageValue()){
-			[$netId, ] = ItemTranslator::getInstance()->toNetworkId($input->getId(), 0);
+			[$netId,] = ItemTranslator::getInstance()->toNetworkId($input->getId(), 0);
 			$netData = 0x7fff;
 		}else{
 			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($input->getId(), $input->getDamage());

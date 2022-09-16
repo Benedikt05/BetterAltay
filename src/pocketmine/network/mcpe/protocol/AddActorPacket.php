@@ -30,6 +30,7 @@ use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use UnexpectedValueException;
 use function count;
 
 class AddActorPacket extends DataPacket{
@@ -155,9 +156,9 @@ class AddActorPacket extends DataPacket{
 		EntityIds::PIGLIN => "minecraft:piglin",
 		EntityIds::HOGLIN => "minecraft:hoglin",
 		EntityIds::ZOGLIN => "minecraft:zoglin",
-		
+
 	];
-	
+
 	/** @var int|null */
 	public $entityUniqueId = null; //TODO
 	/** @var int */
@@ -211,7 +212,7 @@ class AddActorPacket extends DataPacket{
 				$attr->setValue($current);
 				$this->attributes[] = $attr;
 			}else{
-				throw new \UnexpectedValueException("Unknown attribute type \"$name\"");
+				throw new UnexpectedValueException("Unknown attribute type \"$name\"");
 			}
 		}
 

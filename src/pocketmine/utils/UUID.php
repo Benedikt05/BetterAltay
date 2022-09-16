@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+use InvalidArgumentException;
 use function bin2hex;
 use function getmypid;
 use function getmyuid;
@@ -64,7 +65,7 @@ class UUID{
 		//TODO: should we be stricter about the notation (8-4-4-4-12)?
 		$binary = @hex2bin(str_replace("-", "", trim($uuid)));
 		if($binary === false){
-			throw new \InvalidArgumentException("Invalid hex string UUID representation");
+			throw new InvalidArgumentException("Invalid hex string UUID representation");
 		}
 		return self::fromBinary($binary, $version);
 	}
@@ -72,11 +73,11 @@ class UUID{
 	/**
 	 * Creates an UUID from a binary representation
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public static function fromBinary(string $uuid, int $version = null) : UUID{
 		if(strlen($uuid) !== 16){
-			throw new \InvalidArgumentException("Must have exactly 16 bytes");
+			throw new InvalidArgumentException("Must have exactly 16 bytes");
 		}
 
 		return new UUID(Binary::readInt(substr($uuid, 0, 4)), Binary::readInt(substr($uuid, 4, 4)), Binary::readInt(substr($uuid, 8, 4)), Binary::readInt(substr($uuid, 12, 4)), $version);
@@ -112,11 +113,11 @@ class UUID{
 
 	/**
 	 * @return int
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function getPart(int $partNumber){
 		if($partNumber < 0 or $partNumber > 3){
-			throw new \InvalidArgumentException("Invalid UUID part index $partNumber");
+			throw new InvalidArgumentException("Invalid UUID part index $partNumber");
 		}
 		return $this->parts[$partNumber];
 	}

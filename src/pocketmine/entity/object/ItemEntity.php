@@ -35,6 +35,7 @@ use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\TakeItemActorPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\Player;
+use UnexpectedValueException;
 use function get_class;
 
 class ItemEntity extends Entity{
@@ -74,12 +75,12 @@ class ItemEntity extends Entity{
 
 		$itemTag = $this->namedtag->getCompoundTag("Item");
 		if($itemTag === null){
-			throw new \UnexpectedValueException("Invalid " . get_class($this) . " entity: expected \"Item\" NBT tag not found");
+			throw new UnexpectedValueException("Invalid " . get_class($this) . " entity: expected \"Item\" NBT tag not found");
 		}
 
 		$this->item = Item::nbtDeserialize($itemTag);
 		if($this->item->isNull()){
-			throw new \UnexpectedValueException("Item for " . get_class($this) . " is invalid");
+			throw new UnexpectedValueException("Item for " . get_class($this) . " is invalid");
 		}
 
 		(new ItemSpawnEvent($this))->call();

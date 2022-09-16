@@ -27,7 +27,8 @@ final class GrindstoneStackRequestAction extends ItemStackRequestAction{
 	public function __construct(
 		private int $recipeId,
 		private int $repairCost
-	){}
+	){
+	}
 
 	public function getRecipeId() : int{ return $this->recipeId; }
 

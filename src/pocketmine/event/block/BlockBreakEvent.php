@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\event\block;
 
+use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
 use pocketmine\item\Item;
@@ -117,7 +118,7 @@ class BlockBreakEvent extends BlockEvent implements Cancellable{
 	 */
 	public function setXpDropAmount(int $amount) : void{
 		if($amount < 0){
-			throw new \InvalidArgumentException("Amount must be at least zero");
+			throw new InvalidArgumentException("Amount must be at least zero");
 		}
 		$this->xpDrops = $amount;
 	}

@@ -126,14 +126,14 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 					$duration = 180 + $pyramidLevels * 40;
 					$range = (10 + $pyramidLevels * 10);
 					$effectPrim = new EffectInstance($effectPrim, $duration, $pyramidLevels == 4 && $this->primary == $this->secondary ? 1 : 0);
-					
-					$players = array_filter($this->level->getCollidingEntities($this->rangeBox->expandedCopy($range, $range, $range)), function (Entity $player) : bool{
+
+					$players = array_filter($this->level->getCollidingEntities($this->rangeBox->expandedCopy($range, $range, $range)), function(Entity $player) : bool{
 						return $player instanceof Player and $player->spawned;
 					});
 					/** @var Player $player */
 					foreach($players as $player){
 						$player->addEffect($effectPrim);
-						
+
 						if($pyramidLevels == 4 && $this->primary != $this->secondary){
 							$regen = new EffectInstance(Effect::getEffect(Effect::REGENERATION), $duration);
 							$player->addEffect($regen);

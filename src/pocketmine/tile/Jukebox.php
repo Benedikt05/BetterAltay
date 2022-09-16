@@ -24,13 +24,11 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use pocketmine\item\Record;
 use pocketmine\item\Item;
-use pocketmine\level\particle\{GenericParticle, Particle};
+use pocketmine\item\Record;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, TextPacket};
 use pocketmine\Player;
-use pocketmine\Server;
 
 class Jukebox extends Spawnable{
 
@@ -62,7 +60,7 @@ class Jukebox extends Spawnable{
 						"record", "."
 					], [
 						"", ""
-					], (string)$this->getRecordItem()->getSoundId()))
+					], (string) $this->getRecordItem()->getSoundId()))
 				];
 				$player->sendDataPacket($pk);
 			}

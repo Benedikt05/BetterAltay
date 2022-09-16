@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\lang;
 
+use InvalidArgumentException;
 use function count;
 
 class TranslationContainer extends TextContainer{
@@ -58,7 +59,7 @@ class TranslationContainer extends TextContainer{
 	 */
 	public function setParameter(int $i, string $str){
 		if($i < 0 or $i > count($this->params)){ //Intended, allow to set the last
-			throw new \InvalidArgumentException("Invalid index $i, have " . count($this->params));
+			throw new InvalidArgumentException("Invalid index $i, have " . count($this->params));
 		}
 
 		$this->params[$i] = $str;

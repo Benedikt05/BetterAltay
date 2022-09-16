@@ -23,10 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format\io;
 
+use InvalidArgumentException;
 use pocketmine\level\format\io\leveldb\LevelDB;
 use pocketmine\level\format\io\region\Anvil;
 use pocketmine\level\format\io\region\McRegion;
 use pocketmine\level\format\io\region\PMAnvil;
+use ReflectionClass;
+use ReflectionException;
 use function strtolower;
 use function trim;
 
@@ -48,19 +51,19 @@ abstract class LevelProviderManager{
 	 * @phpstan-param class-string<LevelProvider> $class
 	 *
 	 * @return void
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public static function addProvider(string $class){
 		try{
-			$reflection = new \ReflectionClass($class);
-		}catch(\ReflectionException $e){
-			throw new \InvalidArgumentException("Class $class does not exist");
+			$reflection = new ReflectionClass($class);
+		}catch(ReflectionException $e){
+			throw new InvalidArgumentException("Class $class does not exist");
 		}
 		if(!$reflection->implementsInterface(LevelProvider::class)){
-			throw new \InvalidArgumentException("Class $class does not implement " . LevelProvider::class);
+			throw new InvalidArgumentException("Class $class does not implement " . LevelProvider::class);
 		}
 		if(!$reflection->isInstantiable()){
-			throw new \InvalidArgumentException("Class $class cannot be constructed");
+			throw new InvalidArgumentException("Class $class cannot be constructed");
 		}
 
 		self::$providers[strtolower($class::getProviderName())] = $class;

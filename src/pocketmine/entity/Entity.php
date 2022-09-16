@@ -27,6 +27,9 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use ErrorException;
+use InvalidArgumentException;
+use InvalidStateException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\Lava;
@@ -47,11 +50,11 @@ use pocketmine\entity\object\EnderCrystal;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\entity\object\FireworksRocket;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\object\LeashKnot;
 use pocketmine\entity\object\Painting;
 use pocketmine\entity\object\PaintingMotive;
 use pocketmine\entity\object\PrimedTNT;
-use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\passive\Cat;
 use pocketmine\entity\passive\Chicken;
 use pocketmine\entity\passive\Cow;
@@ -95,9 +98,9 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
+use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
@@ -113,6 +116,7 @@ use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\Random;
 use pocketmine\utils\UUID;
+use ReflectionClass;
 use function abs;
 use function assert;
 use function cos;
@@ -438,8 +442,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * Creates an entity with the specified type, level and NBT, with optional additional arguments to pass to the
 	 * entity's constructor
 	 *
-	 * @param int|string  $type
-	 * @param mixed       ...$args
+	 * @param int|string $type
+	 * @param mixed      ...$args
 	 */
 	public static function createEntity($type, Level $level, CompoundTag $nbt, ...$args) : ?Entity{
 		if(isset(self::$knownEntities[$type])){
@@ -454,16 +458,17 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	/**
 	 * Registers an entity type into the index.
 	 *
-	 * @param string   $className Class that extends Entity
-	 * @param bool     $force Force registration even if the entity does not have a valid network ID
-	 * @param string[] $saveNames An array of save names which this entity might be saved under. Defaults to the short name of the class itself if empty.
+	 * @param string                       $className Class that extends Entity
+	 * @param bool                         $force Force registration even if the entity does not have a valid network ID
+	 * @param string[]                     $saveNames An array of save names which this entity might be saved under. Defaults to the short name of the class itself if empty.
+	 *
 	 * @phpstan-param class-string<Entity> $className
 	 *
 	 * NOTE: The first save name in the $saveNames array will be used when saving the entity to disk. The reflection
 	 * name of the class will be appended to the end and only used if no other save names are specified.
 	 */
 	public static function registerEntity(string $className, bool $force = false, array $saveNames = []) : bool{
-		$class = new \ReflectionClass($className);
+		$class = new ReflectionClass($className);
 		if(is_a($className, Entity::class, true) and !$class->isAbstract()){
 			if($className::NETWORK_ID !== -1){
 				self::$knownEntities[$className::NETWORK_ID] = $className;
@@ -696,7 +701,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 		$this->chunk = $this->level->getChunkAtPosition($this, false);
 		if($this->chunk === null){
-			throw new \InvalidStateException("Cannot create entities in unloaded chunks");
+			throw new InvalidStateException("Cannot create entities in unloaded chunks");
 		}
 
 		$this->motion = new Vector3(0, 0, 0);
@@ -787,7 +792,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public function setScale(float $value) : void{
 		if($value <= 0){
-			throw new \InvalidArgumentException("Scale must be greater than 0");
+			throw new InvalidArgumentException("Scale must be greater than 0");
 		}
 		$multiplier = $value / $this->getScale();
 
@@ -1030,13 +1035,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	/**
 	 * Sets the owner of the entity. Passing null will remove the current owner.
 	 *
-	 * @throws \InvalidArgumentException if the supplied entity is not valid
+	 * @throws InvalidArgumentException if the supplied entity is not valid
 	 */
 	public function setOwningEntity(?Entity $owner) : void{
 		if($owner === null){
 			$this->propertyManager->removeProperty(self::DATA_OWNER_EID);
 		}elseif($owner->closed){
-			throw new \InvalidArgumentException("Supplied owning entity is garbage and cannot be used");
+			throw new InvalidArgumentException("Supplied owning entity is garbage and cannot be used");
 		}else{
 			$this->propertyManager->setLong(self::DATA_OWNER_EID, $owner->getId());
 		}
@@ -1065,13 +1070,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	/**
 	 * Sets the entity's target entity. Passing null will remove the current target.
 	 *
-	 * @throws \InvalidArgumentException if the target entity is not valid
+	 * @throws InvalidArgumentException if the target entity is not valid
 	 */
 	public function setTargetEntity(?Entity $target) : void{
 		if($target === null){
 			$this->propertyManager->removeProperty(self::DATA_TARGET_EID);
 		}elseif($target->closed){
-			throw new \InvalidArgumentException("Supplied target entity is garbage and cannot be used");
+			throw new InvalidArgumentException("Supplied target entity is garbage and cannot be used");
 		}else{
 			$this->propertyManager->setLong(self::DATA_TARGET_EID, $target->getId());
 		}
@@ -1097,7 +1102,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 */
 	public function getSaveId() : string{
 		if(!isset(self::$saveNames[static::class])){
-			throw new \InvalidStateException("Entity " . static::class . " is not registered");
+			throw new InvalidStateException("Entity " . static::class . " is not registered");
 		}
 		return self::$saveNames[static::class];
 	}
@@ -1380,11 +1385,11 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function setFireTicks(int $fireTicks) : void{
 		if($fireTicks < 0 or $fireTicks > 0x7fff){
-			throw new \InvalidArgumentException("Fire ticks must be in range 0 ... " . 0x7fff . ", got $fireTicks");
+			throw new InvalidArgumentException("Fire ticks must be in range 0 ... " . 0x7fff . ", got $fireTicks");
 		}
 		$this->fireTicks = $fireTicks;
 	}
@@ -1756,7 +1761,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	final public function scheduleUpdate() : void{
 		if($this->closed){
-			throw new \InvalidStateException("Cannot schedule update on garbage entity " . get_class($this));
+			throw new InvalidStateException("Cannot schedule update on garbage entity " . get_class($this));
 		}
 		$this->level->updateEntities[$this->id] = $this;
 	}
@@ -1861,10 +1866,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * @param Player[] $targets
-	 * @param int $entityId
-	 * @param int $type
-	 * @param bool $immediate
-	 * @param bool $causedByRider
+	 * @param int      $entityId
+	 * @param int      $type
+	 * @param bool     $immediate
+	 * @param bool     $causedByRider
 	 */
 	public function sendLink(array $targets, int $entityId, int $type = EntityLink::TYPE_RIDER, bool $immediate = false, bool $causedByRider = true) : void{
 		$pk = new SetActorLinkPacket();
@@ -2246,10 +2251,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
+	 * @return Block[]
 	 * @deprecated WARNING: Despite what its name implies, this function DOES NOT return all the blocks around the entity.
 	 * Instead, it returns blocks which have reactions for an entity intersecting with them.
 	 *
-	 * @return Block[]
 	 */
 	public function getBlocksAround() : array{
 		if($this->blocksAround === null){
@@ -2708,8 +2713,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
-	 * @param Player[]|Player $player
-	 * @param mixed[][]       $data Properly formatted entity data, defaults to everything
+	 * @param Player[]|Player                             $player
+	 * @param mixed[][]                                   $data Properly formatted entity data, defaults to everything
+	 *
 	 * @phpstan-param array<int, array{0: int, 1: mixed}> $data
 	 */
 	public function sendData($player, ?array $data = null) : void{
@@ -2820,7 +2826,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function __toString(){
-		return (new \ReflectionClass($this))->getShortName() . "(" . $this->getId() . ")";
+		return (new ReflectionClass($this))->getShortName() . "(" . $this->getId() . ")";
 	}
 
 	/**
@@ -2829,13 +2835,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param string $name
 	 *
 	 * @return mixed
-	 * @throws \ErrorException
+	 * @throws ErrorException
 	 */
 	public function __get($name){
 		if($name === "fireTicks"){
 			return $this->fireTicks;
 		}
-		throw new \ErrorException("Undefined property: " . get_class($this) . "::\$" . $name);
+		throw new ErrorException("Undefined property: " . get_class($this) . "::\$" . $name);
 	}
 
 	/**
@@ -2845,14 +2851,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param mixed  $value
 	 *
 	 * @return void
-	 * @throws \ErrorException
-	 * @throws \InvalidArgumentException
+	 * @throws ErrorException
+	 * @throws InvalidArgumentException
 	 */
 	public function __set($name, $value){
 		if($name === "fireTicks"){
 			$this->setFireTicks($value);
 		}else{
-			throw new \ErrorException("Undefined property: " . get_class($this) . "::\$" . $name);
+			throw new ErrorException("Undefined property: " . get_class($this) . "::\$" . $name);
 		}
 	}
 

@@ -23,9 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\event;
 
+use Exception;
+use InvalidStateException;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\RegisteredListener;
 use pocketmine\utils\Utils;
+use ReflectionClass;
+use ReflectionException;
 use function array_fill_keys;
 use function in_array;
 use function spl_object_hash;
@@ -59,14 +63,14 @@ class HandlerList{
 	 *
 	 * Calling this method also lazily initializes the $classMap inheritance tree of handler lists.
 	 *
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public static function getHandlerListFor(string $event) : ?HandlerList{
 		if(isset(self::$allLists[$event])){
 			return self::$allLists[$event];
 		}
 
-		$class = new \ReflectionClass($event);
+		$class = new ReflectionClass($event);
 		$tags = Utils::parseDocComment((string) $class->getDocComment());
 
 		if($class->isAbstract() && !isset($tags["allowHandle"])){
@@ -106,14 +110,14 @@ class HandlerList{
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function register(RegisteredListener $listener) : void{
 		if(!in_array($listener->getPriority(), EventPriority::ALL, true)){
 			return;
 		}
 		if(isset($this->handlerSlots[$listener->getPriority()][spl_object_hash($listener)])){
-			throw new \InvalidStateException("This listener is already registered to priority {$listener->getPriority()} of event {$this->class}");
+			throw new InvalidStateException("This listener is already registered to priority {$listener->getPriority()} of event {$this->class}");
 		}
 		$this->handlerSlots[$listener->getPriority()][spl_object_hash($listener)] = $listener;
 	}

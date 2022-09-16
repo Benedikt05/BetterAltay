@@ -83,9 +83,9 @@ class Simplex extends Perlin{
 	protected $offsetW;
 
 	/**
-	 * @param int    $octaves
-	 * @param float  $persistence
-	 * @param float  $expansion
+	 * @param int   $octaves
+	 * @param float $persistence
+	 * @param float $expansion
 	 */
 	public function __construct(Random $random, $octaves, $persistence, $expansion = 1){
 		parent::__construct($random, $octaves, $persistence, $expansion);

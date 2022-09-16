@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Binary;
 
@@ -40,7 +41,7 @@ final class SubChunkPositionOffset{
 
 	private static function clampOffset(int $v) : void{
 		if($v < -128 || $v > 127){
-			throw new \InvalidArgumentException("Offsets must be within the range of a byte (-128 ... 127)");
+			throw new InvalidArgumentException("Offsets must be within the range of a byte (-128 ... 127)");
 		}
 	}
 

@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Network-related classes
  */
+
 namespace pocketmine\network;
 
 /**
@@ -35,7 +36,7 @@ interface AdvancedSourceInterface extends SourceInterface{
 	/**
 	 * Prevents packets received from the IP address getting processed for the given timeout.
 	 *
-	 * @param int    $timeout Seconds
+	 * @param int $timeout Seconds
 	 *
 	 * @return void
 	 */

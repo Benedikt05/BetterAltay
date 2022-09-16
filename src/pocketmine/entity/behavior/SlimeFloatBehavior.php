@@ -42,7 +42,7 @@ class SlimeFloatBehavior extends Behavior{
 	}
 
 	public function onTick() : void{
-		if ($this->random->nextFloat() < 0.8){
+		if($this->random->nextFloat() < 0.8){
 			$this->mob->getJumpHelper()->setJumping(true);
 		}
 

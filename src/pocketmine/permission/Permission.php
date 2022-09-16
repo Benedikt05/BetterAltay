@@ -27,6 +27,9 @@ declare(strict_types=1);
 
 namespace pocketmine\permission;
 
+use Exception;
+use InvalidArgumentException;
+use InvalidStateException;
 use function is_array;
 use function is_bool;
 use function strtolower;
@@ -46,7 +49,7 @@ class Permission{
 	/**
 	 * @param bool|string $value
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public static function getByName($value) : string{
 		if(is_bool($value)){
@@ -79,11 +82,12 @@ class Permission{
 				return self::DEFAULT_FALSE;
 		}
 
-		throw new \InvalidArgumentException("Unknown permission default name \"$value\"");
+		throw new InvalidArgumentException("Unknown permission default name \"$value\"");
 	}
 
 	/**
-	 * @param mixed[][] $data
+	 * @param mixed[][]                                   $data
+	 *
 	 * @phpstan-param array<string, array<string, mixed>> $data
 	 *
 	 * @return Permission[]
@@ -98,11 +102,12 @@ class Permission{
 	}
 
 	/**
-	 * @param mixed[]      $data
-	 * @param Permission[] $output reference parameter
+	 * @param mixed[]                      $data
+	 * @param Permission[]                 $output reference parameter
+	 *
 	 * @phpstan-param array<string, mixed> $data
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function loadPermission(string $name, array $data, string $default = self::DEFAULT_OP, array &$output = []) : Permission{
 		$desc = null;
@@ -120,7 +125,7 @@ class Permission{
 					$children[$k] = true;
 				}
 			}else{
-				throw new \InvalidStateException("'children' key is of wrong type");
+				throw new InvalidStateException("'children' key is of wrong type");
 			}
 		}
 
@@ -149,7 +154,8 @@ class Permission{
 	/**
 	 * Creates a new Permission object to be attached to Permissible objects
 	 *
-	 * @param bool[] $children
+	 * @param bool[]                      $children
+	 *
 	 * @phpstan-param array<string, bool> $children
 	 */
 	public function __construct(string $name, string $description = null, string $defaultValue = null, array $children = []){

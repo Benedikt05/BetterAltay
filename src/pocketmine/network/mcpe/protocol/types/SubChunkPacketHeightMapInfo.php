@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Binary;
 use function array_fill;
@@ -31,12 +32,13 @@ use function count;
 class SubChunkPacketHeightMapInfo{
 
 	/**
-	 * @param int[] $heights ZZZZXXXX key bit order
+	 * @param int[]             $heights ZZZZXXXX key bit order
+	 *
 	 * @phpstan-param list<int> $heights
 	 */
 	public function __construct(private array $heights){
 		if(count($heights) !== 256){
-			throw new \InvalidArgumentException("Expected exactly 256 heightmap values");
+			throw new InvalidArgumentException("Expected exactly 256 heightmap values");
 		}
 	}
 

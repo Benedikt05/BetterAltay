@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\utils;
 
+use InvalidArgumentException;
 use pocketmine\math\Math;
 use pocketmine\utils\AssumptionFailedError;
 use function count;
@@ -62,7 +63,7 @@ abstract class ExperienceUtils{
 	 */
 	public static function getLevelFromXp(int $xp) : float{
 		if($xp < 0){
-			throw new \InvalidArgumentException("XP must be at least 0");
+			throw new InvalidArgumentException("XP must be at least 0");
 		}
 		if($xp <= self::getXpToReachLevel(16)){
 			$a = 1;

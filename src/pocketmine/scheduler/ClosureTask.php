@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\scheduler;
 
+use Closure;
 use pocketmine\utils\Utils;
 
 /**
@@ -39,17 +40,18 @@ use pocketmine\utils\Utils;
 class ClosureTask extends Task{
 
 	/**
-	 * @var \Closure
-	 * @phpstan-var \Closure(int) : void
+	 * @var Closure
+	 * @phpstan-var Closure(int) : void
 	 */
 	private $closure;
 
 	/**
-	 * @param \Closure $closure Must accept only ONE parameter, $currentTick
-	 * @phpstan-param \Closure(int) : void $closure
+	 * @param Closure $closure Must accept only ONE parameter, $currentTick
+	 *
+	 * @phpstan-param Closure(int) : void $closure
 	 */
-	public function __construct(\Closure $closure){
-		Utils::validateCallableSignature(function(int $currentTick) : void{}, $closure);
+	public function __construct(Closure $closure){
+		Utils::validateCallableSignature(function(int $currentTick) : void{ }, $closure);
 		$this->closure = $closure;
 	}
 

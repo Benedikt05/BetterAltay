@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator;
 
-class InvalidGeneratorOptionsException extends \UnexpectedValueException{
+use UnexpectedValueException;
+
+class InvalidGeneratorOptionsException extends UnexpectedValueException{
 
 }

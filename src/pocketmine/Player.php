@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine;
 
+use BadMethodCallException;
+use InvalidArgumentException;
+use InvalidStateException;
 use pocketmine\block\Bed;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
@@ -58,6 +61,9 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerEditBookEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
+use pocketmine\event\player\PlayerInteractEntityEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerKickEvent;
@@ -72,23 +78,20 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\player\PlayerToggleSprintEvent;
 use pocketmine\event\player\PlayerToggleSwimEvent;
 use pocketmine\event\player\PlayerTransferEvent;
-use pocketmine\event\player\PlayerInteractEntityEvent;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\form\Form;
 use pocketmine\form\FormValidationException;
 use pocketmine\form\ServerSettingsForm;
 use pocketmine\inventory\CraftingGrid;
+use pocketmine\inventory\Inventory;
+use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\PlayerCursorInventory;
 use pocketmine\inventory\PlayerOffHandInventory;
 use pocketmine\inventory\PlayerUIInventory;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
-use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\inventory\transaction\InventoryTransaction;
-use pocketmine\inventory\Inventory;
-use pocketmine\inventory\InventoryHolder;
+use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
@@ -153,11 +156,11 @@ use pocketmine\network\mcpe\protocol\ResourcePackChunkDataPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
-use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
+use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
+use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\network\mcpe\protocol\SetTitlePacket;
@@ -199,18 +202,17 @@ use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
+use pocketmine\tile\ItemFrame;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
-use pocketmine\tile\ItemFrame;
 use pocketmine\timings\Timings;
 use pocketmine\utils\AssumptionFailedError;
-use pocketmine\utils\BinaryStream;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
+use UnexpectedValueException;
 use function abs;
 use function array_key_exists;
 use function array_merge;
-use function array_values;
 use function assert;
 use function base64_decode;
 use function ceil;
@@ -304,7 +306,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/** @var DataPacket[] */
 	private $batchedPackets = [];
-	
+
 	private ?EncryptionContext $cipher = null;
 
 	/**
@@ -479,9 +481,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/**
 	 * This might disappear in the future. Please use getUniqueId() instead.
+	 * @return int
 	 * @deprecated
 	 *
-	 * @return int
 	 */
 	public function getClientId(){
 		return $this->randomClientId;
@@ -657,7 +659,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	public function setScreenLineHeight(int $height = null){
 		if($height !== null and $height < 1){
-			throw new \InvalidArgumentException("Line height must be at least 1");
+			throw new InvalidArgumentException("Line height must be at least 1");
 		}
 		$this->lineHeight = $height;
 	}
@@ -759,11 +761,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * @param permission\Permission|string $name
 	 *
-	 * @throws \InvalidStateException if the player is closed
+	 * @throws InvalidStateException if the player is closed
 	 */
 	public function hasPermission($name) : bool{
 		if($this->closed){
-			throw new \InvalidStateException("Trying to get permissions of closed player");
+			throw new InvalidStateException("Trying to get permissions of closed player");
 		}
 		return $this->perm->hasPermission($name);
 	}
@@ -955,9 +957,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * Updates the player's last ping measurement.
 	 *
+	 * @return void
 	 * @internal Plugins should not use this method.
 	 *
-	 * @return void
 	 */
 	public function updatePing(int $pingMS){
 		$this->lastPingMeasure = $pingMS;
@@ -1557,10 +1559,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
+	 * @return void
 	 * @internal
 	 * Sends the player's gamemode to the client.
 	 *
-	 * @return void
 	 */
 	public function sendGamemode(){
 		$pk = new SetPlayerGameTypePacket();
@@ -1996,7 +1998,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * Returns whether the player can interact with the specified position. This checks distance and direction.
 	 *
-	 * @param float   $maxDiff defaults to half of the 3D diagonal width of a block
+	 * @param float $maxDiff defaults to half of the 3D diagonal width of a block
 	 */
 	public function canInteract(Vector3 $pos, float $maxDistance, float $maxDiff = M_SQRT3 / 2) : bool{
 		$eyePos = $this->getPosition()->add(0, $this->getEyeHeight(), 0);
@@ -2453,7 +2455,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->experiments = new Experiments([], false);
 		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
-		$pk->serverSoftwareVersion = sprintf("%s %s", \pocketmine\NAME, \pocketmine\VERSION);
+		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
@@ -2646,7 +2648,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				if($action !== null){
 					$actions[] = $action;
 				}
-			}catch(\UnexpectedValueException $e){
+			}catch(UnexpectedValueException $e){
 				$this->server->getLogger()->debug("Unhandled inventory action from " . $this->getName() . ": " . $e->getMessage());
 				$this->sendAllInventories();
 				return false;
@@ -3162,7 +3164,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				$tile = $this->level->getTile($pos);
 				if($tile instanceof ItemFrame and $tile->hasItem()){
-					if (lcg_value() <= $tile->getItemDropChance()){
+					if(lcg_value() <= $tile->getItemDropChance()){
 						$this->level->dropItem($tile->getBlock(), $tile->getItem());
 					}
 					$tile->setItem(null);
@@ -3475,7 +3477,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$compound = $nbt->read($packet->namedtag, false, $_, 512);
 
 			if(!($compound instanceof CompoundTag)){
-				throw new \InvalidArgumentException("Expected " . CompoundTag::class . " in block entity NBT, got " . (is_object($compound) ? get_class($compound) : gettype($compound)));
+				throw new InvalidArgumentException("Expected " . CompoundTag::class . " in block entity NBT, got " . (is_object($compound) ? get_class($compound) : gettype($compound)));
 			}
 			if(!$t->updateCompoundTag($compound, $this)){
 				$t->spawnTo($this);
@@ -3563,11 +3565,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 */
 	private function checkBookText(string $string, string $fieldName, int $softLimit, int $hardLimit, bool &$cancel) : string{
 		if(strlen($string) > $hardLimit){
-			throw new \UnexpectedValueException(sprintf("Book %s must be at most %d bytes, but have %d bytes", $fieldName, $hardLimit, strlen($string)));
+			throw new UnexpectedValueException(sprintf("Book %s must be at most %d bytes, but have %d bytes", $fieldName, $hardLimit, strlen($string)));
 		}
 
 		$result = TextFormat::clean($string, false);
@@ -3705,7 +3707,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		//Basic safety restriction. TODO: improve this
 		if(!$this->loggedIn and !$packet->canBeSentBeforeLogin()){
-			throw new \InvalidArgumentException("Attempted to send " . get_class($packet) . " to " . $this->getName() . " too early");
+			throw new InvalidArgumentException("Attempted to send " . get_class($packet) . " to " . $this->getName() . " too early");
 		}
 
 		$timings = Timings::getSendDataPacketTimings($packet);
@@ -3734,10 +3736,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @internal
 	 */
 	public function getCipher() : ?EncryptionContext{
-        return $this->cipher;
-    }
+		return $this->cipher;
+	}
 
-    /**
+	/**
 	 * @return bool|int
 	 */
 	public function dataPacket(DataPacket $packet, bool $needACK = false){
@@ -3804,14 +3806,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
+	 * @param int $fadeIn Duration in ticks for fade-in. If -1 is given, client-sided defaults will be used.
+	 * @param int $stay Duration in ticks to stay on screen for
+	 * @param int $fadeOut Duration in ticks for fade-out.
+	 *
+	 * @return void
 	 * @deprecated
 	 * @see Player::sendTitle()
 	 *
-	 * @param int    $fadeIn Duration in ticks for fade-in. If -1 is given, client-sided defaults will be used.
-	 * @param int    $stay Duration in ticks to stay on screen for
-	 * @param int    $fadeOut Duration in ticks for fade-out.
-	 *
-	 * @return void
 	 */
 	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1){
 		$this->sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
@@ -3820,9 +3822,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * Adds a title text to the user's screen, with an optional subtitle.
 	 *
-	 * @param int    $fadeIn Duration in ticks for fade-in. If -1 is given, client-sided defaults will be used.
-	 * @param int    $stay Duration in ticks to stay on screen for
-	 * @param int    $fadeOut Duration in ticks for fade-out.
+	 * @param int $fadeIn Duration in ticks for fade-in. If -1 is given, client-sided defaults will be used.
+	 * @param int $stay Duration in ticks to stay on screen for
+	 * @param int $fadeOut Duration in ticks for fade-out.
 	 */
 	public function sendTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1) : void{
 		$this->setTitleDuration($fadeIn, $stay, $fadeOut);
@@ -3833,10 +3835,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see Player::sendSubTitle()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function addSubTitle(string $subtitle){
 		$this->sendSubTitle($subtitle);
@@ -3850,10 +3852,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
+	 * @return void
 	 * @see Player::sendActionBarMessage()
 	 *
-	 * @return void
+	 * @deprecated
 	 */
 	public function addActionBarMessage(string $message){
 		$this->sendActionBarMessage($message);
@@ -4000,7 +4002,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->message = $message;
 		$this->dataPacket($pk);
 	}
-	
+
 	/**
 	 * Sends Toast Notification to player.
 	 *
@@ -4020,7 +4022,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function sendForm(Form $form) : void{
 		$formData = json_encode($form);
 		if($formData === false){
-			throw new \InvalidArgumentException("Failed to encode form JSON: " . json_last_error_msg());
+			throw new InvalidArgumentException("Failed to encode form JSON: " . json_last_error_msg());
 		}
 		$id = $this->formIdCounter++;
 		$pk = new ModalFormRequestPacket();
@@ -4165,19 +4167,19 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function setCanSaveWithChunk(bool $value) : void{
-		throw new \BadMethodCallException("Players can't be saved with chunks");
+		throw new BadMethodCallException("Players can't be saved with chunks");
 	}
 
 	/**
 	 * Handles player data saving
 	 *
-	 * @throws \InvalidStateException if the player is closed
-	 *
 	 * @return void
+	 * @throws InvalidStateException if the player is closed
+	 *
 	 */
 	public function save(){
 		if($this->closed){
-			throw new \InvalidStateException("Tried to save closed player");
+			throw new InvalidStateException("Tried to save closed player");
 		}
 
 		parent::saveNBT();
@@ -4255,9 +4257,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if($this->uiInventory !== null){
 				$this->uiInventory->clearAll();
 			}
-            if($this->offHandInventory !== null){
-                $this->offHandInventory->clearAll();
-            }
+			if($this->offHandInventory !== null){
+				$this->offHandInventory->clearAll();
+			}
 		}
 
 		if(!$ev->getKeepExperience()){
@@ -4443,8 +4445,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @deprecated
 	 * @return PlayerCursorInventory
+	 * @deprecated
 	 */
 	public function getCursorInventory() : PlayerCursorInventory{
 		return $this->cursorInventory;
@@ -4524,11 +4526,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * Opens an inventory window to the player. Returns the ID of the created window, or the existing window ID if the
 	 * player is already viewing the specified inventory.
 	 *
-	 * @param int|null  $forceId Forces a special ID for the window
-	 * @param bool      $isPermanent Prevents the window being removed if true.
+	 * @param int|null $forceId Forces a special ID for the window
+	 * @param bool     $isPermanent Prevents the window being removed if true.
 	 *
-	 * @throws \InvalidArgumentException if a forceID which is already in use is specified
-	 * @throws \InvalidStateException if trying to add a window without forceID when no slots are free
+	 * @throws InvalidArgumentException if a forceID which is already in use is specified
+	 * @throws InvalidStateException if trying to add a window without forceID when no slots are free
 	 */
 	public function addWindow(Inventory $inventory, int $forceId = null, bool $isPermanent = false) : int{
 		if(($id = $this->getWindowId($inventory)) !== ContainerIds::NONE){
@@ -4540,14 +4542,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			do{
 				$cnt = max(ContainerIds::FIRST, ($cnt + 1) % self::RESERVED_WINDOW_ID_RANGE_START);
 				if($cnt === $this->windowCnt){ //wraparound, no free slots
-					throw new \InvalidStateException("No free window IDs found");
+					throw new InvalidStateException("No free window IDs found");
 				}
 			}while(isset($this->windowIndex[$cnt]));
 			$this->windowCnt = $cnt;
 		}else{
 			$cnt = $forceId;
 			if(isset($this->windowIndex[$cnt]) or ($cnt >= self::RESERVED_WINDOW_ID_RANGE_START && $cnt <= self::RESERVED_WINDOW_ID_RANGE_END)){
-				throw new \InvalidArgumentException("Requested force ID $forceId already in use");
+				throw new InvalidArgumentException("Requested force ID $forceId already in use");
 			}
 		}
 
@@ -4568,16 +4570,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/**
 	 * Removes an inventory window from the player.
 	 *
-	 * @param bool      $force Forces removal of permanent windows such as normal inventory, cursor
+	 * @param bool $force Forces removal of permanent windows such as normal inventory, cursor
 	 *
 	 * @return void
-	 * @throws \InvalidArgumentException if trying to remove a fixed inventory window without the `force` parameter as true
+	 * @throws InvalidArgumentException if trying to remove a fixed inventory window without the `force` parameter as true
 	 */
 	public function removeWindow(Inventory $inventory, bool $force = false){
 		$id = $this->windows[$hash = spl_object_hash($inventory)] ?? null;
 
 		if($id !== null and !$force and isset($this->permanentWindows[$id])){
-			throw new \InvalidArgumentException("Cannot remove fixed window $id (" . get_class($inventory) . ") from " . $this->getName());
+			throw new InvalidArgumentException("Cannot remove fixed window $id (" . get_class($inventory) . ") from " . $this->getName());
 		}
 
 		if($id !== null){
@@ -4661,15 +4663,15 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return $this->isConnected();
 	}
 
-	public function getDeviceOS(): ?int{
-	    return $this->deviceOS;
-    }
+	public function getDeviceOS() : ?int{
+		return $this->deviceOS;
+	}
 
-    public function getDeviceModel(): ?string{
-	    return $this->deviceModel;
-    }
+	public function getDeviceModel() : ?string{
+		return $this->deviceModel;
+	}
 
-    public function getDeviceId(): ?string{
-	    return $this->deviceId;
-    }
+	public function getDeviceId() : ?string{
+		return $this->deviceId;
+	}
 }

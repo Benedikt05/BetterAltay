@@ -23,10 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\encryption;
 
+use Closure;
+use OpenSSLAsymmetricKey;
 use pocketmine\network\mcpe\JwtUtils;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\AssumptionFailedError;
+use RuntimeException;
 use function igbinary_serialize;
 use function igbinary_unserialize;
 use function openssl_error_string;
@@ -37,7 +40,7 @@ use function random_bytes;
 
 class PrepareEncryptionTask extends AsyncTask{
 
-	private static ?\OpenSSLAsymmetricKey $SERVER_PRIVATE_KEY = null;
+	private static ?OpenSSLAsymmetricKey $SERVER_PRIVATE_KEY = null;
 
 	/** @var string */
 	private $serverPrivateKey;
@@ -50,13 +53,13 @@ class PrepareEncryptionTask extends AsyncTask{
 	private $clientPub;
 
 	/**
-	 * @phpstan-param \Closure(string $encryptionKey, string $handshakeJwt) : void $onCompletion
+	 * @phpstan-param Closure(string $encryptionKey, string $handshakeJwt) : void $onCompletion
 	 */
-	public function __construct(string $clientPub, \Closure $onCompletion){
+	public function __construct(string $clientPub, Closure $onCompletion){
 		if(self::$SERVER_PRIVATE_KEY === null){
 			$serverPrivateKey = openssl_pkey_new(["ec" => ["curve_name" => "secp384r1"]]);
 			if($serverPrivateKey === false){
-				throw new \RuntimeException("openssl_pkey_new() failed: " . openssl_error_string());
+				throw new RuntimeException("openssl_pkey_new() failed: " . openssl_error_string());
 			}
 			self::$SERVER_PRIVATE_KEY = $serverPrivateKey;
 		}
@@ -84,8 +87,8 @@ class PrepareEncryptionTask extends AsyncTask{
 
 	public function onCompletion(Server $server) : void{
 		/**
-		 * @var \Closure $callback
-		 * @phpstan-var \Closure(string $encryptionKey, string $handshakeJwt) : void $callback
+		 * @var Closure $callback
+		 * @phpstan-var Closure(string $encryptionKey, string $handshakeJwt) : void $callback
 		 */
 		$callback = $this->fetchLocal();
 		if($this->aesKey === null || $this->handshakeJwt === null){

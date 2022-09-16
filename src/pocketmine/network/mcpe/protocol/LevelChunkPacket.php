@@ -27,7 +27,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use function count;
 use const PHP_INT_MAX;
 
-class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/{
+class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
+{
 	public const NETWORK_ID = ProtocolInfo::LEVEL_CHUNK_PACKET;
 
 	/**
@@ -50,6 +51,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/{
 
 	/**
 	 * @generate-create-func
+	 *
 	 * @param int[] $usedBlobHashes
 	 */
 	public static function create(int $chunkX, int $chunkZ, int $subChunkCount, bool $clientSubChunkRequestsEnabled, ?array $usedBlobHashes, string $extraPayload) : self{

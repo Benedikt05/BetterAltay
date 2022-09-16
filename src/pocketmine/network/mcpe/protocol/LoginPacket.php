@@ -29,6 +29,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Utils;
+use RuntimeException;
+use Throwable;
 use function get_class;
 use function json_decode;
 
@@ -86,7 +88,7 @@ class LoginPacket extends DataPacket{
 
 		try{
 			$this->decodeConnectionRequest();
-		}catch(\Throwable $e){
+		}catch(Throwable $e){
 			if($this->protocol === ProtocolInfo::CURRENT_PROTOCOL){
 				throw $e;
 			}
@@ -109,7 +111,7 @@ class LoginPacket extends DataPacket{
 			$webtoken = Utils::decodeJWT($chain);
 			if(isset($webtoken["extraData"])){
 				if($hasExtraData){
-					throw new \RuntimeException("Found 'extraData' multiple times in key chain");
+					throw new RuntimeException("Found 'extraData' multiple times in key chain");
 				}
 				$hasExtraData = true;
 				if(isset($webtoken["extraData"]["displayName"])){

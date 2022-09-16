@@ -24,13 +24,14 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
-use pocketmine\nbt\NBT;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\AssumptionFailedError;
+use RuntimeException;
 use function file_get_contents;
 use function json_decode;
+use const pocketmine\RESOURCE_PATH;
 
 /**
  * @internal
@@ -49,7 +50,7 @@ final class RuntimeBlockMapping{
 	}
 
 	public static function init() : void{
-		$canonicalBlockStatesFile = file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla/canonical_block_states.nbt");
+		$canonicalBlockStatesFile = file_get_contents(RESOURCE_PATH . "vanilla/canonical_block_states.nbt");
 		if($canonicalBlockStatesFile === false){
 			throw new AssumptionFailedError("Missing required resource file");
 		}
@@ -64,11 +65,11 @@ final class RuntimeBlockMapping{
 	}
 
 	private static function setupLegacyMappings() : void{
-		$legacyIdMap = json_decode(file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla/block_id_map.json"), true);
+		$legacyIdMap = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/block_id_map.json"), true);
 
 		/** @var R12ToCurrentBlockMapEntry[] $legacyStateMap */
 		$legacyStateMap = [];
-		$legacyStateMapReader = new NetworkBinaryStream(file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla/r12_to_current_block_map.bin"));
+		$legacyStateMapReader = new NetworkBinaryStream(file_get_contents(RESOURCE_PATH . "vanilla/r12_to_current_block_map.bin"));
 		$nbtReader = new NetworkLittleEndianNBTStream();
 		while(!$legacyStateMapReader->feof()){
 			$id = $legacyStateMapReader->getString();
@@ -78,7 +79,7 @@ final class RuntimeBlockMapping{
 			$state = $nbtReader->read($legacyStateMapReader->getBuffer(), false, $offset);
 			$legacyStateMapReader->setOffset($offset);
 			if(!($state instanceof CompoundTag)){
-				throw new \RuntimeException("Blockstate should be a TAG_Compound");
+				throw new RuntimeException("Blockstate should be a TAG_Compound");
 			}
 			$legacyStateMap[] = new R12ToCurrentBlockMapEntry($id, $meta, $state);
 		}
@@ -93,7 +94,7 @@ final class RuntimeBlockMapping{
 		foreach($legacyStateMap as $pair){
 			$id = $legacyIdMap[$pair->getId()] ?? null;
 			if($id === null){
-				throw new \RuntimeException("No legacy ID matches " . $pair->getId());
+				throw new RuntimeException("No legacy ID matches " . $pair->getId());
 			}
 			$data = $pair->getMeta();
 			if($data > 15){
@@ -106,7 +107,7 @@ final class RuntimeBlockMapping{
 			$mappedState->setName("");
 			$mappedName = $mappedState->getString("name");
 			if(!isset($idToStatesMap[$mappedName])){
-				throw new \RuntimeException("Mapped new state does not appear in network table");
+				throw new RuntimeException("Mapped new state does not appear in network table");
 			}
 			foreach($idToStatesMap[$mappedName] as $k){
 				$networkState = self::$bedrockKnownStates[$k];
@@ -115,7 +116,7 @@ final class RuntimeBlockMapping{
 					continue 2;
 				}
 			}
-			throw new \RuntimeException("Mapped new state does not appear in network table");
+			throw new RuntimeException("Mapped new state does not appear in network table");
 		}
 	}
 

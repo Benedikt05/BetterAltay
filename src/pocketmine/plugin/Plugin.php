@@ -24,12 +24,14 @@ declare(strict_types=1);
 /**
  * Plugin related classes
  */
+
 namespace pocketmine\plugin;
 
 use pocketmine\command\CommandExecutor;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server;
 use pocketmine\utils\Config;
+use SplFileInfo;
 
 /**
  * It is recommended to use PluginBase for the actual plugin
@@ -96,7 +98,7 @@ interface Plugin extends CommandExecutor{
 	/**
 	 * Returns all the resources packaged with the plugin
 	 *
-	 * @return \SplFileInfo[]
+	 * @return SplFileInfo[]
 	 */
 	public function getResources() : array;
 

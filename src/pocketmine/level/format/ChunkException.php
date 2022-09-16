@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format;
 
-class ChunkException extends \RuntimeException{
+use RuntimeException;
+
+class ChunkException extends RuntimeException{
 
 }

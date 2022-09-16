@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace pocketmine\form\element;
 
 use pocketmine\form\FormValidationException;
-
 use function is_bool;
 
 /**

@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator;
 
+use InvalidArgumentException;
 use pocketmine\level\generator\end\End;
 use pocketmine\level\generator\hell\Nether;
 use pocketmine\level\generator\normal\Normal;
-
 use function array_keys;
 use function is_subclass_of;
 use function strtolower;
@@ -52,18 +52,19 @@ final class GeneratorManager{
 	}
 
 	/**
-	 * @param string $class Fully qualified name of class that extends \pocketmine\level\generator\Generator
-	 * @param string $name Alias for this generator type that can be written in configs
-	 * @param bool   $overwrite Whether to force overwriting any existing registered generator with the same name
+	 * @param string                          $class Fully qualified name of class that extends \pocketmine\level\generator\Generator
+	 * @param string                          $name Alias for this generator type that can be written in configs
+	 * @param bool                            $overwrite Whether to force overwriting any existing registered generator with the same name
+	 *
 	 * @phpstan-param class-string<Generator> $class
 	 */
 	public static function addGenerator(string $class, string $name, bool $overwrite = false) : void{
 		if(!is_subclass_of($class, Generator::class)){
-			throw new \InvalidArgumentException("Class $class does not extend " . Generator::class);
+			throw new InvalidArgumentException("Class $class does not extend " . Generator::class);
 		}
 
 		if(!$overwrite and isset(self::$list[$name = strtolower($name)])){
-			throw new \InvalidArgumentException("Alias \"$name\" is already assigned");
+			throw new InvalidArgumentException("Alias \"$name\" is already assigned");
 		}
 
 		self::$list[$name] = $class;
@@ -81,12 +82,12 @@ final class GeneratorManager{
 	/**
 	 * Returns a class name of a registered Generator matching the given name.
 	 *
-	 * @param bool   $throwOnMissing @deprecated this is for backwards compatibility only
+	 * @param bool $throwOnMissing @deprecated this is for backwards compatibility only
 	 *
 	 * @return string Name of class that extends Generator
 	 * @phpstan-return class-string<Generator>
 	 *
-	 * @throws \InvalidArgumentException if the generator type isn't registered
+	 * @throws InvalidArgumentException if the generator type isn't registered
 	 */
 	public static function getGenerator(string $name, bool $throwOnMissing = false){
 		if(isset(self::$list[$name = strtolower($name)])){
@@ -94,7 +95,7 @@ final class GeneratorManager{
 		}
 
 		if($throwOnMissing){
-			throw new \InvalidArgumentException("Alias \"$name\" does not map to any known generator");
+			throw new InvalidArgumentException("Alias \"$name\" does not map to any known generator");
 		}
 		return Normal::class;
 	}
@@ -102,7 +103,8 @@ final class GeneratorManager{
 	/**
 	 * Returns the registered name of the given Generator class.
 	 *
-	 * @param string $class Fully qualified name of class that extends \pocketmine\level\generator\Generator
+	 * @param string                          $class Fully qualified name of class that extends \pocketmine\level\generator\Generator
+	 *
 	 * @phpstan-param class-string<Generator> $class
 	 */
 	public static function getGeneratorName(string $class) : string{

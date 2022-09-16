@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use InvalidArgumentException;
+use LogicException;
 use pocketmine\entity\Human;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Item;
@@ -93,18 +95,18 @@ class PlayerInventory extends BaseInventory{
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	private function throwIfNotHotbarSlot(int $slot) : void{
 		if(!$this->isHotbarSlot($slot)){
-			throw new \InvalidArgumentException("$slot is not a valid hotbar slot index (expected 0 - " . ($this->getHotbarSize() - 1) . ")");
+			throw new InvalidArgumentException("$slot is not a valid hotbar slot index (expected 0 - " . ($this->getHotbarSize() - 1) . ")");
 		}
 	}
 
 	/**
 	 * Returns the item in the specified hotbar slot.
 	 *
-	 * @throws \InvalidArgumentException if the hotbar slot index is out of range
+	 * @throws InvalidArgumentException if the hotbar slot index is out of range
 	 */
 	public function getHotbarSlotItem(int $hotbarSlot) : Item{
 		$this->throwIfNotHotbarSlot($hotbarSlot);
@@ -126,7 +128,7 @@ class PlayerInventory extends BaseInventory{
 	 *                    It should only be false to prevent feedback loops of equipment packets between client and server.
 	 *
 	 * @return void
-	 * @throws \InvalidArgumentException if the hotbar slot is out of range
+	 * @throws InvalidArgumentException if the hotbar slot is out of range
 	 */
 	public function setHeldItemIndex(int $hotbarSlot, bool $send = true){
 		$this->throwIfNotHotbarSlot($hotbarSlot);
@@ -197,7 +199,7 @@ class PlayerInventory extends BaseInventory{
 		//TODO: this mess shouldn't be in here
 		$holder = $this->getHolder();
 		if(!($holder instanceof Player)){
-			throw new \LogicException("Cannot send creative inventory contents to non-player inventory holder");
+			throw new LogicException("Cannot send creative inventory contents to non-player inventory holder");
 		}
 
 		$nextEntryId = 1;

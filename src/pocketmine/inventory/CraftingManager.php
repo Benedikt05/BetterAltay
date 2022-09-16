@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use Closure;
+use Generator;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket;
@@ -36,6 +38,7 @@ use function json_decode;
 use function json_encode;
 use function usort;
 use const DIRECTORY_SEPARATOR;
+use const pocketmine\RESOURCE_PATH;
 
 class CraftingManager{
 	/** @var ShapedRecipe[][] */
@@ -53,12 +56,12 @@ class CraftingManager{
 	}
 
 	public function init() : void{
-		$recipes = json_decode(file_get_contents(\pocketmine\RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
+		$recipes = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
 		if(!is_array($recipes)){
 			throw new AssumptionFailedError("recipes.json root should contain a map of recipe types");
 		}
 
-		$itemDeserializerFunc = \Closure::fromCallable([Item::class, 'jsonDeserialize']);
+		$itemDeserializerFunc = Closure::fromCallable([Item::class, 'jsonDeserialize']);
 
 		foreach($recipes["shapeless"] as $recipe){
 			if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
@@ -84,8 +87,8 @@ class CraftingManager{
 				continue;
 			}
 			$this->registerFurnaceRecipe(new FurnaceRecipe(
-				Item::jsonDeserialize($recipe["output"]),
-				Item::jsonDeserialize($recipe["input"]))
+					Item::jsonDeserialize($recipe["output"]),
+					Item::jsonDeserialize($recipe["input"]))
 			);
 		}
 
@@ -227,7 +230,7 @@ class CraftingManager{
 	}
 
 	/**
-	 * @param Item[]       $outputs
+	 * @param Item[] $outputs
 	 */
 	public function matchRecipe(CraftingGrid $grid, array $outputs) : ?CraftingRecipe{
 		//TODO: try to match special recipes before anything else (first they need to be implemented!)
@@ -256,10 +259,10 @@ class CraftingManager{
 	/**
 	 * @param Item[] $outputs
 	 *
-	 * @return CraftingRecipe[]|\Generator
-	 * @phpstan-return \Generator<int, CraftingRecipe, void, void>
+	 * @return CraftingRecipe[]|Generator
+	 * @phpstan-return Generator<int, CraftingRecipe, void, void>
 	 */
-	public function matchRecipeByOutputs(array $outputs) : \Generator{
+	public function matchRecipeByOutputs(array $outputs) : Generator{
 		//TODO: try to match special recipes before anything else (first they need to be implemented!)
 
 		$outputHash = self::hashOutputs($outputs);

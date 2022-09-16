@@ -29,9 +29,8 @@ use pocketmine\level\Level;
 use pocketmine\maps\renderer\MapRenderer;
 use pocketmine\maps\renderer\VanillaMapRenderer;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\IntArrayTag;
-use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\MapDecoration;
 use pocketmine\network\mcpe\protocol\types\MapTrackedObject;
@@ -78,7 +77,7 @@ class MapData{
 	/**
 	 * MapData constructor.
 	 *
-	 * @param int   $mapId
+	 * @param int                $mapId
 	 * @param MapRenderer[]|null $renderers
 	 */
 	public function __construct(int $mapId, ?array $renderers = null){
@@ -444,7 +443,7 @@ class MapData{
 				$b1 = (int) ($j * 2 + 1);
 			}
 		}
-		
+
 		$this->decorations[$entityIdentifier] = new MapDecoration(
 			$type,
 			$b2,

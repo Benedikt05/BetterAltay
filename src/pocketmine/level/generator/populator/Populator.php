@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * All the Object populator classes
  */
+
 namespace pocketmine\level\generator\populator;
 
 use pocketmine\level\ChunkManager;

@@ -28,6 +28,7 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\Player;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\tile\Tile;
+use ReflectionClass;
 use function dechex;
 
 abstract class Timings{
@@ -177,7 +178,7 @@ abstract class Timings{
 	}
 
 	public static function getEntityTimings(Entity $entity) : TimingsHandler{
-		$entityType = (new \ReflectionClass($entity))->getShortName();
+		$entityType = (new ReflectionClass($entity))->getShortName();
 		if(!isset(self::$entityTypeTimingMap[$entityType])){
 			if($entity instanceof Player){
 				self::$entityTypeTimingMap[$entityType] = new TimingsHandler("** tickEntity - EntityPlayer", self::$tickEntityTimer);
@@ -190,7 +191,7 @@ abstract class Timings{
 	}
 
 	public static function getTileEntityTimings(Tile $tile) : TimingsHandler{
-		$tileType = (new \ReflectionClass($tile))->getShortName();
+		$tileType = (new ReflectionClass($tile))->getShortName();
 		if(!isset(self::$tileEntityTypeTimingMap[$tileType])){
 			self::$tileEntityTypeTimingMap[$tileType] = new TimingsHandler("** tickTileEntity - " . $tileType, self::$tickTileEntityTimer);
 		}
@@ -200,7 +201,7 @@ abstract class Timings{
 
 	public static function getReceiveDataPacketTimings(DataPacket $pk) : TimingsHandler{
 		if(!isset(self::$packetReceiveTimingMap[$pk::NETWORK_ID])){
-			$pkName = (new \ReflectionClass($pk))->getShortName();
+			$pkName = (new ReflectionClass($pk))->getShortName();
 			self::$packetReceiveTimingMap[$pk::NETWORK_ID] = new TimingsHandler("** receivePacket - " . $pkName . " [0x" . dechex($pk::NETWORK_ID) . "]", self::$playerNetworkReceiveTimer);
 		}
 
@@ -209,7 +210,7 @@ abstract class Timings{
 
 	public static function getSendDataPacketTimings(DataPacket $pk) : TimingsHandler{
 		if(!isset(self::$packetSendTimingMap[$pk::NETWORK_ID])){
-			$pkName = (new \ReflectionClass($pk))->getShortName();
+			$pkName = (new ReflectionClass($pk))->getShortName();
 			self::$packetSendTimingMap[$pk::NETWORK_ID] = new TimingsHandler("** sendPacket - " . $pkName . " [0x" . dechex($pk::NETWORK_ID) . "]", self::$playerNetworkTimer);
 		}
 

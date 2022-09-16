@@ -43,6 +43,7 @@ use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryStream;
+use UnexpectedValueException;
 use function array_values;
 use function chr;
 use function count;
@@ -133,7 +134,7 @@ class LevelDB extends BaseLevelProvider{
 		$nbt = new LittleEndianNBTStream();
 		try{
 			$levelData = $nbt->read(substr($rawLevelData, 8));
-		}catch(\UnexpectedValueException $e){
+		}catch(UnexpectedValueException $e){
 			throw new LevelException("Invalid level.dat (" . $e->getMessage() . ")", 0, $e);
 		}
 		if($levelData instanceof CompoundTag){

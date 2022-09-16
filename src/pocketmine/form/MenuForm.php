@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\form;
 
+use Closure;
 use pocketmine\Player;
 use pocketmine\utils\Utils;
-
 use function array_values;
 use function is_int;
 
@@ -39,26 +39,26 @@ abstract class MenuForm extends BaseForm{
 	protected $content;
 	/** @var MenuOption[] */
 	private $options;
-	/** @var \Closure */
+	/** @var Closure */
 	private $onSubmit;
-	/** @var \Closure|null */
+	/** @var Closure|null */
 	private $onClose = null;
 
 	/**
 	 * @param string        $title
 	 * @param string        $text
 	 * @param MenuOption[]  $options
-	 * @param \Closure      $onSubmit signature `function(Player $player, int $selectedOption)`
-	 * @param \Closure|null $onClose signature `function(Player $player)`
+	 * @param Closure      $onSubmit signature `function(Player $player, int $selectedOption)`
+	 * @param Closure|null $onClose signature `function(Player $player)`
 	 */
-	public function __construct(string $title, string $text, array $options, \Closure $onSubmit, ?\Closure $onClose = null){
+	public function __construct(string $title, string $text, array $options, Closure $onSubmit, ?Closure $onClose = null){
 		parent::__construct($title);
 		$this->content = $text;
 		$this->options = array_values($options);
-		Utils::validateCallableSignature(function(Player $player, int $selectedOption) : void{}, $onSubmit);
+		Utils::validateCallableSignature(function(Player $player, int $selectedOption) : void{ }, $onSubmit);
 		$this->onSubmit = $onSubmit;
 		if($onClose !== null){
-			Utils::validateCallableSignature(function(Player $player) : void{}, $onClose);
+			Utils::validateCallableSignature(function(Player $player) : void{ }, $onClose);
 			$this->onClose = $onClose;
 		}
 	}

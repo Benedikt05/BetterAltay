@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use InvalidArgumentException;
+use InvalidStateException;
 use pocketmine\inventory\EnchantInventory;
 use pocketmine\inventory\FakeInventory;
 use pocketmine\inventory\FakeResultInventory;
@@ -30,14 +32,12 @@ use pocketmine\inventory\PlayerUIInventory;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
 use pocketmine\inventory\transaction\action\DropItemAction;
 use pocketmine\inventory\transaction\action\EnchantAction;
-use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\inventory\transaction\action\InventoryAction;
-use pocketmine\item\Item;
+use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
-use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
 use pocketmine\Player;
-use function array_key_exists;
+use UnexpectedValueException;
 
 class NetworkInventoryAction{
 	public const SOURCE_CONTAINER = 0;
@@ -114,7 +114,7 @@ class NetworkInventoryAction{
 				$this->windowId = $packet->getVarInt();
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+				throw new UnexpectedValueException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$this->inventorySlot = $packet->getUnsignedVarInt();
@@ -146,7 +146,7 @@ class NetworkInventoryAction{
 				$packet->putVarInt($this->windowId);
 				break;
 			default:
-				throw new \InvalidArgumentException("Unknown inventory action source type $this->sourceType");
+				throw new InvalidArgumentException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$packet->putUnsignedVarInt($this->inventorySlot);
@@ -157,7 +157,7 @@ class NetworkInventoryAction{
 	/**
 	 * @return InventoryAction|null
 	 *
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 */
 	public function createInventoryAction(Player $player){
 		$oldItem = $this->oldItem->getItemStack();
@@ -178,10 +178,10 @@ class NetworkInventoryAction{
 					return new SlotChangeAction($window, $this->inventorySlot, $oldItem, $newItem);
 				}
 
-				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			case self::SOURCE_WORLD:
 				if($this->inventorySlot !== self::ACTION_MAGIC_SLOT_DROP_ITEM){
-					throw new \UnexpectedValueException("Only expecting drop-item world actions from the client!");
+					throw new UnexpectedValueException("Only expecting drop-item world actions from the client!");
 				}
 
 				return new DropItemAction($newItem);
@@ -194,7 +194,7 @@ class NetworkInventoryAction{
 						$type = CreativeInventoryAction::TYPE_CREATE_ITEM;
 						break;
 					default:
-						throw new \UnexpectedValueException("Unexpected creative action type $this->inventorySlot");
+						throw new UnexpectedValueException("Unexpected creative action type $this->inventorySlot");
 
 				}
 
@@ -214,9 +214,9 @@ class NetworkInventoryAction{
 							return new EnchantAction($window, $this->inventorySlot, $oldItem, $newItem);
 						}else{
 							if($window === null){
-								throw new \InvalidStateException("Window not found");
+								throw new InvalidStateException("Window not found");
 							}else{
-								throw new \InvalidStateException("Unexpected fake inventory given. Expected " . EnchantInventory::class . " , given " . get_class($window));
+								throw new InvalidStateException("Unexpected fake inventory given. Expected " . EnchantInventory::class . " , given " . get_class($window));
 							}
 						}
 					case self::SOURCE_TYPE_FAKE_INVENTORY_INPUT:
@@ -225,16 +225,16 @@ class NetworkInventoryAction{
 					case self::SOURCE_TYPE_FAKE_INVENTORY_RESULT:
 						if($window instanceof FakeResultInventory){
 							if(!$window->onResult($player, $oldItem)){
-								throw new \InvalidStateException("Output doesnt match for Player " . $player->getName() . " in " . get_class($window));
+								throw new InvalidStateException("Output doesnt match for Player " . $player->getName() . " in " . get_class($window));
 							}
 						}
 
 						return null;
 				}
 
-				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			default:
-				throw new \UnexpectedValueException("Unknown inventory source type $this->sourceType");
+				throw new UnexpectedValueException("Unknown inventory source type $this->sourceType");
 		}
 	}
 }

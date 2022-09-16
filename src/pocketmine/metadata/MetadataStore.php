@@ -24,14 +24,16 @@ declare(strict_types=1);
 /**
  * Saves extra data on runtime for different items
  */
+
 namespace pocketmine\metadata;
 
 use pocketmine\plugin\Plugin;
+use SplObjectStorage;
 
 abstract class MetadataStore{
 	/**
-	 * @var \SplObjectStorage[]|MetadataValue[][]
-	 * @phpstan-var array<string, \SplObjectStorage<Plugin, MetadataValue>>
+	 * @var SplObjectStorage[]|MetadataValue[][]
+	 * @phpstan-var array<string, SplObjectStorage<Plugin, MetadataValue>>
 	 */
 	private $metadataMap;
 
@@ -44,8 +46,8 @@ abstract class MetadataStore{
 		$owningPlugin = $newMetadataValue->getOwningPlugin();
 
 		if(!isset($this->metadataMap[$key])){
-			/** @phpstan-var \SplObjectStorage<Plugin, MetadataValue> $entry */
-			$entry = new \SplObjectStorage();
+			/** @phpstan-var SplObjectStorage<Plugin, MetadataValue> $entry */
+			$entry = new SplObjectStorage();
 			$this->metadataMap[$key] = $entry;
 		}else{
 			$entry = $this->metadataMap[$key];

@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Network-related classes
  */
+
 namespace pocketmine\network;
 
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -73,10 +74,10 @@ interface SourceInterface{
 	public function shutdown();
 
 	/**
+	 * @return void
 	 * @deprecated
 	 * Shuts down the network interface in an emergency situation, such as due to a crash.
 	 *
-	 * @return void
 	 */
 	public function emergencyShutdown();
 

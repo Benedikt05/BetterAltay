@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\behavior;
 
+use Closure;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
 use pocketmine\entity\utils\RandomPositionGenerator;
@@ -41,7 +42,7 @@ class AvoidMobTypeBehavior extends Behavior{
 
 	protected $path;
 
-	public function __construct(Mob $mob, string $targetEntityClass, ?\Closure $avoidTargetSelector, float $avoidDistance, float $farSpeed, float $nearSpeed){
+	public function __construct(Mob $mob, string $targetEntityClass, ?Closure $avoidTargetSelector, float $avoidDistance, float $farSpeed, float $nearSpeed){
 		parent::__construct($mob);
 
 		$this->targetEntityClass = $targetEntityClass;

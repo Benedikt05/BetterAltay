@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\utils;
 
-use pocketmine\block\Block;
 use pocketmine\entity\Mob;
 use pocketmine\math\Vector3;
 
@@ -41,7 +40,7 @@ class RandomPositionGenerator{
 	public static function findRandomTargetBlockAwayFrom(Mob $entity, int $xz, int $y, Vector3 $targetPos) : ?Vector3{
 		return self::findRandomTargetBlock($entity, $xz, $y, $entity->subtract($targetPos));
 	}
-	
+
 	public static function findRandomTargetBlock(Mob $entity, int $dxz, int $dy, ?Vector3 $targetPos = null) : ?Vector3{
 		$currentWeight = PHP_INT_MIN;
 		$currentPos = null;
@@ -52,12 +51,12 @@ class RandomPositionGenerator{
 
 			if($targetPos === null or ($x * $targetPos->x + $z * $targetPos->z) > 0){
 				$targetVector = $entity->asVector3()->add($x, $y, $z);
-				
+
 				// TODO: remove this temp fix
 				if(($maxY = $entity->level->getHeightMap($targetVector->getFloorX(), $targetVector->getFloorZ()) + 1) < $targetVector->y){
 					$targetVector->y = $maxY;
 				}
-				
+
 				$weight = $entity->getBlockPathWeight($targetVector);
 				if($weight > $currentWeight){
 					$currentWeight = $weight;

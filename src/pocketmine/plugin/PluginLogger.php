@@ -23,23 +23,26 @@ declare(strict_types=1);
 
 namespace pocketmine\plugin;
 
+use AttachableLogger;
+use LoggerAttachment;
 use LogLevel;
 use pocketmine\Server;
+use Throwable;
 use function spl_object_hash;
 
-class PluginLogger implements \AttachableLogger{
+class PluginLogger implements AttachableLogger{
 
 	/** @var string */
 	private $pluginName;
 
-	/** @var \LoggerAttachment[] */
+	/** @var LoggerAttachment[] */
 	private $attachments = [];
 
-	public function addAttachment(\LoggerAttachment $attachment){
+	public function addAttachment(LoggerAttachment $attachment){
 		$this->attachments[spl_object_hash($attachment)] = $attachment;
 	}
 
-	public function removeAttachment(\LoggerAttachment $attachment){
+	public function removeAttachment(LoggerAttachment $attachment){
 		unset($this->attachments[spl_object_hash($attachment)]);
 	}
 
@@ -88,7 +91,7 @@ class PluginLogger implements \AttachableLogger{
 		$this->log(LogLevel::DEBUG, $message);
 	}
 
-	public function logException(\Throwable $e, $trace = null){
+	public function logException(Throwable $e, $trace = null){
 		Server::getInstance()->getLogger()->logException($e, $trace);
 	}
 

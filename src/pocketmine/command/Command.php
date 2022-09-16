@@ -24,12 +24,12 @@ declare(strict_types=1);
 /**
  * Command handling related classes
  */
+
 namespace pocketmine\command;
 
 use pocketmine\command\utils\CommandException;
 use pocketmine\lang\TextContainer;
 use pocketmine\lang\TranslationContainer;
-use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandData;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
@@ -37,7 +37,6 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\Server;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\TextFormat;
-
 use function explode;
 use function str_replace;
 use function strlen;
@@ -78,7 +77,7 @@ abstract class Command{
 	public $timings = null;
 
 	/**
-	 * @param string[] $aliases
+	 * @param string[]             $aliases
 	 * @param CommandParameter[][] $overloads
 	 */
 	public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [], ?array $overloads = null){

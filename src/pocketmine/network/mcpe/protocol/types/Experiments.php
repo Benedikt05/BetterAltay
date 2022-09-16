@@ -37,7 +37,8 @@ final class Experiments{
 	private $hasPreviouslyUsedExperiments;
 
 	/**
-	 * @param bool[] $experiments
+	 * @param bool[]                      $experiments
+	 *
 	 * @phpstan-param array<string, bool> $experiments
 	 */
 	public function __construct(array $experiments, bool $hasPreviouslyUsedExperiments){
