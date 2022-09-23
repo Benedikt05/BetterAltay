@@ -372,7 +372,7 @@ class NetworkBinaryStream extends BinaryStream{
 		})());
 	}
 
-	public function getRecipeIngredient() : Item{
+	public function getRecipeIngredient() : Item{ // todo: im idoti so not now
 		$netId = $this->getVarInt();
 		if($netId === 0){
 			return ItemFactory::get(ItemIds::AIR, 0, 0);

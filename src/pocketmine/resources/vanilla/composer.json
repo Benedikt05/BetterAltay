@@ -2,6 +2,6 @@
     "name": "pocketmine/bedrock-data",
     "description": "Blobs of data generated from Minecraft: Bedrock Edition, used by PocketMine-MP",
     "type": "library",
-    "license": "LGPL-3.0",
+    "license": "CC0-1.0",
     "require": {}
 }

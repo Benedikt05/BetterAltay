@@ -65,6 +65,7 @@
     "block.composter.fill": 267,
     "block.composter.fill_success": 268,
     "block.composter.ready": 269,
+    "block.enchanting_table.use": 442,
     "block.end_portal.spawn": 174,
     "block.end_portal_frame.fill": 173,
     "block.fletching_table.use": 187,

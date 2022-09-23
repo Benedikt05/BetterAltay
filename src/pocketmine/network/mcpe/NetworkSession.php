@@ -32,7 +32,6 @@ use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\AddPaintingPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\AddVolumeEntityPacket;
-use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\AgentActionEventPacket;
 use pocketmine\network\mcpe\protocol\AnimateEntityPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
@@ -82,6 +81,10 @@ use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\EventPacket;
 use pocketmine\network\mcpe\protocol\FilterTextPacket;
 use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
+use pocketmine\network\mcpe\protocol\GameTestRequestPacket;
+use pocketmine\network\mcpe\protocol\GameTestResultsPacket;
+use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
+use pocketmine\network\mcpe\protocol\ServerStatsPacket;
 use pocketmine\network\mcpe\protocol\GuiDataPickItemPacket;
 use pocketmine\network\mcpe\protocol\HurtArmorPacket;
 use pocketmine\network\mcpe\protocol\InteractPacket;
@@ -417,10 +420,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleGuiDataPickItem(GuiDataPickItemPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleAdventureSettings(AdventureSettingsPacket $packet) : bool{
 		return false;
 	}
 
@@ -929,6 +928,22 @@ abstract class NetworkSession{
 	}
 
 	public function handleToastRequest(ToastRequestPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerStats(ServerStatsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleGameTestRequest(GameTestRequestPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleGameTestResults(GameTestResultsPacket $packet) : bool{
 		return false;
 	}
 }
