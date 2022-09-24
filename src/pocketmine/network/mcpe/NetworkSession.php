@@ -78,6 +78,8 @@ use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\EventPacket;
 use pocketmine\network\mcpe\protocol\FilterTextPacket;
 use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
+use pocketmine\network\mcpe\protocol\GameTestRequestPacket;
+use pocketmine\network\mcpe\protocol\GameTestResultsPacket;
 use pocketmine\network\mcpe\protocol\GuiDataPickItemPacket;
 use pocketmine\network\mcpe\protocol\HurtArmorPacket;
 use pocketmine\network\mcpe\protocol\InteractPacket;
@@ -151,6 +153,7 @@ use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
+use pocketmine\network\mcpe\protocol\ServerStatsPacket;
 use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
@@ -909,6 +912,18 @@ abstract class NetworkSession{
 	}
 
 	public function handleUpdateAdventureSettings(UpdateAdventureSettingsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerStats(ServerStatsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleGameTestRequest(GameTestRequestPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleGameTestResult(GameTestResultsPacket $packet) : bool{
 		return false;
 	}
 }
