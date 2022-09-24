@@ -32,27 +32,25 @@ class StructureBlockUpdatePacket extends DataPacket/* implements ServerboundPack
 {
 	public const NETWORK_ID = ProtocolInfo::STRUCTURE_BLOCK_UPDATE_PACKET;
 
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
-	/** @var StructureEditorData */
-	public $structureEditorData;
-	/** @var bool */
-	public $isPowered;
+	public int $x;
+	public int $y;
+	public int $z;
+	public StructureEditorData $structureEditorData;
+	public bool $isPowered;
+	public bool $waterlogged;
 
 	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->structureEditorData = $this->getStructureEditorData();
 		$this->isPowered = $this->getBool();
+		$this->waterlogged = $this->getBool();
 	}
 
 	protected function encodePayload(){
 		$this->putBlockPosition($this->x, $this->y, $this->z);
 		$this->putStructureEditorData($this->structureEditorData);
 		$this->putBool($this->isPowered);
+		$this->putBool($this->waterlogged);
 	}
 
 	public function handle(NetworkSession $session) : bool{
