@@ -1576,8 +1576,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			Command::broadcastCommandMessage($this, new TranslationContainer("commands.gamemode.success.self", [Server::getGamemodeString($gm)]));
 		}
 
-		$this->sendAdventureSettings();
 		$this->sendAbilities();
+		$this->sendAdventureSettings();
 		$this->inventory->sendCreativeContents();
 
 		return true;
@@ -1609,13 +1609,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$boolAbilities = [
 			UpdateAbilitiesPacketLayer::ABILITY_ALLOW_FLIGHT => $this->getAllowFlight(),
 			UpdateAbilitiesPacketLayer::ABILITY_FLYING => $this->isFlying(),
-			UpdateAbilitiesPacketLayer::ABILITY_NO_CLIP => false,
+			UpdateAbilitiesPacketLayer::ABILITY_NO_CLIP => $this->isSpectator(),
 			UpdateAbilitiesPacketLayer::ABILITY_OPERATOR => $this->isOp(),
 			UpdateAbilitiesPacketLayer::ABILITY_TELEPORT => false,
 			UpdateAbilitiesPacketLayer::ABILITY_INVULNERABLE => $this->isCreative(),
 			UpdateAbilitiesPacketLayer::ABILITY_MUTED => false,
 			UpdateAbilitiesPacketLayer::ABILITY_WORLD_BUILDER => false,
-			UpdateAbilitiesPacketLayer::ABILITY_INFINITE_RESOURCES => false,
+			UpdateAbilitiesPacketLayer::ABILITY_INFINITE_RESOURCES => $this->isCreative(),
 			UpdateAbilitiesPacketLayer::ABILITY_LIGHTNING => false,
 			UpdateAbilitiesPacketLayer::ABILITY_BUILD => !$this->isSpectator(),
 			UpdateAbilitiesPacketLayer::ABILITY_MINE => !$this->isSpectator(),
