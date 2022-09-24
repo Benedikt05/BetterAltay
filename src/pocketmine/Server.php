@@ -1863,7 +1863,7 @@ class Server{
 	 *
 	 * @return void
 	 */
-	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false){
+	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false, bool $compress = true){
 		if(count($packets) === 0){
 			throw new \InvalidArgumentException("Cannot send empty batch");
 		}
@@ -1873,6 +1873,10 @@ class Server{
 
 		if(count($targets) > 0){
 			$pk = new BatchPacket();
+
+			if(!$compress){
+				$pk->enableCompression = false;
+			}
 
 			foreach($packets as $p){
 				$pk->addPacket($p);

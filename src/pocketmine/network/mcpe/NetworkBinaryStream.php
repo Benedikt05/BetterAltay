@@ -387,18 +387,22 @@ class NetworkBinaryStream extends BinaryStream{
 
 	public function putRecipeIngredient(Item $item) : void{
 		if($item->isNull()){
+			$this->putBool(false);
 			$this->putVarInt(0);
-		}else{
-			if($item->hasAnyDamageValue()){
-				[$netId,] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
-				$netData = 0x7fff;
-			}else{
-				[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
-			}
-			$this->putVarInt($netId);
-			$this->putVarInt($netData);
-			$this->putVarInt($item->getCount());
+
+			return;
 		}
+
+		$this->putBool(true);
+		if($item->hasAnyDamageValue()){
+			[$netId,] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
+			$netData = 0x7fff;
+		}else{
+			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
+		}
+		$this->putLShort($netId);
+		$this->putLShort($netData);
+		$this->putVarInt($item->getCount());
 	}
 
 	/**

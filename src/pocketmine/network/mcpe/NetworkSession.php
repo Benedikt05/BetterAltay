@@ -32,7 +32,6 @@ use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\AddPaintingPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\AddVolumeEntityPacket;
-use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\AnimateEntityPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\AnvilDamagePacket;
@@ -140,6 +139,7 @@ use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\RemoveVolumeEntityPacket;
 use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
+use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkDataPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
@@ -190,6 +190,8 @@ use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\TickSyncPacket;
 use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
+use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
+use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockSyncedPacket;
@@ -411,10 +413,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleGuiDataPickItem(GuiDataPickItemPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleAdventureSettings(AdventureSettingsPacket $packet) : bool{
 		return false;
 	}
 
@@ -899,6 +897,18 @@ abstract class NetworkSession{
 	}
 
 	public function handleToastRequest(ToastRequestPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleUpdateAbilities(UpdateAbilitiesPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleUpdateAdventureSettings(UpdateAdventureSettingsPacket $packet) : bool{
 		return false;
 	}
 }

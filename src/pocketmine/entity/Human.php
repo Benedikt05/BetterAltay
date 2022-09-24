@@ -59,11 +59,14 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\network\mcpe\protocol\types\Cape;
+use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
+use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
+use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
 use ReflectionClass;
@@ -920,6 +923,14 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		$pk->item = ItemStackWrapper::legacy($this->getInventory()->getItemInHand());
 		$pk->gameMode = 0;
 		$pk->metadata = $this->propertyManager->getAll();
+
+		$abilities = new UpdateAbilitiesPacket();
+		$abilities->commandPermission = CommandPermissions::NORMAL;
+		$abilities->playerPermission = PlayerPermissions::MEMBER;
+		$abilities->targetActorUniqueId = $this->id;
+		$abilities->abilityLayers = [];
+		$pk->abilitiesPacket = $abilities;
+
 		$player->dataPacket($pk);
 
 		//TODO: Hack for MCPE 1.2.13: DATA_NAMETAG is useless in AddPlayerPacket, so it has to be sent separately
