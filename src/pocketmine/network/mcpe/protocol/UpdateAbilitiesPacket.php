@@ -44,6 +44,16 @@ class UpdateAbilitiesPacket extends DataPacket{
 		$this->encodePayload();
 	}
 
+	public static function makeDefaultAbilities(int $id) : UpdateAbilitiesPacket{
+		$pk = new UpdateAbilitiesPacket();
+		$pk->playerPermission = PlayerPermissions::MEMBER;
+		$pk->commandPermission = CommandPermissions::NORMAL;
+		$pk->abilityLayers = [];
+		$pk->targetActorUniqueId = $id;
+
+		return $pk;
+	}
+
 	public function handle(NetworkSession $session) : bool{
 		return $session->handleUpdateAbilities($this);
 	}

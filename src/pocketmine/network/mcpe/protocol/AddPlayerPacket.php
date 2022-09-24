@@ -27,9 +27,11 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
+use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\utils\UUID;
 use function count;
 
@@ -63,10 +65,13 @@ class AddPlayerPacket extends DataPacket{
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
 	public $metadata = [];
+
+	/**
+	 * @var UpdateAbilitiesPacket|null
+	 */
+	public ?UpdateAbilitiesPacket $abilitiesPacket = null;
+
 	/** @var int */
-
-	public UpdateAbilitiesPacket $abilitiesPacket;
-
 	public $gameMode = 0;
 	/** @var EntityLink[] */
 	public $links = [];
@@ -115,6 +120,9 @@ class AddPlayerPacket extends DataPacket{
 		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
 
+		if(is_null($this->abilitiesPacket)){
+			$this->abilitiesPacket = UpdateAbilitiesPacket::makeDefaultAbilities($this->entityRuntimeId);
+		}
 		$this->abilitiesPacket->fastEncode();
 		$this->put($this->abilitiesPacket->getBuffer());
 
