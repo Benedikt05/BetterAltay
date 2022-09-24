@@ -50,6 +50,7 @@ class AvailableCommandsPacket extends DataPacket{
 	 * Basic parameter types. These must be combined with the ARG_FLAG_VALID constant.
 	 * ARG_FLAG_VALID | (type const)
 	 */
+	//TODO: Update to 1.19.30
 	public const ARG_TYPE_INT = 0x01;
 	public const ARG_TYPE_FLOAT = 0x03;
 	public const ARG_TYPE_VALUE = 0x04;
