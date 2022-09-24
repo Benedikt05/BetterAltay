@@ -224,5 +224,8 @@ interface ProtocolInfo{
 	public const REQUEST_NETWORK_SETTINGS_PACKET = 0xc1;
 	public const UPDATE_ABILITIES_PACKET = 0xbb;
 	public const UPDATE_ADVENTURE_SETTINGS_PACKET = 0xbc;
+	public const GAME_TEST_REQUEST_PACKET = 0xc2;
+	public const GAME_TEST_RESULTS_PACKET = 0xc3;
+	public const SERVER_STATS_PACKET = 0xc0;
 
 }
