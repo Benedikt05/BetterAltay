@@ -64,6 +64,9 @@ class AddPlayerPacket extends DataPacket{
 	 */
 	public $metadata = [];
 	/** @var int */
+
+	public UpdateAbilitiesPacket $abilitiesPacket;
+
 	public $gameMode = 0;
 	/** @var EntityLink[] */
 	public $links = [];
@@ -86,7 +89,8 @@ class AddPlayerPacket extends DataPacket{
 		$this->item = ItemStackWrapper::read($this);
 		$this->gameMode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
-		$this->entityUniqueId = $this->getEntityUniqueId();
+
+		$this->abilitiesPacket = new UpdateAbilitiesPacket($this->getRemaining());
 
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
@@ -110,15 +114,9 @@ class AddPlayerPacket extends DataPacket{
 		$this->item->write($this);
 		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
-		$this->putLLong($this->entityUniqueId ?? $this->entityRuntimeId);// targetActorUniqueId
-		$this->putUnsignedVarInt(0); // playerPermission
-		$this->putUnsignedVarInt(0); // commandPermission
-		$this->putUnsignedVarInt(1); // abilityLayers size
-		$this->putLShort(1); // BASE layer type
-		$this->putLInt(262143); // abilitiesSet (all)
-		$this->putLInt(63); // abilityValues  (survival)
-		$this->putLFloat(0.1); // flySpeed
-		$this->putLFloat(0.05); // walkSpeed
+
+		$this->abilitiesPacket->fastEncode();
+		$this->put($this->abilitiesPacket->getBuffer());
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){

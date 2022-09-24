@@ -32,6 +32,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
+use pocketmine\utils\BinaryStream;
 use UnexpectedValueException;
 use function assert;
 use function get_class;
@@ -52,6 +53,13 @@ class BatchPacket extends DataPacket{
 	/** @var int */
 	protected $compressionLevel = 7;
 
+	/**
+	 * Just use false for packets that go before selecting the compression type and setting
+	 *
+	 * @var bool
+	 */
+	public bool $enableCompression = true;
+
 	public function canBeBatched() : bool{
 		return false;
 	}
@@ -68,7 +76,9 @@ class BatchPacket extends DataPacket{
 	protected function decodePayload(){
 		$data = $this->getRemaining();
 		try{
-			$this->payload = zlib_decode($data, 1024 * 1024 * 2); //Max 2MB
+			$this->payload = $this->enableCompression ?
+				zlib_decode($data, 1024 * 1024 * 2)
+				: $data; //Max 2MB
 		}catch(ErrorException $e){ //zlib decode error
 			$this->payload = "";
 		}
@@ -79,9 +89,15 @@ class BatchPacket extends DataPacket{
 	}
 
 	protected function encodePayload(){
-		$encoded = zlib_encode($this->payload, ZLIB_ENCODING_RAW, $this->compressionLevel);
-		if($encoded === false) throw new AssumptionFailedError("ZLIB compression failed");
-		$this->put($encoded);
+		if($this->enableCompression){
+			$encoded = zlib_encode($this->payload, ZLIB_ENCODING_RAW, $this->compressionLevel);
+			if($encoded === false) throw new AssumptionFailedError("ZLIB compression failed");
+			$this->put($encoded);
+
+			return;
+		}
+
+		$this->put($this->payload);
 	}
 
 	/**

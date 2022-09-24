@@ -58,7 +58,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	 * Sometimes this gets changed when the MCPE-layer protocol gets broken to the point where old and new can't
 	 * communicate. It's important that we check this to avoid catastrophes.
 	 */
-	private const MCPE_RAKNET_PROTOCOL_VERSION = 10;
+	private const MCPE_RAKNET_PROTOCOL_VERSION = 11;
 
 	private const MCPE_RAKNET_PACKET_ID = "\xfe";
 
@@ -263,6 +263,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 			$identifier = $this->identifiers[$h];
 			if(!$packet->isEncoded){
 				$packet->encode();
+
 			}
 
 			if($packet instanceof BatchPacket){
@@ -277,9 +278,12 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$pk->orderChannel = 0;
 
 				$this->interface->sendEncapsulated($identifier, $pk, ($needACK ? RakLib::FLAG_NEED_ACK : 0) | ($immediate ? RakLib::PRIORITY_IMMEDIATE : RakLib::PRIORITY_NORMAL));
+				if(!$player->isFirstBatchConfigSequenceCompleted()){
+					$player->setFirstBatchConfigSequenceCompleted(true);
+				}
 				return $pk->identifierACK;
 			}else{
-				$this->server->batchPackets([$player], [$packet], true, $immediate);
+				$this->server->batchPackets([$player], [$packet], true, $immediate, $player->isFirstBatchConfigSequenceCompleted());
 				return null;
 			}
 		}

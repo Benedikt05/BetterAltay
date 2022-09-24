@@ -29,5 +29,4 @@ interface PlayerPermissions{
 	public const OPERATOR = 2;
 	public const MEMBER = 1;
 	public const VISITOR = 0;
-
 }
