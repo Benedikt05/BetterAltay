@@ -28,6 +28,7 @@ use pocketmine\level\generator\object\Tree;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\utils\Random;
+use pocketmine\event\block\BlockGrowEvent;
 use function mt_rand;
 
 class Sapling extends Flowable{
@@ -70,7 +71,13 @@ class Sapling extends Flowable{
 	public function onActivate(Item $item, Player $player = null) : bool{
 		if($item->getId() === Item::DYE and $item->getDamage() === 0x0F){ //Bonemeal
 			//TODO: change log type
-			Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+			#add BlockGrowEvent
+			$block = clone $this;
+			$ev = new BlockGrowEvent($this, $block);
+			$ev->call();
+			if(!$ev->isCancelled()){
+			    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+			}
 
 			$item->pop();
 
@@ -93,7 +100,12 @@ class Sapling extends Flowable{
 	public function onRandomTick() : void{
 		if($this->level->getFullLightAt($this->x, $this->y, $this->z) >= 8 and mt_rand(1, 7) === 1){
 			if(($this->meta & 0x08) === 0x08){
-				Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+				$block = clone $this;
+				$ev = new BlockGrowEvent($this, $block);
+			        $ev->call();
+			        if(!$ev->isCancelled()){
+				    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+			        }
 			}else{
 				$this->meta |= 0x08;
 				$this->getLevelNonNull()->setBlock($this, $this, true);
