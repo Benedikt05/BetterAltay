@@ -32,20 +32,18 @@ use pocketmine\network\mcpe\protocol\types\DimensionIds;
 class SpawnParticleEffectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SPAWN_PARTICLE_EFFECT_PACKET;
 
-	/** @var int */
-	public $dimensionId = DimensionIds::OVERWORLD; //wtf mojang
-	/** @var int */
-	public $entityUniqueId = -1; //default none
-	/** @var Vector3 */
-	public $position;
-	/** @var string */
-	public $particleName;
+	public int $dimensionId = DimensionIds::OVERWORLD; //wtf mojang
+	public int $entityUniqueId = -1; //default none
+	public Vector3 $position;
+	public string $particleName;
+	public ?string $molangVariablesJson = null;
 
 	protected function decodePayload(){
 		$this->dimensionId = $this->getByte();
 		$this->entityUniqueId = $this->getEntityUniqueId();
 		$this->position = $this->getVector3();
 		$this->particleName = $this->getString();
+		$this->molangVariablesJson = $this->getBool() ? $this->getString() : null;
 	}
 
 	protected function encodePayload(){
@@ -53,6 +51,10 @@ class SpawnParticleEffectPacket extends DataPacket{
 		$this->putEntityUniqueId($this->entityUniqueId);
 		$this->putVector3($this->position);
 		$this->putString($this->particleName);
+		$this->putBool($this->molangVariablesJson !== null);
+		if($this->molangVariablesJson !== null){
+			$this->putString($this->molangVariablesJson);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{
