@@ -69,6 +69,7 @@ use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\network\mcpe\protocol\CreatePhotoPacket;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\DeathInfoPacket;
 use pocketmine\network\mcpe\protocol\DebugInfoPacket;
 use pocketmine\network\mcpe\protocol\DisconnectPacket;
 use pocketmine\network\mcpe\protocol\EducationSettingsPacket;
@@ -924,6 +925,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleGameTestResult(GameTestResultsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleDeathInfo(DeathInfoPacket $packet) : bool{
 		return false;
 	}
 }
