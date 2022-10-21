@@ -29,7 +29,7 @@ use pocketmine\network\mcpe\NetworkSession;
 use function count;
 
 /**
- * Sets the message shown on the death screen instead of "You died!"
+ * Sets the message shown on the death screen underneath "You died!"
  */
 class DeathInfoPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::DEATH_INFO_PACKET;
