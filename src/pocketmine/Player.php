@@ -4301,7 +4301,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$this->setXpAndProgress(0, 0);
 		}
 
-		$pk = DeathInfoPacket::create((string)$ev->getDeathMessage(), [$this->getDisplayName()]);
+		$pk = DeathInfoPacket::create((string)$ev->getDeathMessage(), PlayerDeathEvent::deriveMessage($this->getDisplayName(), $this->getLastDamageCause())->getParameters());
 		$this->sendDataPacket($pk);
 		if($ev->getDeathMessage() != ""){
 			$this->server->broadcastMessage($ev->getDeathMessage());
