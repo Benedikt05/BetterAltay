@@ -136,6 +136,7 @@ use pocketmine\network\mcpe\protocol\CommandRequestPacket;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
 use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\DeathInfoPacket;
 use pocketmine\network\mcpe\protocol\DisconnectPacket;
 use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
@@ -4300,6 +4301,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$this->setXpAndProgress(0, 0);
 		}
 
+		$pk = DeathInfoPacket::create((string)$ev->getDeathMessage(), PlayerDeathEvent::deriveMessage($this->getDisplayName(), $this->getLastDamageCause())->getParameters());
+		$this->sendDataPacket($pk);
 		if($ev->getDeathMessage() != ""){
 			$this->server->broadcastMessage($ev->getDeathMessage());
 		}
