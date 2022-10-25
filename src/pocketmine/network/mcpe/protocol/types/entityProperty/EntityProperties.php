@@ -51,11 +51,11 @@ class EntityProperties{
 		$intEntityProperties = [];
 		$floatEntityProperties = [];
 
-		for($i = 0, $count = $packet->getUnsignedVarInt(); $i < $count; ++$i){
+		for($i = 0, $size = $packet->getUnsignedVarInt(); $i < $size; ++$i){
 			$intEntityProperties[] = new IntEntityProperty($packet->getUnsignedVarInt(), $packet->getVarInt());
 		}
 
-		for($i = 0, $count = $packet->getUnsignedVarInt(); $i < $count; ++$i){
+		for($i = 0, $size = $packet->getUnsignedVarInt(); $i < $size; ++$i){
 			$floatEntityProperties[] = new FloatEntityProperty($packet->getUnsignedVarInt(), $packet->getLFloat());
 		}
 
