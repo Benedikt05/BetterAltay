@@ -403,7 +403,7 @@ class MemoryManager{
 
 				$info = [
 					"information" => "$hash@$className",
-					"entityProperty" => []
+					"properties" => []
 				];
 
 				if(($parent = $reflection->getParentClass()) !== false){
@@ -432,7 +432,7 @@ class MemoryManager{
 							$property->setAccessible(true);
 						}
 
-						$info["entityProperty"][$name] = self::continueDump($property->getValue($object), $objects, $refCounts, 0, $maxNesting, $maxStringSize);
+						$info["properties"][$name] = self::continueDump($property->getValue($object), $objects, $refCounts, 0, $maxNesting, $maxStringSize);
 					}
 				}
 

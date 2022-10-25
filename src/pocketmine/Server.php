@@ -1988,7 +1988,7 @@ class Server{
 		PermissionManager::getInstance()->clearPermissions();
 		$this->commandMap->clearCommands();
 
-		$this->logger->info("Reloading entityProperty...");
+		$this->logger->info("Reloading properties...");
 		$this->properties->reload();
 		$this->maxPlayers = $this->getConfigInt("max-players", 20);
 
