@@ -1433,8 +1433,8 @@ class Server{
 			$this->altayConfig = new Config($this->dataPath . "altay.yml", Config::YAML, []);
 			$this->loadAltayConfig();
 
-			$this->logger->info("Loading server entityProperty...");
-			$this->properties = new Config($this->dataPath . "server.entityProperty", Config::PROPERTIES, [
+			$this->logger->info("Loading server properties...");
+			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
 				"motd" => \pocketmine\NAME . " Server",
 				"server-port" => 19132,
 				"white-list" => false,
