@@ -80,6 +80,7 @@ class PlayerFishEvent extends PlayerEvent implements Cancellable{
 
 	public function setLore($lore){
 		$this->lore = $lore;
+	}
 
 	public function getCaughtEntity() : ?Entity{
 		return $this->hook->getRidingEntity();
