@@ -351,7 +351,7 @@ class MemoryManager{
 		}
 
 		file_put_contents($outputFolder . "/staticProperties.js", json_encode($staticProperties, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-		$logger->info("[Dump] Wrote $staticCount static entityProperty");
+		$logger->info("[Dump] Wrote $staticCount static properties");
 
 		$globalVariables = [];
 		$globalCount = 0;

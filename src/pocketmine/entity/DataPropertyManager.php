@@ -182,7 +182,7 @@ class DataPropertyManager{
 	}
 
 	/**
-	 * Returns all entityProperty.
+	 * Returns all properties.
 	 *
 	 * @return mixed[][]
 	 * @phpstan-return array<int, array{0: int, 1: mixed}>
@@ -192,7 +192,7 @@ class DataPropertyManager{
 	}
 
 	/**
-	 * Returns entityProperty that have changed and need to be broadcasted.
+	 * Returns properties that have changed and need to be broadcasted.
 	 *
 	 * @return mixed[][]
 	 * @phpstan-return array<int, array{0: int, 1: mixed}>
@@ -202,7 +202,7 @@ class DataPropertyManager{
 	}
 
 	/**
-	 * Clears records of dirty entityProperty.
+	 * Clears records of dirty properties.
 	 */
 	public function clearDirtyProperties() : void{
 		$this->dirtyProperties = [];

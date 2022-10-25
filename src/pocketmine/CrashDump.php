@@ -210,10 +210,10 @@ class CrashDump{
 
 		if($this->server->getProperty("auto-report.send-settings", true) !== false){
 			$this->data["parameters"] = (array) $argv;
-			if(($serverDotProperties = @file_get_contents($this->server->getDataPath() . "server.entityProperty")) !== false){
-				$this->data["server.entityProperty"] = preg_replace("#^rcon\\.password=(.*)$#m", "rcon.password=******", $serverDotProperties);
+			if(($serverDotProperties = @file_get_contents($this->server->getDataPath() . "server.properties")) !== false){
+				$this->data["server.properties"] = preg_replace("#^rcon\\.password=(.*)$#m", "rcon.password=******", $serverDotProperties);
 			}else{
-				$this->data["server.entityProperty"] = $serverDotProperties;
+				$this->data["server.properties"] = $serverDotProperties;
 			}
 			if(($pocketmineDotYml = @file_get_contents($this->server->getDataPath() . "pocketmine.yml")) !== false){
 				$this->data["pocketmine.yml"] = $pocketmineDotYml;
@@ -222,7 +222,7 @@ class CrashDump{
 			}
 		}else{
 			$this->data["pocketmine.yml"] = "";
-			$this->data["server.entityProperty"] = "";
+			$this->data["server.properties"] = "";
 			$this->data["parameters"] = [];
 		}
 		$extensions = [];

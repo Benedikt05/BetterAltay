@@ -313,7 +313,7 @@ JIT_WARNING
 
 		$exitCode = 0;
 		do{
-			if(!file_exists(\pocketmine\DATA . "server.entityProperty") and !isset($opts["no-wizard"])){
+			if(!file_exists(\pocketmine\DATA . "server.properties") and !isset($opts["no-wizard"])){
 				$installer = new SetupWizard();
 				if(!$installer->run()){
 					$exitCode = -1;

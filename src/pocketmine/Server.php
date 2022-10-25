@@ -2084,7 +2084,7 @@ class Server{
 			}
 
 			if($this->properties !== null and $this->properties->hasChanged()){
-				$this->getLogger()->debug("Saving entityProperty");
+				$this->getLogger()->debug("Saving preprties");
 				$this->properties->save();
 			}
 

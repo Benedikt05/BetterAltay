@@ -1,5 +1,5 @@
 # Main configuration file for PocketMine-MP
-# These settings are the ones that cannot be included in server.entityProperty
+# These settings are the ones that cannot be included in server.properties
 # Some of these settings are safe, others can break your server if modified incorrectly
 # New settings/defaults won't appear automatically in this file when upgrading.
 
@@ -115,7 +115,7 @@ level-settings:
   default-format: pmanvil
 
 chunk-sending:
-  #To change server normal render distance, change view-distance in server.entityProperty.
+  #To change server normal render distance, change view-distance in server.properties.
   #Amount of chunks sent to players per tick
   per-tick: 4
   #Radius of chunks that need to be sent before spawning the player
@@ -163,7 +163,7 @@ aliases:
 #savestop: [save-all, stop]
 
 worlds:
-#These settings will override the generator set in server.entityProperty and allows loading multiple worlds
+#These settings will override the generator set in server.properties and allows loading multiple worlds
 #Example:
 #world:
 # seed: 404

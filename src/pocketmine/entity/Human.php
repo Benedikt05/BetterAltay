@@ -622,7 +622,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	}
 
 	/**
-	 * For Human entities which are not players, sets their entityProperty such as nametag, skin and UUID from NBT.
+	 * For Human entities which are not players, sets their properties such as nametag, skin and UUID from NBT.
 	 */
 	protected function initHumanData() : void{
 		if($this->namedtag->hasTag("NameTag", StringTag::class)){

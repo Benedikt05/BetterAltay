@@ -61,7 +61,7 @@ use const JSON_PRETTY_PRINT;
  */
 class Config{
 	public const DETECT = -1; //Detect by file extension
-	public const PROPERTIES = 0; // .entityProperty
+	public const PROPERTIES = 0; // .properties
 	public const CNF = Config::PROPERTIES; // .cnf
 	public const JSON = 1; // .js, .json
 	public const YAML = 2; // .yml, .yaml
@@ -96,7 +96,7 @@ class Config{
 
 	/** @var int[] */
 	public static $formats = [
-		"entityProperty" => Config::PROPERTIES,
+		"properties" => Config::PROPERTIES,
 		"cnf" => Config::CNF,
 		"conf" => Config::CNF,
 		"config" => Config::CNF,
