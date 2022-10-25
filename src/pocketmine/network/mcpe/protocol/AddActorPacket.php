@@ -30,8 +30,10 @@ use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entityProperty\EntityProperties;
 use UnexpectedValueException;
 use function count;
+use function is_null;
 
 class AddActorPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_ACTOR_PACKET;
@@ -184,6 +186,9 @@ class AddActorPacket extends DataPacket{
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
 	public $metadata = [];
+
+	public ?EntityProperties $entityProperties = null;
+
 	/** @var EntityLink[] */
 	public $links = [];
 
@@ -217,6 +222,7 @@ class AddActorPacket extends DataPacket{
 		}
 
 		$this->metadata = $this->getEntityMetadata();
+		$this->entityProperties = EntityProperties::readFromPacket($this);
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
 			$this->links[] = $this->getEntityLink();
@@ -243,6 +249,12 @@ class AddActorPacket extends DataPacket{
 		}
 
 		$this->putEntityMetadata($this->metadata);
+
+		if(is_null($this->entityProperties)){
+			$this->entityProperties = new EntityProperties();
+		}
+		$this->entityProperties->encode($this);
+
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){
 			$this->putEntityLink($link);

@@ -351,7 +351,7 @@ class MemoryManager{
 		}
 
 		file_put_contents($outputFolder . "/staticProperties.js", json_encode($staticProperties, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-		$logger->info("[Dump] Wrote $staticCount static properties");
+		$logger->info("[Dump] Wrote $staticCount static entityProperty");
 
 		$globalVariables = [];
 		$globalCount = 0;
@@ -403,7 +403,7 @@ class MemoryManager{
 
 				$info = [
 					"information" => "$hash@$className",
-					"properties" => []
+					"entityProperty" => []
 				];
 
 				if(($parent = $reflection->getParentClass()) !== false){
@@ -432,7 +432,7 @@ class MemoryManager{
 							$property->setAccessible(true);
 						}
 
-						$info["properties"][$name] = self::continueDump($property->getValue($object), $objects, $refCounts, 0, $maxNesting, $maxStringSize);
+						$info["entityProperty"][$name] = self::continueDump($property->getValue($object), $objects, $refCounts, 0, $maxNesting, $maxStringSize);
 					}
 				}
 

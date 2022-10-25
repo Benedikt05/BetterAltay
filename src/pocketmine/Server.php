@@ -1433,8 +1433,8 @@ class Server{
 			$this->altayConfig = new Config($this->dataPath . "altay.yml", Config::YAML, []);
 			$this->loadAltayConfig();
 
-			$this->logger->info("Loading server properties...");
-			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
+			$this->logger->info("Loading server entityProperty...");
+			$this->properties = new Config($this->dataPath . "server.entityProperty", Config::PROPERTIES, [
 				"motd" => \pocketmine\NAME . " Server",
 				"server-port" => 19132,
 				"white-list" => false,
@@ -1988,7 +1988,7 @@ class Server{
 		PermissionManager::getInstance()->clearPermissions();
 		$this->commandMap->clearCommands();
 
-		$this->logger->info("Reloading properties...");
+		$this->logger->info("Reloading entityProperty...");
 		$this->properties->reload();
 		$this->maxPlayers = $this->getConfigInt("max-players", 20);
 
@@ -2084,7 +2084,7 @@ class Server{
 			}
 
 			if($this->properties !== null and $this->properties->hasChanged()){
-				$this->getLogger()->debug("Saving properties");
+				$this->getLogger()->debug("Saving entityProperty");
 				$this->properties->save();
 			}
 

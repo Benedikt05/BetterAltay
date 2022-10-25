@@ -26,6 +26,8 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\entityProperty\EntityProperties;
+use function is_null;
 
 class SetActorDataPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_ACTOR_DATA_PACKET;
@@ -38,18 +40,27 @@ class SetActorDataPacket extends DataPacket{
 	 */
 	public $metadata;
 
+	public ?EntityProperties $entityProperties = null;
+
 	/** @var int */
 	public $tick = 0;
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->metadata = $this->getEntityMetadata();
+		$this->entityProperties = EntityProperties::readFromPacket($this);
 		$this->tick = $this->getUnsignedVarLong();
 	}
 
 	protected function encodePayload(){
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putEntityMetadata($this->metadata);
+
+		if(is_null($this->entityProperties)){
+			$this->entityProperties = new EntityProperties();
+		}
+		$this->entityProperties->encode($this);
+
 		$this->putUnsignedVarLong($this->tick);
 	}
 

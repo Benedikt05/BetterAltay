@@ -236,7 +236,7 @@ class PluginManager{
 		}
 
 		$files = iterator_to_array(new FilesystemIterator($directory, FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS));
-		shuffle($files); //this prevents plugins implicitly relying on the filesystem name order when they should be using dependency properties
+		shuffle($files); //this prevents plugins implicitly relying on the filesystem name order when they should be using dependency entityProperty
 		foreach($loaders as $loader){
 			foreach($files as $file){
 				if(!is_string($file)) throw new AssumptionFailedError("FilesystemIterator current should be string when using CURRENT_AS_PATHNAME");

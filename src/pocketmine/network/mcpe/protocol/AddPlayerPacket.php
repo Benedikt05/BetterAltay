@@ -30,10 +30,12 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entityProperty\EntityProperties;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\utils\UUID;
 use function count;
+use function is_null;
 
 class AddPlayerPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_PLAYER_PACKET;
@@ -66,6 +68,8 @@ class AddPlayerPacket extends DataPacket{
 	 */
 	public $metadata = [];
 
+	public ?EntityProperties $entityProperties = null;
+
 	/**
 	 * @var UpdateAbilitiesPacket|null
 	 */
@@ -94,7 +98,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->item = ItemStackWrapper::read($this);
 		$this->gameMode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
-
+		$this->entityProperties = EntityProperties::readFromPacket($this);
 		$this->abilitiesPacket = new UpdateAbilitiesPacket($this->getRemaining());
 
 		$linkCount = $this->getUnsignedVarInt();
@@ -119,6 +123,11 @@ class AddPlayerPacket extends DataPacket{
 		$this->item->write($this);
 		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
+
+		if(is_null($this->entityProperties)){
+			$this->entityProperties = new EntityProperties();
+		}
+		$this->entityProperties->encode($this);
 
 		if(is_null($this->abilitiesPacket)){
 			$this->abilitiesPacket = UpdateAbilitiesPacket::makeDefaultAbilities($this->entityRuntimeId);

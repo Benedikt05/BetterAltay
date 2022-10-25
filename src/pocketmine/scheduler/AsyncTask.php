@@ -251,7 +251,7 @@ abstract class AsyncTask extends Collectable{
 	 * or arrays which you need to access in {@link AsyncTask::onCompletion} which cannot be stored as a property of
 	 * your task (due to them becoming serialized).
 	 *
-	 * Scalar types can be stored directly in class properties instead of using this storage.
+	 * Scalar types can be stored directly in class entityProperty instead of using this storage.
 	 *
 	 * WARNING: THIS METHOD SHOULD ONLY BE CALLED FROM THE MAIN THREAD!
 	 *

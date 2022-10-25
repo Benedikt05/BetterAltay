@@ -359,7 +359,10 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BUCKET_FILL_POWDER_SNOW = 328;
 	public const SOUND_BUCKET_EMPTY_POWDER_SNOW = 329;
 	public const SOUND_ENCHANTING_TABLE_USE = 442;
-	public const SOUND_UNDEFINED = 443;
+	public const SOUND_BUNDLE_DROP_CONTENTS = 445;
+	public const SOUND_BUNDLE_INSERT = 446;
+	public const SOUND_BUNDLE_REMOVE_ONE = 447;
+	public const SOUND_UNDEFINED = 448;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
 		$result = new self;

@@ -119,7 +119,7 @@ class MainLogger extends AttachableThreadedLogger{
 	/**
 	 * Assigns the MainLogger instance to the {@link MainLogger#logger} static property.
 	 *
-	 * WARNING: Because static properties are thread-local, this MUST be called from the body of every Thread if you
+	 * WARNING: Because static entityProperty are thread-local, this MUST be called from the body of every Thread if you
 	 * want the logger to be accessible via {@link MainLogger#getLogger}.
 	 *
 	 * @return void

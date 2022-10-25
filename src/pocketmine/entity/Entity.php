@@ -153,7 +153,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_TYPE_VECTOR3F = 8;
 
 	/*
-	 * Readers beware: this isn't a nice list. Some of the properties have different types for different entities, and
+	 * Readers beware: this isn't a nice list. Some of the entityProperty have different types for different entities, and
 	 * are used for entirely different things.
 	 */
 	public const DATA_FLAGS = 0;
@@ -742,7 +742,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->setGenericFlag(self::DATA_FLAG_HAS_COLLISION, true);
 
 		$this->initEntity();
-		$this->propertyManager->clearDirtyProperties(); //Prevents resending properties that were set during construction
+		$this->propertyManager->clearDirtyProperties(); //Prevents resending entityProperty that were set during construction
 
 		$this->chunk->addEntity($this);
 		$this->level->addEntity($this);

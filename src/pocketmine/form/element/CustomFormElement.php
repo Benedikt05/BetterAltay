@@ -73,7 +73,7 @@ abstract class CustomFormElement implements JsonSerializable{
 	abstract public function validateValue($value) : void;
 
 	/**
-	 * Returns an array of properties which can be serialized to JSON for sending.
+	 * Returns an array of entityProperty which can be serialized to JSON for sending.
 	 *
 	 * @return array
 	 */
