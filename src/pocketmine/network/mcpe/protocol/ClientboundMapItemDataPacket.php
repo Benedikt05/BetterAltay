@@ -48,9 +48,9 @@ class ClientboundMapItemDataPacket extends DataPacket{
 	public $dimensionId = DimensionIds::OVERWORLD;
 	/** @var bool */
 	public $isLocked = false;
-	public ?int $x = null;
-	public ?int $y = null;
-	public ?int $z = null;
+	public int $x = 0;
+	public int $y = 0;
+	public int $z = 0;
 
 	/** @var int[] */
 	public $eids = [];
