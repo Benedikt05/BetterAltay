@@ -313,7 +313,6 @@ class FishingHook extends Projectile{
 				$name = null;
 				$lore = null;
 
-				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_FISH, $this->random->nextBoundedInt(6) + 1);
 				$ev = new PlayerFishEvent($angler, $this, PlayerFishEvent::STATE_CAUGHT_FISH, $result, $name, $lore, $this->random->nextBoundedInt(6) + 1);
 				$ev->call();
 
