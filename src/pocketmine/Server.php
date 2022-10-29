@@ -1872,14 +1872,16 @@ class Server{
 		$targets = array_filter($players, function(Player $player) : bool{ return $player->isConnected(); });
 
 		if(count($targets) > 0){
-			$pk = new BatchPacket();
-
-			if(!$compress){
-				$pk->enableCompression = false;
-			}
-
-			foreach($packets as $p){
-				$pk->addPacket($p);
+			foreach($targets as $target){
+				$pk = new BatchPacket();
+				if(!$compress){
+					$pk->enableCompression = false;
+				}
+				$pk->protocol = $target->getProtocol();
+				foreach($packets as $p){
+					$p->protocol = $target->getProtocol();
+					$pk->addPacket($p);
+				}
 			}
 
 			if(Network::$BATCH_THRESHOLD >= 0 and strlen($pk->payload) >= Network::$BATCH_THRESHOLD){

@@ -222,7 +222,9 @@ class AddActorPacket extends DataPacket{
 		}
 
 		$this->metadata = $this->getEntityMetadata();
-		$this->entityProperties = EntityProperties::readFromPacket($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties = EntityProperties::readFromPacket($this);
+		}
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
 			$this->links[] = $this->getEntityLink();
@@ -253,7 +255,9 @@ class AddActorPacket extends DataPacket{
 		if(is_null($this->entityProperties)){
 			$this->entityProperties = new EntityProperties();
 		}
-		$this->entityProperties->encode($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties->encode($this);
+		}
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){

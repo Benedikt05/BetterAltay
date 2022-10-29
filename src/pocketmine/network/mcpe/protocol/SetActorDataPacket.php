@@ -48,7 +48,9 @@ class SetActorDataPacket extends DataPacket{
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->metadata = $this->getEntityMetadata();
-		$this->entityProperties = EntityProperties::readFromPacket($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties = EntityProperties::readFromPacket($this);
+		}
 		$this->tick = $this->getUnsignedVarLong();
 	}
 
@@ -59,7 +61,9 @@ class SetActorDataPacket extends DataPacket{
 		if(is_null($this->entityProperties)){
 			$this->entityProperties = new EntityProperties();
 		}
-		$this->entityProperties->encode($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties->encode($this);
+		}
 
 		$this->putUnsignedVarLong($this->tick);
 	}

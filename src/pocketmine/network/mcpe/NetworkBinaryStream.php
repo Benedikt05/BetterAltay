@@ -65,6 +65,8 @@ class NetworkBinaryStream extends BinaryStream{
 	private const DAMAGE_TAG_CONFLICT_RESOLUTION = "___Damage_ProtocolCollisionResolution___";
 	private const PM_META_TAG = "___Meta___";
 
+	public int $protocol = -1;
+
 	public function getString() : string{
 		return $this->get($this->getUnsignedVarInt());
 	}

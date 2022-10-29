@@ -474,6 +474,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $commandPermission = CommandPermissions::NORMAL;
 	/** @var bool */
 	protected $keepExperience = false;
+	public int $protocol = -1;
 
 
 	/**
@@ -512,6 +513,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 */
 	public function getClientId(){
 		return $this->randomClientId;
+	}
+
+	public function getProtocol() : int{
+		return $this->protocol;
 	}
 
 	public function isBanned() : bool{
@@ -2072,11 +2077,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
-		$protocolVersion = $packet->protocolVersion;
-		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL){
-			$this->sendPlayStatus($protocolVersion < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
+		$this->protocol = $packet->protocolVersion;
+		if(!in_array($this->protocol, ProtocolInfo::ACCEPTED_PROTOCOLS)){
+			$this->sendPlayStatus($this->protocol < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
 			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
-			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$protocolVersion]), false);
+			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$this->protocol]), false);
 
 			return true;
 		}

@@ -98,7 +98,9 @@ class AddPlayerPacket extends DataPacket{
 		$this->item = ItemStackWrapper::read($this);
 		$this->gameMode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
-		$this->entityProperties = EntityProperties::readFromPacket($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties = EntityProperties::readFromPacket($this);
+		}
 		$this->abilitiesPacket = new UpdateAbilitiesPacket($this->getRemaining());
 
 		$linkCount = $this->getUnsignedVarInt();
@@ -127,7 +129,9 @@ class AddPlayerPacket extends DataPacket{
 		if(is_null($this->entityProperties)){
 			$this->entityProperties = new EntityProperties();
 		}
-		$this->entityProperties->encode($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_40){
+			$this->entityProperties->encode($this);
+		}
 
 		if(is_null($this->abilitiesPacket)){
 			$this->abilitiesPacket = UpdateAbilitiesPacket::makeDefaultAbilities($this->entityRuntimeId);
