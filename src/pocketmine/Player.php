@@ -1874,7 +1874,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function fall(float $fallDistance) : void{
-		if(!$this->flying){
+		if(!$this->isCreative() && !$this->isSpectator()){
 			parent::fall($fallDistance);
 		}
 	}
@@ -4372,7 +4372,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			and $source->getCause() !== EntityDamageEvent::CAUSE_VOID
 		){
 			$source->setCancelled();
-		}elseif($this->allowFlight and $source->getCause() === EntityDamageEvent::CAUSE_FALL){
+		}elseif(($this->isCreative() || $this->isSpectaror())
+                        && $this->allowFlight &&$source->getCause() === EntityDamageEvent::CAUSE_FALL
+                ){
 			$source->setCancelled();
 		}
 
