@@ -934,6 +934,6 @@ abstract class NetworkSession{
 	}
 	
 	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
-	
+		return false;
 	}
 }
