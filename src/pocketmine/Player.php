@@ -607,6 +607,26 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function isFlying() : bool{
 		return $this->flying;
 	}
+	
+	public function toggleFlight(bool $fly) : bool{
+		if($fly === $this->flying){
+			return true;
+		}
+		
+		$ev = new PlayerToggleFlightEvent($this, $fly);
+		if(!$this->allowFlight){
+			$ev->setCancelled();
+		}
+		$ev->call();
+		
+		if($ev->isCancelled()){
+			return false;
+		}
+		
+		$this->setFlying($fly);
+		
+		return true;
+	}
 
 	public function setMuted(bool $value){
 		$this->muted = $value;

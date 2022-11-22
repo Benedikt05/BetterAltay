@@ -228,5 +228,6 @@ interface ProtocolInfo{
 	public const GAME_TEST_RESULTS_PACKET = 0xc3;
 	public const SERVER_STATS_PACKET = 0xc0;
 	public const DEATH_INFO_PACKET = 0xbd;
+	public const REQUEST_ABILITY_PACKET = 0xb8;
 
 }

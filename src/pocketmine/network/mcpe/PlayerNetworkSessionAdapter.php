@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe;
 
+use http\Exception\RuntimeException;
 use InvalidArgumentException;
 use pocketmine\entity\passive\AbstractHorse;
 use pocketmine\event\server\DataPacketReceiveEvent;
@@ -63,6 +64,7 @@ use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
+use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
 use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
 use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
@@ -78,6 +80,7 @@ use pocketmine\network\mcpe\protocol\ShowCreditsPacket;
 use pocketmine\network\mcpe\protocol\SpawnExperienceOrbPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\TickSyncPacket;
+use pocketmine\network\mcpe\protocol\types\RequestAbilityType;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\Player;
@@ -451,5 +454,24 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
 		return $this->player->handleRequestNetworkSettings($packet);
+	}
+	
+	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
+		if($packet->abilityId === RequestAbilityType::ABILITY_FLYING){
+			$isFlying = $packet->abilityValue;
+			if(!is_bool($isFlying)){
+				return false;
+			}
+			
+			if($isFlying !== $this->player->isFlying()){
+				if(!$this->player->toggleFlight($isFlying)){
+					$this->player->sendAbilities();
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -141,6 +141,7 @@ use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\RemoveVolumeEntityPacket;
+use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
 use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
 use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkDataPacket;
@@ -930,5 +931,9 @@ abstract class NetworkSession{
 
 	public function handleDeathInfo(DeathInfoPacket $packet) : bool{
 		return false;
+	}
+	
+	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
+	
 	}
 }
