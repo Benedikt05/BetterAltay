@@ -612,6 +612,26 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function isFlying() : bool{
 		return $this->flying;
 	}
+	
+	public function toggleFlight(bool $fly) : bool{
+		if($fly === $this->flying){
+			return true;
+		}
+		
+		$ev = new PlayerToggleFlightEvent($this, $fly);
+		if(!$this->allowFlight){
+			$ev->setCancelled();
+		}
+		$ev->call();
+		
+		if($ev->isCancelled()){
+			return false;
+		}
+		
+		$this->setFlying($fly);
+		
+		return true;
+	}
 
 	public function setMuted(bool $value){
 		$this->muted = $value;
@@ -4377,9 +4397,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			and $source->getCause() !== EntityDamageEvent::CAUSE_VOID
 		){
 			$source->setCancelled();
-		}elseif($this->allowFlight and $source->getCause() === EntityDamageEvent::CAUSE_FALL){
-			$source->setCancelled();
-		}
+		}elseif(($this->isCreative() || $this->isSpectator()) && $source->getCause() === EntityDamageEvent::CAUSE_FALL){
+                    $source->setCancelled();
+                }
 
 		parent::attack($source);
 	}
