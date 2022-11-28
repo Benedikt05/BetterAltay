@@ -359,10 +359,22 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BUCKET_FILL_POWDER_SNOW = 328;
 	public const SOUND_BUCKET_EMPTY_POWDER_SNOW = 329;
 	public const SOUND_ENCHANTING_TABLE_USE = 442;
+	public const SOUND_STEP_SAND = 443;
+	public const SOUND_DASH_READY = 444;
 	public const SOUND_BUNDLE_DROP_CONTENTS = 445;
 	public const SOUND_BUNDLE_INSERT = 446;
 	public const SOUND_BUNDLE_REMOVE_ONE = 447;
-	public const SOUND_UNDEFINED = 448;
+	public const SOUND_PRESSURE_PLATE_CLICK_OFF = 448;
+	public const SOUND_PRESSURE_PLATE_CLICK_ON = 449;
+	public const SOUND_BUTTON_CLICK_OFF = 450;
+	public const SOUND_BUTTON_CLICK_ON = 451;
+	public const SOUND_DOOR_OPEN = 452;
+	public const SOUND_DOOR_CLOSE = 453;
+	public const SOUND_TRAP_DOOR_OPEN = 454;
+	public const SOUND_TRAP_DOOR_CLOSE = 455;
+	public const SOUND_FENCE_GATE_OPEN = 456;
+	public const SOUND_FENCE_GATE_CLOSE = 457;
+	public const SOUND_UNDEFINED = 458;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
 		$result = new self;
