@@ -8,7 +8,7 @@
         "component_based": false
     },
     "minecraft:acacia_chest_boat": {
-        "runtime_id": 642,
+        "runtime_id": 645,
         "component_based": false
     },
     "minecraft:acacia_door": {
@@ -17,6 +17,10 @@
     },
     "minecraft:acacia_fence_gate": {
         "runtime_id": 187,
+        "component_based": false
+    },
+    "minecraft:acacia_hanging_sign": {
+        "runtime_id": -504,
         "component_based": false
     },
     "minecraft:acacia_pressure_plate": {
@@ -131,8 +135,88 @@
         "runtime_id": -163,
         "component_based": false
     },
+    "minecraft:bamboo_button": {
+        "runtime_id": -511,
+        "component_based": false
+    },
+    "minecraft:bamboo_chest_raft": {
+        "runtime_id": 648,
+        "component_based": false
+    },
+    "minecraft:bamboo_door": {
+        "runtime_id": -517,
+        "component_based": false
+    },
+    "minecraft:bamboo_double_slab": {
+        "runtime_id": -521,
+        "component_based": false
+    },
+    "minecraft:bamboo_fence": {
+        "runtime_id": -515,
+        "component_based": false
+    },
+    "minecraft:bamboo_fence_gate": {
+        "runtime_id": -516,
+        "component_based": false
+    },
+    "minecraft:bamboo_hanging_sign": {
+        "runtime_id": -522,
+        "component_based": false
+    },
+    "minecraft:bamboo_mosaic": {
+        "runtime_id": -509,
+        "component_based": false
+    },
+    "minecraft:bamboo_mosaic_double_slab": {
+        "runtime_id": -525,
+        "component_based": false
+    },
+    "minecraft:bamboo_mosaic_slab": {
+        "runtime_id": -524,
+        "component_based": false
+    },
+    "minecraft:bamboo_mosaic_stairs": {
+        "runtime_id": -523,
+        "component_based": false
+    },
+    "minecraft:bamboo_planks": {
+        "runtime_id": -510,
+        "component_based": false
+    },
+    "minecraft:bamboo_pressure_plate": {
+        "runtime_id": -514,
+        "component_based": false
+    },
+    "minecraft:bamboo_raft": {
+        "runtime_id": 638,
+        "component_based": false
+    },
     "minecraft:bamboo_sapling": {
         "runtime_id": -164,
+        "component_based": false
+    },
+    "minecraft:bamboo_sign": {
+        "runtime_id": 637,
+        "component_based": false
+    },
+    "minecraft:bamboo_slab": {
+        "runtime_id": -513,
+        "component_based": false
+    },
+    "minecraft:bamboo_stairs": {
+        "runtime_id": -512,
+        "component_based": false
+    },
+    "minecraft:bamboo_standing_sign": {
+        "runtime_id": -518,
+        "component_based": false
+    },
+    "minecraft:bamboo_trapdoor": {
+        "runtime_id": -520,
+        "component_based": false
+    },
+    "minecraft:bamboo_wall_sign": {
+        "runtime_id": -519,
         "component_based": false
     },
     "minecraft:banner": {
@@ -140,7 +224,7 @@
         "component_based": false
     },
     "minecraft:banner_pattern": {
-        "runtime_id": 651,
+        "runtime_id": 655,
         "component_based": false
     },
     "minecraft:barrel": {
@@ -216,7 +300,7 @@
         "component_based": false
     },
     "minecraft:birch_chest_boat": {
-        "runtime_id": 639,
+        "runtime_id": 642,
         "component_based": false
     },
     "minecraft:birch_door": {
@@ -225,6 +309,10 @@
     },
     "minecraft:birch_fence_gate": {
         "runtime_id": 184,
+        "component_based": false
+    },
+    "minecraft:birch_hanging_sign": {
+        "runtime_id": -502,
         "component_based": false
     },
     "minecraft:birch_pressure_plate": {
@@ -328,7 +416,7 @@
         "component_based": false
     },
     "minecraft:boat": {
-        "runtime_id": 649,
+        "runtime_id": 653,
         "component_based": false
     },
     "minecraft:bone": {
@@ -433,6 +521,10 @@
     },
     "minecraft:calcite": {
         "runtime_id": -326,
+        "component_based": false
+    },
+    "minecraft:camel_spawn_egg": {
+        "runtime_id": 633,
         "component_based": false
     },
     "minecraft:camera": {
@@ -540,7 +632,7 @@
         "component_based": false
     },
     "minecraft:chest_boat": {
-        "runtime_id": 645,
+        "runtime_id": 649,
         "component_based": false
     },
     "minecraft:chest_minecart": {
@@ -553,6 +645,10 @@
     },
     "minecraft:chicken_spawn_egg": {
         "runtime_id": 435,
+        "component_based": false
+    },
+    "minecraft:chiseled_bookshelf": {
+        "runtime_id": -526,
         "component_based": false
     },
     "minecraft:chiseled_deepslate": {
@@ -827,6 +923,10 @@
         "runtime_id": -228,
         "component_based": false
     },
+    "minecraft:crimson_hanging_sign": {
+        "runtime_id": -506,
+        "component_based": false
+    },
     "minecraft:crimson_hyphae": {
         "runtime_id": -299,
         "component_based": false
@@ -920,7 +1020,7 @@
         "component_based": false
     },
     "minecraft:dark_oak_chest_boat": {
-        "runtime_id": 643,
+        "runtime_id": 646,
         "component_based": false
     },
     "minecraft:dark_oak_door": {
@@ -929,6 +1029,10 @@
     },
     "minecraft:dark_oak_fence_gate": {
         "runtime_id": 186,
+        "component_based": false
+    },
+    "minecraft:dark_oak_hanging_sign": {
+        "runtime_id": -505,
         "component_based": false
     },
     "minecraft:dark_oak_pressure_plate": {
@@ -1120,7 +1224,7 @@
         "component_based": false
     },
     "minecraft:disc_fragment_5": {
-        "runtime_id": 637,
+        "runtime_id": 640,
         "component_based": false
     },
     "minecraft:dispenser": {
@@ -1192,11 +1296,11 @@
         "component_based": false
     },
     "minecraft:dye": {
-        "runtime_id": 650,
+        "runtime_id": 654,
         "component_based": false
     },
     "minecraft:echo_shard": {
-        "runtime_id": 647,
+        "runtime_id": 651,
         "component_based": false
     },
     "minecraft:egg": {
@@ -1724,7 +1828,7 @@
         "component_based": false
     },
     "minecraft:end_crystal": {
-        "runtime_id": 653,
+        "runtime_id": 657,
         "component_based": false
     },
     "minecraft:end_gateway": {
@@ -1932,7 +2036,7 @@
         "component_based": false
     },
     "minecraft:glow_berries": {
-        "runtime_id": 654,
+        "runtime_id": 658,
         "component_based": false
     },
     "minecraft:glow_frame": {
@@ -2404,7 +2508,7 @@
         "component_based": false
     },
     "minecraft:jungle_chest_boat": {
-        "runtime_id": 640,
+        "runtime_id": 643,
         "component_based": false
     },
     "minecraft:jungle_door": {
@@ -2413,6 +2517,10 @@
     },
     "minecraft:jungle_fence_gate": {
         "runtime_id": 185,
+        "component_based": false
+    },
+    "minecraft:jungle_hanging_sign": {
+        "runtime_id": -503,
         "component_based": false
     },
     "minecraft:jungle_pressure_plate": {
@@ -2664,7 +2772,7 @@
         "component_based": false
     },
     "minecraft:mangrove_boat": {
-        "runtime_id": 635,
+        "runtime_id": 636,
         "component_based": false
     },
     "minecraft:mangrove_button": {
@@ -2672,11 +2780,11 @@
         "component_based": false
     },
     "minecraft:mangrove_chest_boat": {
-        "runtime_id": 644,
+        "runtime_id": 647,
         "component_based": false
     },
     "minecraft:mangrove_door": {
-        "runtime_id": 633,
+        "runtime_id": 634,
         "component_based": false
     },
     "minecraft:mangrove_double_slab": {
@@ -2689,6 +2797,10 @@
     },
     "minecraft:mangrove_fence_gate": {
         "runtime_id": -492,
+        "component_based": false
+    },
+    "minecraft:mangrove_hanging_sign": {
+        "runtime_id": -508,
         "component_based": false
     },
     "minecraft:mangrove_leaves": {
@@ -2716,7 +2828,7 @@
         "component_based": false
     },
     "minecraft:mangrove_sign": {
-        "runtime_id": 634,
+        "runtime_id": 635,
         "component_based": false
     },
     "minecraft:mangrove_slab": {
@@ -2860,7 +2972,7 @@
         "component_based": false
     },
     "minecraft:music_disc_5": {
-        "runtime_id": 636,
+        "runtime_id": 639,
         "component_based": false
     },
     "minecraft:music_disc_blocks": {
@@ -3036,7 +3148,11 @@
         "component_based": false
     },
     "minecraft:oak_chest_boat": {
-        "runtime_id": 638,
+        "runtime_id": 641,
+        "component_based": false
+    },
+    "minecraft:oak_hanging_sign": {
+        "runtime_id": -500,
         "component_based": false
     },
     "minecraft:oak_sign": {
@@ -3472,7 +3588,7 @@
         "component_based": false
     },
     "minecraft:recovery_compass": {
-        "runtime_id": 646,
+        "runtime_id": 650,
         "component_based": false
     },
     "minecraft:red_candle": {
@@ -3780,7 +3896,7 @@
         "component_based": false
     },
     "minecraft:spawn_egg": {
-        "runtime_id": 652,
+        "runtime_id": 656,
         "component_based": false
     },
     "minecraft:spider_eye": {
@@ -3812,7 +3928,7 @@
         "component_based": false
     },
     "minecraft:spruce_chest_boat": {
-        "runtime_id": 641,
+        "runtime_id": 644,
         "component_based": false
     },
     "minecraft:spruce_door": {
@@ -3821,6 +3937,10 @@
     },
     "minecraft:spruce_fence_gate": {
         "runtime_id": 183,
+        "component_based": false
+    },
+    "minecraft:spruce_hanging_sign": {
+        "runtime_id": -501,
         "component_based": false
     },
     "minecraft:spruce_pressure_plate": {
@@ -4080,7 +4200,7 @@
         "component_based": false
     },
     "minecraft:trader_llama_spawn_egg": {
-        "runtime_id": 648,
+        "runtime_id": 652,
         "component_based": false
     },
     "minecraft:trapdoor": {
@@ -4221,6 +4341,10 @@
     },
     "minecraft:warped_fungus_on_a_stick": {
         "runtime_id": 618,
+        "component_based": false
+    },
+    "minecraft:warped_hanging_sign": {
+        "runtime_id": -507,
         "component_based": false
     },
     "minecraft:warped_hyphae": {

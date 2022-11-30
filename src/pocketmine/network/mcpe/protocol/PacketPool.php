@@ -218,6 +218,7 @@ class PacketPool{
 		static::registerPacket(new GameTestResultsPacket());
 		static::registerPacket(new DeathInfoPacket());
 		static::registerPacket(new RequestAbilityPacket());
+		static::registerPacket(new UpdateClientInputLocksPacket());
 	}
 
 	/**
