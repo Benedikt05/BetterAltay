@@ -75,10 +75,20 @@ class SnowLayer extends Flowable{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if(!$this->canBeSupportedBy($this->getSide(Vector3::SIDE_DOWN))){
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), false, false);
-		}
-	}
+        $vec3 = $this->asVector3();
+        if(!$this->canBeSupportedBy($this->getSide(Vector3::SIDE_DOWN))){
+            $this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), false, false);
+            $nbt = Entity::createBaseNBT($vec3->add(0.5, 0, 0.5));
+            $nbt->setInt("TileID", $this->getId());
+            $nbt->setByte("Data", $this->getDamage());
+
+            $fall = Entity::createEntity("FallingSand", $this->getLevelNonNull(), $nbt);
+
+            if($fall !== null){
+                $fall->spawnToAll();
+            }
+        }
+    }
 
 	public function ticksRandomly() : bool{
 		return true;
