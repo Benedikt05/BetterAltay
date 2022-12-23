@@ -798,7 +798,6 @@
     "minecraft:netherite_leggings": 750,
     "minecraft:netherite_boots": 751,
     "minecraft:netherite_scrap": 752,
-    "minecraft:spyglass": 772,
     "minecraft:crimson_sign": 753,
     "minecraft:warped_sign": 754,
     "minecraft:crimson_door": 755,
@@ -807,5 +806,6 @@
     "minecraft:chain": 758,
     "minecraft:record_pigstep": 759,
     "minecraft:nether_sprouts": 760,
+    "minecraft:spyglass": 772,
     "minecraft:soul_campfire": 801
 }

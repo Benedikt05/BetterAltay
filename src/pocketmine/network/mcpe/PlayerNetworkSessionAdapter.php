@@ -272,6 +272,7 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 			$pk->mapId = $data->getId();
 			$pk->decorations = $data->getDecorations();
 			$pk->trackedEntities = $data->getTrackedObjects();
+			$pk->eids[] = $data->getId();
 
 			$this->player->sendDataPacket($pk);
 

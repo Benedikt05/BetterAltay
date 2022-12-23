@@ -17,7 +17,8 @@
             "3": "minecraft:jungle_boat",
             "4": "minecraft:acacia_boat",
             "5": "minecraft:dark_oak_boat",
-            "6": "minecraft:mangrove_boat"
+            "6": "minecraft:mangrove_boat",
+            "7": "minecraft:bamboo_raft"
         },
         "minecraft:bucket": {
             "1": "minecraft:milk_bucket",
@@ -38,7 +39,8 @@
             "3": "minecraft:jungle_chest_boat",
             "4": "minecraft:acacia_chest_boat",
             "5": "minecraft:dark_oak_chest_boat",
-            "6": "minecraft:mangrove_chest_boat"
+            "6": "minecraft:mangrove_chest_boat",
+            "7": "minecraft:bamboo_chest_raft"
         },
         "minecraft:coal": {
             "1": "minecraft:charcoal"
@@ -96,6 +98,7 @@
             "132": "minecraft:frog_spawn_egg",
             "133": "minecraft:tadpole_spawn_egg",
             "134": "minecraft:allay_spawn_egg",
+            "138": "minecraft:camel_spawn_egg",
             "14": "minecraft:wolf_spawn_egg",
             "15": "minecraft:villager_spawn_egg",
             "157": "minecraft:trader_llama_spawn_egg",
