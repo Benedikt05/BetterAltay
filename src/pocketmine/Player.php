@@ -273,7 +273,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	private const RESOURCE_PACK_CHUNK_SIZE = 128 * 1024; //128KB
 
-	//TODO: HACK!
+	//TODO: HACK!>not needed after some removing of it
 	//these IDs are used for 1.16 to restore 1.14ish crafting & inventory behaviour; since they don't seem to have any
 	//effect on the behaviour of inventory transactions I don't currently plan to integrate these into the main system.
 	private const RESERVED_WINDOW_ID_RANGE_START = ContainerIds::LAST - 10;
