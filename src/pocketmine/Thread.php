@@ -36,7 +36,7 @@ abstract class Thread extends \Thread{
 	protected $composerAutoloaderPath;
 
 	/** @var bool */
-	protected $isKilled = false;
+	protected $alive = true;
 
 	/**
 	 * @return \ClassLoader|null
@@ -93,7 +93,7 @@ abstract class Thread extends \Thread{
 	 * @return void
 	 */
 	public function quit(){
-		$this->isKilled = true;
+		$this->alive = false;
 
 		if(!$this->isJoined()){
 			$this->notify();
