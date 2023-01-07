@@ -4389,7 +4389,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		if($this->isCreative()
 			and $source->getCause() !== EntityDamageEvent::CAUSE_SUICIDE
-			and $source->getCause() !== EntityDamageEvent::CAUSE_VOID
 		){
 			$source->setCancelled();
 		}elseif(($this->isCreative() || $this->isSpectator()) && $source->getCause() === EntityDamageEvent::CAUSE_FALL){
