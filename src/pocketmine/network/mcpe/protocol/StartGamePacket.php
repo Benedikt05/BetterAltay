@@ -240,7 +240,7 @@ class StartGamePacket extends DataPacket{
 		$this->onlySpawnV1Villagers = $this->getBool();
 		$this->personaDisabled = $this->getBool();
 		$this->customSkinsDisabled = $this->getBool();
-		if($this->emoteChatMuted >= ProtocolInfo::PROTOCOL_1_19_60){
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_60){
 			$this->emoteChatMuted = $this->getBool();
 		}
 		$this->vanillaVersion = $this->getString();
