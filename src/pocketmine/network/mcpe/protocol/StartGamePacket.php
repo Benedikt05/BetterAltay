@@ -188,9 +188,10 @@ class StartGamePacket extends DataPacket{
 	public UUID $worldTemplateId;
 	public bool $personaDisabled = false;
 	public bool $customSkinsDisabled = false;
-	public int $chatRestrictionLevel = 0; //0: None
+	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
 	public bool $clientSideGeneration = false;
+	public bool $emoteChatMuted = true; //Prevent spam
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -239,6 +240,9 @@ class StartGamePacket extends DataPacket{
 		$this->onlySpawnV1Villagers = $this->getBool();
 		$this->personaDisabled = $this->getBool();
 		$this->customSkinsDisabled = $this->getBool();
+		if($this->emoteChatMuted >= ProtocolInfo::PROTOCOL_1_19_60){
+			$this->emoteChatMuted = $this->getBool();
+		}
 		$this->vanillaVersion = $this->getString();
 		$this->limitedWorldWidth = $this->getLInt();
 		$this->limitedWorldLength = $this->getLInt();
@@ -333,6 +337,9 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->onlySpawnV1Villagers);
 		$this->putBool($this->personaDisabled);
 		$this->putBool($this->customSkinsDisabled);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_60){
+			$this->putBool($this->emoteChatMuted);
+		}
 		$this->putString($this->vanillaVersion);
 		$this->putLInt($this->limitedWorldWidth);
 		$this->putLInt($this->limitedWorldLength);
