@@ -53,6 +53,7 @@ use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\types\StructureEditorData;
 use pocketmine\network\mcpe\protocol\types\StructureSettings;
 use pocketmine\utils\BinaryStream;
+use pocketmine\utils\Binary;
 use pocketmine\utils\UUID;
 use UnexpectedValueException;
 use function assert;
@@ -422,7 +423,7 @@ class NetworkBinaryStream extends BinaryStream{
 			$value = null;
 			switch($type){
 				case Entity::DATA_TYPE_BYTE:
-					$value = $this->getByte();
+					$value = Binary::signByte($this->getByte());
 					break;
 				case Entity::DATA_TYPE_SHORT:
 					$value = $this->getSignedLShort();
