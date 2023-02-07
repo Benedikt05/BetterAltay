@@ -60,6 +60,7 @@ class PlayerActionPacket extends DataPacket{
 	public const ACTION_CONTINUE_DESTROY_BLOCK = 27;
 	public const ACTION_START_ITEM_USE_ON = 28;
 	public const ACTION_STOP_ITEM_USE_ON = 29;
+	public const HANDLED_TELEPORT = 30;
 
 	/** @var int */
 	public $entityRuntimeId;
