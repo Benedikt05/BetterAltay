@@ -87,8 +87,7 @@ class SkinData{
 		$this->geometryDataEngineVersion = $geometryDataEngineVersion;
 		$this->animationData = $animationData;
 		$this->capeId = $capeId;
-		//this has to be unique or the client will do stupid things
-		$this->fullSkinId = $fullSkinId ?? UUID::fromRandom()->toString();
+		$this->fullSkinId = $fullSkinId ?? $skinId . $capeId;
 		$this->armSize = $armSize;
 		$this->skinColor = $skinColor;
 		$this->personaPieces = $personaPieces;
