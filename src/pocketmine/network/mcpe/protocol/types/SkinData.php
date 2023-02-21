@@ -70,13 +70,14 @@ class SkinData{
 	private $personaCapeOnClassic;
 	/** @var bool */
 	private $isPrimaryUser;
+	private bool $override;
 
 	/**
 	 * @param SkinAnimation[]         $animations
 	 * @param PersonaSkinPiece[]      $personaPieces
 	 * @param PersonaPieceTintColor[] $pieceTintColors
 	 */
-	public function __construct(string $skinId, string $playFabId, string $resourcePatch, SkinImage $skinImage, array $animations = [], SkinImage $capeImage = null, string $geometryData = "", string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK, string $animationData = "", string $capeId = "", ?string $fullSkinId = null, string $armSize = self::ARM_SIZE_WIDE, string $skinColor = "", array $personaPieces = [], array $pieceTintColors = [], bool $isVerified = true, bool $premium = false, bool $persona = false, bool $personaCapeOnClassic = false, bool $isPrimaryUser = true){
+	public function __construct(string $skinId, string $playFabId, string $resourcePatch, SkinImage $skinImage, array $animations = [], SkinImage $capeImage = null, string $geometryData = "", string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK, string $animationData = "", string $capeId = "", ?string $fullSkinId = null, string $armSize = self::ARM_SIZE_WIDE, string $skinColor = "", array $personaPieces = [], array $pieceTintColors = [], bool $isVerified = true, bool $premium = false, bool $persona = false, bool $personaCapeOnClassic = false, bool $isPrimaryUser = true, $override = true){
 		$this->skinId = $skinId;
 		$this->playFabId = $playFabId;
 		$this->resourcePatch = $resourcePatch;
@@ -98,6 +99,7 @@ class SkinData{
 		$this->persona = $persona;
 		$this->personaCapeOnClassic = $personaCapeOnClassic;
 		$this->isPrimaryUser = $isPrimaryUser;
+		$this->override = $override;
 	}
 
 	public function getSkinId() : string{
@@ -177,7 +179,13 @@ class SkinData{
 		return $this->personaCapeOnClassic;
 	}
 
-	public function isPrimaryUser() : bool{ return $this->isPrimaryUser; }
+	public function isPrimaryUser() : bool{
+		return $this->isPrimaryUser;
+	}
+
+	public function isOverride() : bool{
+		return $this->override;
+	}
 
 	public function isVerified() : bool{
 		return $this->isVerified;
