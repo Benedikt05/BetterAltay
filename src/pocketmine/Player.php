@@ -2207,21 +2207,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			true, //assume this is true? there's no field for it ...
 			$packet->clientData["OverrideSkin"] ?? true,
 		);
-		//TODO: REMOVE THIS
-		//Mojang forgot to bump the protocol version when they changed protocol in 1.19.62. Check the game version instead.
-		if(preg_match('/^(\d+)\.(\d+)\.(\d+)/', $packet->clientData["GameVersion"], $matches) !== 1){
-			throw new RuntimeException("Invalid game version format, expected at least 3 digits");
-		}
-		$major = (int) $matches[1];
-		$minor = (int) $matches[2];
-		$patch = (int) $matches[3];
-		if($major === 1 && $minor === 19 && $patch < 62){
-			$this->sendPlayStatus(PlayStatusPacket::LOGIN_FAILED_CLIENT, true);
-			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
-			$this->close("", "Incompatible Minecraft version (1.19.60)", false);
-
-			return true;
-		}
 
 		try{
 			$skin = SkinAdapterSingleton::get()->fromSkinData($skinData);
