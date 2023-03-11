@@ -120,10 +120,9 @@ class LevelEventPacket extends DataPacket{
 
 	public const EVENT_BLOCK_START_BREAK = 3600;
 	public const EVENT_BLOCK_STOP_BREAK = 3601;
+	public const EVENT_PLAYERS_SLEEPING = 3603;
 
 	public const EVENT_SET_DATA = 4000;
-
-	public const EVENT_PLAYERS_SLEEPING = 9800;
 
 	public const EVENT_ADD_PARTICLE_MASK = 0x4000;
 

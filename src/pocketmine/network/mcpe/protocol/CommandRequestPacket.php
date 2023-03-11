@@ -31,23 +31,27 @@ use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 class CommandRequestPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::COMMAND_REQUEST_PACKET;
 
-	/** @var string */
-	public $command;
-	/** @var CommandOriginData */
-	public $originData;
-	/** @var bool */
-	public $isInternal;
+	public string $command;
+	public CommandOriginData $originData;
+	public bool $isInternal;
+	public int $version;
 
 	protected function decodePayload(){
 		$this->command = $this->getString();
 		$this->originData = $this->getCommandOriginData();
 		$this->isInternal = $this->getBool();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_60){
+			$this->version = $this->getVarInt();
+		}
 	}
 
 	protected function encodePayload(){
 		$this->putString($this->command);
 		$this->putCommandOriginData($this->originData);
 		$this->putBool($this->isInternal);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_60){
+			$this->putVarInt($this->version);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

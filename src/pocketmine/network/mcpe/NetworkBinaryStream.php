@@ -42,6 +42,7 @@ use pocketmine\nbt\tag\NamedTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\types\GameRuleType;
@@ -53,6 +54,7 @@ use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\types\StructureEditorData;
 use pocketmine\network\mcpe\protocol\types\StructureSettings;
 use pocketmine\utils\BinaryStream;
+use pocketmine\utils\Binary;
 use pocketmine\utils\UUID;
 use UnexpectedValueException;
 use function assert;
@@ -143,6 +145,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$persona = $this->getBool();
 		$capeOnClassic = $this->getBool();
 		$isPrimaryUser = $this->getBool();
+		//$this->getBool()
 
 		return new SkinData($skinId, $skinPlayFabId, $skinResourcePatch, $skinData, $animations, $capeData, $geometryData, $geometryDataVersion, $animationData, $capeId, $fullSkinId, $armSize, $skinColor, $personaPieces, $pieceTintColors, true, $premium, $persona, $capeOnClassic, $isPrimaryUser);
 	}
@@ -190,6 +193,9 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putBool($skin->isPersona());
 		$this->putBool($skin->isPersonaCapeOnClassic());
 		$this->putBool($skin->isPrimaryUser());
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_63){//TODO: 1.19.62
+			$this->putBool($skin->isOverride());
+		}
 	}
 
 	private function getSkinImage() : SkinImage{
@@ -424,7 +430,7 @@ class NetworkBinaryStream extends BinaryStream{
 			$value = null;
 			switch($type){
 				case Entity::DATA_TYPE_BYTE:
-					$value = $this->getByte();
+					$value = Binary::signByte($this->getByte());
 					break;
 				case Entity::DATA_TYPE_SHORT:
 					$value = $this->getSignedLShort();
