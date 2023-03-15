@@ -73,4 +73,5 @@ final class PlayerAuthInputFlags{
 	public const PERFORM_BLOCK_ACTIONS = 35;
 	public const PERFORM_ITEM_STACK_REQUEST = 36;
 	public const HANDLE_TELEPORT = 37;
+	public const EMOTING = 38;
 }

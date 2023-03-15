@@ -139,6 +139,9 @@ class StartGamePacket extends DataPacket{
 	public $isWorldTemplateOptionLocked = false;
 	/** @var bool */
 	public $onlySpawnV1Villagers = false;
+	public bool $personaDisabled = false;
+	public bool $customSkinsDisabled = false;
+	public bool $emoteChatMuted = true; //Prevent spam
 	/** @var string */
 	public $vanillaVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
 	/** @var int */
@@ -152,6 +155,8 @@ class StartGamePacket extends DataPacket{
 	/** @var bool|null */
 	public $experimentalGameplayOverride = null;
 
+	public int $chatRestrictionLevel = 0; //None
+	public bool $disablePlayerInteractions = false;
 	/** @var string */
 	public $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	/** @var string */
@@ -184,14 +189,10 @@ class StartGamePacket extends DataPacket{
 	public $enableNewInventorySystem = false; //TODO
 	/** @var string */
 	public $serverSoftwareVersion;
+	//playerActorProperties
 	public int $blockPaletteChecksum;
 	public UUID $worldTemplateId;
-	public bool $personaDisabled = false;
-	public bool $customSkinsDisabled = false;
-	public int $chatRestrictionLevel = 0; //None
-	public bool $disablePlayerInteractions = false;
 	public bool $clientSideGeneration = false;
-	public bool $emoteChatMuted = true; //Prevent spam
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();

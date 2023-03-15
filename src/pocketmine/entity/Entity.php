@@ -382,6 +382,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_SONIC_BOOM = 107;
 	public const DATA_FLAG_HAS_DASH_COOLDOWN = 108;
 	public const DATA_FLAG_PUSH_TOWARDS_CLOSEST_SPACE = 109;
+	public const DATA_FLAG_SCENTING = 110;
+	public const DATA_FLAG_RISING = 111;
+	public const DATA_FLAG_FEELING_HAPPY = 112;
+	public const DATA_FLAG_SEARCHING = 113;
 
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
