@@ -216,7 +216,6 @@ use pocketmine\timings\Timings;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
-use RuntimeException;
 use UnexpectedValueException;
 use function abs;
 use function array_key_exists;
