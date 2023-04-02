@@ -7,7 +7,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 use AssertionError;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 
-final class UpdateAbilitiesPacketLayer{
+final class AbilitiesLayer{
 	
 	public const LAYER_CACHE = 0;
 	public const LAYER_BASE = 1;

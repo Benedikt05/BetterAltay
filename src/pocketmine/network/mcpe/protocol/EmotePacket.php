@@ -32,13 +32,11 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 	public const NETWORK_ID = ProtocolInfo::EMOTE_PACKET;
 
 	public const FLAG_SERVER = 1 << 0;
+	public const FLAG_MUTE_EMOTE_CHAT = 1 << 1;
 
-	/** @var int */
-	private $entityRuntimeId;
-	/** @var string */
-	private $emoteId;
-	/** @var int */
-	private $flags;
+	private int $entityRuntimeId;
+	private string $emoteId;
+	private int $flags;
 
 	public static function create(int $entityRuntimeId, string $emoteId, int $flags) : self{
 		$result = new self;
