@@ -37,13 +37,14 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = self::PROTOCOL_1_19_63;
+	public const CURRENT_PROTOCOL = 575;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
-	public const MINECRAFT_VERSION = 'v1.19.30 - 1.19.63';
-    /** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.19.63';
+	public const MINECRAFT_VERSION = 'v1.19.30 - 1.19.70';
+	/** Version number sent to clients in ping responses. */
+	public const MINECRAFT_VERSION_NETWORK = '1.19.70';
 
-	public const ACCEPTED_PROTOCOLS = [self::PROTOCOL_1_19_30, self::PROTOCOL_1_19_40, self::PROTOCOL_1_19_50, self::PROTOCOL_1_19_60, self::PROTOCOL_1_19_63];
+	public const ACCEPTED_PROTOCOLS = [self::PROTOCOL_1_19_30, self::PROTOCOL_1_19_40, self::PROTOCOL_1_19_50, self::PROTOCOL_1_19_60, self::PROTOCOL_1_19_63, self::PROTOCOL_1_19_70];
+	public const PROTOCOL_1_19_70 = 575;
 	public const PROTOCOL_1_19_63 = 568;
 	public const PROTOCOL_1_19_60 = 567;
 	public const PROTOCOL_1_19_50 = 560;

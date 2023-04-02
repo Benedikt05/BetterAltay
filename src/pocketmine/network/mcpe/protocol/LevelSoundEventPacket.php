@@ -358,7 +358,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_AMBIENT_CRIMSON_FOREST_ADDITIONS = 327;
 	public const SOUND_BUCKET_FILL_POWDER_SNOW = 328;
 	public const SOUND_BUCKET_EMPTY_POWDER_SNOW = 329;
-	public const SOUND_ENCHANTING_TABLE_USE = 442;
+	public const SOUND_BLOCK_ENCHANTING_TABLE_USE = 442;
 	public const SOUND_STEP_SAND = 443;
 	public const SOUND_DASH_READY = 444;
 	public const SOUND_BUNDLE_DROP_CONTENTS = 445;
@@ -370,15 +370,19 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BUTTON_CLICK_ON = 451;
 	public const SOUND_DOOR_OPEN = 452;
 	public const SOUND_DOOR_CLOSE = 453;
-	public const SOUND_TRAP_DOOR_OPEN = 454;
-	public const SOUND_TRAP_DOOR_CLOSE = 455;
+	public const SOUND_TRAPDOOR_OPEN = 454;
+	public const SOUND_TRAPDOOR_CLOSE = 455;
 	public const SOUND_FENCE_GATE_OPEN = 456;
 	public const SOUND_FENCE_GATE_CLOSE = 457;
 	public const SOUND_INSERT = 458;
 	public const SOUND_PICKUP = 459;
 	public const SOUND_INSERT_ENCHANTED = 460;
 	public const SOUND_PICKUP_ENCHANTED = 461;
-	public const SOUND_UNDEFINED = 462;
+	public const SOUND_BRUSH = 462;
+	public const SOUND_BRUSH_COMPLETED = 463;
+	public const SOUND_SHATTER_POT = 464;
+	public const SOUND_BREAK_POT = 465;
+	public const SOUND_UNDEFINED = 466;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
 		$result = new self;

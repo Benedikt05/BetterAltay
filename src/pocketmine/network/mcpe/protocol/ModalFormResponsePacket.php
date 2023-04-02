@@ -43,10 +43,16 @@ class ModalFormResponsePacket extends DataPacket{
 	protected function encodePayload(){
 		$this->putUnsignedVarInt($this->formId);
 		if($this->formData !== null){
+			$this->putBool(true);
 			$this->putString($this->formData);
+		}else{
+			$this->putBool(false);
 		}
 		if($this->cancelReason !== null){
+			$this->putBool(true);
 			$this->putByte($this->cancelReason);
+		}else{
+			$this->putBool(false);
 		}
 	}
 

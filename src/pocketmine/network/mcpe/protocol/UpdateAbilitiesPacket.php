@@ -9,7 +9,7 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
-use pocketmine\network\mcpe\protocol\types\UpdateAbilitiesPacketLayer;
+use pocketmine\network\mcpe\protocol\types\AbilitiesLayer;
 
 class UpdateAbilitiesPacket extends DataPacket{
 
@@ -26,7 +26,7 @@ class UpdateAbilitiesPacket extends DataPacket{
 		$this->commandPermission = $this->getByte();
 		$this->abilityLayers = [];
 		for($i = 0, $len = $this->getByte(); $i < $len; $i++){
-			$this->abilityLayers[] = UpdateAbilitiesPacketLayer::decode($this);
+			$this->abilityLayers[] = AbilitiesLayer::decode($this);
 		}
 	}
 

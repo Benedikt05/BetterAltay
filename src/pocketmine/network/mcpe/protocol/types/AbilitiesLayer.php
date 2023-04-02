@@ -7,7 +7,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 use AssertionError;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 
-final class UpdateAbilitiesPacketLayer{
+final class AbilitiesLayer{
 	
 	public const LAYER_CACHE = 0;
 	public const LAYER_BASE = 1;
@@ -33,8 +33,9 @@ final class UpdateAbilitiesPacketLayer{
 	public const ABILITY_MUTED = 15;
 	public const ABILITY_WORLD_BUILDER = 16;
 	public const ABILITY_NO_CLIP = 17;
+	public const ABILITY_PRIVILEGED_BUILDER = 18;
 
-	public const NUMBER_OF_ABILITIES = 18;
+	public const NUMBER_OF_ABILITIES = 19;
 
 	/**
 	 * @param bool[] $boolAbilities
