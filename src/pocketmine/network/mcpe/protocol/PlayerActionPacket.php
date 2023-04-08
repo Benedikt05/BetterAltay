@@ -64,9 +64,9 @@ class PlayerActionPacket extends DataPacket{
 
 	public int $entityRuntimeId;
 	public int $action;
-	public int $x;
-	public int $y;
-	public int $z;	
+	public ?int $x = null;
+	public ?int $y = null;
+	public ?int $z = null;
 	public ?int $resultX = null;
 	public ?int $resultY = null;
 	public ?int $resultZ = null;
