@@ -41,7 +41,7 @@ class ReversePriorityQueue extends SplPriorityQueue{
 	 *
 	 * @return int
 	 */
-	public function compare($priority1, $priority2){
+	public function compare($priority1, $priority2) : int{
 		//TODO: this will crash if non-numeric priorities are used
 		return (int) -($priority1 - $priority2);
 	}
