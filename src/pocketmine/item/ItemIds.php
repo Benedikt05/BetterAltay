@@ -262,6 +262,10 @@ interface ItemIds extends BlockIds{
 	public const RECORD_WAIT = 511;
 
 	public const SHIELD = 513;
+
+	public const HONEYCOMB = 736;
+	public const HONEY_BOTTLE = 737;
+
 	public const NETHERITE_INGOT = 742;
 	public const NETHERITE_SWORD = 743;
 	public const NETHERITE_SHOVEL = 744;
