@@ -263,6 +263,8 @@ interface ItemIds extends BlockIds{
 
 	public const SHIELD = 513;
 
+	public const SPYGLASS = 772;
+
 	public const HONEYCOMB = 736;
 	public const HONEY_BOTTLE = 737;
 
