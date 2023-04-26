@@ -18,7 +18,8 @@
             "4": "minecraft:acacia_boat",
             "5": "minecraft:dark_oak_boat",
             "6": "minecraft:mangrove_boat",
-            "7": "minecraft:bamboo_raft"
+            "7": "minecraft:bamboo_raft",
+            "8": "minecraft:cherry_boat"
         },
         "minecraft:bucket": {
             "1": "minecraft:milk_bucket",
@@ -40,7 +41,8 @@
             "4": "minecraft:acacia_chest_boat",
             "5": "minecraft:dark_oak_chest_boat",
             "6": "minecraft:mangrove_chest_boat",
-            "7": "minecraft:bamboo_chest_raft"
+            "7": "minecraft:bamboo_chest_raft",
+            "8": "minecraft:cherry_chest_boat"
         },
         "minecraft:coal": {
             "1": "minecraft:charcoal"
@@ -66,6 +68,32 @@
             "7": "minecraft:light_gray_dye",
             "8": "minecraft:gray_dye",
             "9": "minecraft:pink_dye"
+        },
+        "minecraft:fence": {
+            "0": "minecraft:oak_fence",
+            "1": "minecraft:spruce_fence",
+            "2": "minecraft:birch_fence",
+            "3": "minecraft:jungle_fence",
+            "4": "minecraft:acacia_fence",
+            "5": "minecraft:dark_oak_fence"
+        },
+        "minecraft:log": {
+            "0": "minecraft:oak_log",
+            "1": "minecraft:spruce_log",
+            "10": "minecraft:birch_log",
+            "11": "minecraft:jungle_log",
+            "2": "minecraft:birch_log",
+            "3": "minecraft:jungle_log",
+            "5": "minecraft:spruce_log",
+            "6": "minecraft:birch_log",
+            "7": "minecraft:jungle_log",
+            "9": "minecraft:spruce_log"
+        },
+        "minecraft:log2": {
+            "0": "minecraft:acacia_log",
+            "1": "minecraft:dark_oak_log",
+            "5": "minecraft:dark_oak_log",
+            "9": "minecraft:dark_oak_log"
         },
         "minecraft:spawn_egg": {
             "10": "minecraft:chicken_spawn_egg",

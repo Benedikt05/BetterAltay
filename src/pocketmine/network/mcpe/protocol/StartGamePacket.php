@@ -80,6 +80,8 @@ class StartGamePacket extends DataPacket{
 	/** @var bool */
 	public $hasAchievementsDisabled = true;
 	public bool $isEditorMode = false;
+	public bool $createdInEditor = false;
+	public bool $exportedFromEditor = false;
 	/** @var int */
 	public $time = -1;
 	/** @var int */
@@ -193,6 +195,7 @@ class StartGamePacket extends DataPacket{
 	public int $blockPaletteChecksum;
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
+	public bool $blockNetworkIdsAreHashes = false;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -213,6 +216,8 @@ class StartGamePacket extends DataPacket{
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
 		$this->isEditorMode = $this->getBool();
+		$this->createdInEditor = $this->getBool();
+		$this->exportedFromEditor = $this->getBool();
 		$this->time = $this->getVarInt();
 		$this->eduEditionOffer = $this->getVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
@@ -287,6 +292,7 @@ class StartGamePacket extends DataPacket{
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
+		$this->blockNetworkIdsAreHashes = $this->getBool();
 	}
 
 	protected function encodePayload(){
@@ -308,6 +314,8 @@ class StartGamePacket extends DataPacket{
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
 		$this->putBool($this->isEditorMode);
+		$this->putBool($this->createdInEditor);
+		$this->putBool($this->exportedFromEditor);
 		$this->putVarInt($this->time);
 		$this->putVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
@@ -378,6 +386,7 @@ class StartGamePacket extends DataPacket{
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
+		$this->putBool($this->blockNetworkIdsAreHashes);
 	}
 
 	public function handle(NetworkSession $session) : bool{

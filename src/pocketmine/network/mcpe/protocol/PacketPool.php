@@ -35,7 +35,7 @@ class PacketPool{
 	 * @return void
 	 */
 	public static function init(){
-		static::$pool = new SplFixedArray(256);
+		static::$pool = new SplFixedArray(512);
 
 		static::registerPacket(new LoginPacket());
 		static::registerPacket(new PlayStatusPacket());
@@ -203,7 +203,6 @@ class PacketPool{
 		static::registerPacket(new EduUriResourcePacket());
 		static::registerPacket(new CreatePhotoPacket());
 		static::registerPacket(new UpdateSubChunkBlocksPacket());
-		static::registerPacket(new PhotoInfoRequestPacket());
 		static::registerPacket(new SubChunkPacket());
 		static::registerPacket(new SubChunkRequestPacket());
 		static::registerPacket(new PlayerStartItemCooldownPacket());
@@ -219,6 +218,7 @@ class PacketPool{
 		static::registerPacket(new DeathInfoPacket());
 		static::registerPacket(new RequestAbilityPacket());
 		static::registerPacket(new UpdateClientInputLocksPacket());
+		static::registerPacket(new OpenSignPacket());
 	}
 
 	/**

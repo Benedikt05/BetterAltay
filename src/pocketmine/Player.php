@@ -3322,7 +3322,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$this->toggleSwim(false);
 				}
 				break;
-				break;
 			case PlayerActionPacket::ACTION_INTERACT_BLOCK: //TODO: ignored (for now)
 				break;
 			case PlayerActionPacket::ACTION_CREATIVE_PLAYER_DESTROY_BLOCK:
@@ -3566,7 +3565,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if(lcg_value() <= $tile->getItemDropChance()){
 				$this->level->dropItem($tile->getBlock(), $tile->getItem());
 			}
-			$tile->setItem(null);
+			$tile->setItem();
 			$tile->setItemRotation(0);
 		}
 

@@ -58,3 +58,4 @@ src/pocketmine/resources/vanilla/recipes/*
 src/pocketmine/resources/vanilla/block_id_to_item_id_map.json
 src/pocketmine/resources/vanilla/block_state_meta_map.json
 src/pocketmine/resources/vanilla/command_arg_types.json
+src/pocketmine/resources/vanilla/item_tags.json

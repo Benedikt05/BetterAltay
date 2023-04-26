@@ -118,9 +118,9 @@ use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
 use pocketmine\network\mcpe\protocol\NpcDialoguePacket;
 use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
+use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
 use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
-use pocketmine\network\mcpe\protocol\PhotoInfoRequestPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -878,10 +878,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handlePhotoInfoRequest(PhotoInfoRequestPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleSubChunk(SubChunkPacket $packet) : bool{
 		return false;
 	}
@@ -941,4 +937,9 @@ abstract class NetworkSession{
 	public function handleUpdateClientInputLocks(UpdateClientInputLocksPacket $packet) : bool{
 		return false;
 	}
+
+	public function handleOpenSign(OpenSignPacket $packet) : bool{
+		return false;
+	}
+
 }

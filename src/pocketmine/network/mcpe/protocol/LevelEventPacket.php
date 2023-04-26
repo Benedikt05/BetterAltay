@@ -69,6 +69,7 @@ class LevelEventPacket extends DataPacket{
 	public const EVENT_SOUND_ARMOR_STAND_HIT = 1061;
 	public const EVENT_SOUND_ARMOR_STAND_FALL = 1062;
 	public const EVENT_SOUND_ARMOR_STAND_PLACE = 1063;
+	public const EVENT_SOUND_AMETHYST_RESONATE = 1067;
 
 	//TODO: check 2000-2017
 	public const EVENT_PARTICLE_SHOOT = 2000;
@@ -120,7 +121,14 @@ class LevelEventPacket extends DataPacket{
 
 	public const EVENT_BLOCK_START_BREAK = 3600;
 	public const EVENT_BLOCK_STOP_BREAK = 3601;
-	public const EVENT_PLAYERS_SLEEPING = 3603;
+	public const EVENT_PARTICLES_CRACK_BLOCK_DOWN = 3603;
+	public const EVENT_PARTICLE_BREAK_BLOCK_UP = 3604;
+	public const EVENT_PARTICLE_BREAK_BLOCK_NORTH = 3605;
+	public const EVENT_PARTICLE_BREAK_BLOCK_SOUTH = 3606;
+	public const EVENT_PARTICLE_BREAK_BLOCK_WEST = 3607;
+	public const EVENT_PARTICLE_BREAK_BLOCK_EAST = 3608;
+	public const EVENT_PLAYERS_SLEEPING = 3609;
+
 
 	public const EVENT_SET_DATA = 4000;
 

@@ -41,6 +41,7 @@ use function sprintf;
 use function strlen;
 
 class Sign extends Spawnable{
+	public const TAG_TEXT_ROOT = "FrontText";
 	public const TAG_TEXT_BLOB = "Text";
 	public const TAG_TEXT_LINE = "Text%d"; //sprintf()able
 
@@ -58,7 +59,9 @@ class Sign extends Spawnable{
 	protected $editorEntityRuntimeId = null;
 
 	protected function readSaveData(CompoundTag $nbt) : void{
-		if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){ //MCPE 1.2 save format
+		if ($nbt->hasTag(self::TAG_TEXT_ROOT, CompoundTag::class)){ //MCPE 1.19.80 save format
+			$this->text = self::fixTextBlob($nbt->getCompoundTag(self::TAG_TEXT_ROOT)->getString(self::TAG_TEXT_BLOB, ""));
+		}else if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){ //MCPE 1.2 save format
 			$this->text = self::fixTextBlob($nbt->getString(self::TAG_TEXT_BLOB));
 		}else{
 			for($i = 1; $i <= 4; ++$i){
@@ -68,18 +71,16 @@ class Sign extends Spawnable{
 				}
 			}
 		}
+
 		$this->text = array_map(function(string $line) : string{
 			return mb_scrub($line, 'UTF-8');
 		}, $this->text);
 	}
 
 	protected function writeSaveData(CompoundTag $nbt) : void{
-		$nbt->setString(self::TAG_TEXT_BLOB, implode("\n", $this->text));
-
-		for($i = 1; $i <= 4; ++$i){ //Backwards-compatibility
-			$textKey = sprintf(self::TAG_TEXT_LINE, $i);
-			$nbt->setString($textKey, $this->getLine($i - 1));
-		}
+		$signNbt = new CompoundTag(self::TAG_TEXT_ROOT);
+		$signNbt->setString(self::TAG_TEXT_BLOB, implode("\n", $this->text));
+		$nbt->setTag($signNbt);
 	}
 
 	/**
@@ -162,8 +163,10 @@ class Sign extends Spawnable{
 			return false;
 		}
 
-		if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){
+		if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){ //MCPE 1.2 save format
 			$lines = self::fixTextBlob($nbt->getString(self::TAG_TEXT_BLOB));
+		}else if($nbt->hasTag(self::TAG_TEXT_ROOT, CompoundTag::class)){ //MCPE 1.19.80 save format
+			$lines = self::fixTextBlob($nbt->getCompoundTag(self::TAG_TEXT_ROOT)->getString(self::TAG_TEXT_BLOB, ""));
 		}else{
 			return false;
 		}
