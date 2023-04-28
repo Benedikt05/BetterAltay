@@ -17,12 +17,12 @@ class OpenSignPacket extends DataPacket{
 	public int $z;
 	public bool $isFrontSide;
 
-	public function decodePayload(){
+	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->isFrontSide = $this->getBool();
 	}
 
-	public function encodePayload(){
+	protected function encodePayload(){
 		$this->putBlockPosition($this->x, $this->y, $this->z);
 		$this->putBool($this->isFrontSide);
 	}
