@@ -26,8 +26,11 @@ namespace pocketmine\tile;
 use InvalidArgumentException;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
+use pocketmine\utils\Binary;
+use pocketmine\utils\Color;
 use pocketmine\utils\TextFormat;
 use UnexpectedValueException;
 use function array_map;
@@ -44,6 +47,8 @@ class Sign extends Spawnable{
 	public const TAG_TEXT_ROOT = "FrontText";
 	public const TAG_TEXT_BLOB = "Text";
 	public const TAG_TEXT_LINE = "Text%d"; //sprintf()able
+	public const TAG_TEXT_COLOR = "SignTextColor";
+	public const TAG_GLOWING_TEXT = "IgnoreLighting";
 
 	/**
 	 * @return string[]
@@ -58,7 +63,24 @@ class Sign extends Spawnable{
 	/** @var int|null */
 	protected $editorEntityRuntimeId = null;
 
+	/** @var Color  */
+	protected Color $textColor;
+
+	/** @var bool  */
+	private bool $glowing = false;
+
 	protected function readSaveData(CompoundTag $nbt) : void{
+		if($nbt->hasTag(self::TAG_GLOWING_TEXT)){
+			$this->glowing = $nbt->getByte(self::TAG_GLOWING_TEXT, 0) == 1;
+		}
+
+		$this->textColor = new Color(0, 0, 0);
+		if($nbt->hasTag(self::TAG_TEXT_COLOR)){
+			if(($baseColor = $nbt->getTag(self::TAG_TEXT_COLOR)) instanceof IntTag){
+				$this->textColor = Color::fromARGB(Binary::unsignInt($baseColor()));
+			}
+		}
+
 		if ($nbt->hasTag(self::TAG_TEXT_ROOT, CompoundTag::class)){ //MCPE 1.19.80 save format
 			$this->text = self::fixTextBlob($nbt->getCompoundTag(self::TAG_TEXT_ROOT)->getString(self::TAG_TEXT_BLOB, ""));
 		}else if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){ //MCPE 1.2 save format
@@ -81,6 +103,8 @@ class Sign extends Spawnable{
 		$signNbt = new CompoundTag(self::TAG_TEXT_ROOT);
 		$signNbt->setString(self::TAG_TEXT_BLOB, implode("\n", $this->text));
 		$nbt->setTag($signNbt);
+		$nbt->setInt(self::TAG_TEXT_COLOR, Binary::signInt($this->textColor->toARGB()));
+		$nbt->setByte(self::TAG_GLOWING_TEXT, $this->glowing ? 1 : 0);
 	}
 
 	/**
@@ -136,6 +160,34 @@ class Sign extends Spawnable{
 	 */
 	public function getText() : array{
 		return $this->text;
+	}
+
+	/**
+	 * @param bool $glowing
+	 */
+	public function setGlowing(bool $glowing) : void{
+		$this->glowing = $glowing;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isGlowing() : bool{
+		return $this->glowing;
+	}
+
+	/**
+	 * @param Color $textColor
+	 */
+	public function setTextColor(Color $textColor) : void{
+		$this->textColor = $textColor;
+	}
+
+	/**
+	 * @return Color
+	 */
+	public function getTextColor() : Color{
+		return $this->textColor;
 	}
 
 	/**
