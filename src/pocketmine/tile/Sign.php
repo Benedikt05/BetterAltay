@@ -25,6 +25,8 @@ namespace pocketmine\tile;
 
 use InvalidArgumentException;
 use pocketmine\event\block\SignChangeEvent;
+use pocketmine\level\Level;
+use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
@@ -49,6 +51,7 @@ class Sign extends Spawnable{
 	public const TAG_TEXT_LINE = "Text%d"; //sprintf()able
 	public const TAG_TEXT_COLOR = "SignTextColor";
 	public const TAG_GLOWING_TEXT = "IgnoreLighting";
+	public const TAG_LEGACY_BUG_RESOLVE = "TextIgnoreLegacyBugResolved";
 
 	/**
 	 * @return string[]
@@ -67,18 +70,26 @@ class Sign extends Spawnable{
 	protected Color $textColor;
 
 	/** @var bool  */
-	private bool $glowing = false;
+	private bool $glowing;
+
+	public function __construct(Level $level, CompoundTag $nbt, bool $glowing = false){
+		parent::__construct($level, $nbt);
+
+		$this->glowing = $glowing;
+	}
 
 	protected function readSaveData(CompoundTag $nbt) : void{
-		if($nbt->hasTag(self::TAG_GLOWING_TEXT)){
-			$this->glowing = $nbt->getByte(self::TAG_GLOWING_TEXT, 0) == 1;
-		}
-
 		$this->textColor = new Color(0, 0, 0);
 		if($nbt->hasTag(self::TAG_TEXT_COLOR)){
 			if(($baseColor = $nbt->getTag(self::TAG_TEXT_COLOR)) instanceof IntTag){
-				$this->textColor = Color::fromARGB(Binary::unsignInt($baseColor()));
+				$this->textColor = Color::fromARGB(Binary::unsignInt($baseColor->getValue()));
 			}
+		}
+
+		if(($glowingTag = $nbt->getTag(self::TAG_GLOWING_TEXT)) instanceof ByteTag &&
+			($lightingBugResolvedTag = $nbt->getTag(self::TAG_LEGACY_BUG_RESOLVE)) instanceof ByteTag){
+			$glowingText = $glowingTag->getValue() !== 0 && $lightingBugResolvedTag->getValue() !== 0;
+			$this->glowing = $glowingText;
 		}
 
 		if ($nbt->hasTag(self::TAG_TEXT_ROOT, CompoundTag::class)){ //MCPE 1.19.80 save format
@@ -105,6 +116,7 @@ class Sign extends Spawnable{
 		$nbt->setTag($signNbt);
 		$nbt->setInt(self::TAG_TEXT_COLOR, Binary::signInt($this->textColor->toARGB()));
 		$nbt->setByte(self::TAG_GLOWING_TEXT, $this->glowing ? 1 : 0);
+		$nbt->setByte(self::TAG_LEGACY_BUG_RESOLVE, 1);
 	}
 
 	/**

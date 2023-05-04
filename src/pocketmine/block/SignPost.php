@@ -24,13 +24,16 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\event\block\SignOpenEditEvent;
+use pocketmine\item\Dye;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\Player;
 use pocketmine\tile\Sign as TileSign;
 use pocketmine\tile\Tile;
+use pocketmine\utils\Color;
 use function floor;
 
 class SignPost extends Transparent{
@@ -102,6 +105,26 @@ class SignPost extends Transparent{
 	public function onActivate(Item $item, Player $player = null) : bool{
 		if(!$player instanceof Player){
 			return false;
+		}
+
+		$tile = $this->getLevelNonNull()->getTile($this);
+		if($tile instanceof TileSign){
+			$color = $item instanceof Dye ? $item->getColorFromMeta() : match ($item->getId()){
+				ItemIds::BONE => new Color(0xf0, 0xf0, 0xf0),
+				BlockIds::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
+				BlockIds::COCOA => new Color(0x83, 0x54, 0x32),
+				default => null
+			};
+
+			if(!is_null($color)){
+				$tile->setTextColor($color);
+				$this->level->setBlock($this, $this, true);
+				return true;
+			}else if($item->getId() == ItemIds::GLOWSTONE_DUST){
+				$tile->setGlowing(true);
+				$this->level->setBlock($this, $this, true);
+				return true;
+			}
 		}
 
 		$signPos = new Vector3($this->getX(), $this->getFloorY(), $this->getZ());
