@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\event\block\SignOpenEditEvent;
 use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
@@ -59,6 +60,13 @@ class SignPost extends Transparent{
 	}
 
 	protected function onOpenEditor(Player $player, Vector3 $vector3) : void{
+		$ev = new SignOpenEditEvent($this, $player, true);
+		$ev->call();
+
+		if($ev->isCancelled()){
+			return;
+		}
+
 		$pk = new OpenSignPacket();
 		$pk->isFrontSide = true;
 		$pk->x = $vector3->getX();
