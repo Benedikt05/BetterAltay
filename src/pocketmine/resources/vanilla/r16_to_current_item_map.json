@@ -80,20 +80,12 @@
         "minecraft:log": {
             "0": "minecraft:oak_log",
             "1": "minecraft:spruce_log",
-            "10": "minecraft:birch_log",
-            "11": "minecraft:jungle_log",
             "2": "minecraft:birch_log",
-            "3": "minecraft:jungle_log",
-            "5": "minecraft:spruce_log",
-            "6": "minecraft:birch_log",
-            "7": "minecraft:jungle_log",
-            "9": "minecraft:spruce_log"
+            "3": "minecraft:jungle_log"
         },
         "minecraft:log2": {
             "0": "minecraft:acacia_log",
-            "1": "minecraft:dark_oak_log",
-            "5": "minecraft:dark_oak_log",
-            "9": "minecraft:dark_oak_log"
+            "1": "minecraft:dark_oak_log"
         },
         "minecraft:spawn_egg": {
             "10": "minecraft:chicken_spawn_egg",
