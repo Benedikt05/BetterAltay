@@ -3214,7 +3214,27 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$ev->call();
 		if(!$ev->isCancelled()){
-			$this->inventory->setItemInHand($ev->getResultItem());
+			$resultItem = $ev->getResultItem();
+			$sendItem = function(Item $item): void {
+				$this->inventory->setItemInHand($item);
+			};
+			foreach ($this->inventory->getContents() as $slot => $item) {
+				if ($item->equals($resultItem)) {
+					if ($slot < 0) {
+						$sendItem($resultItem);
+						break;
+					} else if ($slot >= 9) {
+						$heldItemIndex = $this->inventory->getHeldItemIndex();
+						$item2 = $this->inventory->getItem($heldItemIndex);
+						$item = Item::get($item2->getId(), $item2->getDamage(), $item2->getCount(), $item2->getNamedTag());
+						$sendItem($item);
+						continue;
+					}
+					$this->inventory->setHeldItemIndex($slot);
+				} else if (!$this->inventory->contains($resultItem)) {
+					$sendItem($resultItem);
+				}
+			}
 		}
 
 		return true;
