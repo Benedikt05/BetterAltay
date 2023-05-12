@@ -1644,6 +1644,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			AbilitiesLayer::ABILITY_OPEN_CONTAINERS => !$this->isSpectator(),
 			AbilitiesLayer::ABILITY_ATTACK_PLAYERS => !$this->isSpectator(),
 			AbilitiesLayer::ABILITY_ATTACK_MOBS => !$this->isSpectator(),
+			AbilitiesLayer::ABILITY_PRIVILEGED_BUILDER => false
 		];
 
 		$pk->abilityLayers = [
@@ -2432,7 +2433,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		switch($packet->status){
 			case ResourcePackClientResponsePacket::STATUS_REFUSED:
 				//TODO: add lang strings for this
-				$this->close("", "You must accept resource packs to join this server.", true);
+				$this->close("", "You must accept resource packs to join this server.");
 				break;
 			case ResourcePackClientResponsePacket::STATUS_SEND_PACKS:
 				$manager = $this->server->getResourcePackManager();

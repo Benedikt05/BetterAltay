@@ -71,7 +71,7 @@ class SignPost extends Transparent{
 		}
 
 		$pk = new OpenSignPacket();
-		$pk->isFrontSide = true;
+		$pk->frontSide = true;
 		$pk->x = $vector3->getX();
 		$pk->y = $vector3->getY();
 		$pk->z = $vector3->getZ();

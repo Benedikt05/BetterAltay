@@ -15,16 +15,16 @@ class OpenSignPacket extends DataPacket{
 	public int $x;
 	public int $y;
 	public int $z;
-	public bool $isFrontSide;
+	public bool $frontSide;
 
 	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);
-		$this->isFrontSide = $this->getBool();
+		$this->frontSide = $this->getBool();
 	}
 
 	protected function encodePayload(){
 		$this->putBlockPosition($this->x, $this->y, $this->z);
-		$this->putBool($this->isFrontSide);
+		$this->putBool($this->frontSide);
 	}
 
 	public function handle(NetworkSession $session) : bool{

@@ -2581,6 +2581,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->motion = $this->getMotion();
 		$pk->yaw = $this->yaw;
 		$pk->headYaw = $this->headYaw ?? $this->yaw;
+		$pk->bodyYaw = $this->yaw;
 		$pk->pitch = $this->pitch;
 		$pk->attributes = $this->attributeMap->getAll();
 		$pk->metadata = $this->propertyManager->getAll();
