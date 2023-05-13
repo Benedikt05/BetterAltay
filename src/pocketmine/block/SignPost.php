@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\event\block\SignOpenEditEvent;
+use pocketmine\event\block\SignTextColorChangeEvent;
 use pocketmine\item\Dye;
 use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
@@ -117,7 +118,14 @@ class SignPost extends Transparent{
 			};
 
 			if(!is_null($color)){
-				$tile->setTextColor($color);
+				$ev = new SignTextColorChangeEvent($this, $color);
+				$ev->call();
+
+				if($ev->isCancelled()){
+					return false;
+				}
+
+				$tile->setTextColor($ev->getColor());
 				$this->level->setBlock($this, $this, true);
 				return true;
 			}else if($item->getId() == ItemIds::GLOWSTONE_DUST){
