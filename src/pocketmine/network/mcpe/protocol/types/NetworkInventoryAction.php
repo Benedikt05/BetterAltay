@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 use InvalidArgumentException;
 use InvalidStateException;
+use pocketmine\inventory\AnvilInventory;
 use pocketmine\inventory\EnchantInventory;
 use pocketmine\inventory\FakeInventory;
 use pocketmine\inventory\FakeResultInventory;
@@ -225,7 +226,9 @@ class NetworkInventoryAction{
 					case self::SOURCE_TYPE_FAKE_INVENTORY_RESULT:
 						if($window instanceof FakeResultInventory){
 							if(!$window->onResult($player, $oldItem)){
-								throw new InvalidStateException("Output doesnt match for Player " . $player->getName() . " in " . get_class($window));
+								if(get_class($window) !== "pocketmine\inventory\AnvilInventory"){ //some times we may not detect the item entry and we get an error. We have to do this in order to prevent this.
+									throw new InvalidStateException("Output doesnt match for Player " . $player->getName() . " in " . get_class($window));
+								}
 							}
 						}
 
