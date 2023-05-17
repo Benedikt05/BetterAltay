@@ -243,6 +243,8 @@ class AnvilInventory extends ContainerInventory implements FakeInventory, FakeRe
 				if(!$player->isCreative()){
 					$player->addXpLevels(max(-$player->getXpLevel(), -$levelCost));
 				}
+				$this->clear(self::SLOT_INPUT);
+				$player->getInventory()->addItem($result);
 
 				$block = $player->level->getBlock($this->getHolder());
 				if(!$player->isCreative() and $block instanceof Anvil and $player->random->nextFloat() < 0.12){
