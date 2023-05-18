@@ -34,6 +34,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\level\GameRules;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
@@ -129,9 +130,9 @@ class Boat extends Vehicle{
 	}
 
 	public function saveNBT() : void{
-		parent::saveNBT();
-
+		$this->namedtag->setInt("Replace", 1);
 		$this->namedtag->setInt(self::TAG_VARIANT, $this->getBoatType());
+		parent::saveNBT();
 	}
 
 	public function attack(EntityDamageEvent $source) : void{
@@ -155,15 +156,16 @@ class Boat extends Vehicle{
 			}
 		}
 	}
-
-	public function onUpdate(int $currentTick) : bool{
-		if($this->closed) return false;
+	public function onUpdate(int $currentTick): bool{
+		if($this->closed){
+			return false;
+		}
 
 		if($this->getHurtTime() > 0){
 			$this->setHurtTime($this->getHurtTime() - 1);
 		}
 
-		if($this->getHealth() < 40 and $this->isAlive()){
+		if($this->getHealth() < 40 && $this->isAlive()){
 			$this->setHealth($this->getHealth() + 1);
 		}
 
@@ -182,6 +184,13 @@ class Boat extends Vehicle{
 		}
 
 		if($this->getRiddenByEntity() !== null){
+			if($this->getRiddenByEntity() instanceof Player){
+				if($this->namedtag->hasTag("Replace", IntTag::class)){
+					$this->getLevel()->dropItem($this->getLocation(), ItemFactory::get(333, $this->getBoatType()));
+					$this->close();
+					return false;
+				}
+			}
 			if($this->clientMoveTicks > 0){
 				$newPos = $this->add(($this->boatPos->subtract($this))->divide($this->clientMoveTicks));
 				$newYaw = $this->yaw + ($this->boatYaw - $this->yaw) / $this->clientMoveTicks;
@@ -191,13 +200,11 @@ class Boat extends Vehicle{
 
 				$this->clientMoveTicks--;
 
-				//MAKING SURE TO KEEP PLAYER IN POSITION ON OTHER CLIENTS
-				//SENDING EVERY 100 TICKS
+				// MAINTAINING PLAYER POSITION ON OTHER CLIENTS
+				// SENDING EVERY 100 TICKS
 				if($this->ticksLived % 100 === 0){
 					$this->broadcastLink($this->getRiddenByEntity());
 				}
-
-
 			}else{
 				if($this->onGround){
 					$this->motion = $this->motion->multiply(0.5);
@@ -219,8 +226,11 @@ class Boat extends Vehicle{
 			$this->motion->y += 0.007;
 		}
 
-		// TODO: implement riding part
+		$this->move($this->motion->x, $this->motion->y, $this->motion->z); // Move the entity
 
+		$this->motion->x *= 0.99;
+		$this->motion->y *= 0.95;
+		$this->motion->z *= 0.99;
 		return parent::onUpdate($currentTick);
 	}
 
