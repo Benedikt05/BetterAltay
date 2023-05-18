@@ -3215,25 +3215,31 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$ev->call();
 		if(!$ev->isCancelled()){
-			$resultItem = $ev->getResultItem();
-			$sendItem = function(Item $item): void {
-				$this->inventory->setItemInHand($item);
-			};
-			foreach ($this->inventory->getContents() as $slot => $item) {
-				if ($item->equals($resultItem)) {
-					if ($slot < 0) {
-						$sendItem($resultItem);
-						break;
-					} else if ($slot >= 9) {
-						$heldItemIndex = $this->inventory->getHeldItemIndex();
-						$item2 = $this->inventory->getItem($heldItemIndex);
-						$item = Item::get($item2->getId(), $item2->getDamage(), $item2->getCount(), $item2->getNamedTag());
-						$sendItem($item);
-						continue;
-					}
-					$this->inventory->setHeldItemIndex($slot);
-				} else if (!$this->inventory->contains($resultItem)) {
-					$sendItem($resultItem);
+			$existingSlot = $this->inventory->first($item);
+			if($existingSlot !== -1){
+				if($existingSlot < $this->inventory->getHotbarSize()){
+					$this->inventory->setHeldItemIndex($existingSlot);
+				}else{
+					$heldItemIndex = $this->inventory->getHeldItemIndex();
+					$i1 = $this->inventory->getItem($heldItemIndex);
+					$i2 = $this->inventory->getItem($existingSlot);
+					$this->inventory->setItem($heldItemIndex, $i2);
+					$this->inventory->setItem($existingSlot, $i1);
+				}
+			}else{
+				$firstEmpty = $this->inventory->firstEmpty();
+				if($firstEmpty === -1){
+					$this->inventory->setItemInHand($item);
+				}elseif($firstEmpty < $this->inventory->getHotbarSize()){
+					$this->inventory->setItem($firstEmpty, $item);
+					$this->inventory->setHeldItemIndex($firstEmpty);
+				}else{
+					$heldItemIndex = $this->inventory->getHeldItemIndex();
+					$i1 = $this->inventory->getItem($heldItemIndex);
+					$i2 = $this->inventory->getItem($firstEmpty);
+					$this->inventory->setItem($heldItemIndex, $i2);
+					$this->inventory->setItem($firstEmpty, $i1);
+					$this->inventory->setItemInHand($item);
 				}
 			}
 		}
