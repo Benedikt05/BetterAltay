@@ -135,7 +135,7 @@ class StartGamePacket extends DataPacket{
 	public array $itemTable;
 	public bool $enableNewInventorySystem = false; //TODO
 	public string $serverSoftwareVersion;
-	//playerActorProperties
+	public CompoundTag $propertyData;
 	public int $blockPaletteChecksum;
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
@@ -232,7 +232,7 @@ class StartGamePacket extends DataPacket{
 		$this->multiplayerCorrelationId = $this->getString();
 		$this->enableNewInventorySystem = $this->getBool();
 		$this->serverSoftwareVersion = $this->getString();
-		$this->getNbtCompoundRoot();
+		$this->propertyData = $this->getNbtCompoundRoot();
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
@@ -326,7 +326,7 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);
 		$this->putString($this->serverSoftwareVersion);
-		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
+		$this->put((new NetworkLittleEndianNBTStream())->write($this->propertyData));
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
