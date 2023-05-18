@@ -79,7 +79,7 @@ class Nether extends Generator{
 			new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
 			new OreType(new SoulSand(), 5, 64, 0, 128),
 			new OreType(new Gravel(), 5, 64, 0, 128),
-			new OreType(new Lava(), 1, 16, 0, $this->waterHeight)
+			new OreType(new Lava(), 1, 16, 0, $this->lavaHeight)
 		]);
 		$this->populators[] = $ores;
 	}
