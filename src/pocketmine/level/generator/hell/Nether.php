@@ -44,7 +44,7 @@ class Nether extends Generator{
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var int */
-	private $waterHeight = 32;
+	private $lavaHeight = 32;
 	/** @var int */
 	private $emptyHeight = 64;
 	/** @var int */
@@ -79,7 +79,7 @@ class Nether extends Generator{
 			new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
 			new OreType(new SoulSand(), 5, 64, 0, 128),
 			new OreType(new Gravel(), 5, 64, 0, 128),
-			new OreType(new Lava(), 1, 16, 0, $this->waterHeight)
+			new OreType(new Lava(), 1, 16, 0, $this->lavaHeight)
 		]);
 		$this->populators[] = $ores;
 	}
@@ -115,7 +115,7 @@ class Nether extends Generator{
 
 					if($noiseValue > 0){
 						$chunk->setBlock($x, $y, $z, Block::NETHERRACK, 0);
-					}elseif($y <= $this->waterHeight){
+					}elseif($y <= $this->lavaHeight){
 						$chunk->setBlock($x, $y, $z, Block::STILL_LAVA, 0);
 					}
 				}
