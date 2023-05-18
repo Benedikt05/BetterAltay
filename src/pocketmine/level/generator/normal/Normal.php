@@ -45,7 +45,7 @@ class Normal extends Generator{
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var int */
-	private $waterHeight = 62;
+	private $waterHeight = 63;
 
 	/** @var Populator[] */
 	private $generationPopulators = [];
@@ -101,8 +101,8 @@ class Normal extends Generator{
 	private function pickBiome(int $x, int $z) : Biome{
 		$hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
 		$hash *= $hash + 223;
-		$xNoise = $hash >> 20 & 3;
-		$zNoise = $hash >> 22 & 3;
+		$xNoise = intval($hash) >> 20 & 3;
+		$zNoise = intval($hash) >> 22 & 3;
 		if($xNoise == 3){
 			$xNoise = 1;
 		}
