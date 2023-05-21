@@ -237,6 +237,7 @@ class StartGamePacket extends DataPacket{
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
+		$this->getBool();
 	}
 
 	protected function encodePayload(){
@@ -331,6 +332,7 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
+		$this->putBool(false); //serverAuthSound
 	}
 
 	public function handle(NetworkSession $session) : bool{
