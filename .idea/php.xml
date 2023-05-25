@@ -9,7 +9,6 @@
       <path value="$PROJECT_DIR$/vendor/pocketmine/binaryutils" />
       <path value="$PROJECT_DIR$/vendor/pocketmine/log-pthreads" />
       <path value="$PROJECT_DIR$/vendor/pocketmine/math" />
-      <path value="$PROJECT_DIR$/vendor/pocketmine/nbt" />
       <path value="$PROJECT_DIR$/vendor/pocketmine/spl" />
       <path value="$PROJECT_DIR$/vendor/pocketmine/callback-validator" />
       <path value="$PROJECT_DIR$/vendor/pocketmine/snooze" />
@@ -51,6 +50,7 @@
       <path value="$PROJECT_DIR$/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/benedikt05/nbt" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />
