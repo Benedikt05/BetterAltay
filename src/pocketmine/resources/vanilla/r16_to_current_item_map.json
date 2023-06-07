@@ -33,6 +33,24 @@
             "5": "minecraft:pufferfish_bucket",
             "8": "minecraft:water_bucket"
         },
+        "minecraft:carpet": {
+            "0": "minecraft:white_carpet",
+            "1": "minecraft:orange_carpet",
+            "10": "minecraft:purple_carpet",
+            "11": "minecraft:blue_carpet",
+            "12": "minecraft:brown_carpet",
+            "13": "minecraft:green_carpet",
+            "14": "minecraft:red_carpet",
+            "15": "minecraft:black_carpet",
+            "2": "minecraft:magenta_carpet",
+            "3": "minecraft:light_blue_carpet",
+            "4": "minecraft:yellow_carpet",
+            "5": "minecraft:lime_carpet",
+            "6": "minecraft:pink_carpet",
+            "7": "minecraft:gray_carpet",
+            "8": "minecraft:light_gray_carpet",
+            "9": "minecraft:cyan_carpet"
+        },
         "minecraft:chest_boat": {
             "0": "minecraft:oak_chest_boat",
             "1": "minecraft:spruce_chest_boat",
@@ -46,6 +64,18 @@
         },
         "minecraft:coal": {
             "1": "minecraft:charcoal"
+        },
+        "minecraft:coral": {
+            "0": "minecraft:tube_coral",
+            "1": "minecraft:brain_coral",
+            "10": "minecraft:dead_bubble_coral",
+            "11": "minecraft:dead_fire_coral",
+            "12": "minecraft:dead_horn_coral",
+            "2": "minecraft:bubble_coral",
+            "3": "minecraft:fire_coral",
+            "4": "minecraft:horn_coral",
+            "8": "minecraft:dead_tube_coral",
+            "9": "minecraft:dead_brain_coral"
         },
         "minecraft:dye": {
             "0": "minecraft:ink_sac",
@@ -252,6 +282,7 @@
         "minecraft:record_mellohi": "minecraft:music_disc_mellohi",
         "minecraft:record_otherside": "minecraft:music_disc_otherside",
         "minecraft:record_pigstep": "minecraft:music_disc_pigstep",
+        "minecraft:record_relic": "minecraft:music_disc_relic",
         "minecraft:record_stal": "minecraft:music_disc_stal",
         "minecraft:record_strad": "minecraft:music_disc_strad",
         "minecraft:record_wait": "minecraft:music_disc_wait",
