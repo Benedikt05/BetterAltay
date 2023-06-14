@@ -1520,10 +1520,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$pk->flags |= MoveActorAbsolutePacket::FLAG_GROUND;
 		}
 
-		if($this->onGround){
-			$pk->flags |= MoveActorAbsolutePacket::FLAG_GROUND;
-		}
-
 		$this->level->broadcastPacketToViewers($this, $pk);
 	}
 
