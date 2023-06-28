@@ -99,7 +99,7 @@ class EntityLookHelper{
 		if($angle > 180){
 			$angle -= 360;
 		}
-		if($iangle < -180){
+		if($angle < -180){
 			$angle += 360;
 		}
 
