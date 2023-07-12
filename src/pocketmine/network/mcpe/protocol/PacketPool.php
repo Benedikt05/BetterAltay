@@ -149,7 +149,6 @@ class PacketPool{
 		static::registerPacket(new SetLocalPlayerAsInitializedPacket());
 		static::registerPacket(new UpdateSoftEnumPacket());
 		static::registerPacket(new NetworkStackLatencyPacket());
-		static::registerPacket(new ScriptCustomEventPacket());
 		static::registerPacket(new SpawnParticleEffectPacket());
 		static::registerPacket(new AvailableActorIdentifiersPacket());
 		static::registerPacket(new LevelSoundEventPacketV2());
@@ -218,6 +217,7 @@ class PacketPool{
 		static::registerPacket(new DeathInfoPacket());
 		static::registerPacket(new RequestAbilityPacket());
 		static::registerPacket(new UpdateClientInputLocksPacket());
+		static::registerPacket(new UnlockedRecipesPacket());
 		static::registerPacket(new OpenSignPacket());
 	}
 

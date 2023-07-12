@@ -158,7 +158,6 @@ interface ProtocolInfo{
 	public const UPDATE_SOFT_ENUM_PACKET = 0x72;
 	public const NETWORK_STACK_LATENCY_PACKET = 0x73;
 
-	public const SCRIPT_CUSTOM_EVENT_PACKET = 0x75;
 	public const SPAWN_PARTICLE_EFFECT_PACKET = 0x76;
 	public const AVAILABLE_ACTOR_IDENTIFIERS_PACKET = 0x77;
 	public const LEVEL_SOUND_EVENT_PACKET_V2 = 0x78;
@@ -229,6 +228,7 @@ interface ProtocolInfo{
 	public const DEATH_INFO_PACKET = 0xbd;
 	public const REQUEST_ABILITY_PACKET = 0xb8;
 	public const UPDATE_CLIENT_INPUT_LOCKS_PACKET = 0xc4;
+	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
 	
 }
