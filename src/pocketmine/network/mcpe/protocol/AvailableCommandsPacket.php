@@ -31,6 +31,7 @@ use pocketmine\network\mcpe\protocol\types\CommandData;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandEnumConstraint;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
+use pocketmine\network\mcpe\protocol\types\ChainedSubCommandValue;
 use pocketmine\utils\BinaryDataException;
 use UnexpectedValueException;
 use function array_search;
@@ -113,6 +114,8 @@ class AvailableCommandsPacket extends DataPacket{
 	 */
 	public $softEnums = [];
 
+	public array $chainedSubCommandValues = [];
+
 	/**
 	 * @var CommandEnumConstraint[]
 	 * List of constraints for enum members. Used to constrain gamerules that can bechanged in nocheats mode and more.
@@ -124,6 +127,11 @@ class AvailableCommandsPacket extends DataPacket{
 		$enumValues = [];
 		for($i = 0, $enumValuesCount = $this->getUnsignedVarInt(); $i < $enumValuesCount; ++$i){
 			$enumValues[] = $this->getString();
+		}
+
+		$unused_ = [];
+		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
+			$unused_[] = $this->getString();
 		}
 
 		/** @var string[] $postfixes */
@@ -140,6 +148,8 @@ class AvailableCommandsPacket extends DataPacket{
 				$this->hardcodedEnums[] = $enum;
 			}
 		}
+
+		$this->getUnsignedVarInt();
 
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			$this->commandData[] = $this->getCommandData($enums, $postfixes);
@@ -294,8 +304,10 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval->flags = $this->getLShort();
 		$retval->permission = $this->getByte();
 		$retval->aliases = $enums[$this->getLInt()] ?? null;
+		$retval->chainedSubCommands = null; //
 
 		for($overloadIndex = 0, $overloadCount = $this->getUnsignedVarInt(); $overloadIndex < $overloadCount; ++$overloadIndex){
+			$this->getBool();
 			$retval->overloads[$overloadIndex] = [];
 			for($paramIndex = 0, $paramCount = $this->getUnsignedVarInt(); $paramIndex < $paramCount; ++$paramIndex){
 				$parameter = new CommandParameter();
@@ -343,8 +355,11 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putLInt(-1);
 		}
 
+		$this->putUnsignedVarInt(0); // chained sub cmds
+
 		$this->putUnsignedVarInt(count($data->overloads));
 		foreach($data->overloads as $overload){
+			$this->putBool(false);
 			/** @var CommandParameter[] $overload */
 			$this->putUnsignedVarInt(count($overload));
 			foreach($overload as $parameter){
@@ -414,6 +429,13 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putString((string) $enumValue); //stupid PHP key casting D:
 		}
 
+		//$this->putUnsignedVarInt(count($this->chainedSubCommandValues));
+		//foreach($this->chainedSubCommandValues as $cscv){
+		//	$this->putLShort($cscv->index);
+		//	$this->putLShort($cscv->value);
+		//}
+		$this->putUnsignedVarInt(0);
+
 		$this->putUnsignedVarInt(count($postfixIndexes));
 		foreach($postfixIndexes as $postfix => $index){
 			$this->putString((string) $postfix); //stupid PHP key casting D:
@@ -423,6 +445,8 @@ class AvailableCommandsPacket extends DataPacket{
 		foreach($enums as $enum){
 			$this->putEnum($enum, $enumValueIndexes);
 		}
+
+		$this->putUnsignedVarInt(0);
 
 		$this->putUnsignedVarInt(count($this->commandData));
 		foreach($this->commandData as $data){

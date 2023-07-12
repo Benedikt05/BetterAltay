@@ -36,6 +36,8 @@ class CommandData{
 	public $permission;
 	/** @var CommandEnum|null */
 	public $aliases;
+	/** @var array|null */
+	public $chainedSubCommands;
 	/** @var CommandParameter[][] */
 	public $overloads = [];
 }
