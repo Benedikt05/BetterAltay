@@ -51,10 +51,13 @@ class BanCommand extends VanillaCommand{
 		$name = array_shift($args);
 		$reason = implode(" ", $args);
 
-		$sender->getServer()->getNameBans()->addBan($name, $reason, null, $sender->getName());
+		$admin = $sender instanceof Player ? $sender->getName() : "CONSOLE";
+		$banMessage = "Banned by Admin: $admin, Reason: " . ($reason !== "" ? $reason : "No reason specified");
+
+		$sender->getServer()->getNameBans()->addBan($name, $banMessage, null, $admin);
 
 		if(($player = $sender->getServer()->getPlayerExact($name)) instanceof Player){
-			$player->kick($reason !== "" ? "Banned by admin. Reason: " . $reason : "Banned by admin.");
+			$player->kick($banMessage);
 		}
 
 		Command::broadcastCommandMessage($sender, new TranslationContainer("%commands.ban.success", [$player !== null ? $player->getName() : $name]));
@@ -62,3 +65,4 @@ class BanCommand extends VanillaCommand{
 		return true;
 	}
 }
+
