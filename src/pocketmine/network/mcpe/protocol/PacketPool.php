@@ -98,7 +98,7 @@ class PacketPool{
 		static::registerPacket(new SetPlayerGameTypePacket());
 		static::registerPacket(new PlayerListPacket());
 		static::registerPacket(new SimpleEventPacket());
-		static::registerPacket(new EventPacket());
+		static::registerPacket(new LegacyTelemetryEventPacket());
 		static::registerPacket(new SpawnExperienceOrbPacket());
 		static::registerPacket(new ClientboundMapItemDataPacket());
 		static::registerPacket(new MapInfoRequestPacket());

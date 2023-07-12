@@ -76,7 +76,7 @@ use pocketmine\network\mcpe\protocol\EducationSettingsPacket;
 use pocketmine\network\mcpe\protocol\EduUriResourcePacket;
 use pocketmine\network\mcpe\protocol\EmoteListPacket;
 use pocketmine\network\mcpe\protocol\EmotePacket;
-use pocketmine\network\mcpe\protocol\EventPacket;
+use pocketmine\network\mcpe\protocol\LegacyTelemetryEventPacket;
 use pocketmine\network\mcpe\protocol\FilterTextPacket;
 use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
 use pocketmine\network\mcpe\protocol\GameTestRequestPacket;
@@ -458,7 +458,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleEvent(EventPacket $packet) : bool{
+	public function handleLegacyTelemetryEvent(LegacyTelemetryEventPacket $packet) : bool{
 		return false;
 	}
 

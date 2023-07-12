@@ -27,8 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class EventPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::EVENT_PACKET;
+class LegacyTelemetryEventPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::LEGACY_TELEMETRY_EVENT_PACKET;
 
 	public const TYPE_ACHIEVEMENT_AWARDED = 0;
 	public const TYPE_ENTITY_INTERACT = 1;
@@ -80,6 +80,6 @@ class EventPacket extends DataPacket{
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleEvent($this);
+		return $session->handleLegacyTelemetryEvent($this);
 	}
 }

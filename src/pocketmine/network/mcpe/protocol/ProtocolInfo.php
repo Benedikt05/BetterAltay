@@ -37,11 +37,11 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = 589;
+	public const CURRENT_PROTOCOL = 594;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v' . self::MINECRAFT_VERSION_NETWORK;
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.20.0';
+	public const MINECRAFT_VERSION_NETWORK = '1.20.10';
 
 	public const LOGIN_PACKET = 0x01;
 	public const PLAY_STATUS_PACKET = 0x02;
@@ -106,7 +106,7 @@ interface ProtocolInfo{
 	public const SET_PLAYER_GAME_TYPE_PACKET = 0x3e;
 	public const PLAYER_LIST_PACKET = 0x3f;
 	public const SIMPLE_EVENT_PACKET = 0x40;
-	public const EVENT_PACKET = 0x41;
+	public const LEGACY_TELEMETRY_EVENT_PACKET = 0x41;
 	public const SPAWN_EXPERIENCE_ORB_PACKET = 0x42;
 	public const CLIENTBOUND_MAP_ITEM_DATA_PACKET = 0x43;
 	public const MAP_INFO_REQUEST_PACKET = 0x44;
