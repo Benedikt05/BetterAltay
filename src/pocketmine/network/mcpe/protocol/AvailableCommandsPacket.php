@@ -113,24 +113,18 @@ class AvailableCommandsPacket extends DataPacket{
 	 */
 	public $softEnums = [];
 
-	public array $chainedSubCommandValues = [];
-
 	/**
 	 * @var CommandEnumConstraint[]
 	 * List of constraints for enum members. Used to constrain gamerules that can bechanged in nocheats mode and more.
 	 */
 	public $enumConstraints = [];
 
+	//requires fix
 	protected function decodePayload(){
 		/** @var string[] $enumValues */
 		$enumValues = [];
 		for($i = 0, $enumValuesCount = $this->getUnsignedVarInt(); $i < $enumValuesCount; ++$i){
 			$enumValues[] = $this->getString();
-		}
-
-		$unused_ = [];
-		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
-			$unused_[] = $this->getString();
 		}
 
 		/** @var string[] $postfixes */
@@ -147,8 +141,6 @@ class AvailableCommandsPacket extends DataPacket{
 				$this->hardcodedEnums[] = $enum;
 			}
 		}
-
-		$this->getUnsignedVarInt();
 
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			$this->commandData[] = $this->getCommandData($enums, $postfixes);
@@ -303,7 +295,6 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval->flags = $this->getLShort();
 		$retval->permission = $this->getByte();
 		$retval->aliases = $enums[$this->getLInt()] ?? null;
-		$retval->chainedSubCommands = null; //
 
 		for($overloadIndex = 0, $overloadCount = $this->getUnsignedVarInt(); $overloadIndex < $overloadCount; ++$overloadIndex){
 			$this->getBool();
@@ -428,11 +419,6 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putString((string) $enumValue); //stupid PHP key casting D:
 		}
 
-		//$this->putUnsignedVarInt(count($this->chainedSubCommandValues));
-		//foreach($this->chainedSubCommandValues as $cscv){
-		//	$this->putLShort($cscv->index);
-		//	$this->putLShort($cscv->value);
-		//}
 		$this->putUnsignedVarInt(0);
 
 		$this->putUnsignedVarInt(count($postfixIndexes));
