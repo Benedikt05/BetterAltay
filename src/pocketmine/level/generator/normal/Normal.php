@@ -55,18 +55,39 @@ class Normal extends Generator{
 	/** @var BiomeSelector */
 	private $selector;
 
-	/** @var float[][] */
-	private static $GAUSSIAN_KERNEL = [
-		[0.003, 0.013, 0.022, 0.013, 0.003],
-		[0.013, 0.059, 0.097, 0.059, 0.013],
-		[0.022, 0.097, 0.159, 0.097, 0.022],
-		[0.013, 0.059, 0.097, 0.059, 0.013],
-		[0.003, 0.013, 0.022, 0.013, 0.003]
-	];
+	/** @var float[][]|null */
+	private static $GAUSSIAN_KERNEL = null;
+	/** @var int */
+	private static $SMOOTH_SIZE = 2;
 
-	public function __construct(array $settings = [])
-	{
-		parent::__construct($settings);
+	/**
+	 * @param mixed[]                      $options
+	 *
+	 * @phpstan-param array<string, mixed> $options
+	 *
+	 * @throws InvalidGeneratorOptionsException
+	 */
+	public function __construct(array $options = []){
+		if(self::$GAUSSIAN_KERNEL === null){
+			self::generateKernel();
+		}
+	}
+
+	private static function generateKernel() : void{
+		self::$GAUSSIAN_KERNEL = [];
+
+		$bellSize = 1 / self::$SMOOTH_SIZE;
+		$bellHeight = 2 * self::$SMOOTH_SIZE;
+
+		for($sx = -self::$SMOOTH_SIZE; $sx <= self::$SMOOTH_SIZE; ++$sx){
+			self::$GAUSSIAN_KERNEL[$sx + self::$SMOOTH_SIZE] = [];
+
+			for($sz = -self::$SMOOTH_SIZE; $sz <= self::$SMOOTH_SIZE; ++$sz){
+				$bx = $bellSize * $sx;
+				$bz = $bellSize * $sz;
+				self::$GAUSSIAN_KERNEL[$sx + self::$SMOOTH_SIZE][$sz + self::$SMOOTH_SIZE] = $bellHeight * exp(-($bx * $bx + $bz * $bz) / 2);
+			}
+		}
 	}
 
 	public function getName() : string{
@@ -168,9 +189,10 @@ class Normal extends Generator{
 				$biome = $this->pickBiome($chunkX * 16 + $x, $chunkZ * 16 + $z);
 				$chunk->setBiomeId($x, $z, $biome->getId());
 
-				for($sx = -2; $sx <= 2; ++$sx){
-					for($sz = -2; $sz <= 2; ++$sz){
-						$weight = self::$GAUSSIAN_KERNEL[$sx + 2][$sz + 2];
+				for($sx = -self::$SMOOTH_SIZE; $sx <= self::$SMOOTH_SIZE; ++$sx){
+					for($sz = -self::$SMOOTH_SIZE; $sz <= self::$SMOOTH_SIZE; ++$sz){
+
+						$weight = self::$GAUSSIAN_KERNEL[$sx + self::$SMOOTH_SIZE][$sz + self::$SMOOTH_SIZE];
 
 						if($sx === 0 and $sz === 0){
 							$adjacent = $biome;
