@@ -64,7 +64,7 @@ class StartGamePacket extends DataPacket{
 	public int $spawnY;
 	public int $spawnZ;
 	public bool $hasAchievementsDisabled = true;
-	public bool $isEditorMode = false;
+	public int $editorWorldType = 0; //non editor
 	public bool $createdInEditor = false;
 	public bool $exportedFromEditor = false;
 	public int $time = -1;
@@ -160,7 +160,7 @@ class StartGamePacket extends DataPacket{
 		$this->difficulty = $this->getVarInt();
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
-		$this->isEditorMode = $this->getBool();
+		$this->editorWorldType = $this->getVarInt();
 		$this->createdInEditor = $this->getBool();
 		$this->exportedFromEditor = $this->getBool();
 		$this->time = $this->getVarInt();
@@ -259,7 +259,7 @@ class StartGamePacket extends DataPacket{
 		$this->putVarInt($this->difficulty);
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
-		$this->putBool($this->isEditorMode);
+		$this->putVarInt($this->editorWorldType);
 		$this->putBool($this->createdInEditor);
 		$this->putBool($this->exportedFromEditor);
 		$this->putVarInt($this->time);
