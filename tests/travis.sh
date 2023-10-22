@@ -24,7 +24,7 @@ php -dphar.readonly=0 ./src/DevTools/ConsoleScript.php --make ./ --relative ./ -
 cd ../../..
 composer make-server
 
-if [ -f Altay.phar ]; then
+if [ -f BetterAltay.phar ]; then
 	echo Server phar created successfully.
 else
 	echo Server phar was not created!
