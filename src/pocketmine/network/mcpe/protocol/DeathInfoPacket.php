@@ -72,7 +72,7 @@ class DeathInfoPacket extends DataPacket{
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleDeathInfo($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleDeathInfo($this);
 	}
 }

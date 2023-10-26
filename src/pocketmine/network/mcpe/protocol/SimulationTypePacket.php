@@ -53,7 +53,7 @@ class SimulationTypePacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putByte($this->type);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleSimulationType($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleSimulationType($this);
 	}
 }

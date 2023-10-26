@@ -60,7 +60,7 @@ class NetworkSettingsPacket extends DataPacket
 		$this->putLFloat($this->clientThrottleScalar);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleNetworkSettings($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleNetworkSettings($this);
 	}
 }

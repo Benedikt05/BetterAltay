@@ -59,7 +59,7 @@ class PositionTrackingDBClientRequestPacket extends DataPacket/* implements Serv
 		$this->putVarInt($this->trackingId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePositionTrackingDBClientRequest($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePositionTrackingDBClientRequest($this);
 	}
 }

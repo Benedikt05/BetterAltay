@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe;
 
-use http\Exception\RuntimeException;
 use InvalidArgumentException;
 use pocketmine\entity\passive\AbstractHorse;
 use pocketmine\event\server\DataPacketReceiveEvent;
@@ -59,7 +58,7 @@ use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
-use pocketmine\network\mcpe\protocol\PacketPool;
+use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
@@ -70,7 +69,6 @@ use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\RiderJumpPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
 use pocketmine\network\mcpe\protocol\SetLocalPlayerAsInitializedPacket;
@@ -240,7 +238,7 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		return true;
 	}
 
-	public function handleRiderJump(RiderJumpPacket $packet) : bool{
+	public function handlePassengerJump(PassengerJumpPacket $packet) : bool{
 		if($this->player->isRiding()){
 			$horse = $this->player->getRidingEntity();
 			if($horse instanceof AbstractHorse){
@@ -458,23 +456,23 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
 		return $this->player->handleRequestNetworkSettings($packet);
 	}
-	
+
 	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
 		if($packet->abilityId === RequestAbilityType::ABILITY_FLYING){
 			$isFlying = $packet->abilityValue;
 			if(!is_bool($isFlying)){
 				return false;
 			}
-			
+
 			if($isFlying !== $this->player->isFlying()){
 				if(!$this->player->toggleFlight($isFlying)){
 					$this->player->sendAbilities();
 				}
 			}
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
 }

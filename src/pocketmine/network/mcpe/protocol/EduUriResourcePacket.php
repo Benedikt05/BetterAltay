@@ -49,7 +49,7 @@ class EduUriResourcePacket extends DataPacket{
 		$this->resource->write($this);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleEduUriResource($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleEduUriResource($this);
 	}
 }

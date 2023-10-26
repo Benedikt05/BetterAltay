@@ -41,7 +41,7 @@ class PassengerJumpPacket extends DataPacket{
 		$this->putVarInt($this->jumpStrength);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePassengerJump($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePassengerJump($this);
 	}
 }

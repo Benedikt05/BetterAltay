@@ -69,7 +69,7 @@ class EmoteListPacket extends DataPacket/* implements ClientboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleEmoteList($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleEmoteList($this);
 	}
 }

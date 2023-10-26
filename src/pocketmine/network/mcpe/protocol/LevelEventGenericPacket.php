@@ -63,7 +63,7 @@ class LevelEventGenericPacket extends DataPacket/* implements ClientboundPacket*
 		$this->put($this->eventData);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleLevelEventGeneric($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleLevelEventGeneric($this);
 	}
 }

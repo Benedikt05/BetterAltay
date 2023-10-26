@@ -62,7 +62,7 @@ class ItemStackRequestPacket extends DataPacket/* implements ServerboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleItemStackRequest($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleItemStackRequest($this);
 	}
 }

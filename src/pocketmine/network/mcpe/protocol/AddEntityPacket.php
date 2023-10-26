@@ -52,7 +52,7 @@ class AddEntityPacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putUnsignedVarInt($this->entityNetId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleAddEntity($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleAddEntity($this);
 	}
 }

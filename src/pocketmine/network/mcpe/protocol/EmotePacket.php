@@ -90,7 +90,7 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 		$this->putByte($this->flags);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleEmote($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleEmote($this);
 	}
 }

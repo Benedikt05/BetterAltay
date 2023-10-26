@@ -56,7 +56,7 @@ class RemoveVolumeEntityPacket extends DataPacket{
 		$this->writeVarInt($this->dimension);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleRemoveVolumeEntity($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleRemoveVolumeEntity($this);
 	}
 }

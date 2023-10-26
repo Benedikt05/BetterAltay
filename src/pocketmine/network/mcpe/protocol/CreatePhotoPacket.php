@@ -63,7 +63,7 @@ class CreatePhotoPacket extends DataPacket{
 		$this->putString($this->photoItemName);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCreatePhoto($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCreatePhoto($this);
 	}
 }

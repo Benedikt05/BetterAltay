@@ -103,7 +103,7 @@ class PlayerArmorDamagePacket extends DataPacket/* implements ClientboundPacket*
 		$this->maybeWriteDamage($this->feetSlotDamage);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePlayerArmorDamage($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePlayerArmorDamage($this);
 	}
 }

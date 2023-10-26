@@ -69,7 +69,7 @@ class PlayerFogPacket extends DataPacket/* implements ClientboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePlayerFog($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePlayerFog($this);
 	}
 }

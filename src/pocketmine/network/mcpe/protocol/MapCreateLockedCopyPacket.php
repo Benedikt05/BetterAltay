@@ -45,7 +45,7 @@ class MapCreateLockedCopyPacket extends DataPacket{
 		$this->putEntityUniqueId($this->newMapId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleMapCreateLockedCopy($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleMapCreateLockedCopy($this);
 	}
 }

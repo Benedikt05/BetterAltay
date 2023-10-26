@@ -187,7 +187,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 		$this->putVector3($this->delta);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePlayerAuthInput($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePlayerAuthInput($this);
 	}
 }

@@ -62,7 +62,7 @@ class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCreativeContent($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCreativeContent($this);
 	}
 }

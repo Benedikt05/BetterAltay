@@ -82,7 +82,7 @@ class NpcDialoguePacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putString($this->actionJson);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleNpcDialogue($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleNpcDialogue($this);
 	}
 }
