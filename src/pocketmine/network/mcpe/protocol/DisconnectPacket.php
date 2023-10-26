@@ -26,12 +26,13 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 
 class DisconnectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::DISCONNECT_PACKET;
 
 	public bool $hideDisconnectionScreen = false;
-	public int $reason = 0; //UNKNOWN
+	public int $reason = DisconnectFailReason::UNKNOWN;
 	public string $message = "";
 
 	public function canBeSentBeforeLogin() : bool{
