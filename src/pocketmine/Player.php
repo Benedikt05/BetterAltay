@@ -438,6 +438,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $allowFlight = false;
 	/** @var bool */
 	protected $flying = false;
+	protected float $flightSpeed = 0.05;
+
 	/** @var bool */
 	protected $muted = false;
 
@@ -607,7 +609,18 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function isFlying() : bool{
 		return $this->flying;
 	}
-	
+
+	public function setFlightSpeed(float $flightSpeed) : void{
+		if($this->flightSpeed !== $flightSpeed && $flightSpeed >= 0){
+			$this->flightSpeed = $flightSpeed;
+			$this->sendAbilities();
+		}
+	}
+
+	public function getFlightSpeed() : float{
+		return $this->flightSpeed;
+	}
+
 	public function toggleFlight(bool $fly) : bool{
 		if($fly === $this->flying){
 			return true;
@@ -1648,7 +1661,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		];
 
 		$pk->abilityLayers = [
-			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, 0.05, 0.1)
+			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, $this->getFlightSpeed(), 0.1)
 		];
 
 		if($this->isSpectator()){
