@@ -65,7 +65,6 @@ use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
 use pocketmine\network\mcpe\protocol\ContainerSetDataPacket;
 use pocketmine\network\mcpe\protocol\CorrectPlayerMovePredictionPacket;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket;
-use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\network\mcpe\protocol\CreatePhotoPacket;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -410,10 +409,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleCraftingData(CraftingDataPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleCraftingEvent(CraftingEventPacket $packet) : bool{
 		return false;
 	}
 
