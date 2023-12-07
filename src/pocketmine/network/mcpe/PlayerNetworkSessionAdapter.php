@@ -41,7 +41,6 @@ use pocketmine\network\mcpe\protocol\ClientToServerHandshakePacket;
 use pocketmine\network\mcpe\protocol\CommandBlockUpdatePacket;
 use pocketmine\network\mcpe\protocol\CommandRequestPacket;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
-use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\EmoteListPacket;
 use pocketmine\network\mcpe\protocol\EmotePacket;
@@ -215,10 +214,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handlePlayerHotbar(PlayerHotbarPacket $packet) : bool{
 		return true; //this packet is useless
-	}
-
-	public function handleCraftingEvent(CraftingEventPacket $packet) : bool{
-		return true; //this is a broken useless packet, so we don't use it
 	}
 
 	public function handleUpdateAdventureSettings(UpdateAdventureSettingsPacket $packet) : bool{

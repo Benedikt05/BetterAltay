@@ -53,6 +53,7 @@ class GameRules{
 	public const RULE_TNT_EXPLODES = "tntexplodes";
 	public const RULE_NATURAL_REGENERATION = "naturalRegeneration";
 	public const RULE_RANDOM_TICK_SPEED = "randomtickspeed";
+	public const RULE_RECIPES_UNLOCK = "recipesunlock";
 
 	public const RULE_TYPE_BOOL = 1;
 	public const RULE_TYPE_INT = 2;
@@ -87,6 +88,7 @@ class GameRules{
 		$this->setBool(self::RULE_SHOW_COORDINATES, false);
 		$this->setBool(self::RULE_TNT_EXPLODES, true);
 		$this->setInt(self::RULE_RANDOM_TICK_SPEED, 3);
+		$this->setBool(self::RULE_RECIPES_UNLOCK, false);
 	}
 
 	/**
@@ -193,7 +195,7 @@ class GameRules{
 			case self::RULE_TYPE_FLOAT:
 				return floatval($input);
 			case self::RULE_TYPE_BOOL:
-				return strtolower($input) === "true" ? true : false;
+				return strtolower($input) === "true";
 		}
 	}
 

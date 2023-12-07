@@ -87,7 +87,6 @@ class PacketPool{
 		static::registerPacket(new InventorySlotPacket());
 		static::registerPacket(new ContainerSetDataPacket());
 		static::registerPacket(new CraftingDataPacket());
-		static::registerPacket(new CraftingEventPacket());
 		static::registerPacket(new GuiDataPickItemPacket());
 		static::registerPacket(new BlockActorDataPacket());
 		static::registerPacket(new PlayerInputPacket());

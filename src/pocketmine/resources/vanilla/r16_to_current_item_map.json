@@ -153,6 +153,14 @@
             "0": "minecraft:acacia_log",
             "1": "minecraft:dark_oak_log"
         },
+        "minecraft:planks": {
+            "0": "minecraft:oak_planks",
+            "1": "minecraft:spruce_planks",
+            "2": "minecraft:birch_planks",
+            "3": "minecraft:jungle_planks",
+            "4": "minecraft:acacia_planks",
+            "5": "minecraft:dark_oak_planks"
+        },
         "minecraft:shulker_box": {
             "0": "minecraft:white_shulker_box",
             "1": "minecraft:orange_shulker_box",
@@ -307,6 +315,14 @@
             "7": "minecraft:gray_terracotta",
             "8": "minecraft:light_gray_terracotta",
             "9": "minecraft:cyan_terracotta"
+        },
+        "minecraft:stone": {
+            "1": "minecraft:granite",
+            "2": "minecraft:polished_granite",
+            "3": "minecraft:diorite",
+            "4": "minecraft:polished_diorite",
+            "5": "minecraft:andesite",
+            "6": "minecraft:polished_andesite"
         },
         "minecraft:wool": {
             "0": "minecraft:white_wool",
