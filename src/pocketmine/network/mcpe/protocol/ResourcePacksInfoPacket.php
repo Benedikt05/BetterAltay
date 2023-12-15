@@ -96,7 +96,9 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putBool(false); //TODO: seems useless for resource packs
 			$this->putBool(false); //TODO: supports RTX
 		}
-		$this->putUnsignedVarInt(0);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_30){
+			$this->putUnsignedVarInt(0);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

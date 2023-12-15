@@ -35,12 +35,16 @@ class RequestChunkRadiusPacket extends DataPacket{
 
 	protected function decodePayload(){
 		$this->radius = $this->getVarInt();
-		$this->maxRadius = $this->getByte();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->maxRadius = $this->getByte();
+		}
 	}
 
 	protected function encodePayload(){
 		$this->putVarInt($this->radius);
-		$this->putByte($this->maxRadius);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->putByte($this->maxRadius);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

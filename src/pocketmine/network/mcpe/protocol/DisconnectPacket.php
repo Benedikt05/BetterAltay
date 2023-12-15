@@ -40,7 +40,9 @@ class DisconnectPacket extends DataPacket{
 	}
 
 	protected function decodePayload(){
-		$this->reason = $this->getVarInt();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_40){
+			$this->reason = $this->getVarInt();
+		}
 		$this->hideDisconnectionScreen = $this->getBool();
 		if(!$this->hideDisconnectionScreen){
 			$this->message = $this->getString();
@@ -48,7 +50,9 @@ class DisconnectPacket extends DataPacket{
 	}
 
 	protected function encodePayload(){
-		$this->putVarInt($this->reason);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_40){
+			$this->putVarInt($this->reason);
+		}
 		$this->putBool($this->hideDisconnectionScreen);
 		if(!$this->hideDisconnectionScreen){
 			$this->putString($this->message);

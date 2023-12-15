@@ -161,8 +161,10 @@ class StartGamePacket extends DataPacket{
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
 		$this->editorWorldType = $this->getVarInt();
-		$this->createdInEditor = $this->getBool();
-		$this->exportedFromEditor = $this->getBool();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->createdInEditor = $this->getBool();
+			$this->exportedFromEditor = $this->getBool();
+		}
 		$this->time = $this->getVarInt();
 		$this->eduEditionOffer = $this->getVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
@@ -239,8 +241,12 @@ class StartGamePacket extends DataPacket{
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
-		$this->blockNetworkIdsAreHashes = $this->getBool();
-		$this->serverAuthSound = $this->getBool();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->blockNetworkIdsAreHashes = $this->getBool();
+		}
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_0){
+			$this->serverAuthSound = $this->getBool();
+		}
 	}
 
 	protected function encodePayload(){
@@ -262,8 +268,10 @@ class StartGamePacket extends DataPacket{
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
 		$this->putVarInt($this->editorWorldType);
-		$this->putBool($this->createdInEditor);
-		$this->putBool($this->exportedFromEditor);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->putBool($this->createdInEditor);
+			$this->putBool($this->exportedFromEditor);
+		}
 		$this->putVarInt($this->time);
 		$this->putVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
@@ -336,8 +344,12 @@ class StartGamePacket extends DataPacket{
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
-		$this->putBool($this->blockNetworkIdsAreHashes);
-		$this->putBool($this->serverAuthSound);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_19_80){
+			$this->putBool($this->blockNetworkIdsAreHashes);
+		}
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_0){
+			$this->putBool($this->serverAuthSound);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{
