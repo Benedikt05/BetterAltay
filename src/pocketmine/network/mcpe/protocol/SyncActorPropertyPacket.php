@@ -51,7 +51,7 @@ class SyncActorPropertyPacket extends DataPacket{
 		$this->put((new NetworkLittleEndianNBTStream())->write($this->data));
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleSyncActorProperty($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleSyncActorProperty($this);
 	}
 }

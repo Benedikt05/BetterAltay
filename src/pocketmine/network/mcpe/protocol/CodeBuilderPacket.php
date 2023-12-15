@@ -61,7 +61,7 @@ class CodeBuilderPacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putBool($this->openCodeBuilder);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCodeBuilder($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCodeBuilder($this);
 	}
 }

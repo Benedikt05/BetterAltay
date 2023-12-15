@@ -21,31 +21,14 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe\protocol;
+namespace pocketmine\item;
 
-#include <rules/DataPacket.h>
-
-use pocketmine\network\mcpe\NetworkSession;
-
-class ScriptCustomEventPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::SCRIPT_CUSTOM_EVENT_PACKET;
-
-	/** @var string */
-	public $eventName;
-	/** @var string json data */
-	public $eventData;
-
-	protected function decodePayload(){
-		$this->eventName = $this->getString();
-		$this->eventData = $this->getString();
+class Spyglass extends Item{
+	public function __construct(int $meta = 0){
+		parent::__construct(self::SPYGLASS, $meta, "Spyglass");
 	}
 
-	protected function encodePayload(){
-		$this->putString($this->eventName);
-		$this->putString($this->eventData);
-	}
-
-	public function handle(NetworkSession $session) : bool{
-		return $session->handleScriptCustomEvent($this);
+	public function getMaxStackSize() : int{
+		return 1;
 	}
 }

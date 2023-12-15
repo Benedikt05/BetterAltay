@@ -95,7 +95,7 @@ class EntityLookHelper{
 	}
 
 	public static function wrapAngleTo180(float $angle) : float{
-		$angle %= 360;
+		$angle = (float)((int)$angle) % 360;
 		if($angle > 180){
 			$angle -= 360;
 		}

@@ -73,7 +73,7 @@ class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/
 		$this->putBlockPosition($this->x, $this->y, $this->z);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleAnvilDamage($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleAnvilDamage($this);
 	}
 }

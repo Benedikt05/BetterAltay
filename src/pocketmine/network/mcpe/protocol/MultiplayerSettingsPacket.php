@@ -56,7 +56,7 @@ class MultiplayerSettingsPacket extends DataPacket/* implements ClientboundPacke
 		$this->putVarInt($this->action);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleMultiplayerSettings($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleMultiplayerSettings($this);
 	}
 }

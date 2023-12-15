@@ -68,7 +68,7 @@ class TickSyncPacket extends DataPacket/* implements ClientboundPacket, Serverbo
 		$this->putLLong($this->serverReceiveTime);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleTickSync($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleTickSync($this);
 	}
 }

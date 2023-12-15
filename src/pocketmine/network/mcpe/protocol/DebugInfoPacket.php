@@ -60,7 +60,7 @@ class DebugInfoPacket extends DataPacket/* implements ClientboundPacket, Serverb
 		$this->putString($this->data);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleDebugInfo($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleDebugInfo($this);
 	}
 }

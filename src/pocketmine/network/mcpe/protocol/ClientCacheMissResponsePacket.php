@@ -71,7 +71,7 @@ class ClientCacheMissResponsePacket extends DataPacket/* implements ClientboundP
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleClientCacheMissResponse($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleClientCacheMissResponse($this);
 	}
 }

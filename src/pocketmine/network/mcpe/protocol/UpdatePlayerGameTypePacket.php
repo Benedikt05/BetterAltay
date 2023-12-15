@@ -62,7 +62,7 @@ class UpdatePlayerGameTypePacket extends DataPacket/* implements ClientboundPack
 		$this->putEntityUniqueId($this->playerEntityUniqueId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleUpdatePlayerGameType($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleUpdatePlayerGameType($this);
 	}
 }

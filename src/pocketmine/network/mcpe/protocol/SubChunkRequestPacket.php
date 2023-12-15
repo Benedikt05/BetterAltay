@@ -85,7 +85,7 @@ class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleSubChunkRequest($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleSubChunkRequest($this);
 	}
 }

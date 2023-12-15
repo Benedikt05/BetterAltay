@@ -382,7 +382,11 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BRUSH_COMPLETED = 463;
 	public const SOUND_SHATTER_POT = 464;
 	public const SOUND_BREAK_POT = 465;
-	public const SOUND_UNDEFINED = 466;
+	public const SOUND_SNIFFER_EGG_CRACK = 466;
+	public const SOUND_SNIFFER_EGG_HATCHED = 467;
+	public const SOUND_WAXED_SIGN_INTERACT_FAIL = 468;
+	public const SOUND_RECORD_RELIC = 469;
+	public const SOUND_UNDEFINED = 470;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
 		$result = new self;

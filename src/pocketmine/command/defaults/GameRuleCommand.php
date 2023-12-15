@@ -88,7 +88,7 @@ class GameRuleCommand extends VanillaCommand{
 			"domobspawning", "dotiledrops", "doimmediaterespawn", "doweathercycle", "drowningdamage", "falldamage", "firedamage",
 			"keepinventory", "mobgriefing", "naturalregeneration", "pvp",
 			"sendcommandfeedback", "showcoordinates", "tntexplodes",
-			"commandblocksenabled", "showdeathmessages"
+			"commandblocksenabled", "showdeathmessages", "recipesunlock",
 		];
 	}
 

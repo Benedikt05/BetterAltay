@@ -299,6 +299,9 @@ class ItemFactory{
 
 		self::registerItem(new Item(Item::NETHERITE_INGOT, 0, "Netherite Ingot"));
 		self::registerItem(new Item(Item::NETHERITE_SCRAP, 0, "Netherite Scrap"));
+		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
+		self::registerItem(new HoneyBottle());
+		self::registerItem(new Spyglass());
 	}
 
 	/**

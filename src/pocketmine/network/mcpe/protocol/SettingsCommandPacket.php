@@ -61,7 +61,7 @@ class SettingsCommandPacket extends DataPacket/* implements ServerboundPacket*/
 		$this->putBool($this->suppressOutput);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleSettingsCommand($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleSettingsCommand($this);
 	}
 }

@@ -74,4 +74,7 @@ final class PlayerAuthInputFlags{
 	public const PERFORM_ITEM_STACK_REQUEST = 36;
 	public const HANDLE_TELEPORT = 37;
 	public const EMOTING = 38;
+	public const MISSED_SWING = 39;
+	public const START_CRAWLING = 40;
+	public const STOP_CRAWLING = 41;
 }

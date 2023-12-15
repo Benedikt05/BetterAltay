@@ -28,7 +28,7 @@ use pocketmine\network\mcpe\NetworkSession;
 class TestPacket extends DataPacket{
 	public const NETWORK_ID = 1023;
 
-	public function handle(NetworkSession $handler) : bool{
+	public function handle(NetworkSession $session) : bool{
 		return false;
 	}
 }

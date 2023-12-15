@@ -21,32 +21,37 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe\protocol;
+namespace pocketmine\item;
 
-#include <rules/DataPacket.h>
+use pocketmine\entity\Effect;
+use pocketmine\entity\Living;
 
-use pocketmine\network\mcpe\NetworkSession;
-
-class PhotoInfoRequestPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::PHOTO_INFO_REQUEST_PACKET;
-
-	private int $photoId;
-
-	public static function create(int $photoId) : self{
-		$result = new self;
-		$result->photoId = $photoId;
-		return $result;
+class HoneyBottle extends Food{
+	public function __construct(int $meta = 0){
+		parent::__construct(self::HONEY_BOTTLE, $meta, "Honey Bottle");
 	}
 
-	protected function decodePayload() : void{
-		$this->photoId = $this->getEntityUniqueId();
+	public function getMaxStackSize() : int{
+		return 16;
 	}
 
-	protected function encodePayload() : void{
-		$this->putEntityUniqueId($this->photoId);
+	public function requiresHunger() : bool{
+		return false;
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePhotoInfoRequest($this);
+	public function getResidue() : Item{
+		return ItemFactory::get(Item::GLASS_BOTTLE);
+	}
+
+	public function onConsume(Living $consumer) : void{
+		$consumer->removeEffect(Effect::POISON);
+	}
+
+	public function getFoodRestore() : int{
+		return 6;
+	}
+
+	public function getSaturationRestore() : float{
+		return 1.2;
 	}
 }

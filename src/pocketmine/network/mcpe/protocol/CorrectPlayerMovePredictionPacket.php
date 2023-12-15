@@ -72,7 +72,7 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 		$this->putUnsignedVarLong($this->tick);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCorrectPlayerMovePrediction($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCorrectPlayerMovePrediction($this);
 	}
 }

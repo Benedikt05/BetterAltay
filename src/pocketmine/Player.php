@@ -438,6 +438,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $allowFlight = false;
 	/** @var bool */
 	protected $flying = false;
+	protected float $flightSpeed = 0.05;
+
 	/** @var bool */
 	protected $muted = false;
 
@@ -612,7 +614,18 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function isFlying() : bool{
 		return $this->flying;
 	}
-	
+
+	public function setFlightSpeed(float $flightSpeed) : void{
+		if($this->flightSpeed !== $flightSpeed && $flightSpeed >= 0){
+			$this->flightSpeed = $flightSpeed;
+			$this->sendAbilities();
+		}
+	}
+
+	public function getFlightSpeed() : float{
+		return $this->flightSpeed;
+	}
+
 	public function toggleFlight(bool $fly) : bool{
 		if($fly === $this->flying){
 			return true;
@@ -1649,12 +1662,18 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			AbilitiesLayer::ABILITY_OPEN_CONTAINERS => !$this->isSpectator(),
 			AbilitiesLayer::ABILITY_ATTACK_PLAYERS => !$this->isSpectator(),
 			AbilitiesLayer::ABILITY_ATTACK_MOBS => !$this->isSpectator(),
+			AbilitiesLayer::ABILITY_PRIVILEGED_BUILDER => false
 		];
 
 		$pk->abilityLayers = [
-			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, 0.05, 0.1)
+			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, $this->getFlightSpeed(), 0.1)
 		];
 
+		if($this->isSpectator()){
+			$pk->abilityLayers[] = new AbilitiesLayer(AbilitiesLayer::LAYER_SPECTATOR,
+				[AbilitiesLayer::ABILITY_FLYING => true],
+				null, null);
+		}
 		$this->dataPacket($pk);
 	}
 
@@ -1880,6 +1899,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->exhaust(0.015 * $distance, PlayerExhaustEvent::CAUSE_SWIMMING);
 			}else{
 				$this->exhaust(0.01 * $distance, PlayerExhaustEvent::CAUSE_WALKING);
+			}
+
+			if($this->isOnGround() && $this->isGliding()){
+				$this->toggleGlide(false);
 			}
 
 			if($this->nextChunkOrderRun > 20){
@@ -2432,7 +2455,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		switch($packet->status){
 			case ResourcePackClientResponsePacket::STATUS_REFUSED:
 				//TODO: add lang strings for this
-				$this->close("", "You must accept resource packs to join this server.", true);
+				$this->close("", "You must accept resource packs to join this server.");
 				break;
 			case ResourcePackClientResponsePacket::STATUS_SEND_PACKS:
 				$manager = $this->server->getResourcePackManager();
@@ -2541,6 +2564,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
+		$pk->propertyData = new CompoundTag();
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
@@ -3214,7 +3238,33 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$ev->call();
 		if(!$ev->isCancelled()){
-			$this->inventory->setItemInHand($ev->getResultItem());
+			$existingSlot = $this->inventory->first($item);
+			if($existingSlot !== -1){
+				if($existingSlot < $this->inventory->getHotbarSize()){
+					$this->inventory->setHeldItemIndex($existingSlot);
+				}else{
+					$heldItemIndex = $this->inventory->getHeldItemIndex();
+					$i1 = $this->inventory->getItem($heldItemIndex);
+					$i2 = $this->inventory->getItem($existingSlot);
+					$this->inventory->setItem($heldItemIndex, $i2);
+					$this->inventory->setItem($existingSlot, $i1);
+				}
+			}else{
+				$firstEmpty = $this->inventory->firstEmpty();
+				if($firstEmpty === -1){
+					$this->inventory->setItemInHand($item);
+				}elseif($firstEmpty < $this->inventory->getHotbarSize()){
+					$this->inventory->setItem($firstEmpty, $item);
+					$this->inventory->setHeldItemIndex($firstEmpty);
+				}else{
+					$heldItemIndex = $this->inventory->getHeldItemIndex();
+					$i1 = $this->inventory->getItem($heldItemIndex);
+					$i2 = $this->inventory->getItem($firstEmpty);
+					$this->inventory->setItem($heldItemIndex, $i2);
+					$this->inventory->setItem($firstEmpty, $i1);
+					$this->inventory->setItemInHand($item);
+				}
+			}
 		}
 
 		return true;
@@ -3326,7 +3376,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				if($this->isSwimming()){ // for spam issue
 					$this->toggleSwim(false);
 				}
-				break;
 				break;
 			case PlayerActionPacket::ACTION_INTERACT_BLOCK: //TODO: ignored (for now)
 				break;
@@ -3571,7 +3620,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if(lcg_value() <= $tile->getItemDropChance()){
 				$this->level->dropItem($tile->getBlock(), $tile->getItem());
 			}
-			$tile->setItem(null);
+			$tile->setItem();
 			$tile->setItemRotation(0);
 		}
 

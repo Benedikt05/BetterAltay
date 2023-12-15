@@ -88,7 +88,7 @@ class ClientCacheBlobStatusPacket extends DataPacket/* implements ServerboundPac
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleClientCacheBlobStatus($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleClientCacheBlobStatus($this);
 	}
 }

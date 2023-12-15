@@ -74,7 +74,7 @@ class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleItemComponent($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleItemComponent($this);
 	}
 }

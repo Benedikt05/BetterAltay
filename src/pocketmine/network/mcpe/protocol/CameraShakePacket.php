@@ -77,7 +77,7 @@ class CameraShakePacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putByte($this->shakeAction);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCameraShake($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCameraShake($this);
 	}
 }

@@ -52,7 +52,7 @@ class ClientCacheStatusPacket extends DataPacket/* implements ServerboundPacket*
 		$this->putBool($this->enabled);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleClientCacheStatus($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleClientCacheStatus($this);
 	}
 }

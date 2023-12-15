@@ -78,7 +78,7 @@ class AddVolumeEntityPacket extends DataPacket{
 		$this->putString($this->engineVersion);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleAddVolumeEntity($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleAddVolumeEntity($this);
 	}
 }

@@ -79,7 +79,7 @@ class PacketViolationWarningPacket extends DataPacket/* implements ServerboundPa
 		$this->putString($this->message);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePacketViolationWarning($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePacketViolationWarning($this);
 	}
 }

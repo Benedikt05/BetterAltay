@@ -41,7 +41,7 @@ class OnScreenTextureAnimationPacket extends DataPacket{
 		$this->putLInt($this->effectId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleOnScreenTextureAnimation($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleOnScreenTextureAnimation($this);
 	}
 }

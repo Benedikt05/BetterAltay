@@ -148,7 +148,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putString($this->extraPayload);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleLevelChunk($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleLevelChunk($this);
 	}
 }

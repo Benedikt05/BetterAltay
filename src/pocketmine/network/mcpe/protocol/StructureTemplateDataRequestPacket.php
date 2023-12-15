@@ -61,7 +61,7 @@ class StructureTemplateDataRequestPacket extends DataPacket{
 		$this->putByte($this->structureTemplateResponseType);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleStructureTemplateDataRequest($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleStructureTemplateDataRequest($this);
 	}
 }

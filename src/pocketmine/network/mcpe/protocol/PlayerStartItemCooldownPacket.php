@@ -55,7 +55,7 @@ class PlayerStartItemCooldownPacket extends DataPacket{
 		$this->putVarInt($this->cooldownTicks);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePlayerStartItemCooldown($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePlayerStartItemCooldown($this);
 	}
 }

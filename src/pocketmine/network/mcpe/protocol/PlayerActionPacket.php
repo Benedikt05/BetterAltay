@@ -62,22 +62,16 @@ class PlayerActionPacket extends DataPacket{
 	public const ACTION_STOP_ITEM_USE_ON = 29;
 	public const ACTION_HANDLED_TELEPORT = 30;
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var int */
-	public $action;
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
-	/** @var int */
-	public $face;
+	public int $entityRuntimeId;
+	public int $action;
+	public ?int $x = null;
+	public ?int $y = null;
+	public ?int $z = null;
 	public ?int $resultX = null;
 	public ?int $resultY = null;
 	public ?int $resultZ = null;
-
+	public int $face;
+	
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->action = $this->getVarInt();

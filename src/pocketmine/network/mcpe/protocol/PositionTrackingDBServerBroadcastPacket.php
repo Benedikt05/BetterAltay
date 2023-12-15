@@ -77,7 +77,7 @@ class PositionTrackingDBServerBroadcastPacket extends DataPacket/* implements Cl
 		$this->put((new NetworkLittleEndianNBTStream())->write($this->nbt));
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePositionTrackingDBServerBroadcast($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePositionTrackingDBServerBroadcast($this);
 	}
 }

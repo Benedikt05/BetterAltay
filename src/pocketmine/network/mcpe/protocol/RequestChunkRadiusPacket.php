@@ -30,15 +30,17 @@ use pocketmine\network\mcpe\NetworkSession;
 class RequestChunkRadiusPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::REQUEST_CHUNK_RADIUS_PACKET;
 
-	/** @var int */
-	public $radius;
+	public int $radius;
+	public int $maxRadius;
 
 	protected function decodePayload(){
 		$this->radius = $this->getVarInt();
+		$this->maxRadius = $this->getByte();
 	}
 
 	protected function encodePayload(){
 		$this->putVarInt($this->radius);
+		$this->putByte($this->maxRadius);
 	}
 
 	public function handle(NetworkSession $session) : bool{

@@ -41,7 +41,7 @@ interface ProtocolInfo{
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v1.19.30 - 1.19.70';
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.19.70';
+	public const MINECRAFT_VERSION_NETWORK = '1.20.50';
 
 	public const ACCEPTED_PROTOCOLS = [self::PROTOCOL_1_19_30, self::PROTOCOL_1_19_40, self::PROTOCOL_1_19_50, self::PROTOCOL_1_19_60, self::PROTOCOL_1_19_63, self::PROTOCOL_1_19_70];
 	public const PROTOCOL_1_19_70 = 575;
@@ -103,7 +103,6 @@ interface ProtocolInfo{
 	public const INVENTORY_SLOT_PACKET = 0x32;
 	public const CONTAINER_SET_DATA_PACKET = 0x33;
 	public const CRAFTING_DATA_PACKET = 0x34;
-	public const CRAFTING_EVENT_PACKET = 0x35;
 	public const GUI_DATA_PICK_ITEM_PACKET = 0x36;
 	public const BLOCK_ACTOR_DATA_PACKET = 0x38;
 	public const PLAYER_INPUT_PACKET = 0x39;
@@ -114,7 +113,7 @@ interface ProtocolInfo{
 	public const SET_PLAYER_GAME_TYPE_PACKET = 0x3e;
 	public const PLAYER_LIST_PACKET = 0x3f;
 	public const SIMPLE_EVENT_PACKET = 0x40;
-	public const EVENT_PACKET = 0x41;
+	public const LEGACY_TELEMETRY_EVENT_PACKET = 0x41;
 	public const SPAWN_EXPERIENCE_ORB_PACKET = 0x42;
 	public const CLIENTBOUND_MAP_ITEM_DATA_PACKET = 0x43;
 	public const MAP_INFO_REQUEST_PACKET = 0x44;
@@ -166,7 +165,6 @@ interface ProtocolInfo{
 	public const UPDATE_SOFT_ENUM_PACKET = 0x72;
 	public const NETWORK_STACK_LATENCY_PACKET = 0x73;
 
-	public const SCRIPT_CUSTOM_EVENT_PACKET = 0x75;
 	public const SPAWN_PARTICLE_EFFECT_PACKET = 0x76;
 	public const AVAILABLE_ACTOR_IDENTIFIERS_PACKET = 0x77;
 	public const LEVEL_SOUND_EVENT_PACKET_V2 = 0x78;
@@ -222,7 +220,6 @@ interface ProtocolInfo{
 	public const EDU_URI_RESOURCE_PACKET = 0xaa;
 	public const CREATE_PHOTO_PACKET = 0xab;
 	public const UPDATE_SUB_CHUNK_BLOCKS_PACKET = 0xac;
-	public const PHOTO_INFO_REQUEST_PACKET = 0xad;
 	public const SUB_CHUNK_PACKET = 0xae;
 	public const SUB_CHUNK_REQUEST_PACKET = 0xaf;
 	public const PLAYER_START_ITEM_COOLDOWN_PACKET = 0xb0;
@@ -238,5 +235,7 @@ interface ProtocolInfo{
 	public const DEATH_INFO_PACKET = 0xbd;
 	public const REQUEST_ABILITY_PACKET = 0xb8;
 	public const UPDATE_CLIENT_INPUT_LOCKS_PACKET = 0xc4;
-
+	public const UNLOCKED_RECIPES_PACKET = 0xc7;
+	public const OPEN_SIGN_PACKET = 0x12f;
+	
 }

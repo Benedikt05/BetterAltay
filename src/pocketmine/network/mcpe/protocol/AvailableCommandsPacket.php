@@ -50,37 +50,36 @@ class AvailableCommandsPacket extends DataPacket{
 	 * Basic parameter types. These must be combined with the ARG_FLAG_VALID constant.
 	 * ARG_FLAG_VALID | (type const)
 	 */
-	//TODO: Update to 1.19.30
-	public const ARG_TYPE_INT = 0x01;
-	public const ARG_TYPE_FLOAT = 0x03;
-	public const ARG_TYPE_VALUE = 0x04;
-	public const ARG_TYPE_WILDCARD_INT = 0x05;
-	public const ARG_TYPE_OPERATOR = 0x06;
-	public const ARG_TYPE_COMPARE_OPERATOR = 0x07;
-	public const ARG_TYPE_TARGET = 0x08;
 
-	public const ARG_TYPE_WILDCARD_TARGET = 0x0a;
+	public const ARG_TYPE_INT = 1;
+	public const ARG_TYPE_FLOAT = 3;
+	public const ARG_TYPE_VALUE = 4;
+	public const ARG_TYPE_WILDCARD_INT = 5;
+	public const ARG_TYPE_OPERATOR = 6;
+	public const ARG_TYPE_COMPARE_OPERATOR = 7;
+	public const ARG_TYPE_TARGET = 8;
 
-	public const ARG_TYPE_FILEPATH = 0x11;
+	public const ARG_TYPE_WILDCARD_TARGET = 10;
 
-	public const ARG_TYPE_FULL_INTEGER_RANGE = 0x17;
+	public const ARG_TYPE_FILEPATH = 17;
 
-	public const ARG_TYPE_EQUIPMENT_SLOT = 0x26;
-	public const ARG_TYPE_STRING = 0x27;
+	public const ARG_TYPE_FULL_INTEGER_RANGE = 23;
 
-	public const ARG_TYPE_INT_POSITION = 0x2f;
-	public const ARG_TYPE_POSITION = 0x30;
+	public const ARG_TYPE_EQUIPMENT_SLOT = 43;
+	public const ARG_TYPE_STRING = 44;
 
-	public const ARG_TYPE_MESSAGE = 0x33;
+	public const ARG_TYPE_INT_POSITION = 52;
+	public const ARG_TYPE_POSITION = 53;
 
-	public const ARG_TYPE_RAWTEXT = 0x35;
+	public const ARG_TYPE_MESSAGE = 55;
 
-	public const ARG_TYPE_JSON = 0x39;
+	public const ARG_TYPE_RAWTEXT = 58;
 
-	public const ARG_TYPE_BLOCK_STATES = 0x43;
+	public const ARG_TYPE_JSON = 62;
 
-	public const ARG_TYPE_COMMAND = 0x46;
+	public const ARG_TYPE_BLOCK_STATES = 71;
 
+	public const ARG_TYPE_COMMAND = 74;
 	/**
 	 * Enums are a little different: they are composed as follows:
 	 * ARG_FLAG_ENUM | ARG_FLAG_VALID | (enum index)
@@ -120,6 +119,7 @@ class AvailableCommandsPacket extends DataPacket{
 	 */
 	public $enumConstraints = [];
 
+	//requires fix
 	protected function decodePayload(){
 		/** @var string[] $enumValues */
 		$enumValues = [];
@@ -297,6 +297,7 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval->aliases = $enums[$this->getLInt()] ?? null;
 
 		for($overloadIndex = 0, $overloadCount = $this->getUnsignedVarInt(); $overloadIndex < $overloadCount; ++$overloadIndex){
+			$this->getBool();
 			$retval->overloads[$overloadIndex] = [];
 			for($paramIndex = 0, $paramCount = $this->getUnsignedVarInt(); $paramIndex < $paramCount; ++$paramIndex){
 				$parameter = new CommandParameter();
@@ -344,8 +345,11 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putLInt(-1);
 		}
 
+		$this->putUnsignedVarInt(0); // chained sub cmds
+
 		$this->putUnsignedVarInt(count($data->overloads));
 		foreach($data->overloads as $overload){
+			$this->putBool(false);
 			/** @var CommandParameter[] $overload */
 			$this->putUnsignedVarInt(count($overload));
 			foreach($overload as $parameter){
@@ -415,6 +419,8 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putString((string) $enumValue); //stupid PHP key casting D:
 		}
 
+		$this->putUnsignedVarInt(0);
+
 		$this->putUnsignedVarInt(count($postfixIndexes));
 		foreach($postfixIndexes as $postfix => $index){
 			$this->putString((string) $postfix); //stupid PHP key casting D:
@@ -424,6 +430,8 @@ class AvailableCommandsPacket extends DataPacket{
 		foreach($enums as $enum){
 			$this->putEnum($enum, $enumValueIndexes);
 		}
+
+		$this->putUnsignedVarInt(0);
 
 		$this->putUnsignedVarInt(count($this->commandData));
 		foreach($this->commandData as $data){

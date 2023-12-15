@@ -46,153 +46,101 @@ use function count;
 class StartGamePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::START_GAME_PACKET;
 
-	/** @var int */
-	public $entityUniqueId;
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var int */
-	public $playerGamemode;
+	public int $entityUniqueId;
+	public int $entityRuntimeId;
+	public int $playerGamemode;
 
-	/** @var Vector3 */
-	public $playerPosition;
+	public Vector3 $playerPosition;
 
-	/** @var float */
-	public $pitch;
-	/** @var float */
-	public $yaw;
+	public float $pitch;
+	public float $yaw;
 
-	/** @var int */
-	public $seed;
-	/** @var SpawnSettings */
-	public $spawnSettings;
-	/** @var int */
-	public $generator = GeneratorType::OVERWORLD;
-	/** @var int */
-	public $worldGamemode;
-	/** @var int */
-	public $difficulty;
-	/** @var int */
-	public $spawnX;
-	/** @var int */
-	public $spawnY;
-	/** @var int */
-	public $spawnZ;
-	/** @var bool */
-	public $hasAchievementsDisabled = true;
-	public bool $isEditorMode = false;
-	/** @var int */
-	public $time = -1;
-	/** @var int */
-	public $eduEditionOffer = EducationEditionOffer::NONE;
-	/** @var bool */
-	public $hasEduFeaturesEnabled = false;
-	/** @var string */
-	public $eduProductUUID = "";
-	/** @var float */
-	public $rainLevel;
-	/** @var float */
-	public $lightningLevel;
-	/** @var bool */
-	public $hasConfirmedPlatformLockedContent = false;
-	/** @var bool */
-	public $isMultiplayerGame = true;
-	/** @var bool */
-	public $hasLANBroadcast = true;
-	/** @var int */
-	public $xboxLiveBroadcastMode = MultiplayerGameVisibility::PUBLIC;
-	/** @var int */
-	public $platformBroadcastMode = MultiplayerGameVisibility::PUBLIC;
-	/** @var bool */
-	public $commandsEnabled;
-	/** @var bool */
-	public $isTexturePacksRequired = true;
+	public int $seed;
+	public SpawnSettings $spawnSettings;
+	public int $generator = GeneratorType::OVERWORLD;
+	public int $worldGamemode;
+	public int $difficulty;
+	public int $spawnX;
+	public int $spawnY;
+	public int $spawnZ;
+	public bool $hasAchievementsDisabled = true;
+	public int $editorWorldType = 0; //non editor
+	public bool $createdInEditor = false;
+	public bool $exportedFromEditor = false;
+	public int $time = -1;
+	public int $eduEditionOffer = EducationEditionOffer::NONE;
+	public bool $hasEduFeaturesEnabled = false;
+	public string $eduProductUUID = "";
+	public float $rainLevel;
+	public float $lightningLevel;
+	public bool $hasConfirmedPlatformLockedContent = false;
+	public bool $isMultiplayerGame = true;
+	public bool $hasLANBroadcast = true;
+	public int $xboxLiveBroadcastMode = MultiplayerGameVisibility::PUBLIC;
+	public int $platformBroadcastMode = MultiplayerGameVisibility::PUBLIC;
+	public bool $commandsEnabled;
+	public bool $isTexturePacksRequired = true;
 	/**
 	 * @var mixed[][]
 	 * @phpstan-var array<string, array{0: int, 1: bool|int|float, 2: bool}>
 	 */
-	public $gameRules = [ //TODO: implement this
+	public array $gameRules = [ //TODO: implement this
 		"naturalregeneration" => [GameRuleType::BOOL, false, false] //Hack for client side regeneration
 	];
-	/** @var Experiments */
-	public $experiments;
-	/** @var bool */
-	public $hasBonusChestEnabled = false;
-	/** @var bool */
-	public $hasStartWithMapEnabled = false;
-	/** @var int */
-	public $defaultPlayerPermission = PlayerPermissions::MEMBER; //TODO
+	public Experiments $experiments;
+	public bool $hasBonusChestEnabled = false;
+	public bool $hasStartWithMapEnabled = false;
+	public int $defaultPlayerPermission = PlayerPermissions::MEMBER; //TODO
 
-	/** @var int */
-	public $serverChunkTickRadius = 4; //TODO (leave as default for now)
+	public int $serverChunkTickRadius = 4; //TODO (leave as default for now)
 
-	/** @var bool */
-	public $hasLockedBehaviorPack = false;
-	/** @var bool */
-	public $hasLockedResourcePack = false;
-	/** @var bool */
-	public $isFromLockedWorldTemplate = false;
-	/** @var bool */
-	public $useMsaGamertagsOnly = false;
-	/** @var bool */
-	public $isFromWorldTemplate = false;
-	/** @var bool */
-	public $isWorldTemplateOptionLocked = false;
-	/** @var bool */
-	public $onlySpawnV1Villagers = false;
+	public bool $hasLockedBehaviorPack = false;
+	public bool $hasLockedResourcePack = false;
+	public bool $isFromLockedWorldTemplate = false;
+	public bool $useMsaGamertagsOnly = false;
+	public bool $isFromWorldTemplate = false;
+	public bool $isWorldTemplateOptionLocked = false;
+	public bool $onlySpawnV1Villagers = false;
 	public bool $personaDisabled = false;
 	public bool $customSkinsDisabled = false;
 	public bool $emoteChatMuted = true; //Prevent spam
-	/** @var string */
-	public $vanillaVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
-	/** @var int */
-	public $limitedWorldWidth = 0;
-	/** @var int */
-	public $limitedWorldLength = 0;
-	/** @var bool */
-	public $isNewNether = true;
-	/** @var EducationUriResource|null */
-	public $eduSharedUriResource = null;
-	/** @var bool|null */
-	public $experimentalGameplayOverride = null;
+	public string $vanillaVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
+	public int $limitedWorldWidth = 0;
+	public int $limitedWorldLength = 0;
+	public bool $isNewNether = true;
+	public ?EducationUriResource $eduSharedUriResource = null;
+	public ?bool $experimentalGameplayOverride = null;
 
 	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
-	/** @var string */
-	public $levelId = ""; //base64 string, usually the same as world folder name in vanilla
-	/** @var string */
-	public $worldName;
-	/** @var string */
-	public $premiumWorldTemplateId = "";
-	/** @var bool */
-	public $isTrial = false;
-	/** @var PlayerMovementSettings */
-	public $playerMovementSettings;
-	/** @var int */
-	public $currentTick = 0; //only used if isTrial is true
-	/** @var int */
-	public $enchantmentSeed = 0;
-	/** @var string */
-	public $multiplayerCorrelationId = ""; //TODO: this should be filled with a UUID of some sort
+	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
+	public string $worldName;
+	public string $premiumWorldTemplateId = "";
+	public bool $isTrial = false;
+	public PlayerMovementSettings $playerMovementSettings;
+	public int $currentTick = 0; //only used if isTrial is true
+	public int $enchantmentSeed = 0;
+	public string $multiplayerCorrelationId = ""; //TODO: this should be filled with a UUID of some sort
 
 	/**
 	 * @var BlockPaletteEntry[]
 	 * @phpstan-var list<BlockPaletteEntry>
 	 */
-	public $blockPalette = [];
+	public array $blockPalette = [];
 
 	/**
 	 * @var ItemTypeEntry[]
 	 * @phpstan-var list<ItemTypeEntry>
 	 */
-	public $itemTable;
-	/** @var bool */
-	public $enableNewInventorySystem = false; //TODO
-	/** @var string */
-	public $serverSoftwareVersion;
-	//playerActorProperties
+	public array $itemTable;
+	public bool $enableNewInventorySystem = false; //TODO
+	public string $serverSoftwareVersion;
+	public CompoundTag $propertyData;
 	public int $blockPaletteChecksum;
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
+	public bool $blockNetworkIdsAreHashes = false;
+	public bool $serverAuthSound = true;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -212,7 +160,9 @@ class StartGamePacket extends DataPacket{
 		$this->difficulty = $this->getVarInt();
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
-		$this->isEditorMode = $this->getBool();
+		$this->editorWorldType = $this->getVarInt();
+		$this->createdInEditor = $this->getBool();
+		$this->exportedFromEditor = $this->getBool();
 		$this->time = $this->getVarInt();
 		$this->eduEditionOffer = $this->getVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
@@ -285,10 +235,12 @@ class StartGamePacket extends DataPacket{
 		$this->multiplayerCorrelationId = $this->getString();
 		$this->enableNewInventorySystem = $this->getBool();
 		$this->serverSoftwareVersion = $this->getString();
-		$this->getNbtCompoundRoot();
+		$this->propertyData = $this->getNbtCompoundRoot();
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
+		$this->blockNetworkIdsAreHashes = $this->getBool();
+		$this->serverAuthSound = $this->getBool();
 	}
 
 	protected function encodePayload(){
@@ -309,7 +261,9 @@ class StartGamePacket extends DataPacket{
 		$this->putVarInt($this->difficulty);
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
-		$this->putBool($this->isEditorMode);
+		$this->putVarInt($this->editorWorldType);
+		$this->putBool($this->createdInEditor);
+		$this->putBool($this->exportedFromEditor);
 		$this->putVarInt($this->time);
 		$this->putVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
@@ -378,10 +332,12 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);
 		$this->putString($this->serverSoftwareVersion);
-		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
+		$this->put((new NetworkLittleEndianNBTStream())->write($this->propertyData));
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
+		$this->putBool($this->blockNetworkIdsAreHashes);
+		$this->putBool($this->serverAuthSound);
 	}
 
 	public function handle(NetworkSession $session) : bool{

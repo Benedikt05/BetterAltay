@@ -55,7 +55,7 @@ class ScriptMessagePacket extends DataPacket{
 		$this->putString($this->value);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleScriptMessage($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleScriptMessage($this);
 	}
 }

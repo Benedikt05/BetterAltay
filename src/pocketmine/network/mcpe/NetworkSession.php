@@ -65,7 +65,6 @@ use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
 use pocketmine\network\mcpe\protocol\ContainerSetDataPacket;
 use pocketmine\network\mcpe\protocol\CorrectPlayerMovePredictionPacket;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket;
-use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\network\mcpe\protocol\CreatePhotoPacket;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -76,7 +75,7 @@ use pocketmine\network\mcpe\protocol\EducationSettingsPacket;
 use pocketmine\network\mcpe\protocol\EduUriResourcePacket;
 use pocketmine\network\mcpe\protocol\EmoteListPacket;
 use pocketmine\network\mcpe\protocol\EmotePacket;
-use pocketmine\network\mcpe\protocol\EventPacket;
+use pocketmine\network\mcpe\protocol\LegacyTelemetryEventPacket;
 use pocketmine\network\mcpe\protocol\FilterTextPacket;
 use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
 use pocketmine\network\mcpe\protocol\GameTestRequestPacket;
@@ -118,9 +117,9 @@ use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
 use pocketmine\network\mcpe\protocol\NpcDialoguePacket;
 use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
+use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
 use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
-use pocketmine\network\mcpe\protocol\PhotoInfoRequestPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -151,7 +150,6 @@ use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
@@ -414,10 +412,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleCraftingEvent(CraftingEventPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleGuiDataPickItem(GuiDataPickItemPacket $packet) : bool{
 		return false;
 	}
@@ -458,7 +452,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleEvent(EventPacket $packet) : bool{
+	public function handleLegacyTelemetryEvent(LegacyTelemetryEventPacket $packet) : bool{
 		return false;
 	}
 
@@ -659,10 +653,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleNetworkStackLatency(NetworkStackLatencyPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleScriptCustomEvent(ScriptCustomEventPacket $packet) : bool{
 		return false;
 	}
 
@@ -878,10 +868,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handlePhotoInfoRequest(PhotoInfoRequestPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleSubChunk(SubChunkPacket $packet) : bool{
 		return false;
 	}
@@ -941,4 +927,13 @@ abstract class NetworkSession{
 	public function handleUpdateClientInputLocks(UpdateClientInputLocksPacket $packet) : bool{
 		return false;
 	}
+
+	public function handleUnlockedRecipes(UpdateClientInputLocksPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleOpenSign(OpenSignPacket $packet) : bool{
+		return false;
+	}
+
 }

@@ -35,7 +35,7 @@ class PacketPool{
 	 * @return void
 	 */
 	public static function init(){
-		static::$pool = new SplFixedArray(256);
+		static::$pool = new SplFixedArray(512);
 
 		static::registerPacket(new LoginPacket());
 		static::registerPacket(new PlayStatusPacket());
@@ -87,7 +87,6 @@ class PacketPool{
 		static::registerPacket(new InventorySlotPacket());
 		static::registerPacket(new ContainerSetDataPacket());
 		static::registerPacket(new CraftingDataPacket());
-		static::registerPacket(new CraftingEventPacket());
 		static::registerPacket(new GuiDataPickItemPacket());
 		static::registerPacket(new BlockActorDataPacket());
 		static::registerPacket(new PlayerInputPacket());
@@ -98,7 +97,7 @@ class PacketPool{
 		static::registerPacket(new SetPlayerGameTypePacket());
 		static::registerPacket(new PlayerListPacket());
 		static::registerPacket(new SimpleEventPacket());
-		static::registerPacket(new EventPacket());
+		static::registerPacket(new LegacyTelemetryEventPacket());
 		static::registerPacket(new SpawnExperienceOrbPacket());
 		static::registerPacket(new ClientboundMapItemDataPacket());
 		static::registerPacket(new MapInfoRequestPacket());
@@ -149,7 +148,6 @@ class PacketPool{
 		static::registerPacket(new SetLocalPlayerAsInitializedPacket());
 		static::registerPacket(new UpdateSoftEnumPacket());
 		static::registerPacket(new NetworkStackLatencyPacket());
-		static::registerPacket(new ScriptCustomEventPacket());
 		static::registerPacket(new SpawnParticleEffectPacket());
 		static::registerPacket(new AvailableActorIdentifiersPacket());
 		static::registerPacket(new LevelSoundEventPacketV2());
@@ -203,7 +201,6 @@ class PacketPool{
 		static::registerPacket(new EduUriResourcePacket());
 		static::registerPacket(new CreatePhotoPacket());
 		static::registerPacket(new UpdateSubChunkBlocksPacket());
-		static::registerPacket(new PhotoInfoRequestPacket());
 		static::registerPacket(new SubChunkPacket());
 		static::registerPacket(new SubChunkRequestPacket());
 		static::registerPacket(new PlayerStartItemCooldownPacket());
@@ -219,6 +216,8 @@ class PacketPool{
 		static::registerPacket(new DeathInfoPacket());
 		static::registerPacket(new RequestAbilityPacket());
 		static::registerPacket(new UpdateClientInputLocksPacket());
+		static::registerPacket(new UnlockedRecipesPacket());
+		static::registerPacket(new OpenSignPacket());
 	}
 
 	/**

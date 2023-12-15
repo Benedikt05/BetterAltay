@@ -6,7 +6,7 @@
 - [`composer`](https://getcomposer.org) available in your shell
 
 ## Custom PHP binaries
-Because PocketMine-MP requires several non-standard PHP extensions and configuration, PMMP provides scripts to build custom binaries for running PocketMine-MP, as well as prebuilt binaries.
+Because BetterAltay requires several non-standard PHP extensions and configuration, PMMP provides scripts to build custom binaries for running BetterAltay, as well as prebuilt binaries.
 
 - [Prebuilt binaries](https://jenkins.pmmp.io/job/PHP-8.0-Aggregate)
 - [Compile scripts](https://github.com/pmmp/php-build-scripts) are provided as a submodule in the path `build/php`
@@ -14,7 +14,7 @@ Because PocketMine-MP requires several non-standard PHP extensions and configura
 If you use a custom binary, you'll need to replace `composer` usages in this guide with `path/to/your/php path/to/your/composer.phar`.
 
 ## Setting up environment
-1. `git clone --recursive https://github.com/pmmp/PocketMine-MP.git`
+1. `git clone --recursive https://github.com/Benedikt05/BetterAltay.git`
 2. `composer install`
 
 ## Checking out a different branch to build

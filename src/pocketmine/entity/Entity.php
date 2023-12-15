@@ -270,6 +270,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_AMBIENT_SOUND_INTERVAL_RANGE = 109; //float
 	public const DATA_AMBIENT_SOUND_EVENT = 110; //string
 
+	public const DATA_FREEZING_EFFECT_STRENGTH = 120; //float
+
 	public const DATA_FLAG_ONFIRE = 0;
 	public const DATA_FLAG_SNEAKING = 1;
 	public const DATA_FLAG_RIDING = 2;
@@ -386,7 +388,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_RISING = 111;
 	public const DATA_FLAG_FEELING_HAPPY = 112;
 	public const DATA_FLAG_SEARCHING = 113;
-
+	public const DATA_FLAG_CRAWLING = 114;
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
 	public const DATA_PLAYER_FLAG_DEAD = 2; //TODO: CHECK
@@ -1520,10 +1522,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$pk->flags |= MoveActorAbsolutePacket::FLAG_GROUND;
 		}
 
-		if($this->onGround){
-			$pk->flags |= MoveActorAbsolutePacket::FLAG_GROUND;
-		}
-
 		$this->level->broadcastPacketToViewers($this, $pk);
 	}
 
@@ -2581,6 +2579,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->motion = $this->getMotion();
 		$pk->yaw = $this->yaw;
 		$pk->headYaw = $this->headYaw ?? $this->yaw;
+		$pk->bodyYaw = $this->yaw;
 		$pk->pitch = $this->pitch;
 		$pk->attributes = $this->attributeMap->getAll();
 		$pk->metadata = $this->propertyManager->getAll();

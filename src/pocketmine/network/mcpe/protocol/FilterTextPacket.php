@@ -57,7 +57,7 @@ class FilterTextPacket extends DataPacket/* implements ClientboundPacket, Server
 		$this->putBool($this->fromServer);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleFilterText($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleFilterText($this);
 	}
 }

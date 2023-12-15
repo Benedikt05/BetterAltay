@@ -102,7 +102,7 @@ class InventoryTransactionPacket extends DataPacket{
 		$this->trData->encode($out);
 	}
 
-	public function handle(PacketHandlerInterface $handler) : bool{
-		return $handler->handleInventoryTransaction($this);
+	public function handle(PacketHandlerInterface $session) : bool{
+		return $session->handleInventoryTransaction($this);
 	}
 }

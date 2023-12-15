@@ -343,7 +343,7 @@ class Server{
 	private $config;
 
 	/** @var Config */
-	private $betteraltayConfig;
+	private $betterAltayConfig;
 
 	/** @var Config */
 	private $altayConfig;
@@ -379,10 +379,13 @@ class Server{
 	public $mobAiEnabled = true;
 	/** @var bool */
 	public $internalErrorKick = false;
+	/** @var bool */
+	public $commandFix = false;
 
-	public function loadBetteraltayConfig(){
-		$this->internalErrorKick = $this->getBetteraltayProperty("developer.internal-server-error-kick", false);
-		$this->customUnknownCommandMessage = $this->getBetteraltayProperty("general.custom-unknown-command-message.enabled", false);
+	public function loadBetterAltayConfig(){
+		$this->internalErrorKick = $this->getBetterAltayProperty("developer.internal-server-error-kick", false);
+		$this->customUnknownCommandMessage = $this->getBetterAltayProperty("general.custom-unknown-command-message.enabled", false);
+		$this->commandFix = $this->getBetterAltayProperty("general.command-fix", false);
 	}
 
 	public function loadAltayConfig(){
@@ -1178,9 +1181,9 @@ class Server{
 		return $this->altayPropertyCache[$variable] ?? $defaultValue;
 	}
 
-	public function getBetteraltayProperty(string $variable, $defaultValue = null){
+	public function getBetterAltayProperty(string $variable, $defaultValue = null){
 		if(!array_key_exists($variable, $this->betteraltayPropertyCache)){
-			$this->betteraltayPropertyCache[$variable] = $this->betteraltayConfig->getNested($variable);
+			$this->betteraltayPropertyCache[$variable] = $this->betterAltayConfig->getNested($variable);
 		}
 
 		return $this->betteraltayPropertyCache[$variable] ?? $defaultValue;
@@ -1422,8 +1425,8 @@ class Server{
 				$content = file_get_contents(\pocketmine\RESOURCE_PATH . "betteraltay.yml");
 				@file_put_contents($this->dataPath . "betteraltay.yml", $content);
 			}
-			$this->betteraltayConfig = new Config($this->dataPath . "betteraltay.yml", Config::YAML, []);
-			$this->loadBetteraltayConfig();
+			$this->betterAltayConfig = new Config($this->dataPath . "betteraltay.yml", Config::YAML, []);
+			$this->loadBetterAltayConfig();
 
 			$this->logger->info("Loading altay.yml...");
 			if(!file_exists($this->dataPath . "altay.yml")){
@@ -1965,12 +1968,7 @@ class Server{
 			return true;
 		}
 
-		if($this->customUnknownCommandMessage === false){
-			$unknownCommandMessage = $this->getLanguage()->translateString(TextFormat::RED . "%commands.generic.notFound");
-		}else{
-			$unknownCommandMessage = (string) $this->getBetteraltayProperty("general.custom-unknown-command-message.message");
-		}
-		$sender->sendMessage($unknownCommandMessage);
+		$sender->sendMessage($this->customUnknownCommandMessage ? (string)$this->getBetterAltayProperty("general.custom-unknown-command-message.message") : $this->getLanguage()->translateString(TextFormat::RED . "%commands.generic.notFound"));
 
 		return false;
 	}

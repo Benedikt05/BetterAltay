@@ -50,7 +50,7 @@ class StructureTemplateDataResponsePacket extends DataPacket{
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleStructureTemplateDataResponse($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleStructureTemplateDataResponse($this);
 	}
 }

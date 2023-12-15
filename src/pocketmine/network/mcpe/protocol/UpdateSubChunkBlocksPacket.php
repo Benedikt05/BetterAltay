@@ -91,7 +91,7 @@ class UpdateSubChunkBlocksPacket extends DataPacket{
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleUpdateSubChunkBlocks($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleUpdateSubChunkBlocks($this);
 	}
 }

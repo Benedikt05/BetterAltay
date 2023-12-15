@@ -52,7 +52,7 @@ class RemoveEntityPacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putUnsignedVarInt($this->entityNetId);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleRemoveEntity($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleRemoveEntity($this);
 	}
 }

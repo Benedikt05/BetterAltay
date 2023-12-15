@@ -64,7 +64,7 @@ class PlayerEnchantOptionsPacket extends DataPacket/* implements ClientboundPack
 		}
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handlePlayerEnchantOptions($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handlePlayerEnchantOptions($this);
 	}
 }

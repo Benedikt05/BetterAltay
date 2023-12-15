@@ -10,6 +10,7 @@ general:
   custom-unknown-command-message:
     enabled: false
     message: "§cThis command was not found!"
+  command-fix: false
 developer:
   # This setting allows to disable the internal server error kick
   internal-server-error-kick: false

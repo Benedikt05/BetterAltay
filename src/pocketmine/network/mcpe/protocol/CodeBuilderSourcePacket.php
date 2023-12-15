@@ -61,7 +61,7 @@ class CodeBuilderSourcePacket extends DataPacket{
 		$this->putString($this->value);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleCodeBuilderSource($this);
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleCodeBuilderSource($this);
 	}
 }

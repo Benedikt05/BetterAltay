@@ -26,20 +26,21 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 
 class DisconnectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::DISCONNECT_PACKET;
 
-	/** @var bool */
-	public $hideDisconnectionScreen = false;
-	/** @var string */
-	public $message = "";
+	public bool $hideDisconnectionScreen = false;
+	public int $reason = DisconnectFailReason::UNKNOWN;
+	public string $message = "";
 
 	public function canBeSentBeforeLogin() : bool{
 		return true;
 	}
 
 	protected function decodePayload(){
+		$this->reason = $this->getVarInt();
 		$this->hideDisconnectionScreen = $this->getBool();
 		if(!$this->hideDisconnectionScreen){
 			$this->message = $this->getString();
@@ -47,6 +48,7 @@ class DisconnectPacket extends DataPacket{
 	}
 
 	protected function encodePayload(){
+		$this->putVarInt($this->reason);
 		$this->putBool($this->hideDisconnectionScreen);
 		if(!$this->hideDisconnectionScreen){
 			$this->putString($this->message);
