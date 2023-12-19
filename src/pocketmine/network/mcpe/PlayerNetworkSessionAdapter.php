@@ -120,7 +120,7 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 		$timings = Timings::getReceiveDataPacketTimings($packet);
 		$timings->startTiming();
-
+		$packet->protocol = $this->player->getProtocol();
 		try{
 			$packet->decode();
 		}catch(\Exception $exception){
