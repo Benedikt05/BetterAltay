@@ -30,19 +30,17 @@ use pocketmine\network\mcpe\NetworkSession;
 class ShowStoreOfferPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SHOW_STORE_OFFER_PACKET;
 
-	/** @var string */
-	public $offerId;
-	/** @var bool */
-	public $showAll;
+	public string $offerId;
+	public int $redirectType;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->offerId = $this->getString();
-		$this->showAll = $this->getBool();
+		$this->redirectType = $this->getByte();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putString($this->offerId);
-		$this->putBool($this->showAll);
+		$this->putByte($this->redirectType);
 	}
 
 	public function handle(NetworkSession $session) : bool{
