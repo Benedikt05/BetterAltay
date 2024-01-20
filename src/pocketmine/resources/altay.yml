@@ -24,7 +24,7 @@ dimensions:
 
 developer:
   # This setting allows the server to load plugins through the source directory over a .phar file
-  folder-plugin-loader: false
+  folder-plugin-loader: true
 
 additional-plugin-dirs:
 # Example:
@@ -32,7 +32,7 @@ additional-plugin-dirs:
 
 level:
   # If enabled, mobs can move around
-  # Note: this feature can be cause lag in your server when lots of mob are spawned
+  # Note: this feature can because lag in your server when lots of mob are spawned
   enable-mob-ai: false
   # Generic Auto Mob Spawning, enable if you want spawn mobs in your world
   generic-auto-mob-spawning: false
