@@ -76,21 +76,21 @@ class BatchPacket extends DataPacket{
 
 	protected function decodePayload(){
 		try{
-            if ($this->enableCompression) {
-                $compressionType = $this->getByte();
-                $data = $this->getRemaining();
-                if ($compressionType == CompressionAlgorithm::ZLIB) {
-                    $this->payload = zlib_decode($data, 1024 * 1024 * 2);
-                } else if ($compressionType == CompressionAlgorithm::SNAPPY) {
-                    throw new AssumptionFailedError("SNAPPY unsupported");
-                } else if ($compressionType == CompressionAlgorithm::NONE) {
-                    $this->payload = $data;
-                } else {
-                    throw new AssumptionFailedError("Invalid compression type");
-                }
-            } else {
-                $this->payload = $this->getRemaining();
-            }
+			if($this->enableCompression){
+				$compressionType = $this->getByte();
+				$data = $this->getRemaining();
+				if($compressionType == CompressionAlgorithm::ZLIB){
+					$this->payload = zlib_decode($data, 1024 * 1024 * 2);
+				}else if($compressionType == CompressionAlgorithm::SNAPPY){
+					throw new AssumptionFailedError("SNAPPY unsupported");
+				}else if($compressionType == CompressionAlgorithm::NONE){
+					$this->payload = $data;
+				}else{
+					throw new AssumptionFailedError("Invalid compression type");
+				}
+			}else{
+				$this->payload = $this->getRemaining();
+			}
 		}catch(ErrorException $e){ //zlib decode error
 			$this->payload = "";
 		}
@@ -102,7 +102,7 @@ class BatchPacket extends DataPacket{
 
 	protected function encodePayload(){
 		if($this->enableCompression){
-            $this->putByte(CompressionAlgorithm::ZLIB);
+			$this->putByte(CompressionAlgorithm::ZLIB);
 			$encoded = zlib_encode($this->payload, ZLIB_ENCODING_RAW, $this->compressionLevel);
 			if($encoded === false) throw new AssumptionFailedError("ZLIB compression failed");
 			$this->put($encoded);
