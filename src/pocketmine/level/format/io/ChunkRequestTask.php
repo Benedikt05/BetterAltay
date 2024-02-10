@@ -27,6 +27,7 @@ use pocketmine\level\format\Chunk;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\LevelChunkPacket;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use function assert;
@@ -61,7 +62,7 @@ class ChunkRequestTask extends AsyncTask{
 
 	public function onRun(){
 		$chunk = Chunk::fastDeserialize($this->chunk);
-		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, $chunk->getSubChunkSendCount() + 4, false, null, $chunk->networkSerialize($this->tiles));
+		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, DimensionIds::OVERWORLD, $chunk->getSubChunkSendCount() + 4, false, null, $chunk->networkSerialize($this->tiles));
 
 		$batch = new BatchPacket();
 		$batch->addPacket($pk);
