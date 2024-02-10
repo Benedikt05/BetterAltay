@@ -43,7 +43,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 
 	private int $chunkX;
 	private int $chunkZ;
-	public int $dimensionId;
+	private int $dimensionId;
 	private int $subChunkCount;
 	private bool $clientSubChunkRequestsEnabled;
 	/** @var int[]|null */
@@ -73,6 +73,10 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 
 	public function getChunkZ() : int{
 		return $this->chunkZ;
+	}
+
+	public function getDimensionId() : int{
+		return $this->dimensionId;
 	}
 
 	public function getSubChunkCount() : int{

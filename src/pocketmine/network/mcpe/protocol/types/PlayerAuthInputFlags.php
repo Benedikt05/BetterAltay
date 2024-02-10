@@ -77,4 +77,8 @@ final class PlayerAuthInputFlags{
 	public const MISSED_SWING = 39;
 	public const START_CRAWLING = 40;
 	public const STOP_CRAWLING = 41;
+	public const START_FLYING = 42;//TODO
+	public const STOP_FLYING = 43;//TODO
+	public const ACK_ACTOR_DATA = 44;
+	public const IN_CLIENT_PREDICTED_VEHICLE = 45;
 }
