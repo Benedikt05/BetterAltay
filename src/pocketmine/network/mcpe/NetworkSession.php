@@ -161,6 +161,7 @@ use pocketmine\network\mcpe\protocol\SetDefaultGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetHealthPacket;
+use pocketmine\network\mcpe\protocol\SetHudPacket;
 use pocketmine\network\mcpe\protocol\SetLastHurtByPacket;
 use pocketmine\network\mcpe\protocol\SetLocalPlayerAsInitializedPacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
@@ -923,6 +924,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleOpenSign(OpenSignPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleHudPacket(SetHudPacket $packet) : bool{
 		return false;
 	}
 

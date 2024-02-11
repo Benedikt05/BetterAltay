@@ -227,5 +227,6 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_INPUT_LOCKS_PACKET = 0xc4;
 	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
+	public const SET_HUD_PACKET = 0x134;
 	
 }
