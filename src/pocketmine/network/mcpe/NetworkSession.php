@@ -27,6 +27,7 @@ use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ActorPickRequestPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddBehaviorTreePacket;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\AddPaintingPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
@@ -136,6 +137,7 @@ use pocketmine\network\mcpe\protocol\PositionTrackingDBClientRequestPacket;
 use pocketmine\network\mcpe\protocol\PositionTrackingDBServerBroadcastPacket;
 use pocketmine\network\mcpe\protocol\PurchaseReceiptPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\RemoveVolumeEntityPacket;
 use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
@@ -684,6 +686,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleLecternUpdate(LecternUpdatePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleAddEntity(AddEntityPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleRemoveEntity(RemoveEntityPacket $packet) : bool{
 		return false;
 	}
 
