@@ -43,6 +43,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 
 	private int $chunkX;
 	private int $chunkZ;
+	private int $dimensionId;
 	private int $subChunkCount;
 	private bool $clientSubChunkRequestsEnabled;
 	/** @var int[]|null */
@@ -54,10 +55,11 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 	 *
 	 * @param int[] $usedBlobHashes
 	 */
-	public static function create(int $chunkX, int $chunkZ, int $subChunkCount, bool $clientSubChunkRequestsEnabled, ?array $usedBlobHashes, string $extraPayload) : self{
+	public static function create(int $chunkX, int $chunkZ, int $dimensionId, int $subChunkCount, bool $clientSubChunkRequestsEnabled, ?array $usedBlobHashes, string $extraPayload) : self{
 		$result = new self;
 		$result->chunkX = $chunkX;
 		$result->chunkZ = $chunkZ;
+		$result->dimensionId = $dimensionId;
 		$result->subChunkCount = $subChunkCount;
 		$result->clientSubChunkRequestsEnabled = $clientSubChunkRequestsEnabled;
 		$result->usedBlobHashes = $usedBlobHashes;
@@ -71,6 +73,10 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 
 	public function getChunkZ() : int{
 		return $this->chunkZ;
+	}
+
+	public function getDimensionId() : int{
+		return $this->dimensionId;
 	}
 
 	public function getSubChunkCount() : int{
@@ -99,6 +105,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 	protected function decodePayload() : void{
 		$this->chunkX = $this->getVarInt();
 		$this->chunkZ = $this->getVarInt();
+		$this->dimensionId = $this->getVarInt();
 
 		$subChunkCountButNotReally = $this->getUnsignedVarInt();
 		if($subChunkCountButNotReally === self::CLIENT_REQUEST_FULL_COLUMN_FAKE_COUNT){
@@ -125,6 +132,7 @@ class LevelChunkPacket extends DataPacket/* implements ClientboundPacket*/
 	protected function encodePayload() : void{
 		$this->putVarInt($this->chunkX);
 		$this->putVarInt($this->chunkZ);
+		$this->putVarInt($this->dimensionId);
 
 		if($this->clientSubChunkRequestsEnabled){
 			if($this->subChunkCount === PHP_INT_MAX){

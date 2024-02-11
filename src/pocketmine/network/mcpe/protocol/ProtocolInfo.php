@@ -37,11 +37,13 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = self::PROTOCOL_1_20_50;
+
+	public const CURRENT_PROTOCOL = self::PROTOCOL_1_20_60;
+
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
-	public const MINECRAFT_VERSION = 'v1.19.30 - 1.20.50';
+	public const MINECRAFT_VERSION = 'v1.19.30 - 1.20.60';
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.20.50';
+	public const MINECRAFT_VERSION_NETWORK = '1.20.60';
 
 	public const ACCEPTED_PROTOCOLS = [
 		self::PROTOCOL_1_19_30,
@@ -55,9 +57,12 @@ interface ProtocolInfo{
 		self::PROTOCOL_1_20_10,
 		self::PROTOCOL_1_20_30,
 		self::PROTOCOL_1_20_40,
-		self::PROTOCOL_1_20_50
+		self::PROTOCOL_1_20_50,
+		self::PROTOCOL_1_20_60,
+
 	];
 
+	public const PROTOCOL_1_20_60 = 649;
 	public const PROTOCOL_1_20_50 = 630;
 	public const PROTOCOL_1_20_40 = 622;
 	public const PROTOCOL_1_20_30 = 618;
@@ -194,8 +199,6 @@ interface ProtocolInfo{
 	public const LEVEL_EVENT_GENERIC_PACKET = 0x7c;
 	public const LECTERN_UPDATE_PACKET = 0x7d;
 
-	public const ADD_ENTITY_PACKET = 0x7f;
-	public const REMOVE_ENTITY_PACKET = 0x80;
 	public const CLIENT_CACHE_STATUS_PACKET = 0x81;
 	public const ON_SCREEN_TEXTURE_ANIMATION_PACKET = 0x82;
 	public const MAP_CREATE_LOCKED_COPY_PACKET = 0x83;
@@ -257,5 +260,6 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_INPUT_LOCKS_PACKET = 0xc4;
 	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
+	public const SET_HUD_PACKET = 0x134;
 	
 }

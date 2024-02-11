@@ -61,6 +61,7 @@ class PlayerListPacket extends DataPacket{
 				$entry->skinData = $this->getSkin();
 				$entry->isTeacher = $this->getBool();
 				$entry->isHost = $this->getBool();
+				$entry->isSubClient = $this->getBool();
 			}else{
 				$entry->uuid = $this->getUUID();
 			}
@@ -88,6 +89,7 @@ class PlayerListPacket extends DataPacket{
 				$this->putSkin($entry->skinData);
 				$this->putBool($entry->isTeacher);
 				$this->putBool($entry->isHost);
+				$this->putBool($entry->isSubClient);
 			}else{
 				$this->putUUID($entry->uuid);
 			}

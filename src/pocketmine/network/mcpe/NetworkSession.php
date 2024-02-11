@@ -27,7 +27,6 @@ use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ActorPickRequestPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddBehaviorTreePacket;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\AddPaintingPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
@@ -137,7 +136,6 @@ use pocketmine\network\mcpe\protocol\PositionTrackingDBClientRequestPacket;
 use pocketmine\network\mcpe\protocol\PositionTrackingDBServerBroadcastPacket;
 use pocketmine\network\mcpe\protocol\PurchaseReceiptPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
-use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\RemoveVolumeEntityPacket;
 use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
@@ -163,6 +161,7 @@ use pocketmine\network\mcpe\protocol\SetDefaultGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetHealthPacket;
+use pocketmine\network\mcpe\protocol\SetHudPacket;
 use pocketmine\network\mcpe\protocol\SetLastHurtByPacket;
 use pocketmine\network\mcpe\protocol\SetLocalPlayerAsInitializedPacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
@@ -688,14 +687,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleAddEntity(AddEntityPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleRemoveEntity(RemoveEntityPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleClientCacheStatus(ClientCacheStatusPacket $packet) : bool{
 		return false;
 	}
@@ -933,6 +924,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleOpenSign(OpenSignPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleHudPacket(SetHudPacket $packet) : bool{
 		return false;
 	}
 

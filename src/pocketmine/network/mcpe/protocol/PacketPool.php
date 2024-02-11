@@ -156,8 +156,6 @@ class PacketPool{
 		static::registerPacket(new LevelSoundEventPacket());
 		static::registerPacket(new LevelEventGenericPacket());
 		static::registerPacket(new LecternUpdatePacket());
-		static::registerPacket(new AddEntityPacket());
-		static::registerPacket(new RemoveEntityPacket());
 		static::registerPacket(new ClientCacheStatusPacket());
 		static::registerPacket(new OnScreenTextureAnimationPacket());
 		static::registerPacket(new MapCreateLockedCopyPacket());
@@ -218,6 +216,7 @@ class PacketPool{
 		static::registerPacket(new UpdateClientInputLocksPacket());
 		static::registerPacket(new UnlockedRecipesPacket());
 		static::registerPacket(new OpenSignPacket());
+		static::registerPacket(new SetHudPacket());
 	}
 
 	/**
