@@ -927,7 +927,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleHudPacket(SetHudPacket $packet) : bool{
+	public function handleSetHud(SetHudPacket $packet) : bool{
 		return false;
 	}
 

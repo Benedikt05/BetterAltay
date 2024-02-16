@@ -28,6 +28,6 @@ class SetHudPacket extends DataPacket{
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleHudPacket($this);
+		return $session->handleSetHud($this);
 	}
 }
