@@ -96,11 +96,11 @@ class FloatingTextParticle extends Particle{
 			$actorMetadata = [
 				Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $actorFlags],
 				Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0.01], //zero causes problems on debug builds
-				Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT,0.0],
-				Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT,0.0],
-				Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING,$name],
+				Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT, 0.0],
+				Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT, 0.0],
+				Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $name],
 				Entity::DATA_VARIANT =>[Entity::DATA_TYPE_INT, RuntimeBlockMapping::toStaticRuntimeId(BlockIds::AIR)],
-				Entity::DATA_ALWAYS_SHOW_NAMETAG => [Entity::DATA_TYPE_BYTE,1],
+				Entity::DATA_ALWAYS_SHOW_NAMETAG => [Entity::DATA_TYPE_BYTE, 1],
 			];
 
 			$pk = new AddActorPacket();
