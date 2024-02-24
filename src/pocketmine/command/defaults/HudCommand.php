@@ -53,7 +53,7 @@ class HudCommand extends VanillaCommand{
 			default => throw new InvalidCommandSyntaxException()
 		};
 
-		$hudElements = match ($args[2] ?? null) {
+		$hudElements = match ($args[2] ?? "all") {
 			"air_bubbles" => [HudElement::AIR_BUBBLES],
 			"armor" => [HudElement::ARMOR],
 			"crosshair" => [HudElement::CROSSHAIR],
@@ -65,7 +65,7 @@ class HudCommand extends VanillaCommand{
 			"progress_bar" => [HudElement::XP],
 			"tooltips" => [HudElement::TOOLTIPS],
 			"touch_controls" => [HudElement::TOUCH_CONTROLS],
-			default => [
+			"all" => [
 				HudElement::AIR_BUBBLES,
 				HudElement::ARMOR,
 				HudElement::CROSSHAIR,
@@ -78,6 +78,7 @@ class HudCommand extends VanillaCommand{
 				HudElement::TOOLTIPS,
 				HudElement::TOUCH_CONTROLS
 			],
+			default => throw new InvalidCommandSyntaxException()
 		};
 
 		$pk = new SetHudPacket();

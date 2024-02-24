@@ -12,6 +12,7 @@ use pocketmine\network\mcpe\NetworkSession;
 class SetHudPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_HUD_PACKET;
 
+	/** @var int[] */
 	public array $hudElements;
 	public int $visibility;
 
