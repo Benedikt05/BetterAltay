@@ -95,7 +95,7 @@ class FloatingTextParticle extends Particle{
 			);
 			$actorMetadata = [
 				Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $actorFlags],
-				Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0.01], //zero causes problems on debug builds
+				Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0.01],
 				Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT, 0.0],
 				Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT, 0.0],
 				Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $name],
