@@ -73,6 +73,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 
 	protected function encodePayload(){
 		$this->putBool($this->mustAccept);
+		$this->putBool(false);//hasAddonPacks
 		$this->putBool($this->hasScripts);
 		$this->putBool($this->forceServerPacks);
 		$this->putLShort(count($this->behaviorPackEntries));
@@ -96,7 +97,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putBool(false); //TODO: seems useless for resource packs
 			$this->putBool(false); //TODO: supports RTX
 		}
-		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0); //CDNEntries
 	}
 
 	public function handle(NetworkSession $session) : bool{
