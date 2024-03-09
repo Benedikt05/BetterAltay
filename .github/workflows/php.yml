@@ -1,0 +1,43 @@
+name: PHP Composer
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!multiprotocol'
+  pull_request:
+    branches:
+      - '*'
+      - '!multiprotocol'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --ignore-platform-req=ext-chunkutils2 --ignore-platform-req=ext-crypto --ignore-platform-req=ext-pthreads
+
+    - name: Run build script
+      run: composer make-server
+
+    - name: Archive generated Phar file
+      uses: actions/upload-artifact@v2
+      with:
+        name: BetterAltay
+        path: BetterAltay.phar
