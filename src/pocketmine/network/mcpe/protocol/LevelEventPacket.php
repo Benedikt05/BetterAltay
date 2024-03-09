@@ -127,10 +127,10 @@ class LevelEventPacket extends DataPacket{
 	public const EVENT_PARTICLE_BREAK_BLOCK_SOUTH = 3606;
 	public const EVENT_PARTICLE_BREAK_BLOCK_WEST = 3607;
 	public const EVENT_PARTICLE_BREAK_BLOCK_EAST = 3608;
-	public const EVENT_PLAYERS_SLEEPING = 3609;
-
 
 	public const EVENT_SET_DATA = 4000;
+
+	public const EVENT_PLAYERS_SLEEPING = 9800;
 
 	public const EVENT_ADD_PARTICLE_MASK = 0x4000;
 
