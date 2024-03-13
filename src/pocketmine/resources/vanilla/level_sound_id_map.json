@@ -112,6 +112,7 @@
     "break.block": 55,
     "break_pot": 465,
     "breathe": 13,
+    "breeze_wind_charge.burst": 493,
     "brush": 462,
     "brush_completed": 463,
     "bubble.down": 215,
@@ -234,6 +235,7 @@
     "hurt": 17,
     "hurt.baby": 219,
     "hurt.in.water": 18,
+    "hurt.reduced": 508,
     "hurt.screamer": 349,
     "icebomb.hit": 189,
     "ignite": 50,
@@ -452,8 +454,16 @@
     "ui.loom.take_result": 277,
     "ui.stonecutter.take_result": 276,
     "unfect": 61,
+    "vault.activate": 506,
+    "vault.ambient": 505,
+    "vault.close_shutter": 501,
+    "vault.deactivate": 507,
+    "vault.eject_item": 502,
+    "vault.insert_item": 503,
+    "vault.insert_item_fail": 504,
+    "vault.open_shutter": 500,
     "warn": 44,
     "water": 86,
     "whine": 139,
-    "wind_burst.burst": 493
+    "wind_charge.burst": 509
 }

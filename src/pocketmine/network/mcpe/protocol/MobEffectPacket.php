@@ -34,18 +34,13 @@ class MobEffectPacket extends DataPacket{
 	public const EVENT_MODIFY = 2;
 	public const EVENT_REMOVE = 3;
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var int */
-	public $eventId;
-	/** @var int */
-	public $effectId;
-	/** @var int */
-	public $amplifier = 0;
-	/** @var bool */
-	public $particles = true;
-	/** @var int */
-	public $duration = 0;
+	public int $entityRuntimeId;
+	public int $eventId;
+	public int $effectId;
+	public int $amplifier = 0;
+	public bool $particles = true;
+	public int $duration = 0;
+	public int $tick = 0;
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
@@ -54,6 +49,7 @@ class MobEffectPacket extends DataPacket{
 		$this->amplifier = $this->getVarInt();
 		$this->particles = $this->getBool();
 		$this->duration = $this->getVarInt();
+		$this->tick = $this->getLLong();
 	}
 
 	protected function encodePayload(){
@@ -63,6 +59,7 @@ class MobEffectPacket extends DataPacket{
 		$this->putVarInt($this->amplifier);
 		$this->putBool($this->particles);
 		$this->putVarInt($this->duration);
+		$this->putLLong($this->tick);
 	}
 
 	public function handle(NetworkSession $session) : bool{

@@ -3594,6 +3594,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return true;
 	}
 
+	//TODO: ItemFrameDropItemPacket is deprecated
 	public function handleItemFrameDropItem(ItemFrameDropItemPacket $packet) : bool{
 		if(!$this->spawned or !$this->isAlive()){
 			return true;

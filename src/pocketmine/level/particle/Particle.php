@@ -45,7 +45,7 @@ abstract class Particle extends Vector3{
 	public const TYPE_SNOWBALL_POOF = 15;
 	public const TYPE_HUGE_EXPLODE = 16;
 	public const TYPE_HUGE_EXPLODE_SEED = 17;
-	public const TYPE_WIND_EXPLOSION = 18;
+	public const TYPE_BREEZE_WIND_EXPLOSION = 18;
 	public const TYPE_MOB_FLAME = 19;
 	public const TYPE_HEART = 20;
 	public const TYPE_TERRAIN = 21;
@@ -117,6 +117,8 @@ abstract class Particle extends Vector3{
 	public const TYPE_CHERRY_LEAVES = 87;
 	public const TYPE_DUST_PLUME = 88;
 	public const TYPE_WHITE_SMOKE = 89;
+	public const TYPE_VAULT_CONNECTION = 90;
+	public const TYPE_WIND_EXPLOSION = 91;
 
 	/**
 	 * @return DataPacket|DataPacket[]

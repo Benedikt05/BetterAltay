@@ -31,19 +31,20 @@ use pocketmine\network\mcpe\NetworkSession;
 class SetActorMotionPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_ACTOR_MOTION_PACKET;
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var Vector3 */
-	public $motion;
+	public int $entityRuntimeId;
+	public Vector3 $motion;
+	public int $tick;
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->motion = $this->getVector3();
+		$this->tick = $this->getUnsignedVarLong();
 	}
 
 	protected function encodePayload(){
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putVector3($this->motion);
+		$this->putUnsignedVarLong($this->tick);
 	}
 
 	public function handle(NetworkSession $session) : bool{

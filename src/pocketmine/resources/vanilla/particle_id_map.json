@@ -2,6 +2,7 @@
     "balloongas": 56,
     "bleach": 64,
     "blockforcefield": 4,
+    "breezewindexplosion": 18,
     "bubble": 1,
     "bubblecolumndown": 61,
     "bubblecolumnup": 60,
@@ -72,6 +73,7 @@
     "totem": 51,
     "townaura": 22,
     "trackingemitter": 43,
+    "vaultconnection": 90,
     "villagerangry": 40,
     "villagerhappy": 41,
     "watersplash": 25,
@@ -79,6 +81,6 @@
     "waterwake": 27,
     "wax": 81,
     "whitesmoke": 89,
-    "windexplosion": 18,
+    "windexplosion": 91,
     "witchspell": 45
 }
