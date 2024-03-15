@@ -25,7 +25,6 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
-use pocketmine\Server;
 
 class CommandParameter{
 	public const FLAG_FORCE_COLLAPSE_ENUM = 0x1;
@@ -46,7 +45,7 @@ class CommandParameter{
 
 	public function __construct(string $name = "args", int $type = AvailableCommandsPacket::ARG_TYPE_RAWTEXT, bool $optional = true, $extraData = null, int $flags = 0){
 		$this->paramName = $name;
-		$this->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | (Server::getInstance()->commandFix ? AvailableCommandsPacket::ARG_TYPE_RAWTEXT : $type);
+		$this->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $type;
 		$this->isOptional = $optional;
 		if($extraData instanceof CommandEnum){
 			$this->enum = $extraData;

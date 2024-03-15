@@ -873,6 +873,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @return void
 	 */
 	public function sendCommandData(){
+		if($this->server->commandFix) {
+			return;
+		}
 		$pk = new AvailableCommandsPacket();
 		foreach($this->server->getCommandMap()->getCommands() as $command){
 			if(!$command->testPermissionSilent($this) or isset($pk->commandData[$command->getName()]) or $command->getName() === "help" or !$command->testPermissionSilent($this)){
