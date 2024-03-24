@@ -58,18 +58,17 @@ class CraftingDataPacket extends DataPacket{
 	public const ENTRY_SHAPED_CHEMISTRY = 7; //TODO
 
 	/** @var object[] */
-	public $entries = [];
+	public array $entries = [];
 	/** @var PotionTypeRecipe[] */
-	public $potionTypeRecipes = [];
+	public array $potionTypeRecipes = [];
 	/** @var PotionContainerChangeRecipe[] */
-	public $potionContainerRecipes = [];
+	public array $potionContainerRecipes = [];
 	/** @var MaterialReducerRecipe[] */
-	public $materialReducerRecipes = [];
-	/** @var bool */
-	public $cleanRecipes = false;
+	public array $materialReducerRecipes = [];
+	public bool $cleanRecipes = false;
 
 	/** @var mixed[][] */
-	public $decodedEntries = [];
+	public array $decodedEntries = [];
 
 	public function clean(){
 		$this->entries = [];
@@ -247,6 +246,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
+		$stream->putBool(false); //TODO
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPED;
