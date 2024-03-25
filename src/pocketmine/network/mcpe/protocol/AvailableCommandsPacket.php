@@ -349,7 +349,7 @@ class AvailableCommandsPacket extends DataPacket{
 
 		$this->putUnsignedVarInt(count($data->overloads));
 		foreach($data->overloads as $overload){
-			$this->putBool(false);
+			$this->putBool(false); //isChaining
 			/** @var CommandParameter[] $overload */
 			$this->putUnsignedVarInt(count($overload));
 			foreach($overload as $parameter){
@@ -419,7 +419,7 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putString((string) $enumValue); //stupid PHP key casting D:
 		}
 
-		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0); //chainedSubCommandValueNameIndexes
 
 		$this->putUnsignedVarInt(count($postfixIndexes));
 		foreach($postfixIndexes as $postfix => $index){
@@ -431,7 +431,7 @@ class AvailableCommandsPacket extends DataPacket{
 			$this->putEnum($enum, $enumValueIndexes);
 		}
 
-		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0); //allChainedSubCommandData
 
 		$this->putUnsignedVarInt(count($this->commandData));
 		foreach($this->commandData as $data){
