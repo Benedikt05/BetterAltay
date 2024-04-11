@@ -246,7 +246,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
-		$stream->putBool(false); //TODO
+		$stream->putBool(true); //TODO: assume symmetry
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPED;
