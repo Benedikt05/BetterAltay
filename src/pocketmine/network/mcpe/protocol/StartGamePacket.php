@@ -58,8 +58,8 @@ class StartGamePacket extends DataPacket{
 	public int $seed;
 	public SpawnSettings $spawnSettings;
 	public int $generator = GeneratorType::OVERWORLD;
-	public bool $isHardcoreMode = false;
 	public int $worldGamemode;
+	public bool $hardcoreMode = false;
 	public int $difficulty;
 	public int $spawnX;
 	public int $spawnY;
@@ -157,8 +157,8 @@ class StartGamePacket extends DataPacket{
 		$this->seed = $this->getLLong();
 		$this->spawnSettings = SpawnSettings::read($this);
 		$this->generator = $this->getVarInt();
-		$this->isHardcoreMode = $this->getBool();
 		$this->worldGamemode = $this->getVarInt();
+		$this->hardcoreMode = $this->getBool();
 		$this->difficulty = $this->getVarInt();
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
@@ -257,8 +257,8 @@ class StartGamePacket extends DataPacket{
 		$this->putLLong($this->seed);
 		$this->spawnSettings->write($this);
 		$this->putVarInt($this->generator);
-		$this->putBool($this->isHardcoreMode);
 		$this->putVarInt($this->worldGamemode);
+		$this->putBool($this->hardcoreMode);
 		$this->putVarInt($this->difficulty);
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
