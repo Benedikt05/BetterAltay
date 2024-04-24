@@ -22,4 +22,6 @@ final class HudElement{
 	public const FOOD = 8;
 	public const AIR_BUBBLES = 9;
 	public const VEHICLE_HEALTH = 10;
+	public const STATUS_EFFECTS = 11;
+	public const ITEM_TEXT_POPUP = 12;
 }
