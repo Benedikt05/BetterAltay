@@ -68,9 +68,6 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 		$this->onGround = $this->getBool();
 		$this->tick = $this->getUnsignedVarLong();
 		$this->predictionType = $this->getByte();
-
-		//$this->getLFloat();
-		//$this->getLFloat();
 	}
 
 	protected function encodePayload() : void{
@@ -79,9 +76,6 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 		$this->putBool($this->onGround);
 		$this->putUnsignedVarLong($this->tick);
 		$this->putByte($this->predictionType);
-		//TODO: vehicleRotation
-		//$this->putLFloat();
-		//$this->putLFloat();
 	}
 
 	public function handle(NetworkSession $session) : bool{
