@@ -35,22 +35,24 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 	public const PREDICTION_TYPE_VEHICLE = 0;
 	public const PREDICTION_TYPE_PLAYER = 1;
 
+	private int $predictionType;
 	private Vector3 $position;
 	private Vector3 $delta;
 	private bool $onGround;
 	private int $tick;
-	private int $predictionType;
 
 
-	public static function create(Vector3 $position, Vector3 $delta, bool $onGround, int $tick, int $predictionType) : self{
+	public static function create(int $predictionType, Vector3 $position, Vector3 $delta, bool $onGround, int $tick) : self{
 		$result = new self;
+		$result->predictionType = $predictionType;
 		$result->position = $position;
 		$result->delta = $delta;
 		$result->onGround = $onGround;
 		$result->tick = $tick;
-		$result->predictionType = $predictionType;
 		return $result;
 	}
+
+	public function getPredictionType() : int{ return $this->predictionType; }
 
 	public function getPosition() : Vector3{ return $this->position; }
 
@@ -60,22 +62,20 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 
 	public function getTick() : int{ return $this->tick; }
 
-	public function getPredictionType() : int{ return $this->predictionType; }
-
 	protected function decodePayload() : void{
+		$this->predictionType = $this->getByte();
 		$this->position = $this->getVector3();
 		$this->delta = $this->getVector3();
 		$this->onGround = $this->getBool();
 		$this->tick = $this->getUnsignedVarLong();
-		$this->predictionType = $this->getByte();
 	}
 
 	protected function encodePayload() : void{
+		$this->putByte($this->predictionType);
 		$this->putVector3($this->position);
 		$this->putVector3($this->delta);
 		$this->putBool($this->onGround);
 		$this->putUnsignedVarLong($this->tick);
-		$this->putByte($this->predictionType);
 	}
 
 	public function handle(NetworkSession $session) : bool{
