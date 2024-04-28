@@ -30,16 +30,11 @@ use pocketmine\network\mcpe\NetworkSession;
 class BlockEventPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::BLOCK_EVENT_PACKET;
 
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
-	/** @var int */
-	public $eventType;
-	/** @var int */
-	public $eventData;
+	public int $x;
+	public int $y;
+	public int $z;
+	public int $eventType;
+	public int $eventData;
 
 	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);

@@ -40,50 +40,32 @@ use function is_null;
 class AddPlayerPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_PLAYER_PACKET;
 
-	/** @var UUID */
-	public $uuid;
-	/** @var string */
-	public $username;
-	/** @var int|null */
-	public $entityUniqueId = null; //TODO
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var string */
-	public $platformChatId = "";
-	/** @var Vector3 */
-	public $position;
-	/** @var Vector3|null */
-	public $motion;
-	/** @var float */
-	public $pitch = 0.0;
-	/** @var float */
-	public $yaw = 0.0;
-	/** @var float|null */
-	public $headYaw = null; //TODO
-	/** @var ItemStackWrapper */
-	public $item;
+	public UUID $uuid;
+	public string $username;
+	public ?int $entityUniqueId = null; //TODO
+	public int $entityRuntimeId;
+	public string $platformChatId = "";
+	public Vector3 $position;
+	public ?Vector3 $motion;
+	public float $pitch = 0.0;
+	public float $yaw = 0.0;
+	public ?float $headYaw = null; //TODO
+	public ItemStackWrapper $item;
 	/**
 	 * @var mixed[][]
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
-	public $metadata = [];
+	public array $metadata = [];
 
 	public ?EntityProperties $entityProperties = null;
 
-	/**
-	 * @var UpdateAbilitiesPacket|null
-	 */
 	public ?UpdateAbilitiesPacket $abilitiesPacket = null;
 
-	/** @var int */
-	public $gameMode = 0;
-	/** @var EntityLink[] */
-	public $links = [];
+	public int $gameMode = 0;
+	public array $links = [];
 
-	/** @var string */
-	public $deviceId = ""; //TODO: fill player's device ID (???)
-	/** @var int */
-	public $buildPlatform = DeviceOS::UNKNOWN;
+	public string $deviceId = ""; //TODO: fill player's device ID (???)
+	public int $buildPlatform = DeviceOS::UNKNOWN;
 
 	protected function decodePayload(){
 		$this->uuid = $this->getUUID();

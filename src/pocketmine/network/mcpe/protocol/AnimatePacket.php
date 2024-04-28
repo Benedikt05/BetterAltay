@@ -38,12 +38,9 @@ class AnimatePacket extends DataPacket{
 	public const ACTION_ROW_RIGHT = 128;
 	public const ACTION_ROW_LEFT = 129;
 
-	/** @var int */
-	public $action;
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var float */
-	public $rowingTime = 0.0; // Boat rowing time
+	public int $action;
+	public int $entityRuntimeId;
+	public float $rowingTime = 0.0; // Boat rowing time
 
 	protected function decodePayload(){
 		$this->action = $this->getVarInt();

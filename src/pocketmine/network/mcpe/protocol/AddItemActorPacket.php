@@ -32,23 +32,17 @@ use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 class AddItemActorPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_ITEM_ACTOR_PACKET;
 
-	/** @var int|null */
-	public $entityUniqueId = null; //TODO
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var ItemStackWrapper */
-	public $item;
-	/** @var Vector3 */
-	public $position;
-	/** @var Vector3|null */
-	public $motion;
+	public ?int $entityUniqueId = null; //TODO
+	public int $entityRuntimeId;
+	public ItemStackWrapper $item;
+	public Vector3 $position;
+	public ?Vector3 $motion;
 	/**
 	 * @var mixed[][]
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
-	public $metadata = [];
-	/** @var bool */
-	public $isFromFishing = false;
+	public array $metadata = [];
+	public bool $isFromFishing = false;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();

@@ -38,26 +38,17 @@ class BookEditPacket extends DataPacket{
 	public const TYPE_SWAP_PAGES = 3;
 	public const TYPE_SIGN_BOOK = 4;
 
-	/** @var int */
-	public $type;
-	/** @var int */
-	public $inventorySlot;
-	/** @var int */
-	public $pageNumber;
-	/** @var int */
-	public $secondaryPageNumber;
+	public int $type;
+	public int $inventorySlot;
+	public int $pageNumber;
+	public int $secondaryPageNumber;
 
-	/** @var string */
-	public $text;
-	/** @var string */
-	public $photoName;
+	public string $text;
+	public string $photoName;
 
-	/** @var string */
-	public $title;
-	/** @var string */
-	public $author;
-	/** @var string */
-	public $xuid;
+	public string $title;
+	public string $author;
+	public string $xuid;
 
 	protected function decodePayload(){
 		$this->type = $this->getByte();

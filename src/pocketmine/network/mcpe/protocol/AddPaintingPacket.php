@@ -31,16 +31,11 @@ use pocketmine\network\mcpe\NetworkSession;
 class AddPaintingPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_PAINTING_PACKET;
 
-	/** @var int|null */
-	public $entityUniqueId = null;
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var Vector3 */
-	public $position;
-	/** @var int */
-	public $direction;
-	/** @var string */
-	public $title;
+	public ?int $entityUniqueId = null;
+	public int $entityRuntimeId;
+	public Vector3 $position;
+	public int $direction;
+	public string $title;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();

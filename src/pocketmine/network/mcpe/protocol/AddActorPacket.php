@@ -161,36 +161,28 @@ class AddActorPacket extends DataPacket{
 
 	];
 
-	/** @var int|null */
-	public $entityUniqueId = null; //TODO
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var string */
-	public $type;
-	/** @var Vector3 */
-	public $position;
-	/** @var Vector3|null */
-	public $motion;
-	/** @var float */
-	public $pitch = 0.0;
-	/** @var float */
-	public $yaw = 0.0;
-	/** @var float */
-	public $headYaw = 0.0;
+	public ?int $entityUniqueId = null; //TODO
+	public int $entityRuntimeId;
+	public string $type;
+	public Vector3 $position;
+	public ?Vector3 $motion;
+	public float $pitch = 0.0;
+	public float $yaw = 0.0;
+	public float $headYaw = 0.0;
 	public float $bodyYaw = 0.0;
 
 	/** @var Attribute[] */
-	public $attributes = [];
+	public array $attributes = [];
 	/**
 	 * @var mixed[][]
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
-	public $metadata = [];
+	public array $metadata = [];
 
 	public ?EntityProperties $entityProperties = null;
 
 	/** @var EntityLink[] */
-	public $links = [];
+	public array $links = [];
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
