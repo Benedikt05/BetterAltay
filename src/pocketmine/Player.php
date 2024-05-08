@@ -1650,7 +1650,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			AbilitiesLayer::ABILITY_OPERATOR => $this->isOp(),
 			AbilitiesLayer::ABILITY_TELEPORT => false,
 			AbilitiesLayer::ABILITY_INVULNERABLE => $this->isCreative(),
-			AbilitiesLayer::ABILITY_MUTED => false,
+			AbilitiesLayer::ABILITY_MUTED => $this->isMuted(),
 			AbilitiesLayer::ABILITY_WORLD_BUILDER => false,
 			AbilitiesLayer::ABILITY_INFINITE_RESOURCES => $this->isCreative(),
 			AbilitiesLayer::ABILITY_LIGHTNING => false,
