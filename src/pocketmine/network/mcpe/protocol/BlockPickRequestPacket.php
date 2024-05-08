@@ -30,9 +30,9 @@ use pocketmine\network\mcpe\NetworkSession;
 class BlockPickRequestPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::BLOCK_PICK_REQUEST_PACKET;
 
-	public int $blockX;
-	public int $blockY;
-	public int $blockZ;
+	public ?int $blockX = null;
+	public ?int $blockY = null;
+	public ?int $blockZ = null;
 	public bool $addUserData = false;
 	public int $hotbarSlot;
 

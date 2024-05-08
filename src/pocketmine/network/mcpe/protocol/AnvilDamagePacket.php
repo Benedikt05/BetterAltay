@@ -31,9 +31,9 @@ class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::ANVIL_DAMAGE_PACKET;
 
-	private int $x;
-	private int $y;
-	private int $z;
+	private ?int $x = null;
+	private ?int $y = null;
+	private ?int $z = null;
 	private int $damageAmount;
 
 	public static function create(int $x, int $y, int $z, int $damageAmount) : self{
