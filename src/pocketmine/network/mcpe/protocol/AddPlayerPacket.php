@@ -46,7 +46,7 @@ class AddPlayerPacket extends DataPacket{
 	public int $entityRuntimeId;
 	public string $platformChatId = "";
 	public Vector3 $position;
-	public ?Vector3 $motion;
+	public ?Vector3 $motion = null;
 	public float $pitch = 0.0;
 	public float $yaw = 0.0;
 	public ?float $headYaw = null; //TODO
