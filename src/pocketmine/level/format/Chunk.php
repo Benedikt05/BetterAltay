@@ -34,6 +34,7 @@ use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
@@ -867,14 +868,16 @@ class Chunk{
 	/**
 	 * Serializes the chunk for sending to players
 	 */
-	public function networkSerialize(?string $networkSerializedTiles) : string{
+	public function networkSerialize(?string $networkSerializedTiles, int $dimensionId) : string{
 		$result = "";
 		$subChunkCount = $this->getSubChunkSendCount();
 
 		//TODO: HACK! fill in fake subchunks to make up for the new negative space client-side
-		for($y = 0; $y < 4; ++$y){
-			$result .= chr(8); //subchunk version 8
-			$result .= chr(0); //0 layers - client will treat this as all-air
+		if($dimensionId === DimensionIds::OVERWORLD){
+			for($y = 0; $y < 4; ++$y){
+				$result .= chr(8); //subchunk version 8
+				$result .= chr(0); //0 layers - client will treat this as all-air
+			}
 		}
 		for($y = 0; $y < $subChunkCount; ++$y){
 			$result .= $this->subChunks[$y]->networkSerialize();
