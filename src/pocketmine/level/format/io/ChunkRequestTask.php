@@ -45,11 +45,12 @@ class ChunkRequestTask extends AsyncTask{
 	protected $chunkX;
 	/** @var int */
 	protected $chunkZ;
+	protected int $dimensionId;
 
 	/** @var int */
 	protected $compressionLevel;
 
-	public function __construct(Level $level, int $chunkX, int $chunkZ, Chunk $chunk){
+	public function __construct(Level $level, int $chunkX, int $chunkZ, int $dimensionId, Chunk $chunk){
 		$this->levelId = $level->getId();
 		$this->compressionLevel = $level->getServer()->networkCompressionLevel;
 
@@ -58,11 +59,12 @@ class ChunkRequestTask extends AsyncTask{
 
 		$this->chunkX = $chunkX;
 		$this->chunkZ = $chunkZ;
+		$this->dimensionId = $dimensionId;
 	}
 
 	public function onRun(){
 		$chunk = Chunk::fastDeserialize($this->chunk);
-		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, DimensionIds::OVERWORLD, $chunk->getSubChunkSendCount() + 4, false, null, $chunk->networkSerialize($this->tiles));
+		$pk = LevelChunkPacket::create($this->chunkX, $this->chunkZ, $this->dimensionId, $chunk->getSubChunkSendCount() + ($this->dimensionId === DimensionIds::OVERWORLD ? 4 : 0), false, null, $chunk->networkSerialize($this->tiles, $this->dimensionId));
 
 		$batch = new BatchPacket();
 		$batch->addPacket($pk);
