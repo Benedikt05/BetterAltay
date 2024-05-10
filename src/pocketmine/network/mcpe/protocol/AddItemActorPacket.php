@@ -36,7 +36,7 @@ class AddItemActorPacket extends DataPacket{
 	public int $entityRuntimeId;
 	public ItemStackWrapper $item;
 	public Vector3 $position;
-	public ?Vector3 $motion;
+	public ?Vector3 $motion = null;
 	/**
 	 * @var mixed[][]
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
