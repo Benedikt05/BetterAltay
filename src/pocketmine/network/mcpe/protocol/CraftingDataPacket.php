@@ -56,6 +56,8 @@ class CraftingDataPacket extends DataPacket{
 	public const ENTRY_SHULKER_BOX = 5; //TODO
 	public const ENTRY_SHAPELESS_CHEMISTRY = 6; //TODO
 	public const ENTRY_SHAPED_CHEMISTRY = 7; //TODO
+	public const ENTRY_SMITHING_TRANSFORM = 8; //TODO
+	public const ENTRY_SMITHING_TRIM = 9; //TODO
 
 	/** @var object[] */
 	public array $entries = [];
@@ -221,6 +223,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
+		$stream->putByte(1); //TODO: recipe unlocking requirement - always unlocked
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPELESS;
@@ -247,6 +250,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
 		$stream->putBool(true); //TODO: assume symmetry
+		$stream->putByte(1); //TODO: recipe unlocking requirement - always unlocked
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPED;
