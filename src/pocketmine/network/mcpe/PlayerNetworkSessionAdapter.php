@@ -31,7 +31,6 @@ use pocketmine\maps\MapManager;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ActorPickRequestPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
-use pocketmine\network\mcpe\protocol\AwardAchievementPacket;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\BlockPickRequestPacket;
@@ -463,10 +462,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 			return true;
 		}
 
-		return false;
-	}
-
-	public function handleAwardAchievement(AwardAchievementPacket $packet) : bool{
 		return false;
 	}
 }
