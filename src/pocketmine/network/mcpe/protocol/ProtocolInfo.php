@@ -65,7 +65,7 @@ interface ProtocolInfo{
 	public const PASSENGER_JUMP_PACKET = 0x14;
 	public const UPDATE_BLOCK_PACKET = 0x15;
 	public const ADD_PAINTING_PACKET = 0x16;
-	public const TICK_SYNC_PACKET = 0x17;
+	
 	public const LEVEL_SOUND_EVENT_PACKET_V1 = 0x18;
 	public const LEVEL_EVENT_PACKET = 0x19;
 	public const BLOCK_EVENT_PACKET = 0x1a;
