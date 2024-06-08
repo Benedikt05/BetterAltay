@@ -227,6 +227,6 @@ interface ProtocolInfo{
 	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
 	public const SET_HUD_PACKET = 0x134;
-	public const AWARD_ACHIEVEMENT = 0x135;
+	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
 	
 }

@@ -9,6 +9,7 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 
 class AwardAchievementPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::AWARD_ACHIEVEMENT_PACKET;
 
 	public int $achievementId;
 
