@@ -26,21 +26,22 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\WindowTypes;
 
 class ContainerClosePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::CONTAINER_CLOSE_PACKET;
 
 	public int  $windowId;
-	public int $type = 0; //TODO
+	public int $type = WindowTypes::NONE; //TODO
 	public bool $server = false;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->windowId = $this->getByte();
 		$this->type = $this->getByte();
 		$this->server = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putByte($this->windowId);
 		$this->putByte($this->type);
 		$this->putBool($this->server);
