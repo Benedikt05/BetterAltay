@@ -32,7 +32,7 @@ class ContainerClosePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::CONTAINER_CLOSE_PACKET;
 
 	public int  $windowId;
-	public int $type = WindowTypes::NONE; //TODO
+	public int $type = WindowTypes::CONTAINER; 
 	public bool $server = false;
 
 	protected function decodePayload() : void{
