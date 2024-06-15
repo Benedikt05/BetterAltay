@@ -111,6 +111,7 @@ final class ItemTranslator{
 				if(!is_numeric($meta) || !is_string($newId)){
 					throw new AssumptionFailedError("Invalid item table format");
 				}
+				$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
 				$complexMappings[$newId] = [$legacyStringToIntMap[$oldId], (int) $meta];
 			}
 		}
