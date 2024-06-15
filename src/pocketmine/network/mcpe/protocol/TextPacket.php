@@ -44,20 +44,15 @@ class TextPacket extends DataPacket{
 	public const TYPE_JSON = 10;
 	public const TYPE_JSON_ANNOUNCEMENT = 11;
 
-	/** @var int */
-	public $type;
-	/** @var bool */
-	public $needsTranslation = false;
-	/** @var string */
-	public $sourceName;
-	/** @var string */
-	public $message;
+	public int $type;
+	public bool $needsTranslation = false;
+	public string $sourceName;
+	public string $message;
 	/** @var string[] */
-	public $parameters = [];
-	/** @var string */
-	public $xboxUserId = "";
-	/** @var string */
-	public $platformChatId = "";
+	public array $parameters = [];
+	public string $xboxUserId = "";
+	public string $platformChatId = "";
+	public string $filteredMessage = "";
 
 	protected function decodePayload(){
 		$this->type = $this->getByte();
@@ -90,6 +85,7 @@ class TextPacket extends DataPacket{
 
 		$this->xboxUserId = $this->getString();
 		$this->platformChatId = $this->getString();
+		$this->filteredMessage = $this->getString();
 	}
 
 	protected function encodePayload(){
@@ -123,6 +119,7 @@ class TextPacket extends DataPacket{
 
 		$this->putString($this->xboxUserId);
 		$this->putString($this->platformChatId);
+		$this->putString($this->filteredMessage);
 	}
 
 	public function handle(NetworkSession $session) : bool{

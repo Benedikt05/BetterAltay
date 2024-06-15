@@ -76,7 +76,6 @@ use pocketmine\network\mcpe\protocol\SettingsCommandPacket;
 use pocketmine\network\mcpe\protocol\ShowCreditsPacket;
 use pocketmine\network\mcpe\protocol\SpawnExperienceOrbPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
-use pocketmine\network\mcpe\protocol\TickSyncPacket;
 use pocketmine\network\mcpe\protocol\types\RequestAbilityType;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
@@ -370,12 +369,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handleSetLocalPlayerAsInitialized(SetLocalPlayerAsInitializedPacket $packet) : bool{
 		$this->player->doFirstSpawn();
-		return true;
-	}
-
-	public function handleTickSync(TickSyncPacket $packet) : bool{
-		$this->player->sendDataPacket(TickSyncPacket::response($packet->getClientSendTime(), time()));
-
 		return true;
 	}
 

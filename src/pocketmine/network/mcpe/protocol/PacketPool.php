@@ -58,7 +58,6 @@ class PacketPool{
 		static::registerPacket(new PassengerJumpPacket());
 		static::registerPacket(new UpdateBlockPacket());
 		static::registerPacket(new AddPaintingPacket());
-		static::registerPacket(new TickSyncPacket());
 		static::registerPacket(new LevelSoundEventPacketV1());
 		static::registerPacket(new LevelEventPacket());
 		static::registerPacket(new BlockEventPacket());
@@ -216,6 +215,7 @@ class PacketPool{
 		static::registerPacket(new UnlockedRecipesPacket());
 		static::registerPacket(new OpenSignPacket());
 		static::registerPacket(new SetHudPacket());
+		static::registerPacket(new AwardAchievementPacket());
 	}
 
 	/**

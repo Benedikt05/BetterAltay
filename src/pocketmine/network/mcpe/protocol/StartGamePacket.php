@@ -114,6 +114,9 @@ class StartGamePacket extends DataPacket{
 
 	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
+	public string $serverId = "";
+	public string $worldId = "";
+	public string $scenarioId = "";
 	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	public string $worldName;
 	public string $premiumWorldTemplateId = "";
@@ -207,6 +210,9 @@ class StartGamePacket extends DataPacket{
 
 		$this->chatRestrictionLevel = $this->getByte();
 		$this->disablePlayerInteractions = $this->getBool();
+		$this->serverId = $this->getString();
+		$this->worldId = $this->getString();
+		$this->scenarioId = $this->getString();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -306,6 +312,9 @@ class StartGamePacket extends DataPacket{
 
 		$this->putByte($this->chatRestrictionLevel);
 		$this->putBool($this->disablePlayerInteractions);
+		$this->putString($this->serverId);
+		$this->putString($this->worldId);
+		$this->putString($this->scenarioId);
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);

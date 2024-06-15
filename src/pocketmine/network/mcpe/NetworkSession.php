@@ -37,6 +37,7 @@ use pocketmine\network\mcpe\protocol\AnvilDamagePacket;
 use pocketmine\network\mcpe\protocol\AutomationClientConnectPacket;
 use pocketmine\network\mcpe\protocol\AvailableActorIdentifiersPacket;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\AwardAchievementPacket;
 use pocketmine\network\mcpe\protocol\BiomeDefinitionListPacket;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\BlockEventPacket;
@@ -188,7 +189,6 @@ use pocketmine\network\mcpe\protocol\SubClientLoginPacket;
 use pocketmine\network\mcpe\protocol\SyncActorPropertyPacket;
 use pocketmine\network\mcpe\protocol\TakeItemActorPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
-use pocketmine\network\mcpe\protocol\TickSyncPacket;
 use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
@@ -291,10 +291,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleAddPainting(AddPaintingPacket $packet) : bool{
-		return false;
-	}
-
-	public function handleTickSync(TickSyncPacket $packet) : bool{
 		return false;
 	}
 
@@ -923,6 +919,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleSetHud(SetHudPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleAwardAchievement(AwardAchievementPacket $packet) : bool{
 		return false;
 	}
 
