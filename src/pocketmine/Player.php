@@ -3397,6 +3397,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
 				$this->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 				break;
+			case PlayerActionPacket::ACTION_START_FLYING:
+			case PlayerActionPacket::ACTION_STOP_FLYING:
+				break;
 			default:
 				$this->server->getLogger()->debug("Unhandled/unknown player action type " . $packet->action . " from " . $this->getName());
 				return false;
