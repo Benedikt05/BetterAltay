@@ -43,7 +43,7 @@ interface ProtocolInfo{
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v1.19.30 - 1.20.60';
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.20.60';
+	public const MINECRAFT_VERSION_NETWORK = '1.21.0';
 
 	public const ACCEPTED_PROTOCOLS = [
 		self::PROTOCOL_1_19_30,
@@ -263,5 +263,6 @@ interface ProtocolInfo{
 	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
 	public const SET_HUD_PACKET = 0x134;
+	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
 	
 }

@@ -94,12 +94,9 @@ class ActorEventPacket extends DataPacket{
 
 	//TODO: add more events
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var int */
-	public $event;
-	/** @var int */
-	public $data = 0;
+	public int $entityRuntimeId;
+	public int $event;
+	public int $data = 0;
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();

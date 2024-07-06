@@ -45,14 +45,14 @@ abstract class Particle extends Vector3{
 	public const TYPE_SNOWBALL_POOF = 15;
 	public const TYPE_HUGE_EXPLODE = 16;
 	public const TYPE_HUGE_EXPLODE_SEED = 17;
-	public const TYPE_WIND_EXPLOSION = 18;
+	public const TYPE_BREEZE_WIND_EXPLOSION = 18;
 	public const TYPE_MOB_FLAME = 19;
 	public const TYPE_HEART = 20;
 	public const TYPE_TERRAIN = 21;
-	public const TYPE_SUSPENDED_TOWN = 22, TOWN_AURA = 22;
+	public const TYPE_SUSPENDED_TOWN = 22, TYPE_TOWN_AURA = 22;
 	public const TYPE_PORTAL = 23;
 	//24 same as 23
-	public const TYPE_SPLASH = 25, WATER_SPLASH = 25;
+	public const TYPE_SPLASH = 25, TYPE_WATER_SPLASH = 25;
 	public const TYPE_WATER_SPLASH_MANUAL = 26;
 	public const TYPE_WATER_WAKE = 27;
 	public const TYPE_DRIP_WATER = 28;
@@ -60,7 +60,7 @@ abstract class Particle extends Vector3{
 	public const TYPE_DRIP_HONEY = 30;
 	public const TYPE_STALACTITE_DRIP_WATER = 31;
 	public const TYPE_STALACTITE_DRIP_LAVA = 32;
-	public const TYPE_FALLING_DUST = 33, DUST = 33;
+	public const TYPE_FALLING_DUST = 33, TYPE_DUST = 33;
 	public const TYPE_MOB_SPELL = 34;
 	public const TYPE_MOB_SPELL_AMBIENT = 35;
 	public const TYPE_MOB_SPELL_INSTANTANEOUS = 36;
@@ -117,6 +117,9 @@ abstract class Particle extends Vector3{
 	public const TYPE_CHERRY_LEAVES = 87;
 	public const TYPE_DUST_PLUME = 88;
 	public const TYPE_WHITE_SMOKE = 89;
+	public const TYPE_VAULT_CONNECTION = 90;
+	public const TYPE_WIND_EXPLOSION = 91;
+	public const TYPE_WOLF_ARMOR_CRACK = 92;
 
 	/**
 	 * @return DataPacket|DataPacket[]

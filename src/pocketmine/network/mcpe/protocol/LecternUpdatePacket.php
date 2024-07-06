@@ -41,21 +41,17 @@ class LecternUpdatePacket extends DataPacket/* implements ServerboundPacket*/
 	public $y;
 	/** @var int */
 	public $z;
-	/** @var bool */
-	public $dropBook;
 
 	protected function decodePayload() : void{
 		$this->page = $this->getByte();
 		$this->totalPages = $this->getByte();
 		$this->getBlockPosition($this->x, $this->y, $this->z);
-		$this->dropBook = $this->getBool();
 	}
 
 	protected function encodePayload() : void{
 		$this->putByte($this->page);
 		$this->putByte($this->totalPages);
 		$this->putBlockPosition($this->x, $this->y, $this->z);
-		$this->putBool($this->dropBook);
 	}
 
 	public function handle(NetworkSession $session) : bool{

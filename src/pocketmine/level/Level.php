@@ -2731,7 +2731,7 @@ class Level implements ChunkManager, Metadatable{
 				}
 				assert($chunk->getX() === $x and $chunk->getZ() === $z, "Chunk coordinate mismatch: expected $x $z, but chunk has coordinates " . $chunk->getX() . " " . $chunk->getZ() . ", did you forget to clone a chunk before setting?");
 
-				$this->server->getAsyncPool()->submitTask($task = new ChunkRequestTask($this, $x, $z, $chunk));
+				$this->server->getAsyncPool()->submitTask($task = new ChunkRequestTask($this, $x, $z, $this->getDimension(), $chunk));
 				$this->chunkSendTasks[$index] = $task;
 
 				$this->timings->syncChunkSendPrepareTimer->stopTiming();

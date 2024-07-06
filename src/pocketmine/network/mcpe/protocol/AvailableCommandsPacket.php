@@ -65,21 +65,21 @@ class AvailableCommandsPacket extends DataPacket{
 
 	public const ARG_TYPE_FULL_INTEGER_RANGE = 23;
 
-	public const ARG_TYPE_EQUIPMENT_SLOT = 43;
-	public const ARG_TYPE_STRING = 44;
+	public const ARG_TYPE_EQUIPMENT_SLOT = 47;
+	public const ARG_TYPE_STRING = 48;
 
-	public const ARG_TYPE_INT_POSITION = 52;
-	public const ARG_TYPE_POSITION = 53;
+	public const ARG_TYPE_INT_POSITION = 64;
+	public const ARG_TYPE_POSITION = 65;
 
-	public const ARG_TYPE_MESSAGE = 55;
+	public const ARG_TYPE_MESSAGE = 67;
 
-	public const ARG_TYPE_RAWTEXT = 58;
+	public const ARG_TYPE_RAWTEXT = 70;
 
-	public const ARG_TYPE_JSON = 62;
+	public const ARG_TYPE_JSON = 74;
 
-	public const ARG_TYPE_BLOCK_STATES = 71;
+	public const ARG_TYPE_BLOCK_STATES = 84;
 
-	public const ARG_TYPE_COMMAND = 74;
+	public const ARG_TYPE_COMMAND = 87;
 	/**
 	 * Enums are a little different: they are composed as follows:
 	 * ARG_FLAG_ENUM | ARG_FLAG_VALID | (enum index)
@@ -97,27 +97,27 @@ class AvailableCommandsPacket extends DataPacket{
 	 * @var CommandData[]
 	 * List of command data, including name, description, alias indexes and parameters.
 	 */
-	public $commandData = [];
+	public array $commandData = [];
 
 	/**
 	 * @var CommandEnum[]
 	 * List of enums which aren't directly referenced by any vanilla command.
 	 * This is used for the `CommandName` enum, which is a magic enum used by the `command` argument type.
 	 */
-	public $hardcodedEnums = [];
+	public array $hardcodedEnums = [];
 
 	/**
 	 * @var CommandEnum[]
 	 * List of dynamic command enums, also referred to as "soft" enums. These can by dynamically updated mid-game
 	 * without resending this packet.
 	 */
-	public $softEnums = [];
+	public array $softEnums = [];
 
 	/**
 	 * @var CommandEnumConstraint[]
 	 * List of constraints for enum members. Used to constrain gamerules that can bechanged in nocheats mode and more.
 	 */
-	public $enumConstraints = [];
+	public array $enumConstraints = [];
 
 	//requires fix
 	protected function decodePayload(){
@@ -297,9 +297,7 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval->aliases = $enums[$this->getLInt()] ?? null;
 
 		for($overloadIndex = 0, $overloadCount = $this->getUnsignedVarInt(); $overloadIndex < $overloadCount; ++$overloadIndex){
-			if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_10){
-				$this->getBool();
-			}
+			$this->getBool();
 			$retval->overloads[$overloadIndex] = [];
 			for($paramIndex = 0, $paramCount = $this->getUnsignedVarInt(); $paramIndex < $paramCount; ++$paramIndex){
 				$parameter = new CommandParameter();
@@ -346,15 +344,12 @@ class AvailableCommandsPacket extends DataPacket{
 		}else{
 			$this->putLInt(-1);
 		}
-		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_10){
-			$this->putUnsignedVarInt(0); // chained sub cmds
-		}
+
+		$this->putUnsignedVarInt(0); // chained sub cmds
 
 		$this->putUnsignedVarInt(count($data->overloads));
 		foreach($data->overloads as $overload){
-			if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_10){
-				$this->putBool(false);
-			}
+			$this->putBool(false); //isChaining
 			/** @var CommandParameter[] $overload */
 			$this->putUnsignedVarInt(count($overload));
 			foreach($overload as $parameter){
@@ -423,9 +418,9 @@ class AvailableCommandsPacket extends DataPacket{
 		foreach($enumValueIndexes as $enumValue => $index){
 			$this->putString((string) $enumValue); //stupid PHP key casting D:
 		}
-		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_10){
-			$this->putUnsignedVarInt(0);
-		}
+
+		$this->putUnsignedVarInt(0); //chainedSubCommandValueNameIndexes
+
 		$this->putUnsignedVarInt(count($postfixIndexes));
 		foreach($postfixIndexes as $postfix => $index){
 			$this->putString((string) $postfix); //stupid PHP key casting D:
@@ -435,9 +430,9 @@ class AvailableCommandsPacket extends DataPacket{
 		foreach($enums as $enum){
 			$this->putEnum($enum, $enumValueIndexes);
 		}
-		if($this->protocol >= ProtocolInfo::PROTOCOL_1_20_10){
-			$this->putUnsignedVarInt(0);
-		}
+
+		$this->putUnsignedVarInt(0); //allChainedSubCommandData
+
 		$this->putUnsignedVarInt(count($this->commandData));
 		foreach($this->commandData as $data){
 			$this->putCommandData($data, $enumIndexes, $postfixIndexes);

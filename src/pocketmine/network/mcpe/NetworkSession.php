@@ -38,6 +38,7 @@ use pocketmine\network\mcpe\protocol\AnvilDamagePacket;
 use pocketmine\network\mcpe\protocol\AutomationClientConnectPacket;
 use pocketmine\network\mcpe\protocol\AvailableActorIdentifiersPacket;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\AwardAchievementPacket;
 use pocketmine\network\mcpe\protocol\BiomeDefinitionListPacket;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\BlockEventPacket;
@@ -937,7 +938,11 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleHudPacket(SetHudPacket $packet) : bool{
+	public function handleSetHud(SetHudPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleAwardAchievement(AwardAchievementPacket $packet) : bool{
 		return false;
 	}
 

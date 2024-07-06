@@ -113,6 +113,40 @@
             "8": "minecraft:dead_tube_coral",
             "9": "minecraft:dead_brain_coral"
         },
+        "minecraft:coral_block": {
+            "0": "minecraft:tube_coral_block",
+            "1": "minecraft:brain_coral_block",
+            "10": "minecraft:dead_bubble_coral_block",
+            "11": "minecraft:dead_fire_coral_block",
+            "12": "minecraft:dead_horn_coral_block",
+            "2": "minecraft:bubble_coral_block",
+            "3": "minecraft:fire_coral_block",
+            "4": "minecraft:horn_coral_block",
+            "8": "minecraft:dead_tube_coral_block",
+            "9": "minecraft:dead_brain_coral_block"
+        },
+        "minecraft:coral_fan": {
+            "0": "minecraft:tube_coral_fan",
+            "1": "minecraft:brain_coral_fan",
+            "2": "minecraft:bubble_coral_fan",
+            "3": "minecraft:fire_coral_fan",
+            "4": "minecraft:horn_coral_fan"
+        },
+        "minecraft:coral_fan_dead": {
+            "0": "minecraft:dead_tube_coral_fan",
+            "1": "minecraft:dead_brain_coral_fan",
+            "2": "minecraft:dead_bubble_coral_fan",
+            "3": "minecraft:dead_fire_coral_fan",
+            "4": "minecraft:dead_horn_coral_fan"
+        },
+        "minecraft:double_plant": {
+            "0": "minecraft:sunflower",
+            "1": "minecraft:lilac",
+            "2": "minecraft:tall_grass",
+            "3": "minecraft:large_fern",
+            "4": "minecraft:rose_bush",
+            "5": "minecraft:peony"
+        },
         "minecraft:dye": {
             "0": "minecraft:ink_sac",
             "1": "minecraft:red_dye",
@@ -179,6 +213,16 @@
             "8": "minecraft:hard_light_gray_stained_glass_pane",
             "9": "minecraft:hard_cyan_stained_glass_pane"
         },
+        "minecraft:leaves": {
+            "0": "minecraft:oak_leaves",
+            "1": "minecraft:spruce_leaves",
+            "2": "minecraft:birch_leaves",
+            "3": "minecraft:jungle_leaves"
+        },
+        "minecraft:leaves2": {
+            "0": "minecraft:acacia_leaves",
+            "1": "minecraft:dark_oak_leaves"
+        },
         "minecraft:log": {
             "0": "minecraft:oak_log",
             "1": "minecraft:spruce_log",
@@ -196,6 +240,27 @@
             "3": "minecraft:jungle_planks",
             "4": "minecraft:acacia_planks",
             "5": "minecraft:dark_oak_planks"
+        },
+        "minecraft:red_flower": {
+            "0": "minecraft:poppy",
+            "1": "minecraft:blue_orchid",
+            "10": "minecraft:lily_of_the_valley",
+            "2": "minecraft:allium",
+            "3": "minecraft:azure_bluet",
+            "4": "minecraft:red_tulip",
+            "5": "minecraft:orange_tulip",
+            "6": "minecraft:white_tulip",
+            "7": "minecraft:pink_tulip",
+            "8": "minecraft:oxeye_daisy",
+            "9": "minecraft:cornflower"
+        },
+        "minecraft:sapling": {
+            "0": "minecraft:oak_sapling",
+            "1": "minecraft:spruce_sapling",
+            "2": "minecraft:birch_sapling",
+            "3": "minecraft:jungle_sapling",
+            "4": "minecraft:acacia_sapling",
+            "5": "minecraft:dark_oak_sapling"
         },
         "minecraft:shulker_box": {
             "0": "minecraft:white_shulker_box",
@@ -250,6 +315,7 @@
             "14": "minecraft:wolf_spawn_egg",
             "140": "minecraft:breeze_spawn_egg",
             "142": "minecraft:armadillo_spawn_egg",
+            "144": "minecraft:bogged_spawn_egg",
             "15": "minecraft:villager_spawn_egg",
             "157": "minecraft:trader_llama_spawn_egg",
             "16": "minecraft:mooshroom_spawn_egg",
@@ -357,6 +423,43 @@
             "5": "minecraft:andesite",
             "6": "minecraft:polished_andesite"
         },
+        "minecraft:stone_block_slab": {
+            "0": "minecraft:smooth_stone_slab",
+            "1": "minecraft:sandstone_slab",
+            "2": "minecraft:petrified_oak_slab",
+            "3": "minecraft:cobblestone_slab",
+            "4": "minecraft:brick_slab",
+            "5": "minecraft:stone_brick_slab",
+            "6": "minecraft:quartz_slab",
+            "7": "minecraft:nether_brick_slab"
+        },
+        "minecraft:tallgrass": {
+            "0": "minecraft:short_grass",
+            "2": "minecraft:fern",
+            "3": "minecraft:fern"
+        },
+        "minecraft:wood": {
+            "0": "minecraft:oak_wood",
+            "1": "minecraft:spruce_wood",
+            "10": "minecraft:stripped_birch_wood",
+            "11": "minecraft:stripped_jungle_wood",
+            "12": "minecraft:stripped_acacia_wood",
+            "13": "minecraft:stripped_dark_oak_wood",
+            "2": "minecraft:birch_wood",
+            "3": "minecraft:jungle_wood",
+            "4": "minecraft:acacia_wood",
+            "5": "minecraft:dark_oak_wood",
+            "8": "minecraft:stripped_oak_wood",
+            "9": "minecraft:stripped_spruce_wood"
+        },
+        "minecraft:wooden_slab": {
+            "0": "minecraft:oak_slab",
+            "1": "minecraft:spruce_slab",
+            "2": "minecraft:birch_slab",
+            "3": "minecraft:jungle_slab",
+            "4": "minecraft:acacia_slab",
+            "5": "minecraft:dark_oak_slab"
+        },
         "minecraft:wool": {
             "0": "minecraft:white_wool",
             "1": "minecraft:orange_wool",
@@ -409,6 +512,7 @@
         "minecraft:glazedterracotta.silver": "minecraft:silver_glazed_terracotta",
         "minecraft:glazedterracotta.white": "minecraft:white_glazed_terracotta",
         "minecraft:glazedterracotta.yellow": "minecraft:yellow_glazed_terracotta",
+        "minecraft:grass": "minecraft:grass_block",
         "minecraft:horsearmordiamond": "minecraft:diamond_horse_armor",
         "minecraft:horsearmorgold": "minecraft:golden_horse_armor",
         "minecraft:horsearmoriron": "minecraft:iron_horse_armor",
@@ -434,11 +538,14 @@
         "minecraft:record_blocks": "minecraft:music_disc_blocks",
         "minecraft:record_cat": "minecraft:music_disc_cat",
         "minecraft:record_chirp": "minecraft:music_disc_chirp",
+        "minecraft:record_creator": "minecraft:music_disc_creator",
+        "minecraft:record_creator_music_box": "minecraft:music_disc_creator_music_box",
         "minecraft:record_far": "minecraft:music_disc_far",
         "minecraft:record_mall": "minecraft:music_disc_mall",
         "minecraft:record_mellohi": "minecraft:music_disc_mellohi",
         "minecraft:record_otherside": "minecraft:music_disc_otherside",
         "minecraft:record_pigstep": "minecraft:music_disc_pigstep",
+        "minecraft:record_precipice": "minecraft:music_disc_precipice",
         "minecraft:record_relic": "minecraft:music_disc_relic",
         "minecraft:record_stal": "minecraft:music_disc_stal",
         "minecraft:record_strad": "minecraft:music_disc_strad",

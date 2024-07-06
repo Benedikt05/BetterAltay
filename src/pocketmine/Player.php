@@ -878,6 +878,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @return void
 	 */
 	public function sendCommandData(){
+		if($this->server->commandFix) {
+			return;
+		}
 		$pk = new AvailableCommandsPacket();
 		foreach($this->server->getCommandMap()->getCommands() as $command){
 			if(!$command->testPermissionSilent($this) or isset($pk->commandData[$command->getName()]) or $command->getName() === "help" or !$command->testPermissionSilent($this)){
@@ -1102,7 +1105,17 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->dimension = $dimension;
 		$pk->position = $position ?? $this;
 		$pk->respawn = $respawn;
-		//$this->sendDataPacket($pk);
+		$this->sendDataPacket($pk);
+
+		//send this to the client??
+		$pk = new PlayerActionPacket();
+		$pk->entityRuntimeId = $this->id;
+		$pk->action = PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK;
+		$pk->x = $pk->y = $pk->z = 0;
+		$pk->resultX = $pk->resultY = $pk->resultZ = 0;
+		$pk->face = 0;
+
+		$this->sendDataPacket($pk);
 	}
 
 	public function getMaxInPortalTime() : int{
@@ -1652,7 +1665,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			AbilitiesLayer::ABILITY_OPERATOR => $this->isOp(),
 			AbilitiesLayer::ABILITY_TELEPORT => false,
 			AbilitiesLayer::ABILITY_INVULNERABLE => $this->isCreative(),
-			AbilitiesLayer::ABILITY_MUTED => false,
+			AbilitiesLayer::ABILITY_MUTED => $this->isMuted(),
 			AbilitiesLayer::ABILITY_WORLD_BUILDER => false,
 			AbilitiesLayer::ABILITY_INFINITE_RESOURCES => $this->isCreative(),
 			AbilitiesLayer::ABILITY_LIGHTNING => false,
@@ -2545,7 +2558,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->pitch = $this->pitch;
 		$pk->yaw = $this->yaw;
 		$pk->seed = -1;
-		$pk->spawnSettings = new SpawnSettings(SpawnSettings::BIOME_TYPE_DEFAULT, "", DimensionIds::OVERWORLD); //TODO: implement this properly
+		$pk->spawnSettings = new SpawnSettings(SpawnSettings::BIOME_TYPE_DEFAULT, "", $this->getLevel()->getDimension());
 		$pk->gameRules = $this->level->getGameRules()->getRules();
 		$pk->worldGamemode = Player::getClientFriendlyGamemode($this->server->getGamemode());
 		$pk->difficulty = $this->level->getDifficulty();
@@ -3386,6 +3399,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case PlayerActionPacket::ACTION_STOP_ITEM_USE_ON:
 				//this has no obvious use and seems only used for analytics in vanilla - ignore it
 				break;
+			case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
+				$this->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
+				break;
+			case PlayerActionPacket::ACTION_START_FLYING:
+			case PlayerActionPacket::ACTION_STOP_FLYING:
+				break;
 			default:
 				$this->server->getLogger()->debug("Unhandled/unknown player action type " . $packet->action . " from " . $this->getName());
 				return false;
@@ -3599,6 +3618,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return true;
 	}
 
+	//TODO: ItemFrameDropItemPacket is deprecated
 	public function handleItemFrameDropItem(ItemFrameDropItemPacket $packet) : bool{
 		if(!$this->spawned or !$this->isAlive()){
 			return true;

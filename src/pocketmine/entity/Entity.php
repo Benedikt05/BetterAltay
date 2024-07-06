@@ -389,6 +389,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_FEELING_HAPPY = 112;
 	public const DATA_FLAG_SEARCHING = 113;
 	public const DATA_FLAG_CRAWLING = 114;
+	public const DATA_FLAG_TIMER_FLAG_1 = 115;
+	public const DATA_FLAG_TIMER_FLAG_2 = 116;
+	public const DATA_FLAG_TIMER_FLAG_3 = 117;
+	public const DATA_FLAG_BODY_ROTATION_BLOCKED = 118;
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
 	public const DATA_PLAYER_FLAG_DEAD = 2; //TODO: CHECK
@@ -1529,6 +1533,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk = new SetActorMotionPacket();
 		$pk->entityRuntimeId = $this->id;
 		$pk->motion = $this->getMotion();
+		$pk->tick = 0;
 
 		$this->level->broadcastPacketToViewers($this, $pk);
 	}

@@ -32,11 +32,9 @@ use const pocketmine\RESOURCE_PATH;
 class AvailableActorIdentifiersPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::AVAILABLE_ACTOR_IDENTIFIERS_PACKET;
 
-	/** @var string|null */
-	private static $DEFAULT_NBT_CACHE = null;
+	private static ?string $DEFAULT_NBT_CACHE = null;
 
-	/** @var string */
-	public $namedtag;
+	public string $namedtag;
 
 	protected function decodePayload(){
 		$this->namedtag = $this->getRemaining();

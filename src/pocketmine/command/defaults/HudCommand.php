@@ -27,7 +27,7 @@ class HudCommand extends VanillaCommand{
 			[
 				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
 				new CommandParameter("visible", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("HudVisibility", ["hide", "reset"])),
-				new CommandParameter("hud_element", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("HudElement", ["air_bubbles", "all", "armor", "crosshair", "health", "horse_health", "hotbar", "hunger", "paperdoll", "progress_bar", "tooltips", "touch_controls"])),
+				new CommandParameter("hud_element", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("HudElement", ["air_bubbles", "all", "armor", "crosshair", "health", "horse_health", "hotbar", "hunger", "item_text", "paperdoll", "progress_bar", "status_effects", "tooltips", "touch_controls"])),
 			]
 		]);
 		$this->setPermission("altay.command.hud");
@@ -53,7 +53,7 @@ class HudCommand extends VanillaCommand{
 			default => throw new InvalidCommandSyntaxException()
 		};
 
-		$hudElements = match ($args[2] ?? null) {
+		$hudElements = match ($args[2] ?? "all") {
 			"air_bubbles" => [HudElement::AIR_BUBBLES],
 			"armor" => [HudElement::ARMOR],
 			"crosshair" => [HudElement::CROSSHAIR],
@@ -61,11 +61,13 @@ class HudCommand extends VanillaCommand{
 			"horse_health" => [HudElement::VEHICLE_HEALTH],
 			"hotbar" => [HudElement::HOTBAR],
 			"hunger" => [HudElement::FOOD],
+			"item_text" => [HudElement::ITEM_TEXT_POPUP],
 			"paperdoll" => [HudElement::PAPER_DOLL],
 			"progress_bar" => [HudElement::XP],
+			"status_effects" => [HudElement::STATUS_EFFECTS],
 			"tooltips" => [HudElement::TOOLTIPS],
 			"touch_controls" => [HudElement::TOUCH_CONTROLS],
-			default => [
+			"all" => [
 				HudElement::AIR_BUBBLES,
 				HudElement::ARMOR,
 				HudElement::CROSSHAIR,
@@ -76,8 +78,11 @@ class HudCommand extends VanillaCommand{
 				HudElement::PAPER_DOLL,
 				HudElement::XP,
 				HudElement::TOOLTIPS,
-				HudElement::TOUCH_CONTROLS
+				HudElement::TOUCH_CONTROLS,
+				HudElement::STATUS_EFFECTS,
+				HudElement::ITEM_TEXT_POPUP,
 			],
+			default => throw new InvalidCommandSyntaxException()
 		};
 
 		$pk = new SetHudPacket();

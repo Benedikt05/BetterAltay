@@ -59,6 +59,7 @@ class StartGamePacket extends DataPacket{
 	public SpawnSettings $spawnSettings;
 	public int $generator = GeneratorType::OVERWORLD;
 	public int $worldGamemode;
+	public bool $hardcoreMode = false;
 	public int $difficulty;
 	public int $spawnX;
 	public int $spawnY;
@@ -113,6 +114,9 @@ class StartGamePacket extends DataPacket{
 
 	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
+	public string $serverId = "";
+	public string $worldId = "";
+	public string $scenarioId = "";
 	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	public string $worldName;
 	public string $premiumWorldTemplateId = "";
@@ -157,6 +161,7 @@ class StartGamePacket extends DataPacket{
 		$this->spawnSettings = SpawnSettings::read($this);
 		$this->generator = $this->getVarInt();
 		$this->worldGamemode = $this->getVarInt();
+		$this->hardcoreMode = $this->getBool();
 		$this->difficulty = $this->getVarInt();
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
@@ -209,6 +214,9 @@ class StartGamePacket extends DataPacket{
 
 		$this->chatRestrictionLevel = $this->getByte();
 		$this->disablePlayerInteractions = $this->getBool();
+		$this->serverId = $this->getString();
+		$this->worldId = $this->getString();
+		$this->scenarioId = $this->getString();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -264,6 +272,7 @@ class StartGamePacket extends DataPacket{
 		$this->spawnSettings->write($this);
 		$this->putVarInt($this->generator);
 		$this->putVarInt($this->worldGamemode);
+		$this->putBool($this->hardcoreMode);
 		$this->putVarInt($this->difficulty);
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
@@ -315,6 +324,9 @@ class StartGamePacket extends DataPacket{
 
 		$this->putByte($this->chatRestrictionLevel);
 		$this->putBool($this->disablePlayerInteractions);
+		$this->putString($this->serverId);
+		$this->putString($this->worldId);
+		$this->putString($this->scenarioId);
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);

@@ -30,12 +30,9 @@ use pocketmine\network\mcpe\NetworkSession;
 class ActorPickRequestPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ACTOR_PICK_REQUEST_PACKET;
 
-	/** @var int */
-	public $entityUniqueId;
-	/** @var int */
-	public $hotbarSlot;
-	/** @var bool */
-	public $addUserData;
+	public int $entityUniqueId;
+	public int $hotbarSlot;
+	public bool $addUserData;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getLLong();

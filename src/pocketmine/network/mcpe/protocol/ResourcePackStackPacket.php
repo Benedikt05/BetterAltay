@@ -33,19 +33,14 @@ use function count;
 class ResourcePackStackPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::RESOURCE_PACK_STACK_PACKET;
 
-	/** @var bool */
-	public $mustAccept = false;
-
+	public bool $mustAccept = false;
 	/** @var ResourcePack[] */
-	public $behaviorPackStack = [];
+	public array $behaviorPackStack = [];
 	/** @var ResourcePack[] */
-	public $resourcePackStack = [];
-
-	/** @var string */
-	public $baseGameVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
-
-	/** @var Experiments */
-	public $experiments;
+	public array $resourcePackStack = [];
+	public string $baseGameVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
+	public Experiments $experiments;
+	public bool $includeEditorPacks = false;
 
 	protected function decodePayload(){
 		$this->mustAccept = $this->getBool();
@@ -65,6 +60,7 @@ class ResourcePackStackPacket extends DataPacket{
 
 		$this->baseGameVersion = $this->getString();
 		$this->experiments = Experiments::read($this);
+		$this->includeEditorPacks = $this->getBool();
 	}
 
 	protected function encodePayload(){
@@ -86,6 +82,7 @@ class ResourcePackStackPacket extends DataPacket{
 
 		$this->putString($this->baseGameVersion);
 		$this->experiments->write($this);
+		$this->putBool($this->includeEditorPacks);
 	}
 
 	public function handle(NetworkSession $session) : bool{

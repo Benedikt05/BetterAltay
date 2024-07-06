@@ -30,8 +30,7 @@ use pocketmine\network\mcpe\NetworkSession;
 class AutomationClientConnectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::AUTOMATION_CLIENT_CONNECT_PACKET;
 
-	/** @var string */
-	public $serverUri;
+	public string $serverUri;
 
 	protected function decodePayload(){
 		$this->serverUri = $this->getString();
