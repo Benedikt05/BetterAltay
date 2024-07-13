@@ -216,6 +216,7 @@ class PacketPool{
 		static::registerPacket(new OpenSignPacket());
 		static::registerPacket(new SetHudPacket());
 		static::registerPacket(new AwardAchievementPacket());
+		static::registerPacket(new ClientboundCloseFormPacket());
 	}
 
 	/**

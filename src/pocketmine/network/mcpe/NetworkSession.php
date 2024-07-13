@@ -48,6 +48,7 @@ use pocketmine\network\mcpe\protocol\CameraPacket;
 use pocketmine\network\mcpe\protocol\CameraShakePacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
+use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheBlobStatusPacket;
@@ -923,6 +924,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleAwardAchievement(AwardAchievementPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundCloseForm(ClientboundCloseFormPacket $packet) : bool{
 		return false;
 	}
 
