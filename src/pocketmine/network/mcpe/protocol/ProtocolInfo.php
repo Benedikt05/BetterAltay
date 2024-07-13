@@ -264,5 +264,6 @@ interface ProtocolInfo{
 	public const OPEN_SIGN_PACKET = 0x12f;
 	public const SET_HUD_PACKET = 0x134;
 	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
-	
+	public const CLIENTBOUND_CLOSE_FORM_PACKET = 0x136;
+
 }
