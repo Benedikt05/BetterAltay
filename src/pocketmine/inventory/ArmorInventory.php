@@ -25,6 +25,7 @@ namespace pocketmine\inventory;
 
 use pocketmine\entity\Living;
 use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
@@ -102,6 +103,7 @@ class ArmorInventory extends BaseInventory{
 		$pk->chest = ItemStackWrapper::legacy($this->getChestplate());
 		$pk->legs = ItemStackWrapper::legacy($this->getLeggings());
 		$pk->feet = ItemStackWrapper::legacy($this->getBoots());
+		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
 		$pk->encode();
 
 		foreach($target as $player){
@@ -130,6 +132,7 @@ class ArmorInventory extends BaseInventory{
 		$pk->chest = ItemStackWrapper::legacy($this->getChestplate());
 		$pk->legs = ItemStackWrapper::legacy($this->getLeggings());
 		$pk->feet = ItemStackWrapper::legacy($this->getBoots());
+		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
 		$pk->encode();
 
 		foreach($target as $player){

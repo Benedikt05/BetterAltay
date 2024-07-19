@@ -30,19 +30,20 @@ use pocketmine\network\mcpe\NetworkSession;
 class StopSoundPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::STOP_SOUND_PACKET;
 
-	/** @var string */
-	public $soundName;
-	/** @var bool */
-	public $stopAll;
+	public string $soundName;
+	public bool $stopAll;
+	public bool $stopMusicLegacy = true;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->soundName = $this->getString();
 		$this->stopAll = $this->getBool();
+		$this->stopMusicLegacy = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putString($this->soundName);
 		$this->putBool($this->stopAll);
+		$this->putBool($this->stopMusicLegacy);
 	}
 
 	public function handle(NetworkSession $session) : bool{

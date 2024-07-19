@@ -31,22 +31,22 @@ use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 class InventorySlotPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::INVENTORY_SLOT_PACKET;
 
-	/** @var int */
-	public $windowId;
-	/** @var int */
-	public $inventorySlot;
-	/** @var ItemStackWrapper */
-	public $item;
+	public int $windowId;
+	public int $inventorySlot;
+	public ItemStackWrapper $item;
+	public int $dynamicContainerId = 0;//??
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->windowId = $this->getUnsignedVarInt();
 		$this->inventorySlot = $this->getUnsignedVarInt();
+		$this->dynamicContainerId = $this->getUnsignedVarInt();
 		$this->item = ItemStackWrapper::read($this);
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->windowId);
 		$this->putUnsignedVarInt($this->inventorySlot);
+		$this->putUnsignedVarInt($this->dynamicContainerId);
 		$this->item->write($this);
 	}
 
