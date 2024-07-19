@@ -132,6 +132,7 @@ use pocketmine\network\mcpe\protocol\BlockPickRequestPacket;
 use pocketmine\network\mcpe\protocol\BookEditPacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
+use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
 use pocketmine\network\mcpe\protocol\CommandRequestPacket;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
 use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
@@ -4171,6 +4172,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 
 		return true;
+	}
+
+	/**
+	 * Closes any forms that the player currently has open
+	 */
+	public function closeAllForms() : void{
+		$this->sendDataPacket(ClientboundCloseFormPacket::create());
 	}
 
 	public function sendServerSettings(ServerSettingsForm $form){
