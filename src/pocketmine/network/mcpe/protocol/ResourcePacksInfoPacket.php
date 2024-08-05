@@ -83,7 +83,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putString(""); //TODO: subpack name
 			$this->putString(""); //TODO: content identity
 			$this->putBool(false); //TODO: has scripts (?)
-			$this->putBool(false);
+			$this->putBool(false); //TODO: is addon pack
 		}
 		$this->putLShort(count($this->resourcePackEntries));
 		foreach($this->resourcePackEntries as $entry){
@@ -93,9 +93,9 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putString(""); //TODO: encryption key
 			$this->putString(""); //TODO: subpack name
 			$this->putString(""); //TODO: content identity
-			$this->putBool(false); //TODO: seems useless for resource packs
+			$this->putBool(false); //TODO: has scripts (seems useless for resource packs)
+			$this->putBool(false); //TODO: is addon pack
 			$this->putBool(false); //TODO: supports RTX
-			$this->putBool(false);
 		}
 		$this->putUnsignedVarInt(0); //CDNEntries
 	}

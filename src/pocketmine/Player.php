@@ -1910,9 +1910,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->exhaust(0.01 * $distance, PlayerExhaustEvent::CAUSE_WALKING);
 			}
 
-			if($this->isOnGround() && $this->isGliding()){
-				$this->toggleGlide(false);
-			}
+			//if($this->isOnGround() && $this->isGliding()){
+			//	$this->toggleGlide(false);
+			//}
 
 			if($this->nextChunkOrderRun > 20){
 				$this->nextChunkOrderRun = 20;
