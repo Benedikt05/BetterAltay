@@ -1443,12 +1443,12 @@ parameters:
 		-
 			message: "#^Argument of an invalid type array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null supplied for foreach, only iterables are supported\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
-			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\convert\\\\RuntimeBlockMapping\\:\\:getBedrockKnownStates\\(\\) should return array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\> but returns array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
+			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\convert\\\\NetworkBlockMapping\\:\\:getBedrockKnownStates\\(\\) should return array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\> but returns array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Parameter \\#1 \\$eid of method pocketmine\\\\network\\\\mcpe\\\\NetworkBinaryStream\\:\\:putEntityUniqueId\\(\\) expects int, int\\|null given\\.$#"

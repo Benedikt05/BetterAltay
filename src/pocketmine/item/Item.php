@@ -36,6 +36,7 @@ use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
@@ -45,6 +46,9 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\ItemTypeDictionary;
+use pocketmine\network\mcpe\convert\NetworkBlockMapping;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
@@ -128,11 +132,13 @@ class Item implements ItemIds, JsonSerializable{
 	public static function initCreativeItems(){
 		self::clearCreativeItems();
 
-		$creativeItems = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "creativeitems.json"), true);
-
-		foreach($creativeItems as $data){
+		$creativeItems = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/creative_items.json"), true)["items"] ?? [];
+		foreach ($creativeItems as $data) {
 			$item = Item::jsonDeserialize($data);
-			if($item->getName() === "Unknown"){
+			if ($item === null) {
+				continue;
+			}
+			if ($item->getName() === "Unknown") {
 				continue;
 			}
 			self::addCreativeItem($item);
@@ -837,21 +843,24 @@ class Item implements ItemIds, JsonSerializable{
 	 *    nbt_b64?: string
 	 * }              $data
 	 */
-	final public static function jsonDeserialize(array $data) : Item{
+	final public static function jsonDeserialize(array $data) : ?Item{
+		$id = ItemTypeDictionary::getInstance()->fromStringId($data["id"]);
+
 		$nbt = "";
 
-		//Backwards compatibility
-		if(isset($data["nbt"])){
-			$nbt = $data["nbt"];
-		}elseif(isset($data["nbt_hex"])){
-			$nbt = hex2bin($data["nbt_hex"]);
-		}elseif(isset($data["nbt_b64"])){
+		if(isset($data["nbt_b64"])){
 			$nbt = base64_decode($data["nbt_b64"], true);
 		}
+		if (isset($data["block_state_b64"])) {
+			$nbt_stream = new NetworkBinaryStream(base64_decode($data["block_state_b64"], true));
+			$nbt_root = $nbt_stream->getNbtCompoundRoot(new LittleEndianNBTStream);
+			$id = $nbt_root->getInt("block_id");
+		}
+
 		return ItemFactory::get(
-			(int) $data["id"],
+			(int) $id,
 			(int) ($data["damage"] ?? 0),
-			(int) ($data["count"] ?? 1),
+			(int) 1,
 			(string) $nbt
 		);
 	}

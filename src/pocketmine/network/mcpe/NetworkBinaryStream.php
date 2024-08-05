@@ -34,14 +34,16 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\NBTStream;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\NamedTag;
-use pocketmine\network\mcpe\convert\ItemTranslator;
+use pocketmine\network\mcpe\convert\NetworkItemMapping;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\convert\NetworkBlockMapping;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\types\GameRuleType;
@@ -231,7 +233,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$cnt = $this->getLShort();
 		$netData = $this->getUnsignedVarInt();
 
-		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkId($netId, $netData);
+		[$id, $meta] = NetworkItemMapping::getInstance()->fromNetworkId($netId, $netData);
 
 		$readExtraCrapInTheMiddle($this);
 
@@ -312,7 +314,7 @@ class NetworkBinaryStream extends BinaryStream{
 		}
 
 		$coreData = $item->getDamage();
-		[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $coreData);
+		[$netId, $netData] = NetworkItemMapping::getInstance()->toNetworkId($item->getId(), $coreData);
 
 		$this->putVarInt($netId);
 		$this->putLShort($item->getCount());
@@ -320,15 +322,15 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$writeExtraCrapInTheMiddle($this);
 
-		$blockRuntimeId = 0;
+		$blockNetworkId = 0;
 		$isBlockItem = $item->getId() < 256;
 		if($isBlockItem){
 			$block = $item->getBlock();
 			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
+				$blockNetworkId = NetworkBlockMapping::toStaticNetworkId($block->getId(), $block->getDamage());
 			}
 		}
-		$this->putVarInt($blockRuntimeId);
+		$this->putVarInt($blockNetworkId);
 
 		$nbt = null;
 		if($item->hasCompoundTag()){
@@ -383,7 +385,7 @@ class NetworkBinaryStream extends BinaryStream{
 			return ItemFactory::get(ItemIds::AIR, 0, 0);
 		}
 		$netData = $this->getVarInt();
-		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($netId, $netData);
+		[$id, $meta] = NetworkItemMapping::getInstance()->fromNetworkIdWithWildcardHandling($netId, $netData);
 		$count = $this->getVarInt();
 		return ItemFactory::get($id, $meta, $count);
 	}
@@ -398,10 +400,10 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$this->putBool(true);
 		if($item->hasAnyDamageValue()){
-			[$netId,] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
+			[$netId,] = NetworkItemMapping::getInstance()->toNetworkId($item->getId(), 0);
 			$netData = 0x7fff;
 		}else{
-			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
+			[$netId, $netData] = NetworkItemMapping::getInstance()->toNetworkId($item->getId(), $item->getDamage());
 		}
 		$this->putLShort($netId);
 		$this->putLShort($netData);
@@ -853,10 +855,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putVarInt($structureEditorData->structureRedstoneSaveMove);
 	}
 
-	public function getNbtRoot() : NamedTag{
+	public function getNbtRoot(?NBTStream $nbt_stream = null) : NamedTag{
 		$offset = $this->getOffset();
 		try{
-			$result = (new NetworkLittleEndianNBTStream())->read($this->getBuffer(), false, $offset, 512);
+			$result = (is_null($nbt_stream) ? new NetworkLittleEndianNBTStream() : $nbt_stream)->read($this->getBuffer(), false, $offset, 512);
 			assert($result instanceof NamedTag, "doMultiple is false so we should definitely have a NamedTag here");
 			return $result;
 		}finally{
@@ -864,8 +866,8 @@ class NetworkBinaryStream extends BinaryStream{
 		}
 	}
 
-	public function getNbtCompoundRoot() : CompoundTag{
-		$root = $this->getNbtRoot();
+	public function getNbtCompoundRoot(?NBTStream $nbt_stream = null) : CompoundTag{
+		$root = $this->getNbtRoot($nbt_stream);
 		if(!($root instanceof CompoundTag)){
 			throw new UnexpectedValueException("Expected TAG_Compound root");
 		}

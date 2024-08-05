@@ -73,6 +73,7 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\CompressBatchedTask;
+use pocketmine\network\mcpe\convert\NetworkBlockMapping;
 use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -1606,6 +1607,7 @@ class Server{
 
 			Entity::init();
 			Tile::init();
+			NetworkBlockMapping::init(); // TEMP FOR DEV USE
 			BlockFactory::init();
 			Enchantment::init();
 			ItemFactory::init();

@@ -44,7 +44,7 @@ class BiomeDefinitionListPacket extends DataPacket{
 		$this->put(
 			$this->namedtag ??
 			self::$DEFAULT_NBT_CACHE ??
-			(self::$DEFAULT_NBT_CACHE = file_get_contents(RESOURCE_PATH . '/vanilla/biome_definitions.nbt'))
+			(self::$DEFAULT_NBT_CACHE = file_get_contents(RESOURCE_PATH . '/vanilla/biome_definitions.dat'))
 		);
 	}
 
