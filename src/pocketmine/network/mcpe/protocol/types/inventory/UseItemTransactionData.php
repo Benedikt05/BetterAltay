@@ -98,7 +98,6 @@ class UseItemTransactionData extends TransactionData{
 	protected function decodeData(PacketSerializer $stream) : void{
 		$this->actionType = $stream->getUnsignedVarInt();
 		$this->triggerType = $stream->getUnsignedVarInt();
-		var_dump($this->triggerType);
 		$x = $y = $z = 0;
 		$stream->getBlockPosition($x, $y, $z);
 		$this->blockPos = new Vector3($x, $y, $z);
