@@ -46,6 +46,8 @@ final class NetworkBlockMapping{
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
 
+	public const NO_NETWORK_ID = 0;
+
 	private function __construct(){
 		//NOOP
 	}
@@ -86,7 +88,7 @@ final class NetworkBlockMapping{
 		$oldName = "";
 		$legacyMeta = 0;
 		foreach ($idToNetIdsMap as $name => $ids) {
-			if ($name !== $oldName) {
+			if ($name !== $oldName || $legacyMeta > 15) { // no >4 bits support in pm(according to the old code)
 				$legacyMeta = 0;
 			}
 
@@ -97,11 +99,6 @@ final class NetworkBlockMapping{
 			}
 			if($legacyId === null){
 				throw new RuntimeException("No legacy ID matches $name");
-			}
-
-			if ($legacyMeta > 15) { // pm doesn't support >4 bits
-				$legacyMeta = 0;
-				continue;
 			}
 
 			self::registerMapping($netId, $legacyId, $legacyMeta);

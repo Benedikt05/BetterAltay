@@ -31,9 +31,12 @@ use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\Level;
+use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 use pocketmine\tile\Spawnable;
@@ -911,20 +914,26 @@ class Chunk{
 	}
 
 	private function networkSerializeBiomesAsPalette() : string{
-		/** @var string[]|null $biomeIdMap */
-		static $biomeIdMap = null;
-		if($biomeIdMap === null){
-			$biomeIdMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla_OLD/biome_id_map.json'); // TODO: DO LATER
-			if($biomeIdMapRaw === false) throw new AssumptionFailedError();
-			$biomeIdMapDecoded = json_decode($biomeIdMapRaw, true);
-			if(!is_array($biomeIdMapDecoded)) throw new AssumptionFailedError();
-			$biomeIdMap = array_flip($biomeIdMapDecoded);
+		/** @var int|null $biomeCount */
+		static $biomeCount = 0;
+		$finishedCountingBiomes = true;
+		if($biomeCount === 0 && !$finishedCountingBiomes){
+			$biomeDefinitionsFile = file_get_contents(RESOURCE_PATH . "/vanilla/biome_definitions.dat");
+			if($biomeDefinitionsFile === false){
+				throw new AssumptionFailedError("Missing required resource file");
+			}
+			$nbtStream = new NetworkBinaryStream($biomeDefinitionsFile);
+			foreach ($nbtStream->getNbtCompoundRoot(new NetworkLittleEndianNBTStream) as $biome) {
+				$biomeCount++;
+			}
+			$finishedCountingBiomes = true;
 		}
+
 		$biomePalette = new PalettedBlockArray($this->getBiomeId(0, 0));
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 				$biomeId = $this->getBiomeId($x, $z);
-				if(!isset($biomeIdMap[$biomeId])){
+				if(!($biomeId < $biomeCount) || ($biomeCount > $biomeCount)){
 					//make sure we aren't sending bogus biomes - the 1.18.0 client crashes if we do this
 					$biomeId = Biome::OCEAN;
 				}

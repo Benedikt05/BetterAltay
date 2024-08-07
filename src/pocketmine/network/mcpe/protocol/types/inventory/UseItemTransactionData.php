@@ -48,7 +48,7 @@ class UseItemTransactionData extends TransactionData{
 	/** @var Vector3 */
 	private $clickPos;
 	/** @var int */
-	private $blockRuntimeId;
+	private $blockNetworkId;
 
 	public function getActionType() : int{
 		return $this->actionType;
@@ -78,8 +78,8 @@ class UseItemTransactionData extends TransactionData{
 		return $this->clickPos;
 	}
 
-	public function getBlockRuntimeId() : int{
-		return $this->blockRuntimeId;
+	public function getBlockNetworkId() : int{
+		return $this->blockNetworkId;
 	}
 
 	public function getTypeId() : int{
@@ -96,7 +96,7 @@ class UseItemTransactionData extends TransactionData{
 		$this->itemInHand = ItemStackWrapper::read($stream);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
-		$this->blockRuntimeId = $stream->getUnsignedVarInt();
+		$this->blockNetworkId = $stream->getUnsignedVarInt();
 	}
 
 	protected function encodeData(PacketSerializer $stream) : void{
@@ -107,13 +107,13 @@ class UseItemTransactionData extends TransactionData{
 		$this->itemInHand->write($stream);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
-		$stream->putUnsignedVarInt($this->blockRuntimeId);
+		$stream->putUnsignedVarInt($this->blockNetworkId);
 	}
 
 	/**
 	 * @param NetworkInventoryAction[] $actions
 	 */
-	public static function new(array $actions, int $actionType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId) : self{
+	public static function new(array $actions, int $actionType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockNetworkId) : self{
 		$result = new self;
 		$result->actions = $actions;
 		$result->actionType = $actionType;
@@ -123,7 +123,7 @@ class UseItemTransactionData extends TransactionData{
 		$result->itemInHand = $itemInHand;
 		$result->playerPos = $playerPos;
 		$result->clickPos = $clickPos;
-		$result->blockRuntimeId = $blockRuntimeId;
+		$result->blockNetworkId = $blockNetworkId;
 		return $result;
 	}
 }

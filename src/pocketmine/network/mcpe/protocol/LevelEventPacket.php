@@ -91,7 +91,7 @@ class LevelEventPacket extends DataPacket{
 	public const EVENT_PARTICLE_BUBBLES = 2015;
 
 	public const EVENT_PARTICLE_ARMOR_STAND_DESTROY = 2017;
-	public const EVENT_PARTICLE_DESTROY_MINI = 2021; //data: block runtime id
+	public const EVENT_PARTICLE_DESTROY_MINI = 2021; //data: block network id
 	public const EVENT_PARTICLE_KNOCKBACK_ROAR = 2022;
 
 	public const EVENT_PARTICLE_EXPLOSION = 2025;

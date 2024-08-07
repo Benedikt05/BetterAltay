@@ -36,7 +36,6 @@ use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
@@ -57,11 +56,9 @@ use function base64_decode;
 use function base64_encode;
 use function file_get_contents;
 use function get_class;
-use function hex2bin;
 use function is_string;
 use function json_decode;
 use function strlen;
-use const DIRECTORY_SEPARATOR;
 use const pocketmine\RESOURCE_PATH;
 
 class Item implements ItemIds, JsonSerializable{
@@ -75,6 +72,8 @@ class Item implements ItemIds, JsonSerializable{
 
 	/** @var LittleEndianNBTStream|null */
 	private static $cachedParser = null;
+
+	private int $block_network_id = NetworkBlockMapping::NO_NETWORK_ID;
 
 	private static function parseCompoundTag(string $tag) : CompoundTag{
 		if($tag === ""){
@@ -263,6 +262,16 @@ class Item implements ItemIds, JsonSerializable{
 	 */
 	public function getCompoundTag() : string{
 		return $this->nbt !== null ? self::writeCompoundTag($this->nbt) : "";
+	}
+
+	public function setBlockNetworkId(int $value): void
+	{
+		$this->block_network_id = $value;
+	}
+
+	public function getBlockNetworkId(): int
+	{
+		return $this->block_network_id;
 	}
 
 	/**
@@ -809,7 +818,7 @@ class Item implements ItemIds, JsonSerializable{
 	 * @return mixed[]
 	 * @phpstan-return array{id: int, damage?: int, count?: int, nbt_b64?: string}
 	 */
-	final public function jsonSerialize() : array{
+	final public function jsonSerialize() : array{ // todo: this should contain block network id but later since it's not used in betteraltay
 		$data = [
 			"id" => $this->getId()
 		];
@@ -837,31 +846,31 @@ class Item implements ItemIds, JsonSerializable{
 	 * @phpstan-param array{
 	 *    id: int,
 	 *    damage?: int,
-	 *    count?: int,
 	 *    nbt?: string,
-	 *    nbt_hex?: string,
 	 *    nbt_b64?: string
+	 *    block_states_b64?: string
 	 * }              $data
 	 */
 	final public static function jsonDeserialize(array $data) : ?Item{
-		$id = ItemTypeDictionary::getInstance()->fromStringId($data["id"]);
+		if(isset($data["block_state_b64"])){
+			$nbtStream = new NetworkBinaryStream(base64_decode($data["block_state_b64"], true));
+			$nbtRoot = $nbtStream->getNbtCompoundRoot(new LittleEndianNBTStream);
+			// todo: store the states as network states then in the item but that will be a work for later.
+			$block_network_id = $nbtRoot->getInt("network_id");
+		}
 
 		$nbt = "";
 
 		if(isset($data["nbt_b64"])){
 			$nbt = base64_decode($data["nbt_b64"], true);
 		}
-		if (isset($data["block_state_b64"])) {
-			$nbt_stream = new NetworkBinaryStream(base64_decode($data["block_state_b64"], true));
-			$nbt_root = $nbt_stream->getNbtCompoundRoot(new LittleEndianNBTStream);
-			$id = $nbt_root->getInt("block_id");
-		}
 
 		return ItemFactory::get(
-			(int) $id,
+			(int) ItemTypeDictionary::getInstance()->fromStringId($data["id"]),
 			(int) ($data["damage"] ?? 0),
 			(int) 1,
-			(string) $nbt
+			(string) $nbt,
+			(int) ($block_network_id ?? NetworkBlockMapping::NO_NETWORK_ID)
 		);
 	}
 

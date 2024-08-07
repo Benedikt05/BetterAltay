@@ -237,10 +237,10 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$readExtraCrapInTheMiddle($this);
 
-		$this->getVarInt();
+		$blockNetworkId = $this->getVarInt();
 
 		$extraData = new NetworkBinaryStream($this->getString());
-		return (static function() use ($extraData, $netId, $id, $meta, $cnt) : Item{
+		return (static function() use ($extraData, $netId, $id, $meta, $cnt, $blockNetworkId) : Item{
 			$nbtLen = $extraData->getLShort();
 
 			/** @var CompoundTag|null $nbt */
@@ -299,7 +299,7 @@ class NetworkBinaryStream extends BinaryStream{
 					}
 				}
 			}
-			return ItemFactory::get($id, $meta, $cnt, $nbt);
+			return ItemFactory::get($id, $meta, $cnt, $nbt, $blockNetworkId);
 		})();
 	}
 
@@ -322,14 +322,8 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$writeExtraCrapInTheMiddle($this);
 
-		$blockNetworkId = 0;
-		$isBlockItem = $item->getId() < 256;
-		if($isBlockItem){
-			$block = $item->getBlock();
-			if($block->getId() !== BlockIds::AIR){
-				$blockNetworkId = NetworkBlockMapping::toStaticNetworkId($block->getId(), $block->getDamage());
-			}
-		}
+		$blockNetworkId = $item->getBlockNetworkId();
+		$isBlockItem = $blockNetworkId > NetworkBlockMapping::NO_NETWORK_ID;
 		$this->putVarInt($blockNetworkId);
 
 		$nbt = null;
@@ -855,10 +849,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putVarInt($structureEditorData->structureRedstoneSaveMove);
 	}
 
-	public function getNbtRoot(?NBTStream $nbt_stream = null) : NamedTag{
+	public function getNbtRoot(?NBTStream $nbtStream = null) : NamedTag{
 		$offset = $this->getOffset();
 		try{
-			$result = (is_null($nbt_stream) ? new NetworkLittleEndianNBTStream() : $nbt_stream)->read($this->getBuffer(), false, $offset, 512);
+			$result = (is_null($nbtStream) ? new NetworkLittleEndianNBTStream() : $nbtStream)->read($this->getBuffer(), false, $offset, 512);
 			assert($result instanceof NamedTag, "doMultiple is false so we should definitely have a NamedTag here");
 			return $result;
 		}finally{
@@ -866,8 +860,8 @@ class NetworkBinaryStream extends BinaryStream{
 		}
 	}
 
-	public function getNbtCompoundRoot(?NBTStream $nbt_stream = null) : CompoundTag{
-		$root = $this->getNbtRoot($nbt_stream);
+	public function getNbtCompoundRoot(?NBTStream $nbtStream = null) : CompoundTag{
+		$root = $this->getNbtRoot($nbtStream);
 		if(!($root instanceof CompoundTag)){
 			throw new UnexpectedValueException("Expected TAG_Compound root");
 		}

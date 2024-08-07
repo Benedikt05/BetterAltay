@@ -27,77 +27,25 @@ use InvalidArgumentException;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
 use UnexpectedValueException;
-use function array_key_exists;
 use function file_get_contents;
 use function is_array;
-use function is_numeric;
-use function is_string;
 use function json_decode;
 use const pocketmine\RESOURCE_PATH;
 
 /**
  * This class handles translation between network item ID+metadata to PocketMine-MP internal ID+metadata and vice versa.
  */
-final class NetworkItemMapping{ // TODO: not finished and might need a fourth rewrite
+final class NetworkItemMapping{
 	use SingletonTrait;
 
-	private array $mappedCoreToNetMap = [];
-	private array $netToMappedCoreMap = [];
-	private array $coreToNetMap = [];
-	private array $netToCoreMap = [];
-	private array $nonLegacyCoreToNetMap = [];
-	private array $netToNonLegacyCoreMap = [];
+	private array $mappedIdsToNetMap = [];
+	private array $netToMappedIdsMap = [];
+	private array $legacyToNetMap = [];
+	private array $netToCLegacyMap = [];
+	private array $nonLegacyToNetMap = [];
+	private array $netToNonLegacyMap = [];
 
 	private static function make() : self{
-		// $data = file_get_contents(RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
-		// if($data === false) throw new AssumptionFailedError("Missing required resource file");
-		// $json = json_decode($data, true);
-		// if(!is_array($json) or !isset($json["simple"], $json["complex"]) || !is_array($json["simple"]) || !is_array($json["complex"])){
-		// 	throw new AssumptionFailedError("Invalid item table format");
-		// }
-
-		// $legacyStringToIntMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla/item_id_map.json');
-		// if($legacyStringToIntMapRaw === false){
-		// 	throw new AssumptionFailedError("Missing required resource file");
-		// }
-		// $legacyStringToIntMap = json_decode($legacyStringToIntMapRaw, true);
-		// if(!is_array($legacyStringToIntMap)){
-		// 	throw new AssumptionFailedError("Invalid mapping table format");
-		// }
-
-		// /** @phpstan-var array<string, int> $simpleMappings */
-		// $simpleMappings = [];
-		// foreach($json["simple"] as $oldId => $newId){
-		// 	if(!is_string($oldId) || !is_string($newId)){
-		// 		throw new AssumptionFailedError("Invalid item table format");
-		// 	}
-		// 	if(!isset($legacyStringToIntMap[$oldId])){
-		// 		//new item without a fixed legacy ID - we can't handle this right now
-		// 		continue;
-		// 	}
-		// 	$simpleMappings[$newId] = $legacyStringToIntMap[$oldId];
-		// }
-		// foreach($legacyStringToIntMap as $stringId => $intId){
-		// 	if(isset($simpleMappings[$stringId])){
-		// 		throw new UnexpectedValueException("Old ID $stringId collides with new ID");
-		// 	}
-		// 	$simpleMappings[$stringId] = $intId;
-		// }
-
-		// /** @phpstan-var array<string, array{int, int}> $complexMappings */
-		// $complexMappings = [];
-		// foreach($json["complex"] as $oldId => $map){
-		// 	if(!is_string($oldId) || !is_array($map)){
-		// 		throw new AssumptionFailedError("Invalid item table format");
-		// 	}
-		// 	foreach($map as $meta => $newId){
-		// 		if(!is_numeric($meta) || !is_string($newId)){
-		// 			throw new AssumptionFailedError("Invalid item table format");
-		// 		}
-		// 		$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
-		// 		$complexMappings[$newId] = [$legacyStringToIntMap[$oldId], (int) $meta];
-		// 	}
-		// }
 		$itemMappingsRaw = file_get_contents(RESOURCE_PATH . '/vanilla/item_mappings.json');
 		if($itemMappingsRaw === false) throw new AssumptionFailedError("Missing required resource file");
 		$itemMappings = json_decode($itemMappingsRaw, true);
@@ -127,30 +75,30 @@ final class NetworkItemMapping{ // TODO: not finished and might need a fourth re
 					$meta = intval($meta);
 					$legacyId = $legacyItemIds[$newStrId];
 
-					if (!isset($this->mappedCoreToNetMap[$legacyId])) {
-						$this->mappedCoreToNetMap[$legacyId] = [];
+					if (!isset($this->mappedIdsToNetMap[$legacyId])) {
+						$this->mappedIdsToNetMap[$legacyId] = [];
 					}
 
-					$this->mappedCoreToNetMap[$legacyId][$meta] = $netId;
-					$this->netToMappedCoreMap[$legacyId] = [$legacyId, $meta];
+					$this->mappedIdsToNetMap[$legacyId][$meta] = $netId;
+					$this->netToMappedIdsMap[$legacyId] = [$legacyId, $meta];
 				}
 			}elseif(isset($legacyItemIds[$stringId])) {
-				if (!isset($this->coreToNetMap[$netId])) {
-					$this->coreToNetMap[$netId] = [];
+				if (!isset($this->legacyToNetMap[$netId])) {
+					$this->legacyToNetMap[$netId] = [];
 				}
 
-				$this->coreToNetMap[$legacyItemIds[$stringId]][0] = $netId;
-				$this->netToCoreMap[$netId] = [$legacyItemIds[$stringId], 0];
+				$legacyId = $legacyItemIds[$stringId];
+
+				$this->legacyToNetMap[$legacyId] = $netId;
+				$this->netToCLegacyMap[$netId] = $legacyId;
 			} else {
-				// var_dump("It is non legacy - todo");
-				// continue;
-				if (!isset($this->nonLegacyCoreToNetMap[$netId])) {
-					$this->nonLegacyCoreToNetMap[$netId] = [];
+				if (!isset($this->nonLegacyToNetMap[$netId])) {
+					$this->nonLegacyToNetMap[$netId] = [];
 				}
 
-				$this->nonLegacyCoreToNetMap[$netId][0] = $netId;
-				$this->netToNonLegacyCoreMap[$netId] = [$netId, 0];
-				// $this->coreToNetMap[$netId][0] = [];
+				// todo: what nonesense is this, should wait until i found a good idea for it.
+				$this->nonLegacyToNetMap[$netId] = $netId;
+				$this->netToNonLegacyMap[$netId] = $netId;
 			}
 		}
 	}
@@ -163,18 +111,17 @@ final class NetworkItemMapping{ // TODO: not finished and might need a fourth re
 		if($internalMeta === -1){
 			$internalMeta = 0x7fff;
 		}
-		if (isset($this->mappedCoreToNetMap[$internalId][$internalMeta])) {
-			return [$this->mappedCoreToNetMap[$internalId][$internalMeta], 0];
+		if (isset($this->mappedIdsToNetMap[$internalId][$internalMeta])) {
+			return [$this->mappedIdsToNetMap[$internalId][$internalMeta], 0];
 		}
-		if(isset($this->coreToNetMap[$internalId][$internalMeta])){
-			return [$this->coreToNetMap[$internalId][$internalMeta], $internalMeta];
+		if(isset($this->legacyToNetMap[$internalId])){
+			return [$this->legacyToNetMap[$internalId], $internalMeta];
 		}
-		if (isset($this->nonLegacyCoreToNetMap[$internalId][$internalMeta])) {
-			return [$this->nonLegacyCoreToNetMap[$internalId][$internalMeta], 0];
+		if (isset($this->nonLegacyToNetMap[$internalId])) {
+			return [$this->nonLegacyToNetMap[$internalId], $internalMeta];
 		}
 
-		// throw new InvalidArgumentException("Unmapped ID/metadata combination $internalId:$internalMeta");
-		return [NetworkBlockMapping::toStaticNetworkId($internalId, $internalMeta), $internalMeta]; // TODO: HACK (in the rewrite this will be removed)
+		throw new InvalidArgumentException("Unmapped ID/metadata combination $internalId:$internalMeta");
 	}
 
 	/**
@@ -185,15 +132,15 @@ final class NetworkItemMapping{ // TODO: not finished and might need a fourth re
 		if($networkMeta !== 0){
 			throw new UnexpectedValueException("Unexpected non-zero network meta on complex item mapping");
 		}
-		if (isset($this->mappedCoreToNetMap[$networkId][$networkMeta])) {
+		if (isset($this->mappedIdsToNetMap[$networkId][$networkMeta])) {
 			$isMapped = true;
-			return $this->mappedCoreToNetMap[$networkId];
+			return $this->mappedIdsToNetMap[$networkId];
 		}
-		if(isset($this->netToCoreMap[$networkId])){
-			return $this->netToCoreMap[$networkId];
+		if(isset($this->netToCLegacyMap[$networkId])){
+			return [$this->netToCLegacyMap[$networkId], 0];
 		}
-		if (isset($this->netToNonLegacyCoreMap[$networkId][$networkMeta])) {
-			return $this->netToNonLegacyCoreMap[$networkId];
+		if (isset($this->netToNonLegacyMap[$networkId])) {
+			return [$this->netToNonLegacyMap[$networkId], 0];
 		}
 		throw new UnexpectedValueException("Unmapped network ID/metadata combination $networkId:$networkMeta");
 	}
