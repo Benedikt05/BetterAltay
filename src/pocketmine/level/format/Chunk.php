@@ -31,7 +31,6 @@ use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\Level;
-use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
@@ -49,14 +48,11 @@ use SplFixedArray;
 use Throwable;
 use function array_fill;
 use function array_filter;
-use function array_flip;
 use function array_values;
 use function assert;
 use function chr;
 use function count;
 use function file_get_contents;
-use function is_array;
-use function json_decode;
 use function ord;
 use function pack;
 use function str_repeat;
@@ -117,6 +113,9 @@ class Chunk{
 	/** @var string */
 	protected $biomeIds;
 
+	/** @var int */
+	protected $definitionsBiomeCount = 0;
+
 	/** @var CompoundTag[] */
 	protected $NBTtiles = [];
 
@@ -157,6 +156,15 @@ class Chunk{
 		}else{
 			assert($biomeIds === "", "Wrong BiomeIds value count, expected 256, got " . strlen($biomeIds));
 			$this->biomeIds = str_repeat("\x00", 256);
+		}
+
+		$biomeDefinitionsFile = file_get_contents(RESOURCE_PATH . "/vanilla/biome_definitions.dat");
+		if($biomeDefinitionsFile === false){
+			throw new AssumptionFailedError("Missing required resource file");
+		}
+		$nbtStream = new NetworkBinaryStream($biomeDefinitionsFile);
+		foreach ($nbtStream->getNbtCompoundRoot(new NetworkLittleEndianNBTStream) as $_) {
+			$this->definitionsBiomeCount++;
 		}
 
 		$this->NBTtiles = $tiles;
@@ -914,26 +922,11 @@ class Chunk{
 	}
 
 	private function networkSerializeBiomesAsPalette() : string{
-		/** @var int|null $biomeCount */
-		static $biomeCount = 0;
-		$finishedCountingBiomes = true;
-		if($biomeCount === 0 && !$finishedCountingBiomes){
-			$biomeDefinitionsFile = file_get_contents(RESOURCE_PATH . "/vanilla/biome_definitions.dat");
-			if($biomeDefinitionsFile === false){
-				throw new AssumptionFailedError("Missing required resource file");
-			}
-			$nbtStream = new NetworkBinaryStream($biomeDefinitionsFile);
-			foreach ($nbtStream->getNbtCompoundRoot(new NetworkLittleEndianNBTStream) as $biome) {
-				$biomeCount++;
-			}
-			$finishedCountingBiomes = true;
-		}
-
 		$biomePalette = new PalettedBlockArray($this->getBiomeId(0, 0));
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 				$biomeId = $this->getBiomeId($x, $z);
-				if(!($biomeId < $biomeCount) || ($biomeCount > $biomeCount)){
+				if(!($biomeId < $this->definitionsBiomeCount) || ($biomeId > $this->definitionsBiomeCount)){
 					//make sure we aren't sending bogus biomes - the 1.18.0 client crashes if we do this
 					$biomeId = Biome::OCEAN;
 				}
