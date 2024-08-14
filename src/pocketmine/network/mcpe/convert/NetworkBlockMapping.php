@@ -25,13 +25,11 @@ namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
 use pocketmine\nbt\BigEndianNBTStream;
-use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\AssumptionFailedError;
 use RuntimeException;
 use function file_get_contents;
-use function json_decode;
 use const pocketmine\RESOURCE_PATH;
 
 /**
@@ -75,9 +73,6 @@ final class NetworkBlockMapping{
 
 	private static function setupBlockMappings(): void
 	{
-		/**
-		 * @var int[][] $idToStatesMap string id -> int[] list of candidate state indices
-		 */
 		$idToStatesMap = [];
 		$idToNetIdsMap = [];
 		foreach (self::$bedrockKnownStates as $state) {
@@ -85,14 +80,14 @@ final class NetworkBlockMapping{
 			$idToNetIdsMap[$stringId][] = $state->getInt("network_id");
 		}
 
-		$oldName = "";
+		$previousName = "";
 		$legacyMeta = 0;
-		foreach ($idToNetIdsMap as $name => $ids) {
-			if ($name !== $oldName || $legacyMeta > 15) { // no >4 bits support in pm(according to the old code)
+		foreach ($idToNetIdsMap as $name => $nIds) {
+			if ($name !== $previousName || $legacyMeta > 15) {
 				$legacyMeta = 0;
 			}
 
-			$netId = $ids[$legacyMeta] ?? null;
+			$netId = $nIds[$legacyMeta] ?? null;
 			$legacyId = $idToStatesMap[$name][$legacyMeta] ?? null;
 			if($netId === null){
 				throw new RuntimeException("No network ID matches $name");
@@ -104,7 +99,7 @@ final class NetworkBlockMapping{
 			self::registerMapping($netId, $legacyId, $legacyMeta);
 
 			++$legacyMeta;
-			$oldName = $name;
+			$previousName = $name;
 		}
 	}
 

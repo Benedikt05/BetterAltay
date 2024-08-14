@@ -14,3 +14,5 @@ general:
 developer:
   # This setting allows to disable the internal server error kick
   internal-server-error-kick: false
+  # Use new recipes format - can break many plugins
+  use-bc-break-recipes: false

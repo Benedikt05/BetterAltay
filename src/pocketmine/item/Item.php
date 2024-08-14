@@ -73,7 +73,7 @@ class Item implements ItemIds, JsonSerializable{
 	/** @var LittleEndianNBTStream|null */
 	private static $cachedParser = null;
 
-	private int $block_network_id = NetworkBlockMapping::NO_NETWORK_ID;
+	private int $blockNetworkId = NetworkBlockMapping::NO_NETWORK_ID;
 
 	private static function parseCompoundTag(string $tag) : CompoundTag{
 		if($tag === ""){
@@ -266,12 +266,12 @@ class Item implements ItemIds, JsonSerializable{
 
 	public function setBlockNetworkId(int $value): void
 	{
-		$this->block_network_id = $value;
+		$this->blockNetworkId = $value;
 	}
 
 	public function getBlockNetworkId(): int
 	{
-		return $this->block_network_id;
+		return $this->blockNetworkId;
 	}
 
 	/**
@@ -856,7 +856,7 @@ class Item implements ItemIds, JsonSerializable{
 			$nbtStream = new NetworkBinaryStream(base64_decode($data["block_state_b64"], true));
 			$nbtRoot = $nbtStream->getNbtCompoundRoot(new LittleEndianNBTStream);
 			// todo: store the states as network states then in the item but that will be a work for later.
-			$block_network_id = $nbtRoot->getInt("network_id");
+			$blockNetworkId = $nbtRoot->getInt("network_id");
 		}
 
 		$nbt = "";
@@ -870,7 +870,7 @@ class Item implements ItemIds, JsonSerializable{
 			(int) ($data["damage"] ?? 0),
 			(int) 1,
 			(string) $nbt,
-			(int) ($block_network_id ?? NetworkBlockMapping::NO_NETWORK_ID)
+			(int) ($blockNetworkId ?? NetworkBlockMapping::NO_NETWORK_ID)
 		);
 	}
 
