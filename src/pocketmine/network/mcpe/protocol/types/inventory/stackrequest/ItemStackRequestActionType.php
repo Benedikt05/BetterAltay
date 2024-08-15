@@ -14,11 +14,9 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types\inventory\stackrequest;
 
-final class ItemStackRequestActionType
-{
+final class ItemStackRequestActionType{
 
-	private function __construct()
-	{
+	private function __construct(){
 		//NOOP
 	}
 
