@@ -101,15 +101,6 @@ final class ItemTranslator{
 			$simpleMappings[$stringId] = $intId;
 		}
 
-		$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
-		$legacyStringToIntMap["minecraft:stone_block_slab2"] = 182;
-		$legacyStringToIntMap["minecraft:stone_block_slab3"] = -162;
-		$legacyStringToIntMap["minecraft:stone_block_slab4"] = -166;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab"] = 43;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab2"] = 181;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab3"] = -167;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab4"] = -168;
-
 		/** @phpstan-var array<string, array{int, int}> $complexMappings */
 		$complexMappings = [];
 		foreach($json["complex"] as $oldId => $map){
