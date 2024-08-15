@@ -102,13 +102,13 @@ final class ItemTranslator{
 		}
 
 		$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
-		$legacyStringToIntMap["minecraft:stone_block_slab2"] = 45;
-		$legacyStringToIntMap["minecraft:stone_block_slab3"] = 46;
-		$legacyStringToIntMap["minecraft:stone_block_slab4"] = 47;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab"] = 736;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab2"] = 737;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab3"] = 738;
-		$legacyStringToIntMap["minecraft:double_stone_block_slab4"] = 739;
+		$legacyStringToIntMap["minecraft:stone_block_slab2"] = 182;
+		$legacyStringToIntMap["minecraft:stone_block_slab3"] = -162;
+		$legacyStringToIntMap["minecraft:stone_block_slab4"] = -166;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab"] = 43;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab2"] = 181;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab3"] = -167;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab4"] = -168;
 
 		/** @phpstan-var array<string, array{int, int}> $complexMappings */
 		$complexMappings = [];
