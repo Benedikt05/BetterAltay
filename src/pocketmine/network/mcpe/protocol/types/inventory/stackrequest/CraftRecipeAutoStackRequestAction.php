@@ -31,30 +31,42 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
  */
 final class CraftRecipeAutoStackRequestAction extends ItemStackRequestAction{
 
-	/** @var int */
-	private $recipeId;
-	/** @var int */
-	private $repetitions;
-
-	final public function __construct(int $recipeId, int $repetitions){
-		$this->recipeId = $recipeId;
-		$this->repetitions = $repetitions;
+	final public function __construct(
+		private int $recipeId,
+		private int $repetitions2,
+		private int $repetitions,
+		private array $ingredients
+	){
 	}
 
 	public function getRecipeId() : int{ return $this->recipeId; }
 
+	public function getRepetitions2() : int{ return $this->repetitions2; }
+
 	public function getRepetitions() : int{ return $this->repetitions; }
+
+	public function getIngredients() : array{ return $this->ingredients; }
 
 	public static function getTypeId() : int{ return ItemStackRequestActionType::CRAFTING_RECIPE_AUTO; }
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$recipeId = $in->readGenericTypeNetworkId();
+		$repetitions2 = $in->getByte();
 		$repetitions = $in->getByte();
-		return new self($recipeId, $repetitions);
+		$ingredients = [];
+		for($i = 0, $count = $in->getByte(); $i < $count; ++$i){
+			$ingredients[] = $in->getRecipeIngredient();
+		}
+		return new self($recipeId, $repetitions2, $repetitions, $ingredients);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->writeGenericTypeNetworkId($this->recipeId);
+		$out->putByte($this->repetitions2);
 		$out->putByte($this->repetitions);
+		$out->putByte(count($this->ingredients));
+		foreach ($this->ingredients as $ingredient) {
+			$out->putRecipeIngredient($ingredient);
+		}
 	}
 }

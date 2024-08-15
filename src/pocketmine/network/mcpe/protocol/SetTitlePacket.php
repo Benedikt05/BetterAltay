@@ -40,20 +40,16 @@ class SetTitlePacket extends DataPacket{
 	public const TYPE_SET_SUBTITLE_JSON = 7;
 	public const TYPE_SET_ACTIONBAR_MESSAGE_JSON = 8;
 
-	/** @var int */
-	public $type;
-	/** @var string */
-	public $text = "";
-	/** @var int */
-	public $fadeInTime = 0;
-	/** @var int */
-	public $stayTime = 0;
-	/** @var int */
-	public $fadeOutTime = 0;
+	public int $type;
+	public string $text = "";
+	public int $fadeInTime = 0;
+	public int $stayTime = 0;
+	public int $fadeOutTime = 0;
 	public string $xuid = "";
 	public string $platformOnlineId = "";
+	public string $filteredTitleText = "";
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->type = $this->getVarInt();
 		$this->text = $this->getString();
 		$this->fadeInTime = $this->getVarInt();
@@ -61,9 +57,10 @@ class SetTitlePacket extends DataPacket{
 		$this->fadeOutTime = $this->getVarInt();
 		$this->xuid = $this->getString();
 		$this->platformOnlineId = $this->getString();
+		$this->filteredTitleText = $this->getString();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putVarInt($this->type);
 		$this->putString($this->text);
 		$this->putVarInt($this->fadeInTime);
@@ -71,6 +68,7 @@ class SetTitlePacket extends DataPacket{
 		$this->putVarInt($this->fadeOutTime);
 		$this->putString($this->xuid);
 		$this->putString($this->platformOnlineId);
+		$this->putString($this->filteredTitleText);
 	}
 
 	public function handle(NetworkSession $session) : bool{

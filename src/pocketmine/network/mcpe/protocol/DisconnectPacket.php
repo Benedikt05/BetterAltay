@@ -31,27 +31,30 @@ use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 class DisconnectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::DISCONNECT_PACKET;
 
-	public bool $hideDisconnectionScreen = false;
 	public int $reason = DisconnectFailReason::UNKNOWN;
+	public bool $hideDisconnectionScreen = false;
 	public string $message = "";
+	public string $filteredMessage = "";
 
 	public function canBeSentBeforeLogin() : bool{
 		return true;
 	}
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->reason = $this->getVarInt();
 		$this->hideDisconnectionScreen = $this->getBool();
 		if(!$this->hideDisconnectionScreen){
 			$this->message = $this->getString();
+			$this->filteredMessage = $this->getString();
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putVarInt($this->reason);
 		$this->putBool($this->hideDisconnectionScreen);
 		if(!$this->hideDisconnectionScreen){
 			$this->putString($this->message);
+			$this->putString($this->filteredMessage);
 		}
 	}
 

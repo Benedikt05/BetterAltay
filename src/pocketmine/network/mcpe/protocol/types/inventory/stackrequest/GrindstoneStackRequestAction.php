@@ -26,7 +26,8 @@ final class GrindstoneStackRequestAction extends ItemStackRequestAction{
 
 	public function __construct(
 		private int $recipeId,
-		private int $repairCost
+		private int $repairCost,
+		private int $repetitions
 	){
 	}
 
@@ -35,15 +36,19 @@ final class GrindstoneStackRequestAction extends ItemStackRequestAction{
 	/** WARNING: This may be negative */
 	public function getRepairCost() : int{ return $this->repairCost; }
 
+	public function getRepetitions() : int{ return $this->repetitions; }
+
 	public static function read(NetworkBinaryStream $in) : self{
 		$recipeId = $in->readGenericTypeNetworkId();
 		$repairCost = $in->getVarInt(); //WHY!!!!
+		$repetitions = $in->getByte();
 
-		return new self($recipeId, $repairCost);
+		return new self($recipeId, $repairCost, $repetitions);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->writeGenericTypeNetworkId($this->recipeId);
 		$out->putVarInt($this->repairCost);
+		$out->putByte($this->repetitions);
 	}
 }

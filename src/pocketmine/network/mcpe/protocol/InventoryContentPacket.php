@@ -32,10 +32,10 @@ use function count;
 class InventoryContentPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::INVENTORY_CONTENT_PACKET;
 
-	/** @var int */
-	public $windowId;
+	public int $windowId;
 	/** @var ItemStackWrapper[] */
-	public $items = [];
+	public array $items = [];
+	public int $dynamicContainerId = 0;//??
 
 	protected function decodePayload(){
 		$this->windowId = $this->getUnsignedVarInt();
@@ -43,6 +43,7 @@ class InventoryContentPacket extends DataPacket{
 		for($i = 0; $i < $count; ++$i){
 			$this->items[] = ItemStackWrapper::read($this);
 		}
+		$this->dynamicContainerId = $this->getUnsignedVarInt();
 	}
 
 	protected function encodePayload(){
@@ -51,6 +52,7 @@ class InventoryContentPacket extends DataPacket{
 		foreach($this->items as $item){
 			$item->write($this);
 		}
+		$this->putUnsignedVarInt($this->dynamicContainerId);
 	}
 
 	public function handle(NetworkSession $session) : bool{

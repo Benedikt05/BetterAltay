@@ -748,7 +748,8 @@ class NetworkBinaryStream extends BinaryStream{
 		$type = $this->getByte();
 		$immediate = $this->getBool();
 		$causedByRider = $this->getBool();
-		return new EntityLink($fromEntityUniqueId, $toEntityUniqueId, $type, $immediate, $causedByRider);
+		$vehicleAngularVelocity = $this->getLFloat();
+		return new EntityLink($fromEntityUniqueId, $toEntityUniqueId, $type, $immediate, $causedByRider, $vehicleAngularVelocity);
 	}
 
 	protected function putEntityLink(EntityLink $link) : void{
@@ -757,6 +758,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putByte($link->type);
 		$this->putBool($link->immediate);
 		$this->putBool($link->causedByRider);
+		$this->putLFloat($link->vehicleAngularVelocity);
 	}
 
 	protected function getCommandOriginData() : CommandOriginData{

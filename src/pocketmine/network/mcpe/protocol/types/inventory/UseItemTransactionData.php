@@ -33,25 +33,30 @@ class UseItemTransactionData extends TransactionData{
 	public const ACTION_CLICK_AIR = 1;
 	public const ACTION_BREAK_BLOCK = 2;
 
-	/** @var int */
-	private $actionType;
-	/** @var Vector3 */
-	private $blockPos;
-	/** @var int */
-	private $face;
-	/** @var int */
-	private $hotbarSlot;
-	/** @var ItemStackWrapper */
-	private $itemInHand;
-	/** @var Vector3 */
-	private $playerPos;
-	/** @var Vector3 */
-	private $clickPos;
-	/** @var int */
-	private $blockRuntimeId;
+	public const TRIGGER_UNKNOWN = 0;
+	public const TRIGGER_PLAYER_INPUT = 1;
+	public const TRIGGER_SIMULATION_TICK = 2;
+
+	public const CLIENT_PREDICTION_FAILURE = 0;
+	public const CLIENT_PREDICTION_SUCCESS = 1;
+
+	private int $actionType;
+	private int $triggerType;
+	private Vector3 $blockPos;
+	private int $face;
+	private int $hotbarSlot;
+	private ItemStackWrapper $itemInHand;
+	private Vector3 $playerPos;
+	private Vector3 $clickPos;
+	private int $blockRuntimeId;
+	private int $clientPrediction;
 
 	public function getActionType() : int{
 		return $this->actionType;
+	}
+
+	public function getTriggerType() : int{
+		return $this->triggerType;
 	}
 
 	public function getBlockPos() : Vector3{
@@ -82,12 +87,17 @@ class UseItemTransactionData extends TransactionData{
 		return $this->blockRuntimeId;
 	}
 
+	public function getClientPrediction() : int{
+		return $this->clientPrediction;
+	}
+
 	public function getTypeId() : int{
 		return InventoryTransactionPacket::TYPE_USE_ITEM;
 	}
 
 	protected function decodeData(PacketSerializer $stream) : void{
 		$this->actionType = $stream->getUnsignedVarInt();
+		$this->triggerType = $stream->getUnsignedVarInt();
 		$x = $y = $z = 0;
 		$stream->getBlockPosition($x, $y, $z);
 		$this->blockPos = new Vector3($x, $y, $z);
@@ -97,10 +107,12 @@ class UseItemTransactionData extends TransactionData{
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 		$this->blockRuntimeId = $stream->getUnsignedVarInt();
+		$this->clientPrediction = $stream->getByte();
 	}
 
 	protected function encodeData(PacketSerializer $stream) : void{
 		$stream->putUnsignedVarInt($this->actionType);
+		$stream->putUnsignedVarInt($this->triggerType);
 		$stream->putBlockPosition($this->blockPos->x, $this->blockPos->y, $this->blockPos->z);
 		$stream->putVarInt($this->face);
 		$stream->putVarInt($this->hotbarSlot);
@@ -108,15 +120,17 @@ class UseItemTransactionData extends TransactionData{
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 		$stream->putUnsignedVarInt($this->blockRuntimeId);
+		$stream->putByte($this->clientPrediction);
 	}
 
 	/**
 	 * @param NetworkInventoryAction[] $actions
 	 */
-	public static function new(array $actions, int $actionType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId) : self{
+	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction) : self{
 		$result = new self;
 		$result->actions = $actions;
 		$result->actionType = $actionType;
+		$result->triggerType = $triggerType;
 		$result->blockPos = $blockPos;
 		$result->face = $face;
 		$result->hotbarSlot = $hotbarSlot;
@@ -124,6 +138,7 @@ class UseItemTransactionData extends TransactionData{
 		$result->playerPos = $playerPos;
 		$result->clickPos = $clickPos;
 		$result->blockRuntimeId = $blockRuntimeId;
+		$result->clientPrediction = $clientPrediction;
 		return $result;
 	}
 }
