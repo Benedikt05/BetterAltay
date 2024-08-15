@@ -21,26 +21,28 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\resourcepacks;
+namespace pocketmine\network\mcpe\protocol\types\inventory;
 
-class ResourcePackInfoEntry{
+use pocketmine\network\mcpe\NetworkBinaryStream;
 
+final class FullContainerName{
 	public function __construct(
-		private string $packId,
-		private string $version,
-		private int $packSize
-	){
+		private int $containerId,
+		private int $dynamicId = 0
+	){}
+
+	public function getContainerId() : int{ return $this->containerId; }
+
+	public function getDynamicId() : int{ return $this->dynamicId; }
+
+	public static function read(NetworkBinaryStream $in) : self{
+		$containerId = $in->getByte();
+		$dynamicId = $in->getLInt();
+		return new self($containerId, $dynamicId);
 	}
 
-	public function getPackId() : string{
-		return $this->packId;
-	}
-
-	public function getVersion() : string{
-		return $this->version;
-	}
-
-	public function getPackSize() : int{
-		return $this->packSize;
+	public function write(NetworkBinaryStream $out) : void{
+		$out->putByte($this->containerId);
+		$out->putLInt($this->dynamicId);
 	}
 }

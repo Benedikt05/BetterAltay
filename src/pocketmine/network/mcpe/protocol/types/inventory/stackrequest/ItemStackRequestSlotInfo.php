@@ -24,37 +24,32 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types\inventory\stackrequest;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\network\mcpe\protocol\types\inventory\FullContainerName;
 
 final class ItemStackRequestSlotInfo{
 
-	/** @var int */
-	private $containerId;
-	/** @var int */
-	private $slotId;
-	/** @var int */
-	private $stackId;
-
-	public function __construct(int $containerId, int $slotId, int $stackId){
-		$this->containerId = $containerId;
-		$this->slotId = $slotId;
-		$this->stackId = $stackId;
+	public function __construct(
+		private FullContainerName $containerName,
+		private int $slotId,
+		private int $stackId
+	){
 	}
 
-	public function getContainerId() : int{ return $this->containerId; }
+	public function getContainerName() : FullContainerName{ return $this->containerName; }
 
 	public function getSlotId() : int{ return $this->slotId; }
 
 	public function getStackId() : int{ return $this->stackId; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$containerId = $in->getByte();
+		$containerName = FullContainerName::read($in);
 		$slotId = $in->getByte();
 		$stackId = $in->readGenericTypeNetworkId();
-		return new self($containerId, $slotId, $stackId);
+		return new self($containerName, $slotId, $stackId);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putByte($this->containerId);
+		$this->containerName->write($out);
 		$out->putByte($this->slotId);
 		$out->writeGenericTypeNetworkId($this->stackId);
 	}

@@ -78,10 +78,6 @@ final class ItemStackRequest{
 				return CraftingConsumeInputStackRequestAction::read($in);
 			case CraftingMarkSecondaryResultStackRequestAction::getTypeId():
 				return CraftingMarkSecondaryResultStackRequestAction::read($in);
-			case PlaceIntoBundleStackRequestAction::getTypeId():
-				return PlaceIntoBundleStackRequestAction::read($in);
-			case TakeFromBundleStackRequestAction::getTypeId():
-				return TakeFromBundleStackRequestAction::read($in);
 			case LabTableCombineStackRequestAction::getTypeId():
 				return LabTableCombineStackRequestAction::read($in);
 			case BeaconPaymentStackRequestAction::getTypeId():
