@@ -101,6 +101,15 @@ final class ItemTranslator{
 			$simpleMappings[$stringId] = $intId;
 		}
 
+		$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
+		$legacyStringToIntMap["minecraft:stone_block_slab2"] = 45;
+		$legacyStringToIntMap["minecraft:stone_block_slab3"] = 46;
+		$legacyStringToIntMap["minecraft:stone_block_slab4"] = 47;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab"] = 736;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab2"] = 737;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab3"] = 738;
+		$legacyStringToIntMap["minecraft:double_stone_block_slab4"] = 739;
+
 		/** @phpstan-var array<string, array{int, int}> $complexMappings */
 		$complexMappings = [];
 		foreach($json["complex"] as $oldId => $map){
@@ -111,7 +120,6 @@ final class ItemTranslator{
 				if(!is_numeric($meta) || !is_string($newId)){
 					throw new AssumptionFailedError("Invalid item table format");
 				}
-				$legacyStringToIntMap["minecraft:stone_block_slab"] = 44;
 				$complexMappings[$newId] = [$legacyStringToIntMap[$oldId], (int) $meta];
 			}
 		}
