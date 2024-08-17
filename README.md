@@ -6,17 +6,17 @@
 	<b> and </b>
 	<a href="https://github.com/unresolved3169/Altay">Altay</a>
 	<br><br>
-	This fork was created due to the inactivity of Altay. It currently supports Minecraft: Bedrock Edition v1.21.x
+	This fork was created due to the inactivity of Altay. It currently supports Minecraft: Bedrock Edition v1.21.21
 	<br><br><br>
 </p>
 <p align="center">
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?logo=Discord" alt="Discord">
 	</a>
-	<a href="https://feedback.minecraft.net/hc/en-us/articles/26247797084173--Minecraft-1-21-1-Bedrock">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.2-blue" alt="Minecraft">
+	<a href="https://feedback.minecraft.net/hc/en-us/articles/29279683879949-Minecraft-1-21-21-Bedrock">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.20-blue" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-686-yellow" alt="Minecraft">
+		<img src="https://img.shields.io/badge/protocol-712-yellow" alt="Minecraft">
 	</a>
 </p>
