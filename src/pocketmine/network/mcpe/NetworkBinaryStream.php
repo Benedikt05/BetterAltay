@@ -33,6 +33,7 @@ use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
@@ -647,6 +648,15 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
+	 * Reads a floating-point Vector2 object with coordinates rounded to 4 decimal places.
+	 */
+	public function getVector2() : Vector2{
+		$x = $this->getLFloat();
+		$y = $this->getLFloat();
+		return new Vector2($x, $y);
+	}
+
+	/**
 	 * Writes a floating-point Vector3 object, or 3x zero if null is given.
 	 *
 	 * Note: ONLY use this where it is reasonable to allow not specifying the vector.
@@ -671,6 +681,14 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLFloat($vector->x);
 		$this->putLFloat($vector->y);
 		$this->putLFloat($vector->z);
+	}
+
+	/**
+	 * Writes a floating-point Vector2 object
+	 */
+	public function putVector2(Vector2 $vector2) : void{
+		$this->putLFloat($vector2->x);
+		$this->putLFloat($vector2->y);
 	}
 
 	public function getByteRotation() : float{
