@@ -28,21 +28,24 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 final class FullContainerName{
 	public function __construct(
 		private int $containerId,
-		private int $dynamicId = 0
+		private ?int $dynamicId = null
 	){}
 
 	public function getContainerId() : int{ return $this->containerId; }
 
-	public function getDynamicId() : int{ return $this->dynamicId; }
+	public function getDynamicId() : ?int{ return $this->dynamicId; }
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$containerId = $in->getByte();
-		$dynamicId = $in->getLInt();
+		$dynamicId = $in->getBool() ? $in->getLInt() : null;
 		return new self($containerId, $dynamicId);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putByte($this->containerId);
-		$out->putLInt($this->dynamicId);
+		$out->putBool($this->dynamicId !== null);
+		if($this->dynamicId !== null){
+			$out->putLInt($this->dynamicId);
+		}
 	}
 }

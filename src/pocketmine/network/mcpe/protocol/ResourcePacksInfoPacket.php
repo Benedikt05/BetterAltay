@@ -35,26 +35,13 @@ class ResourcePacksInfoPacket extends DataPacket{
 	public bool $mustAccept = false; //if true, forces client to choose between accepting packs or being disconnected
 	public bool $hasAddonPacks = false;
 	public bool $hasScripts = false; //if true, causes disconnect for any platform that doesn't support scripts yet
-	public bool $forceServerPacks = false;
-	/** @var ResourcePack[] */
-	public array $behaviorPackEntries = [];
 	/** @var ResourcePack[] */
 	public array $resourcePackEntries = [];
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->mustAccept = $this->getBool();
+		$this->hasAddonPacks = $this->getBool();
 		$this->hasScripts = $this->getBool();
-		$this->forceServerPacks = $this->getBool();
-		$behaviorPackCount = $this->getLShort();
-		while($behaviorPackCount-- > 0){
-			$this->getString();
-			$this->getString();
-			$this->getLLong();
-			$this->getString();
-			$this->getString();
-			$this->getString();
-			$this->getBool();
-		}
 
 		$resourcePackCount = $this->getLShort();
 		while($resourcePackCount-- > 0){
@@ -66,25 +53,15 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->getString();
 			$this->getBool();
 			$this->getBool();
+			$this->getBool();
 		}
+		//CDNEntries
 	}
 
 	protected function encodePayload() : void{
 		$this->putBool($this->mustAccept);
 		$this->putBool($this->hasAddonPacks);
 		$this->putBool($this->hasScripts);
-		$this->putBool($this->forceServerPacks);
-		$this->putLShort(count($this->behaviorPackEntries));
-		foreach($this->behaviorPackEntries as $entry){
-			$this->putString($entry->getPackId());
-			$this->putString($entry->getPackVersion());
-			$this->putLLong($entry->getPackSize());
-			$this->putString(""); //TODO: encryption key
-			$this->putString(""); //TODO: subpack name
-			$this->putString(""); //TODO: content identity
-			$this->putBool(false); //TODO: has scripts (?)
-			$this->putBool(false); //TODO: is addon pack
-		}
 		$this->putLShort(count($this->resourcePackEntries));
 		foreach($this->resourcePackEntries as $entry){
 			$this->putString($entry->getPackId());
