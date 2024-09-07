@@ -52,7 +52,7 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 		$result->delta = $delta;
 		$result->onGround = $onGround;
 		$result->tick = $tick;
-		if($predictionType === self::PREDICTION_TYPE_VEHICLE && $vehicleRotation == null) {
+		if($predictionType === self::PREDICTION_TYPE_VEHICLE && $vehicleRotation == null){
 			throw new LogicException("CorrectPlayerMovePredictionPackets with type VEHICLE require a vehicleRotation to be provided");
 		}
 		$result->predictionType = $predictionType;
@@ -76,7 +76,7 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 	public function getTick() : int{ return $this->tick; }
 
 	protected function decodePayload() : void{
-		$this->predictionType = $this->getByte();
+		$this->predictionType = $this->getUnsignedVarInt();
 		$this->position = $this->getVector3();
 		$this->delta = $this->getVector3();
 		if($this->predictionType === self::PREDICTION_TYPE_VEHICLE){
@@ -88,7 +88,7 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 	}
 
 	protected function encodePayload() : void{
-		$this->putByte($this->predictionType);
+		$this->putUnsignedVarInt($this->predictionType);//official docs have the wrong data type here
 		$this->putVector3($this->position);
 		$this->putVector3($this->delta);
 		if($this->predictionType === self::PREDICTION_TYPE_VEHICLE){
