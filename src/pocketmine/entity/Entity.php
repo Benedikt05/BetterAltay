@@ -1896,9 +1896,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param bool     $immediate
 	 * @param bool     $causedByRider
 	 */
-	public function sendLink(array $targets, int $entityId, int $type = EntityLink::TYPE_RIDER, bool $immediate = false, bool $causedByRider = true) : void{
+	public function sendLink(array $targets, int $entityId, int $type = EntityLink::TYPE_RIDER, bool $immediate = false, bool $causedByRider = true, float $vehicleAngularVelocity = 0) : void{
 		$pk = new SetActorLinkPacket();
-		$pk->link = new EntityLink($this->id, $entityId, $type, $immediate, $causedByRider);
+		$pk->link = new EntityLink($this->id, $entityId, $type, $immediate, $causedByRider, $vehicleAngularVelocity);
 
 		$this->server->broadcastPacket($targets, $pk);
 	}
@@ -2595,7 +2595,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			}
 
 			$pk->links = array_map(function(int $entityId){
-				return new EntityLink($this->getId(), $entityId, EntityLink::TYPE_RIDER, true, false);
+				return new EntityLink($this->getId(), $entityId, EntityLink::TYPE_RIDER, true, false, 0);
 			}, $this->passengers);
 		}
 

@@ -33,6 +33,7 @@ use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\BigEndianNBTStream;
 use pocketmine\nbt\LittleEndianNBTStream;
@@ -643,6 +644,15 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
+	 * Reads a floating-point Vector2 object with coordinates rounded to 4 decimal places.
+	 */
+	public function getVector2() : Vector2{
+		$x = $this->getLFloat();
+		$y = $this->getLFloat();
+		return new Vector2($x, $y);
+	}
+
+	/**
 	 * Writes a floating-point Vector3 object, or 3x zero if null is given.
 	 *
 	 * Note: ONLY use this where it is reasonable to allow not specifying the vector.
@@ -667,6 +677,14 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLFloat($vector->x);
 		$this->putLFloat($vector->y);
 		$this->putLFloat($vector->z);
+	}
+
+	/**
+	 * Writes a floating-point Vector2 object
+	 */
+	public function putVector2(Vector2 $vector2) : void{
+		$this->putLFloat($vector2->x);
+		$this->putLFloat($vector2->y);
 	}
 
 	public function getByteRotation() : float{
@@ -744,7 +762,8 @@ class NetworkBinaryStream extends BinaryStream{
 		$type = $this->getByte();
 		$immediate = $this->getBool();
 		$causedByRider = $this->getBool();
-		return new EntityLink($fromEntityUniqueId, $toEntityUniqueId, $type, $immediate, $causedByRider);
+		$vehicleAngularVelocity = $this->getLFloat();
+		return new EntityLink($fromEntityUniqueId, $toEntityUniqueId, $type, $immediate, $causedByRider, $vehicleAngularVelocity);
 	}
 
 	protected function putEntityLink(EntityLink $link) : void{
@@ -753,6 +772,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putByte($link->type);
 		$this->putBool($link->immediate);
 		$this->putBool($link->causedByRider);
+		$this->putLFloat($link->vehicleAngularVelocity);
 	}
 
 	protected function getCommandOriginData() : CommandOriginData{

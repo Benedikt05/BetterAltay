@@ -37,7 +37,7 @@ jobs:
       run: composer make-server
 
     - name: Archive generated Phar file
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: BetterAltay
         path: BetterAltay.phar

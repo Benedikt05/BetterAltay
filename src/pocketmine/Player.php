@@ -1910,9 +1910,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->exhaust(0.01 * $distance, PlayerExhaustEvent::CAUSE_WALKING);
 			}
 
-			if($this->isOnGround() && $this->isGliding()){
-				$this->toggleGlide(false);
-			}
+			//if($this->isOnGround() && $this->isGliding()){
+			//	$this->toggleGlide(false);
+			//}
 
 			if($this->nextChunkOrderRun > 20){
 				$this->nextChunkOrderRun = 20;
@@ -2130,7 +2130,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
 		$protocolVersion = $packet->protocolVersion;
-		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL && $protocolVersion !== ProtocolInfo::PROTOCOL_1_21_0){
+		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL){
 			$this->sendPlayStatus($protocolVersion < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
 			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
 			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$protocolVersion]), false);
@@ -3398,8 +3398,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case PlayerActionPacket::ACTION_DIMENSION_CHANGE_ACK:
 				$this->sendPlayStatus(PlayStatusPacket::PLAYER_SPAWN);
 				break;
+			case PlayerActionPacket::ACTION_START_CRAWLING:
+			case PlayerActionPacket::ACTION_STOP_CRAWLING:
+				//TODO
+				break;
 			case PlayerActionPacket::ACTION_START_FLYING:
 			case PlayerActionPacket::ACTION_STOP_FLYING:
+				//TODO: ignored for now
+				break;
+			case PlayerActionPacket::ACTION_MISSED_SWING:
+				//ignored
 				break;
 			default:
 				$this->server->getLogger()->debug("Unhandled/unknown player action type " . $packet->action . " from " . $this->getName());
