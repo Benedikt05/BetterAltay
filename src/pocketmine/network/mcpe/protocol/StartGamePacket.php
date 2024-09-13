@@ -143,7 +143,7 @@ class StartGamePacket extends DataPacket{
 	public int $blockPaletteChecksum;
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
-	public bool $blockNetworkIdsAreHashes = false;
+	public bool $blockNetworkIdsAreHashes = true;
 	public bool $serverAuthSound = true;
 
 	protected function decodePayload(){

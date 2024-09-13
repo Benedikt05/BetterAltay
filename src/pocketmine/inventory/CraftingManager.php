@@ -56,6 +56,7 @@ class CraftingManager{
 	}
 
 	public function init() : void{
+		// TODO - support the next recipes.json but benedikt didn't want bc break so it will be kept as is (might be temporarily or premanent)
 		$recipes = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
 		if(!is_array($recipes)){
 			throw new AssumptionFailedError("recipes.json root should contain a map of recipe types");

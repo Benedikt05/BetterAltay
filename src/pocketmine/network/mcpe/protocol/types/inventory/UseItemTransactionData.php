@@ -48,7 +48,7 @@ class UseItemTransactionData extends TransactionData{
 	private ItemStackWrapper $itemInHand;
 	private Vector3 $playerPos;
 	private Vector3 $clickPos;
-	private int $blockRuntimeId;
+	private int $blockNetworkId;
 	private int $clientPrediction;
 
 	public function getActionType() : int{
@@ -83,8 +83,8 @@ class UseItemTransactionData extends TransactionData{
 		return $this->clickPos;
 	}
 
-	public function getBlockRuntimeId() : int{
-		return $this->blockRuntimeId;
+	public function getBlockNetworkId() : int{
+		return $this->blockNetworkId;
 	}
 
 	public function getClientPrediction() : int{
@@ -106,7 +106,7 @@ class UseItemTransactionData extends TransactionData{
 		$this->itemInHand = ItemStackWrapper::read($stream);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
-		$this->blockRuntimeId = $stream->getUnsignedVarInt();
+		$this->blockNetworkId = $stream->getUnsignedVarInt();
 		$this->clientPrediction = $stream->getByte();
 	}
 
@@ -119,14 +119,15 @@ class UseItemTransactionData extends TransactionData{
 		$this->itemInHand->write($stream);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
-		$stream->putUnsignedVarInt($this->blockRuntimeId);
+		$stream->putUnsignedVarInt($this->blockNetworkId);
 		$stream->putByte($this->clientPrediction);
 	}
 
 	/**
 	 * @param NetworkInventoryAction[] $actions
 	 */
-	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction) : self{
+
+	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockNetworkId, int $clientPrediction) : self{
 		$result = new self;
 		$result->actions = $actions;
 		$result->actionType = $actionType;
@@ -137,7 +138,7 @@ class UseItemTransactionData extends TransactionData{
 		$result->itemInHand = $itemInHand;
 		$result->playerPos = $playerPos;
 		$result->clickPos = $clickPos;
-		$result->blockRuntimeId = $blockRuntimeId;
+		$result->blockNetworkId = $blockNetworkId;
 		$result->clientPrediction = $clientPrediction;
 		return $result;
 	}

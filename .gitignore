@@ -17,6 +17,7 @@ memory_dumps/*
 resource_packs/
 server.lock
 /phpstan.neon
+start_dev.sh
 
 # Common IDEs
 .idea/*
@@ -40,6 +41,7 @@ Desktop.ini
 
 # Composer
 vendor/*
+pm_composer.sh
 
 # Travis files
 test_data/*
@@ -54,3 +56,5 @@ Documentation/*
 /.php_cs.cache
 /.php-cs-fixer.cache
 
+# Vscode
+/.vscode

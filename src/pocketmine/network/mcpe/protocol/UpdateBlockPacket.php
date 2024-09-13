@@ -49,7 +49,7 @@ class UpdateBlockPacket extends DataPacket{
 	/** @var int */
 	public $y;
 	/** @var int */
-	public $blockRuntimeId;
+	public $blockNetworkId;
 	/** @var int */
 	public $flags;
 	/** @var int */
@@ -57,14 +57,14 @@ class UpdateBlockPacket extends DataPacket{
 
 	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);
-		$this->blockRuntimeId = $this->getUnsignedVarInt();
+		$this->blockNetworkId = $this->getUnsignedVarInt();
 		$this->flags = $this->getUnsignedVarInt();
 		$this->dataLayerId = $this->getUnsignedVarInt();
 	}
 
 	protected function encodePayload(){
 		$this->putBlockPosition($this->x, $this->y, $this->z);
-		$this->putUnsignedVarInt($this->blockRuntimeId);
+		$this->putUnsignedVarInt($this->blockNetworkId);
 		$this->putUnsignedVarInt($this->flags);
 		$this->putUnsignedVarInt($this->dataLayerId);
 	}
