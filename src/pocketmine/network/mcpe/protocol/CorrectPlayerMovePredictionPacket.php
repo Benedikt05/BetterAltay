@@ -52,7 +52,7 @@ class CorrectPlayerMovePredictionPacket extends DataPacket/* implements Clientbo
 		$result->delta = $delta;
 		$result->onGround = $onGround;
 		$result->tick = $tick;
-		if($predictionType === self::PREDICTION_TYPE_VEHICLE && $vehicleRotation == null){
+		if($predictionType === self::PREDICTION_TYPE_VEHICLE && $vehicleRotation === null){
 			throw new LogicException("CorrectPlayerMovePredictionPackets with type VEHICLE require a vehicleRotation to be provided");
 		}
 		$result->predictionType = $predictionType;
