@@ -214,6 +214,7 @@ class PacketPool{
 		static::registerPacket(new UpdateClientInputLocksPacket());
 		static::registerPacket(new UnlockedRecipesPacket());
 		static::registerPacket(new OpenSignPacket());
+		static::registerPacket(new SetPlayerInventoryOptionsPacket());
 		static::registerPacket(new SetHudPacket());
 		static::registerPacket(new AwardAchievementPacket());
 		static::registerPacket(new ClientboundCloseFormPacket());

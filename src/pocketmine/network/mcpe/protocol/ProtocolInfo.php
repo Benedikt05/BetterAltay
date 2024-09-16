@@ -226,6 +226,7 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_INPUT_LOCKS_PACKET = 0xc4;
 	public const UNLOCKED_RECIPES_PACKET = 0xc7;
 	public const OPEN_SIGN_PACKET = 0x12f;
+	public const SET_PLAYER_INVENTORY_OPTIONS_PACKET = 0x133;
 	public const SET_HUD_PACKET = 0x134;
 	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
 	public const CLIENTBOUND_CLOSE_FORM_PACKET = 0x136;
