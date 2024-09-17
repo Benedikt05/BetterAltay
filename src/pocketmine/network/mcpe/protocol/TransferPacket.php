@@ -32,7 +32,7 @@ class TransferPacket extends DataPacket{
 
 	public string $address;
 	public int $port = 19132;
-	public bool $reloadWorld = true;
+	public bool $reloadWorld = false; //always false
 
 	protected function decodePayload() : void{
 		$this->address = $this->getString();
