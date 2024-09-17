@@ -36,15 +36,17 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 
 	private int $entityRuntimeId;
 	private string $emoteId;
+	private int $emoteTicks;
 	private string $xuid;
 	private string $platformId;
 	private int $flags;
 
 
-	public static function create(int $entityRuntimeId, string $emoteId, string $xuid, string $platformId, int $flags) : self{
+	public static function create(int $entityRuntimeId, string $emoteId, int $emoteTicks, string $xuid, string $platformId, int $flags) : self{
 		$result = new self;
 		$result->entityRuntimeId = $entityRuntimeId;
 		$result->emoteId = $emoteId;
+		$result->emoteTicks = $emoteTicks;
 		$result->xuid = $xuid;
 		$result->platformId = $platformId;
 		$result->flags = $flags;
@@ -62,6 +64,10 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 		return $this->emoteId;
 	}
 
+	public function getEmoteTicks() : int{
+		return $this->emoteTicks;
+	}
+
 	public function getXuid() : string{
 		return $this->xuid;
 	}
@@ -77,6 +83,7 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->emoteId = $this->getString();
+		$this->emoteTicks = $this->getUnsignedVarInt();
 		$this->xuid = $this->getString();
 		$this->platformId = $this->getString();
 		$this->flags = $this->getByte();
@@ -85,6 +92,7 @@ class EmotePacket extends DataPacket/* implements ClientboundPacket, Serverbound
 	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putString($this->emoteId);
+		$this->putUnsignedVarInt($this->emoteTicks);
 		$this->putString($this->xuid);
 		$this->putString($this->platformId);
 		$this->putByte($this->flags);

@@ -61,6 +61,9 @@
             "8": "minecraft:light_gray_carpet",
             "9": "minecraft:cyan_carpet"
         },
+        "minecraft:chemistry_table": {
+            "0": "minecraft:compound_creator"
+        },
         "minecraft:chest_boat": {
             "0": "minecraft:oak_chest_boat",
             "1": "minecraft:spruce_chest_boat",
@@ -74,6 +77,43 @@
         },
         "minecraft:coal": {
             "1": "minecraft:charcoal"
+        },
+        "minecraft:cobblestone_wall": {
+            "1": "minecraft:mossy_cobblestone_wall",
+            "10": "minecraft:end_stone_brick_wall",
+            "11": "minecraft:prismarine_wall",
+            "12": "minecraft:red_sandstone_wall",
+            "13": "minecraft:red_nether_brick_wall",
+            "2": "minecraft:granite_wall",
+            "3": "minecraft:diorite_wall",
+            "4": "minecraft:andesite_wall",
+            "5": "minecraft:sandstone_wall",
+            "6": "minecraft:brick_wall",
+            "7": "minecraft:stone_brick_wall",
+            "8": "minecraft:mossy_stone_brick_wall",
+            "9": "minecraft:nether_brick_wall"
+        },
+        "minecraft:colored_torch_bp": {
+            "0": "minecraft:colored_torch_blue",
+            "10": "minecraft:colored_torch_purple",
+            "11": "minecraft:colored_torch_purple",
+            "12": "minecraft:colored_torch_purple",
+            "13": "minecraft:colored_torch_purple",
+            "14": "minecraft:colored_torch_purple",
+            "15": "minecraft:colored_torch_purple",
+            "8": "minecraft:colored_torch_purple",
+            "9": "minecraft:colored_torch_purple"
+        },
+        "minecraft:colored_torch_rg": {
+            "0": "minecraft:colored_torch_red",
+            "10": "minecraft:colored_torch_green",
+            "11": "minecraft:colored_torch_green",
+            "12": "minecraft:colored_torch_green",
+            "13": "minecraft:colored_torch_green",
+            "14": "minecraft:colored_torch_green",
+            "15": "minecraft:colored_torch_green",
+            "8": "minecraft:colored_torch_green",
+            "9": "minecraft:colored_torch_green"
         },
         "minecraft:concrete": {
             "0": "minecraft:white_concrete",
@@ -321,6 +361,11 @@
             "1": "minecraft:dark_prismarine",
             "2": "minecraft:prismarine_bricks"
         },
+        "minecraft:purpur_block": {
+            "1": "minecraft:deprecated_purpur_block_1",
+            "2": "minecraft:purpur_pillar",
+            "3": "minecraft:deprecated_purpur_block_2"
+        },
         "minecraft:quartz_block": {
             "1": "minecraft:chiseled_quartz_block",
             "2": "minecraft:quartz_pillar",
@@ -464,6 +509,9 @@
             "74": "minecraft:turtle_spawn_egg",
             "75": "minecraft:cat_spawn_egg"
         },
+        "minecraft:sponge": {
+            "1": "minecraft:wet_sponge"
+        },
         "minecraft:stained_glass": {
             "0": "minecraft:white_stained_glass",
             "1": "minecraft:orange_stained_glass",
@@ -574,6 +622,7 @@
             "2": "minecraft:fern",
             "3": "minecraft:fern"
         },
+        "minecraft:tnt": {},
         "minecraft:wood": {
             "0": "minecraft:oak_wood",
             "1": "minecraft:spruce_wood",

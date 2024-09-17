@@ -559,6 +559,8 @@ class NetworkBinaryStream extends BinaryStream{
 			$this->putLFloat($attribute->getMinValue());
 			$this->putLFloat($attribute->getMaxValue());
 			$this->putLFloat($attribute->getValue());
+			$this->putLFloat($attribute->getMinValue()); //default min value
+			$this->putLFloat($attribute->getMaxValue()); //default max value
 			$this->putLFloat($attribute->getDefaultValue());
 			$this->putString($attribute->getName());
 			$this->putUnsignedVarInt(0); //Modifiers

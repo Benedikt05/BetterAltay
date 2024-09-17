@@ -416,9 +416,10 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 				$this->player->level->broadcastPacketToViewers($this->player, EmotePacket::create(
 					$this->player->getId(),
 					$packet->getEmoteId(),
+					$packet->getEmoteTicks(),
 					"",
 					"",
-					EmotePacket::FLAG_SERVER
+					EmotePacket::FLAG_SERVER | EmotePacket::FLAG_MUTE_EMOTE_CHAT
 				));
 
 				return true;
