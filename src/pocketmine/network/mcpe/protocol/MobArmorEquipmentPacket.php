@@ -25,27 +25,23 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 
 class MobArmorEquipmentPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::MOB_ARMOR_EQUIPMENT_PACKET;
 
-	/** @var int */
-	public $entityRuntimeId;
+	public int $entityRuntimeId;
 
 	//this intentionally doesn't use an array because we don't want any implicit dependencies on internal order
 
-	/** @var ItemStackWrapper */
-	public $head;
-	/** @var ItemStackWrapper */
-	public $chest;
-	/** @var ItemStackWrapper */
-	public $legs;
-	/** @var ItemStackWrapper */
-	public $feet;
-	/** @var ItemStackWrapper */
-	public $body;
+	public ItemStackWrapper $head;
+	public ItemStackWrapper $chest;
+	public ItemStackWrapper $legs;
+	public ItemStackWrapper $feet;
+	public ?ItemStackWrapper $body = null;
 
 	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
@@ -62,6 +58,9 @@ class MobArmorEquipmentPacket extends DataPacket{
 		$this->chest->write($this);
 		$this->legs->write($this);
 		$this->feet->write($this);
+		if($this->body === null){
+			$this->body = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
+		}
 		$this->body->write($this);
 	}
 

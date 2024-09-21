@@ -27,11 +27,11 @@ class SetPlayerInventoryOptionsPacket extends DataPacket{
 	}
 
 	protected function encodePayload() : void{
-		$this->putVarInt($this->leftTab->value);
-		$this->putVarInt($this->rightTab->value);
+		$this->putVarInt($this->leftTab);
+		$this->putVarInt($this->rightTab);
 		$this->putBool($this->filtering);
-		$this->putVarInt($this->inventoryLayout->value);
-		$this->putVarInt($this->craftingLayout->value);
+		$this->putVarInt($this->inventoryLayout);
+		$this->putVarInt($this->craftingLayout);
 	}
 
 	public function handle(NetworkSession $session) : bool{

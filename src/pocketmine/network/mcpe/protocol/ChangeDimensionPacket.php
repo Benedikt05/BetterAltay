@@ -34,18 +34,23 @@ class ChangeDimensionPacket extends DataPacket{
 	public int $dimension;
 	public Vector3 $position;
 	public bool $respawn = false;
+	public ?int $loadingScreenId = null;
 
 	protected function decodePayload() : void{
 		$this->dimension = $this->getVarInt();
 		$this->position = $this->getVector3();
 		$this->respawn = $this->getBool();
+		$this->loadingScreenId = $this->getBool() ? $this->getLInt() : null;
 	}
 
 	protected function encodePayload() : void{
 		$this->putVarInt($this->dimension);
 		$this->putVector3($this->position);
 		$this->putBool($this->respawn);
-		$this->putBool(false);
+		$this->putBool($this->loadingScreenId !== null);
+		if($this->loadingScreenId !== null){
+			$this->putLInt($this->loadingScreenId);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{
