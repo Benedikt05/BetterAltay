@@ -28,7 +28,7 @@ declare(strict_types=1);
 namespace pocketmine\network;
 
 use pocketmine\network\mcpe\protocol\DataPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Network interfaces are transport layers which can be used to transmit packets between the server and clients.

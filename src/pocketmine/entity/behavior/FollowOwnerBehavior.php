@@ -26,7 +26,7 @@ namespace pocketmine\entity\behavior;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Tamable;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 
 class FollowOwnerBehavior extends Behavior{

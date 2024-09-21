@@ -27,7 +27,7 @@ use pocketmine\inventory\CraftingGrid;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function array_key_exists;
 
 class CraftingTable extends Solid{

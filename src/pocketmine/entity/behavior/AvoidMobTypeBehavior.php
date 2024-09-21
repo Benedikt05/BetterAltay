@@ -28,7 +28,7 @@ use Closure;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
 use pocketmine\entity\utils\RandomPositionGenerator;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class AvoidMobTypeBehavior extends Behavior{
 

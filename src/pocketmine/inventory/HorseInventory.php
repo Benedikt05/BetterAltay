@@ -35,7 +35,7 @@ use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\network\mcpe\protocol\UpdateEquipPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class HorseInventory extends AbstractHorseInventory{
 	/** @var Horse */

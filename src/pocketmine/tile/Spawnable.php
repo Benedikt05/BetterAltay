@@ -29,7 +29,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\AssumptionFailedError;
 
 abstract class Spawnable extends Tile{

@@ -42,7 +42,7 @@ use pocketmine\entity\Tamable;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function mt_rand;
 
 class Wolf extends Tamable{

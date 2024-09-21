@@ -26,7 +26,7 @@ namespace pocketmine\updater;
 use InvalidArgumentException;
 use LogLevel;
 use pocketmine\event\server\UpdateNotifyEvent;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\VersionString;

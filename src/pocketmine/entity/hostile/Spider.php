@@ -36,7 +36,7 @@ use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function rand;
 
 class Spider extends Monster implements Ageable, Arthropod{

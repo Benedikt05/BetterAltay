@@ -36,7 +36,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function boolval;
 use function intval;
 use function rand;

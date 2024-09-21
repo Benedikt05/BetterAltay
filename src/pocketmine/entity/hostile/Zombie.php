@@ -36,7 +36,7 @@ use pocketmine\entity\passive\Villager;
 use pocketmine\entity\Smite;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function mt_rand;
 
 class Zombie extends Monster implements Ageable, Smite{

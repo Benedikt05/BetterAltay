@@ -27,7 +27,7 @@ namespace pocketmine\block;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class EndPortal extends Transparent{

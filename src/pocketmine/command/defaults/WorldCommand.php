@@ -29,7 +29,7 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class WorldCommand extends VanillaCommand{

@@ -41,7 +41,7 @@ use pocketmine\entity\WaterAnimal;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\biome\SpawnListEntry;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\WeightedRandomItem;
 use function array_filter;

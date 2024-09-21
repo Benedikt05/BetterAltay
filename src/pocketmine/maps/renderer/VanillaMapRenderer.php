@@ -32,7 +32,7 @@ use pocketmine\block\StoneSlab;
 use pocketmine\block\Wood;
 use pocketmine\block\Wood2;
 use pocketmine\maps\MapData;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Color;
 
 class VanillaMapRenderer extends MapRenderer{

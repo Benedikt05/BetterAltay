@@ -28,7 +28,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function sqrt;
 
 class ExperienceOrb extends Entity{

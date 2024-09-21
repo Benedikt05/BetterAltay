@@ -29,7 +29,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\object\ArmorStand as EntityArmorStand;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class ArmorStand extends Item{
 

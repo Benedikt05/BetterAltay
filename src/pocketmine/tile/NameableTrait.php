@@ -27,7 +27,7 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * This trait implements most methods in the {@link Nameable} interface. It should only be used by Tiles.

@@ -27,7 +27,7 @@ use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\inventory\CraftingRecipe;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function array_pop;
 use function count;
 use function intdiv;

@@ -26,7 +26,7 @@ namespace pocketmine\entity;
 
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 abstract class Vehicle extends Entity implements Rideable{
 

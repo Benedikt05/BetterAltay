@@ -30,7 +30,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\Shovel;
 use pocketmine\level\generator\object\TallGrass as TallGrassObject;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Random;
 use function mt_rand;
 

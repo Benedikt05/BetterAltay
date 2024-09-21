@@ -28,7 +28,7 @@ use pocketmine\block\Grass;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function max;
 
 abstract class Animal extends Mob implements Ageable{

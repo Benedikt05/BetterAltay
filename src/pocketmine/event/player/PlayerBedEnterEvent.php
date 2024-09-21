@@ -25,7 +25,7 @@ namespace pocketmine\event\player;
 
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class PlayerBedEnterEvent extends PlayerEvent implements Cancellable{
 	/** @var Block */

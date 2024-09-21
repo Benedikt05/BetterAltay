@@ -26,7 +26,7 @@ namespace pocketmine\tile;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Bed extends Spawnable{
 	public const TAG_COLOR = "color";

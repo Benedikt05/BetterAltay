@@ -26,7 +26,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\NoteBlock as TileNoteBlock;
 use pocketmine\tile\Tile;
 

@@ -26,7 +26,7 @@ namespace pocketmine\form;
 use Closure;
 use InvalidArgumentException;
 use pocketmine\form\element\CustomFormElement;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Utils;
 use function array_values;
 use function count;

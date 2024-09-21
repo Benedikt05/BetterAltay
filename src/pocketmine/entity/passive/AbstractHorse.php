@@ -35,7 +35,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function boolval;
 use function intval;
 use function mt_rand;

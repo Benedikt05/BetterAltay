@@ -25,7 +25,7 @@ namespace pocketmine\event\player\cheat;
 
 use pocketmine\event\Cancellable;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Called when a player attempts to perform movement cheats such as clipping through blocks.

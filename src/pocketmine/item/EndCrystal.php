@@ -29,7 +29,7 @@ use pocketmine\block\Obsidian;
 use pocketmine\entity\Entity;
 use pocketmine\entity\object\EnderCrystal;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class EndCrystal extends Item{
 

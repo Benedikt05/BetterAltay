@@ -37,7 +37,7 @@ use pocketmine\item\Bucket;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function rand;
 
 class Cow extends Animal{

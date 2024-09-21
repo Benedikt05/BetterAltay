@@ -33,7 +33,7 @@ use pocketmine\entity\helper\EntityLookHelper;
 use pocketmine\entity\helper\EntityMoveHelper;
 use pocketmine\entity\pathfinder\EntityNavigator;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\timings\Timings;
 use function abs;
 use function boolval;

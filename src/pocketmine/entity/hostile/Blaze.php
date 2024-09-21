@@ -37,7 +37,7 @@ use pocketmine\entity\RangedAttackerMob;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function rand;
 
 class Blaze extends Monster implements RangedAttackerMob{

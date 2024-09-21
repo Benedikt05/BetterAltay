@@ -33,7 +33,7 @@ use pocketmine\inventory\InventoryHolder;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Beacon extends Spawnable implements Nameable, InventoryHolder{
 	use NameableTrait {

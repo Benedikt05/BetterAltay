@@ -6,7 +6,7 @@ namespace pocketmine\event\block;
 
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class SignOpenEditEvent extends BlockEvent implements Cancellable{
 	private Player $player;

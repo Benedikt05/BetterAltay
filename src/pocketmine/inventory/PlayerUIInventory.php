@@ -25,7 +25,7 @@ namespace pocketmine\inventory;
 
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class PlayerUIInventory extends BaseInventory{
 	/** @var Player */

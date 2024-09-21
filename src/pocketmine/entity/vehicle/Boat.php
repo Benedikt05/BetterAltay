@@ -36,7 +36,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Boat extends Vehicle{
 	public const NETWORK_ID = self::BOAT;

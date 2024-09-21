@@ -29,7 +29,7 @@ use pocketmine\inventory\utils\EquipmentSlot;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class AltayEntityEquipment extends BaseInventory{
 

@@ -32,7 +32,7 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameable{
 	use NameableTrait {

@@ -27,7 +27,7 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 use pocketmine\item\SpawnEgg;
 use pocketmine\item\TieredTool;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\MobSpawner;
 use pocketmine\tile\Tile;
 use function mt_rand;

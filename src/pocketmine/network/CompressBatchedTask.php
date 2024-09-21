@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network;
 
 use pocketmine\network\mcpe\protocol\BatchPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 

@@ -26,7 +26,7 @@ namespace pocketmine\event\player;
 use pocketmine\command\CommandSender;
 use pocketmine\event\Cancellable;
 use pocketmine\permission\PermissionManager;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\Utils;
 use function spl_object_id;

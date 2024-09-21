@@ -27,7 +27,7 @@ use BadMethodCallException;
 use InvalidStateException;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function max;
 use function min;
 use const PHP_INT_MAX;

@@ -28,7 +28,7 @@ use Closure;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class NearestAttackableTargetBehavior extends TargetBehavior{
 

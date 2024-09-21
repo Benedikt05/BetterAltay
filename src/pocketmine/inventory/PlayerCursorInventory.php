@@ -26,7 +26,7 @@ namespace pocketmine\inventory;
 use BadMethodCallException;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * This is not really a inventory, just a thing to prevent api breaks

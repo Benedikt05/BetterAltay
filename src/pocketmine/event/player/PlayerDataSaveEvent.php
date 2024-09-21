@@ -25,7 +25,7 @@ namespace pocketmine\event\player;
 
 use pocketmine\event\Cancellable;
 use pocketmine\event\Event;
-use pocketmine\IPlayer;
+use pocketmine\player\IPlayer;;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Server;
 

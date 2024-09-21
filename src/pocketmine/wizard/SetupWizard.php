@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace pocketmine\wizard;
 
 use pocketmine\lang\BaseLang;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use pocketmine\utils\Internet;
 use pocketmine\utils\InternetException;

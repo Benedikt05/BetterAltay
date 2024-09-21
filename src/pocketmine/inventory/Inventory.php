@@ -30,7 +30,7 @@ namespace pocketmine\inventory;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 interface Inventory{
 	public const MAX_STACK = 64;
