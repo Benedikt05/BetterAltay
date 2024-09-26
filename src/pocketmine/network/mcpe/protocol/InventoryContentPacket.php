@@ -25,6 +25,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\FullContainerName;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
@@ -37,7 +39,7 @@ class InventoryContentPacket extends DataPacket{
 	/** @var ItemStackWrapper[] */
 	public array $items = [];
 	public ?FullContainerName $containerName = null;
-	public int $dynamicContainerSize = 0;
+	public ?ItemStackWrapper $storageItem = null;
 
 	protected function decodePayload() : void{
 		$this->windowId = $this->getUnsignedVarInt();
@@ -46,7 +48,7 @@ class InventoryContentPacket extends DataPacket{
 			$this->items[] = ItemStackWrapper::read($this);
 		}
 		$this->containerName = FullContainerName::read($this);
-		$this->dynamicContainerSize = $this->getUnsignedVarInt();
+		$this->storageItem = ItemStackWrapper::read($this);
 	}
 
 	protected function encodePayload() : void{
@@ -56,10 +58,15 @@ class InventoryContentPacket extends DataPacket{
 			$item->write($this);
 		}
 		if($this->containerName === null){
-			$this->containerName = new FullContainerName(1);
+			$this->containerName = new FullContainerName(0);
 		}
 		$this->containerName->write($this);
-		$this->putUnsignedVarInt($this->dynamicContainerSize);
+
+		if($this->storageItem === null){
+			$this->storageItem = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
+		}
+		$this->storageItem->write($this);
+
 	}
 
 	public function handle(NetworkSession $session) : bool{

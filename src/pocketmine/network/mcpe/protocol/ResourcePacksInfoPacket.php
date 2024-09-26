@@ -54,8 +54,8 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->getBool();
 			$this->getBool();
 			$this->getBool();
+			$this->getString();
 		}
-		//CDNEntries
 	}
 
 	protected function encodePayload() : void{
@@ -73,8 +73,8 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putBool(false); //TODO: has scripts (seems useless for resource packs)
 			$this->putBool(false); //TODO: is addon pack
 			$this->putBool(false); //TODO: supports RTX
+			$this->putString(""); //TODO: CDNUrl
 		}
-		$this->putUnsignedVarInt(0); //CDNEntries
 	}
 
 	public function handle(NetworkSession $session) : bool{

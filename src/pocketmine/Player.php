@@ -874,12 +874,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @return void
 	 */
 	public function sendCommandData(){
-		if($this->server->commandFix) {
+		if($this->server->commandFix){
 			return;
 		}
 		$pk = new AvailableCommandsPacket();
 		foreach($this->server->getCommandMap()->getCommands() as $command){
-			if(!$command->testPermissionSilent($this) or isset($pk->commandData[$command->getName()]) or $command->getName() === "help" or !$command->testPermissionSilent($this)){
+			if(isset($pk->commandData[$command->getName()]) or $command->getName() === "help" or !$command->testPermissionSilent($this)){
 				continue;
 			}
 
@@ -1096,7 +1096,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->commandPermission = $commandPermission;
 	}
 
-	public function changeDimension(int $dimension, Vector3 $position = null, bool $respawn = false){
+	public function changeDimension(int $dimension, Vector3 $position = null, bool $respawn = false) : void{
 		$pk = new ChangeDimensionPacket();
 		$pk->dimension = $dimension;
 		$pk->position = $position ?? $this;
@@ -1110,7 +1110,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->x = $pk->y = $pk->z = 0;
 		$pk->resultX = $pk->resultY = $pk->resultZ = 0;
 		$pk->face = 0;
-
 		$this->sendDataPacket($pk);
 	}
 
