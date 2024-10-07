@@ -25,7 +25,7 @@ namespace pocketmine\event\player;
 
 use pocketmine\event\Cancellable;
 use pocketmine\item\WritableBook;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class PlayerEditBookEvent extends PlayerEvent implements Cancellable{
 	public const ACTION_REPLACE_PAGE = 0;

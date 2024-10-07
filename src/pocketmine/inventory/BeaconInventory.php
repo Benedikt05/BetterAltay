@@ -25,7 +25,7 @@ namespace pocketmine\inventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\Beacon;
 
 class BeaconInventory extends ContainerInventory implements FakeInventory, FakeResultInventory{

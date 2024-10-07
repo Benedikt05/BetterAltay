@@ -28,7 +28,7 @@ use pocketmine\event\Event;
 use pocketmine\inventory\CraftingRecipe;
 use pocketmine\inventory\transaction\CraftingTransaction;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class CraftItemEvent extends Event implements Cancellable{
 	/** @var CraftingTransaction */

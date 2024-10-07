@@ -27,7 +27,7 @@ use pocketmine\item\Item;
 use pocketmine\level\sound\DoorSound;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Trapdoor extends Transparent{
 	public const MASK_UPPER = 0x04;

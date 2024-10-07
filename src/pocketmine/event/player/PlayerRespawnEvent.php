@@ -25,7 +25,7 @@ namespace pocketmine\event\player;
 
 use InvalidArgumentException;
 use pocketmine\level\Position;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Called when a player is respawned

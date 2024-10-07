@@ -27,7 +27,7 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 use pocketmine\item\Record;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\Jukebox as TileJukebox;
 use pocketmine\tile\Tile;
 

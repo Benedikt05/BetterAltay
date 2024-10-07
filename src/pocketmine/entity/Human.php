@@ -67,7 +67,7 @@ use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\UUID;
 use ReflectionClass;
 use function array_filter;

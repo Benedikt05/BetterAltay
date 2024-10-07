@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\form;
 
 use Closure;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Utils;
 use function array_values;
 use function is_int;

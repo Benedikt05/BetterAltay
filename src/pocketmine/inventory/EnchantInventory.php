@@ -26,7 +26,7 @@ namespace pocketmine\inventory;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class EnchantInventory extends ContainerInventory implements FakeInventory{
 

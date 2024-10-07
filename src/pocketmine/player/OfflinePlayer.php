@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\player;
 
 use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;

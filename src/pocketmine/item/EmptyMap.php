@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class EmptyMap extends Item{
 

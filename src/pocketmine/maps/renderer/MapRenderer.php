@@ -23,7 +23,7 @@
 namespace pocketmine\maps\renderer;
 
 use pocketmine\maps\MapData;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 abstract class MapRenderer{
 

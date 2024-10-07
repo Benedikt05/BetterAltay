@@ -27,7 +27,7 @@ namespace pocketmine\item;
 use pocketmine\entity\Entity;
 use pocketmine\entity\passive\Pig;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Saddle extends Item{
 	public function __construct(int $meta = 0){
@@ -51,4 +51,3 @@ class Saddle extends Item{
 		return false;
 	}
 }
-

@@ -34,7 +34,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\MapDecoration;
 use pocketmine\network\mcpe\protocol\types\MapTrackedObject;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Color;
 
 class MapData{

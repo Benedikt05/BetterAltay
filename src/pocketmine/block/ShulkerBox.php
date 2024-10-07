@@ -29,7 +29,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\ShulkerBox as TileShulkerBox;
 use pocketmine\tile\Tile;
 

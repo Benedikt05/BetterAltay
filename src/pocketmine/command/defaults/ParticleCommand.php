@@ -60,7 +60,7 @@ use pocketmine\level\particle\TerrainParticle;
 use pocketmine\level\particle\WaterDripParticle;
 use pocketmine\level\particle\WaterParticle;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\TextFormat;
 use function count;

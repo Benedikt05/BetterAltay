@@ -28,7 +28,7 @@ use pocketmine\item\Item;
 use pocketmine\item\Record;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, TextPacket};
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Jukebox extends Spawnable{
 

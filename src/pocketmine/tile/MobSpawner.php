@@ -30,7 +30,7 @@ use pocketmine\entity\Mob;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class MobSpawner extends Spawnable{

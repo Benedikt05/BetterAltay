@@ -27,7 +27,7 @@ use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Called when a player destroys a block somewhere in the world.

@@ -31,7 +31,7 @@ use pocketmine\item\ItemIds;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\Sign as TileSign;
 use pocketmine\tile\Tile;
 use pocketmine\utils\Color;

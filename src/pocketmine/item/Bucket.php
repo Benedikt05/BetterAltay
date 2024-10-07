@@ -31,7 +31,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Bucket extends Item implements MaybeConsumable{
 	public function __construct(int $meta = 0){

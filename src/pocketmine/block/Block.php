@@ -39,7 +39,7 @@ use pocketmine\math\Vector3;
 use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use function array_merge;
 use function count;

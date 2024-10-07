@@ -43,7 +43,7 @@ use pocketmine\inventory\AltayEntityEquipment;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function rand;
 
 class Skeleton extends Monster implements RangedAttackerMob, Smite{

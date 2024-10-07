@@ -25,7 +25,7 @@ namespace pocketmine\timings;
 
 use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\DataPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\tile\Tile;
 use ReflectionClass;

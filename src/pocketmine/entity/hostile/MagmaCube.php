@@ -30,7 +30,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\level\particle\Particle;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class MagmaCube extends Slime{
 

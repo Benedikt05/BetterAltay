@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use pocketmine\entity\Entity;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Shield extends Item{
 	public function __construct(int $meta = 0){

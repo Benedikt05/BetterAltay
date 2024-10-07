@@ -27,7 +27,7 @@ use pocketmine\maps\MapManager;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\LongTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Map extends Item{
 	public const TAG_MAP_IS_SCALING = "map_is_scaling"; // TAG_Byte

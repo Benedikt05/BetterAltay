@@ -26,7 +26,7 @@ namespace pocketmine\block;
 use InvalidArgumentException;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function array_map;
 use function array_reverse;
 use function array_search;

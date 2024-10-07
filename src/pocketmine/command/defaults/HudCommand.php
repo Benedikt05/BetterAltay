@@ -14,7 +14,7 @@ use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\network\mcpe\protocol\types\hud\HudElement;
 use pocketmine\network\mcpe\protocol\types\hud\HudVisibility;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use function count;
 
 class HudCommand extends VanillaCommand{

@@ -29,7 +29,7 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\Bed as TileBed;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;

@@ -26,7 +26,7 @@ namespace pocketmine\event\block;
 use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Utils;
 use function count;
 

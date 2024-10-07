@@ -27,7 +27,7 @@ namespace pocketmine\entity\behavior;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 abstract class TargetBehavior extends Behavior{
 
