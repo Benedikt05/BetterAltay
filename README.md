@@ -6,7 +6,7 @@
 	<br>
 	This is a fork of <a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a> and <a href="https://github.com/unresolved3169/Altay">Altay</a>.
 	<br><br>
-	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.30</i>
+	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.41</i>
 	<br><br>
 </p>
 
@@ -14,11 +14,11 @@
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
-	<a href="https://feedback.minecraft.net/hc/en-us/articles/30220110283533-Minecraft-1-21-30-Bedrock">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.30-blue?style=flat-square" alt="Minecraft">
+	<a href="https://www.minecraft.net/de-de/article/-minecraft-1-21-40-bedrock-changelog">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.40-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-729-yellow?style=flat-square" alt="Protocol">
+		<img src="https://img.shields.io/badge/protocol-748-yellow?style=flat-square" alt="Protocol">
 	</a>
 	<a href="https://github.com/Benedikt05/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
@@ -36,7 +36,7 @@ BetterAltay is a highly optimized and feature-rich server software designed for 
 
 ### ✨ Features
 
-- **Extended Compatibility**: Supports the latest Minecraft Bedrock Edition v1.21.30.
+- **Extended Compatibility**: Supports the latest Minecraft Bedrock Edition.
 - **Highly Optimized**: Performance improvements over the original Altay.
 - **Feature-Rich**: Includes new features and bug fixes not present in the original Altay.
 - **Plugin Availability**: High availability of plugins (API3) developed by the community.
