@@ -1,22 +1,77 @@
 <p align="center">
-	<img src="https://github.com/Benedikt05/BetterAltay/blob/master/.github/logo.png" alt="BetterAltay">
-	<br>
-	<b>A feature-rich server software for Minecraft: BE. This is a Fork of </b>
-	<a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a>
-	<b> and </b>
-	<a href="https://github.com/unresolved3169/Altay">Altay</a>
+	<img src="https://github.com/Benedikt05/BetterAltay/blob/master/.github/logo.png" alt="BetterAltay" width="200">
 	<br><br>
-	This fork was created due to the inactivity of Altay. It currently supports Minecraft: Bedrock Edition v1.21.30
-	<br><br><br>
+	<h1 align="center">BetterAltay</h1>
+	<b>A feature-rich server software for Minecraft: Bedrock Edition</b>
+	<br>
+	This is a fork of <a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a> and <a href="https://github.com/unresolved3169/Altay">Altay</a>.
+	<br><br>
+	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.30</i>
+	<br><br>
 </p>
+
 <p align="center">
 	<a href="https://discord.gg/spquK3Q66W">
-		<img src="https://img.shields.io/discord/930544524655202317?logo=Discord" alt="Discord">
+		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
 	<a href="https://feedback.minecraft.net/hc/en-us/articles/30220110283533-Minecraft-1-21-30-Bedrock">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.30-blue" alt="Minecraft">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.30-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-729-yellow" alt="Minecraft">
+		<img src="https://img.shields.io/badge/protocol-729-yellow?style=flat-square" alt="Protocol">
+	</a>
+	<a href="https://github.com/Benedikt05/BetterAltay/releases">
+		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
+	</a>
+	<a href="https://github.com/Benedikt05/BetterAltay/issues">
+		<img src="https://img.shields.io/github/issues/Benedikt05/BetterAltay?color=orange" alt="Issues">
 	</a>
 </p>
+
+---
+
+## 📖 About BetterAltay
+
+BetterAltay is a highly optimized and feature-rich server software designed for Minecraft: Bedrock Edition. It brings improvements and new functionalities to the original [Altay](https://github.com/unresolved3169/Altay) project, offering a better experience for server owners who want more features and stability.
+
+### ✨ Features
+
+- **Extended Compatibility**: Supports the latest Minecraft Bedrock Edition v1.21.30.
+- **Highly Optimized**: Performance improvements over the original Altay.
+- **Feature-Rich**: Includes new features and bug fixes not present in the original Altay.
+- **Plugin Availability**: High availability of plugins (API3) developed by the community.
+
+---
+
+## 🚀 Getting Started
+
+To get started with BetterAltay, follow these steps:
+
+1. **Download the latest `BetterAltay.phar` file** from the [Releases](https://github.com/Benedikt05/BetterAltay/releases) page.
+2. **Download the `start.sh`, `start.cmd`, or `start.ps1`** from this repository and place it in the same directory as the `BetterAltay.phar` file.
+3. **Obtain the PHP binaries** from [Benedikt05/PHP-Binaries](https://github.com/Benedikt05/PHP-Binaries) and extract them to your server directory.
+4. **Run the server** using `start.sh` (Linux/macOS) or `start.cmd` (Windows).
+
+---
+
+## 💬 Join Our Community
+
+For support, discussions, and the latest updates, join our community on Discord:
+
+[![Discord](https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white)](https://discord.gg/spquK3Q66W)
+
+---
+
+## 📱 Unofficial App
+
+An unofficial app is available that works seamlessly with BetterAltay. Please note that this app is not officially supported by us. You can download it here:
+
+[Unofficial BetterAltay App](https://play.google.com/store/apps/details?id=com.kpwnapps.pmmpplugins.betteraltay) 
+
+---
+
+## 📄 License
+
+BetterAltay is licensed under the [LGPL-3.0 License](https://github.com/Benedikt05/BetterAltay/blob/master/LICENSE).
+
+---
