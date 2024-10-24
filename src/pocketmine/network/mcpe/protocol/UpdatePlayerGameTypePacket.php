@@ -57,13 +57,13 @@ class UpdatePlayerGameTypePacket extends DataPacket/* implements ClientboundPack
 	protected function decodePayload() : void{
 		$this->gameMode = $this->getVarInt();
 		$this->playerEntityUniqueId = $this->getEntityUniqueId();
-		$this->tick = $this->getUnsignedVarInt();
+		$this->tick = $this->getUnsignedVarLong();
 	}
 
 	protected function encodePayload() : void{
 		$this->putVarInt($this->gameMode);
 		$this->putEntityUniqueId($this->playerEntityUniqueId);
-		$this->putUnsignedVarInt($this->tick);
+		$this->putUnsignedVarLong($this->tick);
 	}
 
 	public function handle(NetworkSession $session) : bool{

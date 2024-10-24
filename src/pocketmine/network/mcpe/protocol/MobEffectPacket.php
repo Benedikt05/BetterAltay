@@ -49,7 +49,7 @@ class MobEffectPacket extends DataPacket{
 		$this->amplifier = $this->getVarInt();
 		$this->particles = $this->getBool();
 		$this->duration = $this->getVarInt();
-		$this->tick = $this->getLLong();
+		$this->tick = $this->getUnsignedVarLong();
 	}
 
 	protected function encodePayload(){
@@ -59,7 +59,7 @@ class MobEffectPacket extends DataPacket{
 		$this->putVarInt($this->amplifier);
 		$this->putBool($this->particles);
 		$this->putVarInt($this->duration);
-		$this->putLLong($this->tick);
+		$this->putUnsignedVarLong($this->tick);
 	}
 
 	public function handle(NetworkSession $session) : bool{

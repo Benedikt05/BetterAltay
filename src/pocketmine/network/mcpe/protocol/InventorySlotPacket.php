@@ -37,8 +37,8 @@ class InventorySlotPacket extends DataPacket{
 	public int $windowId;
 	public int $inventorySlot;
 	public ?FullContainerName $containerName = null;
-	public ItemStackWrapper $item;
 	public ?ItemStackWrapper $storageItem = null;
+	public ItemStackWrapper $item;
 
 	protected function decodePayload() : void{
 		$this->windowId = $this->getUnsignedVarInt();
