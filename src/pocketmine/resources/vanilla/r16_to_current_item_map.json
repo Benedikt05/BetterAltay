@@ -423,6 +423,15 @@
             "8": "minecraft:light_gray_shulker_box",
             "9": "minecraft:cyan_shulker_box"
         },
+        "minecraft:skull": {
+            "0": "minecraft:skeleton_skull",
+            "1": "minecraft:wither_skeleton_skull",
+            "2": "minecraft:zombie_head",
+            "3": "minecraft:player_head",
+            "4": "minecraft:creeper_head",
+            "5": "minecraft:dragon_head",
+            "6": "minecraft:piglin_head"
+        },
         "minecraft:spawn_egg": {
             "10": "minecraft:chicken_spawn_egg",
             "104": "minecraft:evoker_spawn_egg",

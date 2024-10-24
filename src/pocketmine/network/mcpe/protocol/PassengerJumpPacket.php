@@ -30,14 +30,13 @@ use pocketmine\network\mcpe\NetworkSession;
 class PassengerJumpPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PASSENGER_JUMP_PACKET;
 
-	/** @var int */
-	public $jumpStrength; //percentage
+	public int $jumpStrength; //percentage
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->jumpStrength = $this->getVarInt();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putVarInt($this->jumpStrength);
 	}
 
