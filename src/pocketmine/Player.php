@@ -4809,4 +4809,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function getDeviceId() : ?string{
 		return $this->deviceId;
 	}
+
+	public function testMessage(): string{
+        return "§r§aTestString Successful";
+	}
 }
