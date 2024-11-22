@@ -280,23 +280,18 @@ class VanillaMapRenderer extends MapRenderer{
 	 * @return Color
 	 */
 	public static function colorizeMapColor(Color $color, int $colorLevel) : Color{
-		$colorDepth = 220;
-
-		if($colorLevel == 3){
-			$colorDepth = 135;
-		}elseif($colorLevel == 2){
-			$colorDepth = 255;
-		}elseif($colorLevel == 1){
-			$colorDepth = 220;
-		}elseif($colorLevel == 0){
-			$colorDepth = 180;
-		}
+		$colorDepth = match ($colorLevel) {
+			3 => 135,
+			2 => 255,
+			0 => 180,
+			default => 220,
+		};
 
 		$abgr = $color->toABGR();
 
-		$r = ($abgr >> 16 & 255) * $colorDepth / 255;
-		$g = ($abgr >> 8 & 255) * $colorDepth / 255;
-		$b = ($abgr & 255) * $colorDepth / 255;
+		$r = (int)(($abgr >> 16 & 255) * $colorDepth / 255);
+		$g = (int)(($abgr >> 8 & 255) * $colorDepth / 255);
+		$b = (int)(($abgr & 255) * $colorDepth / 255);
 
 		return Color::fromABGR(-16777216 | $r << 16 | $g << 8 | $b);
 	}
