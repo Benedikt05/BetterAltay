@@ -27,25 +27,21 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 
 final class ItemStackResponseSlotInfo{
 
-	/** @var int */
-	private $slot;
-	/** @var int */
-	private $hotbarSlot;
-	/** @var int */
-	private $count;
-	/** @var int */
-	private $itemStackId;
-	/** @var string */
-	private $customName;
-	/** @var int */
-	private $durabilityCorrection;
+	private int $slot;
+	private int $hotbarSlot;
+	private int $count;
+	private int $itemStackId;
+	private string $customName;
+	private string $filteredCustomName;
+	private int $durabilityCorrection;
 
-	public function __construct(int $slot, int $hotbarSlot, int $count, int $itemStackId, string $customName, int $durabilityCorrection){
+	public function __construct(int $slot, int $hotbarSlot, int $count, int $itemStackId, string $customName, string $filteredCustomName, int $durabilityCorrection){
 		$this->slot = $slot;
 		$this->hotbarSlot = $hotbarSlot;
 		$this->count = $count;
 		$this->itemStackId = $itemStackId;
 		$this->customName = $customName;
+		$this->filteredCustomName = $filteredCustomName;
 		$this->durabilityCorrection = $durabilityCorrection;
 	}
 
@@ -67,8 +63,9 @@ final class ItemStackResponseSlotInfo{
 		$count = $in->getByte();
 		$itemStackId = $in->readGenericTypeNetworkId();
 		$customName = $in->getString();
+		$filteredCustomName = $in->getString();
 		$durabilityCorrection = $in->getVarInt();
-		return new self($slot, $hotbarSlot, $count, $itemStackId, $customName, $durabilityCorrection);
+		return new self($slot, $hotbarSlot, $count, $itemStackId, $customName, $filteredCustomName, $durabilityCorrection);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
@@ -77,6 +74,7 @@ final class ItemStackResponseSlotInfo{
 		$out->putByte($this->count);
 		$out->writeGenericTypeNetworkId($this->itemStackId);
 		$out->putString($this->customName);
+		$out->putString($this->filteredCustomName);
 		$out->putVarInt($this->durabilityCorrection);
 	}
 }

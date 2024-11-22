@@ -29,7 +29,8 @@
             "5": "minecraft:dark_oak_boat",
             "6": "minecraft:mangrove_boat",
             "7": "minecraft:bamboo_raft",
-            "8": "minecraft:cherry_boat"
+            "8": "minecraft:cherry_boat",
+            "9": "minecraft:pale_oak_boat"
         },
         "minecraft:bucket": {
             "1": "minecraft:milk_bucket",
@@ -62,7 +63,19 @@
             "9": "minecraft:cyan_carpet"
         },
         "minecraft:chemistry_table": {
-            "0": "minecraft:compound_creator"
+            "0": "minecraft:compound_creator",
+            "10": "minecraft:element_constructor",
+            "11": "minecraft:element_constructor",
+            "12": "minecraft:lab_table",
+            "13": "minecraft:lab_table",
+            "14": "minecraft:lab_table",
+            "15": "minecraft:lab_table",
+            "4": "minecraft:material_reducer",
+            "5": "minecraft:material_reducer",
+            "6": "minecraft:material_reducer",
+            "7": "minecraft:material_reducer",
+            "8": "minecraft:element_constructor",
+            "9": "minecraft:element_constructor"
         },
         "minecraft:chest_boat": {
             "0": "minecraft:oak_chest_boat",
@@ -73,7 +86,8 @@
             "5": "minecraft:dark_oak_chest_boat",
             "6": "minecraft:mangrove_chest_boat",
             "7": "minecraft:bamboo_chest_raft",
-            "8": "minecraft:cherry_chest_boat"
+            "8": "minecraft:cherry_chest_boat",
+            "9": "minecraft:pale_oak_chest_boat"
         },
         "minecraft:coal": {
             "1": "minecraft:charcoal"
@@ -469,6 +483,7 @@
             "140": "minecraft:breeze_spawn_egg",
             "142": "minecraft:armadillo_spawn_egg",
             "144": "minecraft:bogged_spawn_egg",
+            "146": "minecraft:creaking_spawn_egg",
             "15": "minecraft:villager_spawn_egg",
             "157": "minecraft:trader_llama_spawn_egg",
             "16": "minecraft:mooshroom_spawn_egg",
@@ -631,7 +646,10 @@
             "2": "minecraft:fern",
             "3": "minecraft:fern"
         },
-        "minecraft:tnt": {},
+        "minecraft:tnt": {
+            "2": "minecraft:underwater_tnt",
+            "3": "minecraft:underwater_tnt"
+        },
         "minecraft:wood": {
             "0": "minecraft:oak_wood",
             "1": "minecraft:spruce_wood",
