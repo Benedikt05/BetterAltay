@@ -8,7 +8,7 @@ use pocketmine\Player;
 class AmethystCrystal extends Item {
 
     public function __construct(int $meta = 0){
-        parent::__construct(self::AMETHYST_CRYSTAL, $meta, "Amethyst Crystal");
+        parent::__construct(self::AMETHYST_SHARD, $meta, "Amethyst Crystal");
     }
 
     public function getMaxStackSize(): int {
