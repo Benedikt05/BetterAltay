@@ -808,5 +808,7 @@
     "minecraft:record_pigstep": 759,
     "minecraft:nether_sprouts": 760,
     "minecraft:spyglass": 772,
-    "minecraft:soul_campfire": 801
+    "minecraft:soul_campfire": 801,
+    "minecraft:echo_shard": 900,
+    "minecraft:amethyst_crystal": 901
 }
