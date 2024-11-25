@@ -280,5 +280,5 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
 	public const ECHO_SHARD = 900;
-	public const AMETHYST_CRYSTAL = 901;
+	public const AMETHYST_SHARD = 901;
 }
