@@ -14,7 +14,4 @@ class EchoShard extends Item {
     public function getMaxStackSize(): int {
         return 64;
     }
-    public function getName(): string{
-        return "Echo Shard";
-}
 }
