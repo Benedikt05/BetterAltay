@@ -304,6 +304,40 @@ class ItemFactory{
 		self::registerItem(new Spyglass());
 		self::registerItem(new EchoShard());
 		self::registerItem(new AmethystCrystal());
+		self::registerItem(new RawGold());
+		self::registerItem(new RawIron());
+		self::registerItem(new RawCopper());
+		self::registerItem(new CopperIngot());
+		self::registerItem(new TrialKey());
+		self::registerItem(new OminousTrialKey());
+		self::registerItem(new WindCharge());
+		self::registerItem(new BreezeRod());
+		self::registerItem(new DiscFragment());
+		self::registerItem(new Brush());
+		self::registerItem(new RecoveryCompass());
+		self::registerItem(new Mace());
+		self::registerItem(new HeavyCore());
+		self::registerItem(new SmithingTemplate());
+		self::registerItem(new Bolt());
+		self::registerItem(new Host());
+		self::registerItem(new Wayfinder());
+		self::registerItem(new Shaper());
+		self::registerItem(new Raiser());
+		self::registerItem(new Sentry());
+		self::registerItem(new Vex());
+		self::registerItem(new Wild());
+		self::registerItem(new Coast());
+		self::registerItem(new Dune());
+		self::registerItem(new Ward());
+		self::registerItem(new Tide());
+		self::registerItem(new Snout());
+		self::registerItem(new Rib());
+		self::registerItem(new Eye());
+		self::registerItem(new Spire());
+		self::registerItem(new Flow());
+		self::registerItem(new Silence());
+		self::registerItem(new SnifferEgg());
+		self::registerItem(new ArmadilloScute());
 	}
 
 	/**
