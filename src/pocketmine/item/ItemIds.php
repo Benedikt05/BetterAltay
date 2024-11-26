@@ -279,6 +279,43 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_LEGGINGS = 750;
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
+
+		
+	// Dan's Implementations!
 	public const ECHO_SHARD = 900;
 	public const AMETHYST_SHARD = 901;
+	public const RAW_GOLD = 902;
+	public const RAW_IRON = 903;
+	public const RAW_COPPER = 904;
+	public const COPPER_INGOT = 905;
+	public const TRIAL_KEY = 906;
+	public const OMINOUS_TRIAL_KEY = 907;
+	public const WIND_CHARGE = 908;
+	public const BREEZE_ROD = 909;
+	public const DISC_FRAGMENT_5 = 910;
+	public const BRUSH = 911;
+	public const RECOVERY_COMPASS = 912;
+	public const MACE = 913;
+	public const HEAVY_CORE = 914;
+	public const NETHERITE_UPGRADE_SMITHING_TEMPLATE = 915;
+	public const BOLT_ARMOR_TRIM_SMITHING_TEMPLATE = 916;
+	public const HOST_ARMOR_TRIM_SMITHING_TEMPLATE = 917;
+	public const WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE = 918;
+	public const SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE = 919;
+	public const RAISER_ARMOR_TRIM_SMITHING_TEMPLATE = 920;
+	public const SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE = 921;
+	public const VEX_ARMOR_TRIM_SMITHING_TEMPLATE = 922;
+	public const WILD_ARMOR_TRIM_SMITHING_TEMPLATE = 923;
+	public const COAST_ARMOR_TRIM_SMITHING_TEMPLATE = 924;
+	public const DUNE_ARMOR_TRIM_SMITHING_TEMPLATE = 925;
+	public const WARD_ARMOR_TRIM_SMITHING_TEMPLATE = 926;
+	public const TIDE_ARMOR_TRIM_SMITHING_TEMPLATE = 927;
+	public const SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE = 928;
+	public const RIB_ARMOR_TRIM_SMITHING_TEMPLATE = 929;
+	public const EYE_ARMOR_TRIM_SMITHING_TEMPLATE = 930;
+	public const SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE = 931;
+	public const FLOW_ARMOR_TRIM_SMITHING_TEMPLATE = 932;
+	public const SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = 933;
+	public const SNIFFER_EGG = 934;
+	public const ARMADILLO_SCUTE = 935;
 }
