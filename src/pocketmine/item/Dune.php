@@ -8,7 +8,7 @@ use pocketmine\Player;
 class Dune extends Item {
 
     public function __construct(int $meta = 0){
-        parent::__construct(self::_ARMOR_TRIM_SMITHING_TEMPLATE, $meta, "Dune Smithing Template");
+        parent::__construct(self::DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, $meta, "Dune Smithing Template");
     }
 
     public function getMaxStackSize(): int {
