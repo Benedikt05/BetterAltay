@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - '*'
-      - '!multiprotocol'
+
   pull_request:
     branches:
       - '*'
-      - '!multiprotocol'
 
 permissions:
   contents: read
@@ -37,7 +36,7 @@ jobs:
       run: composer make-server
 
     - name: Archive generated Phar file
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: BetterAltay
         path: BetterAltay.phar
