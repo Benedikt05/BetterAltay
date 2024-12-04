@@ -27,6 +27,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\resourcepacks\ResourcePack;
+use pocketmine\utils\UUID;
 use function count;
 
 class ResourcePacksInfoPacket extends DataPacket{
@@ -35,6 +36,8 @@ class ResourcePacksInfoPacket extends DataPacket{
 	public bool $mustAccept = false; //if true, forces client to choose between accepting packs or being disconnected
 	public bool $hasAddonPacks = false;
 	public bool $hasScripts = false; //if true, causes disconnect for any platform that doesn't support scripts yet
+	public ?UUID $worldTemplateUUID = null;
+	public string $worldTemplateVersion = "";
 	/** @var ResourcePack[] */
 	public array $resourcePackEntries = [];
 
@@ -42,10 +45,12 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->mustAccept = $this->getBool();
 		$this->hasAddonPacks = $this->getBool();
 		$this->hasScripts = $this->getBool();
+		$this->worldTemplateUUID = $this->getUUID();
+		$this->worldTemplateVersion = $this->getString();
 
 		$resourcePackCount = $this->getLShort();
 		while($resourcePackCount-- > 0){
-			$this->getString();
+			$this->getUUID();
 			$this->getString();
 			$this->getLLong();
 			$this->getString();
@@ -62,9 +67,12 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->putBool($this->mustAccept);
 		$this->putBool($this->hasAddonPacks);
 		$this->putBool($this->hasScripts);
+		$this->putUUID($this->worldTemplateUUID ??= new UUID());
+		$this->putString($this->worldTemplateVersion);
+
 		$this->putLShort(count($this->resourcePackEntries));
 		foreach($this->resourcePackEntries as $entry){
-			$this->putString($entry->getPackId());
+			$this->putUUID(UUID::fromString($entry->getPackId()));
 			$this->putString($entry->getPackVersion());
 			$this->putLLong($entry->getPackSize());
 			$this->putString(""); //TODO: encryption key
