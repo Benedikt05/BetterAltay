@@ -14,5 +14,5 @@ class Brush extends Item {
     public function getMaxStackSize(): int {
         return 1;
     }
-    // Add future implementation for brushing animation when holding right click.
+    // Add functionality for brushing suspicious sand and gravel (future implementation.)
 }
