@@ -461,7 +461,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_OPEN_LONG = 543;
 	public const SOUND_CLOSE = 544;
 	public const SOUND_CLOSE_LONG = 545;
-	public const SOUND_UNDEFINED = 534;
+	public const SOUND_UNDEFINED = 546;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
 		$result = new self;
