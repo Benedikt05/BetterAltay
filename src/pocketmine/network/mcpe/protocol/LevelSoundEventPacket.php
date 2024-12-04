@@ -447,8 +447,20 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RECORD_PRECIPICE = 529;
 	public const SOUND_VAULT_REJECT_REWARDED_PLAYER = 530;
 	public const SOUND_IMITATE_DROWNED = 531;
-
+	public const IMITATE_CREAKING = 532;
 	public const SOUND_BUNDLE_INSERT_FAIL = 533;
+	public const SOUND_SPONGE_ABSORB = 534;
+
+	public const SOUND_BLOCK_CREAKING_HEART_TRAIL = 536;
+	public const SOUND_CREAKING_HEART_SPAWN = 537;
+	public const SOUND_ACTIVATE = 538;
+	public const SOUND_DEACTIVATE = 539;
+	public const SOUND_FREEZE = 540;
+	public const SOUND_UNFREEZE = 541;
+	public const SOUND_OPEN = 542;
+	public const SOUND_OPEN_LONG = 543;
+	public const SOUND_CLOSE = 544;
+	public const SOUND_CLOSE_LONG = 545;
 	public const SOUND_UNDEFINED = 534;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
