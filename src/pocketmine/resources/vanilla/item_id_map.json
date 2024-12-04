@@ -844,6 +844,8 @@
     "minecraft:flow_armor_trim_smithing_template": 932,
     "minecraft:silence_armor_trim_smithing_template": 933,
     "minecraft:sniffer_egg": 934,
-    "minecraft:armadillo_scute": 935
+    "minecraft:armadillo_scute": 935,
+    "minecraft:resin_clump": 936,
+    "minecraft:resin_brick": 937
 
 }
