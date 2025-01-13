@@ -447,7 +447,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RECORD_PRECIPICE = 529;
 	public const SOUND_VAULT_REJECT_REWARDED_PLAYER = 530;
 	public const SOUND_IMITATE_DROWNED = 531;
-	public const IMITATE_CREAKING = 532;
+	public const SOUND_IMITATE_CREAKING = 532;
 	public const SOUND_BUNDLE_INSERT_FAIL = 533;
 	public const SOUND_SPONGE_ABSORB = 534;
 
