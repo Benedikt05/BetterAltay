@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\TieredTool;
+use pocketmine\item\{Item, ItemFactory, TieredTool};
 
 class GoldOre extends Solid{
 
