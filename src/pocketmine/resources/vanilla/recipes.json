@@ -49791,6 +49791,36 @@
             }
         },
         {
+            "block": "furnace",
+            "input": {
+                "id": 902,
+                "damage": 0
+            },
+            "output": {
+                "id": 266
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 903,
+                "damage": 0
+            },
+            "output": {
+                "id": 265
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 904,
+                "damage": 0
+            },
+            "output": {
+                "id": 905
+            }
+        },
+        {
             "block": "smoker",
             "input": {
                 "id": 319,
