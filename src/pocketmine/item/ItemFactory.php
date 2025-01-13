@@ -312,12 +312,12 @@ class ItemFactory{
                 self::registerItem(new Item(Item::COPPER_INGOT, 0, "Copper Ingot"));
                 self::registerItem(new Item(Item::TRIAL_KEY, 0, "Trial Key"));
                 self::registerItem(new Item(Item::OMINOUS_TRIAL_KEY, 0, "Ominous Trial Key"));
-                self::registerItem(new Item(Item::WIND_CHARGE, 0, "Wind Charge"));
+		self::registerItem(new WindCharge()); // Class reverted due to missing functionality.
                 self::registerItem(new Item(Item::BREEZE_ROD, 0, "Breeze Rod"));
                 self::registerItem(new Item(Item::DISC_FRAGMENT_5, 0, "Disc Fragment"));
                 self::registerItem(new Item(Item::BRUSH, 0, "Brush"));
                 self::registerItem(new Item(Item::RECOVERY_COMPASS, 0, "Recovery Compass"));
-                self::registerItem(new Item(Item::MACE, 0, "Mace"));
+                self::registerItem(new Mace()); // Class reverted due to missing functionality.
                 self::registerItem(new Item(Item::HEAVY_CORE, 0, "Heavy Core"));
                 self::registerItem(new Item(Item::NETHERITE_UPGRADE_SMITHING_TEMPLATE, 0, "Smithing Template"));
                 self::registerItem(new Item(Item::BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, 0, "Bolt"));
