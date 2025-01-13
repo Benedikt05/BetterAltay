@@ -138,4 +138,5 @@ interface EntityIds{
 	public const GLOW_SQUID = 139;
 	public const GOAT = 128;
 	public const PILLAGER = 114;
+	public const WIND_CHARGE_PROJECTILE = 143;
 }
