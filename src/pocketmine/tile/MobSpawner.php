@@ -40,7 +40,7 @@ class MobSpawner extends Spawnable{
 	public const TAG_DELAY = "Delay";
 	public const TAG_MAX_NEARBY_ENTITIES = "MaxNearbyEntities";
 	public const TAG_MAX_SPAWN_DELAY = "MaxSpawnDelay";
-	public const TAG_MIN_SPAWN_DELAY = "MinSawnDelay";
+	public const TAG_MIN_SPAWN_DELAY = "MinSpawnDelay";
 	public const TAG_REQUIRED_PLAYER_RANGE = "RequiredPlayerRange";
 	public const TAG_SPAWN_COUNT = "SpawnCount";
 	public const TAG_SPAWN_RANGE = "SpawnRange";
