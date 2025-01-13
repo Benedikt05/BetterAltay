@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\TieredTool;
+use pocketmine\item\{Item, ItemFactory, TieredTool};
 
 class IronOre extends Solid{
 
@@ -47,5 +47,11 @@ class IronOre extends Solid{
 
 	public function getHardness() : float{
 		return 3;
+	}
+
+	public function getDropsForCompatibleTool(Item $item) : array{
+		return [
+			ItemFactory::get(Item::RAW_IRON);
+		];
 	}
 }
