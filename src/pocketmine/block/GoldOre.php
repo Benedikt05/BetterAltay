@@ -48,4 +48,10 @@ class GoldOre extends Solid{
 	public function getToolHarvestLevel() : int{
 		return TieredTool::TIER_IRON;
 	}
+
+	public function getDropsForCompatibleTool(Item $item) : array{
+		return [
+			ItemFactory::get(Item::RAW_GOLD);
+		];
+	}
 }
