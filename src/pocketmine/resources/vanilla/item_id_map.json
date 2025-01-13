@@ -849,6 +849,22 @@
     "minecraft:resin_clump": 936,
     "minecraft:resin_brick": 937,
     "minecraft:bundle": 938,
+    "minecraft:black_bundle": 939,
+    "minecraft:blue_bundle": 940,
+    "minecraft:brown_bundle": 941,
+    "minecraft:cyan_bundle": 942,
+    "minecraft:gray_bundle": 943,
+    "minecraft:green_bundle": 944,
+    "minecraft:light_blue_bundle": 945,
+    "minecraft:light_gray_bundle": 946,
+    "minecraft:lime_bundle": 947,
+    "minecraft:magenta_bundle": 948,
+    "minecraft:orange_bundle": 949,
+    "minecraft:pink_bundle": 950,
+    "minecraft:purple_bundle": 951,
+    "minecraft:red_bundle": 952,
+    "minecraft:white_bundle": 953,
+    "minecraft:yellow_bundle": 954
     
 
     "minecraft:raw_gold_block": -305,
