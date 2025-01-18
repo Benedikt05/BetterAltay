@@ -318,8 +318,6 @@ interface ItemIds extends BlockIds{
     public const SNIFFER_EGG = 934;
     public const ARMADILLO_SCUTE = 935;
     public const RESIN_CLUMP = 936;
-
-    // New item constants
     public const RESIN_BRICK = 937;
     public const BUNDLE = 938;
     public const BLACK_BUNDLE = 939;
