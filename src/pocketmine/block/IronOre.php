@@ -51,7 +51,7 @@ class IronOre extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::RAW_IRON);
+			ItemFactory::get(Item::RAW_IRON)
 		];
 	}
 }

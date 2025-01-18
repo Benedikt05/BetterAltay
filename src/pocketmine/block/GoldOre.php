@@ -51,7 +51,7 @@ class GoldOre extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::RAW_GOLD);
+			ItemFactory::get(Item::RAW_GOLD)
 		];
 	}
 }
