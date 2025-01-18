@@ -305,7 +305,7 @@ class ItemFactory{
 
 		// Register newer items.
 		self::registerItem(new Item(Item::ECHO_SHARD, 0, "Echo Shard"));
-		//self::registerItem(new Item(Item::AMETHYST_CRYSTAL, 0, "Amethyst Crystal"));
+		self::registerItem(new Item(Item::AMETHYST_SHARD, 0, "Amethyst Shard"));
 		self::registerItem(new Item(Item::RAW_GOLD, 0, "Raw Gold"));
 		self::registerItem(new Item(Item::RAW_IRON, 0, "Raw Iron"));
 		self::registerItem(new Item(Item::RAW_COPPER, 0, "Raw Copper"));
