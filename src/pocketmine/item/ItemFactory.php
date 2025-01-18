@@ -340,6 +340,25 @@ class ItemFactory{
                 self::registerItem(new Item(Item::SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, 0, "Silence"));
                 self::registerItem(new Item(Item::SNIFFER_EGG, 0, "Sniffer Egg"));
                 self::registerItem(new Item(Item::ARMADILLO_SCUTE, 0, "Armadillo Scute"));
+		self::registerItem(new Item(Item::RESIN_BRICK, 0, "Resin Brick"));
+                self::registerItem(new Item(Item::BUNDLE, 0, "Bundle"));
+                self::registerItem(new Item(Item::BLACK_BUNDLE, 0, "Black Bundle"));
+                self::registerItem(new Item(Item::BLUE_BUNDLE, 0, "Blue Bundle"));
+                self::registerItem(new Item(Item::BROWN_BUNDLE, 0, "Brown Bundle"));
+                self::registerItem(new Item(Item::CYAN_BUNDLE, 0, "Cyan Bundle"));
+                self::registerItem(new Item(Item::GRAY_BUNDLE, 0, "Gray Bundle"));
+                self::registerItem(new Item(Item::GREEN_BUNDLE, 0, "Green Bundle"));
+                self::registerItem(new Item(Item::LIGHT_BLUE_BUNDLE, 0, "Light Blue Bundle"));
+                self::registerItem(new Item(Item::LIGHT_GRAY_BUNDLE, 0, "Light Gray Bundle"));
+                self::registerItem(new Item(Item::LIME_BUNDLE, 0, "Lime Bundle"));
+                self::registerItem(new Item(Item::MAGENTA_BUNDLE, 0, "Magenta Bundle"));
+                self::registerItem(new Item(Item::ORANGE_BUNDLE, 0, "Orange Bundle"));
+                self::registerItem(new Item(Item::PINK_BUNDLE, 0, "Pink Bundle"));
+                self::registerItem(new Item(Item::PURPLE_BUNDLE, 0, "Purple Bundle"));
+                self::registerItem(new Item(Item::RED_BUNDLE, 0, "Red Bundle"));
+                self::registerItem(new Item(Item::WHITE_BUNDLE, 0, "White Bundle"));
+                self::registerItem(new Item(Item::YELLOW_BUNDLE, 0, "Yellow Bundle"));
+
 	}
 
 	/**
