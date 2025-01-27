@@ -33,6 +33,14 @@
 
 This is a fork of BetterAltay, used primarily for the addition of rich, vanilla additions. Blocks and Items have been added for more variety and diversity. Allowing for a more creative outline for your server!
 
+
+
+# 🧭 Original BetterAltay Contents:
+
+
+---
+
+
 ## 📖 About BetterAltay
 
 BetterAltay is a highly optimized and feature-rich server software designed for Minecraft: Bedrock Edition. It brings improvements and new functionalities to the original [Altay](https://github.com/unresolved3169/Altay) project, offering a better experience for server owners who want more features and stability.
