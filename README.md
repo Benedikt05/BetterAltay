@@ -23,7 +23,7 @@
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
 	</a>
 	<a href="https://github.com/DANRULEZ123/BetterAltay/issues">
-		<img src="https://img.shields.io/github/issues/Benedikt05/BetterAltay?color=orange" alt="Issues">
+		<img src="https://img.shields.io/github/issues/DANRULEZ123/BetterAltay?color=white" alt="Issues">
 	</a>
 </p>
 
