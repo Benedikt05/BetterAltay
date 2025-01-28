@@ -19,15 +19,27 @@
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
 		<img src="https://img.shields.io/badge/protocol-766-yellow?style=flat-square" alt="Protocol">
 	</a>
-	<a href="https://github.com/Benedikt05/BetterAltay/releases">
+	<a href="https://github.com/DANRULEZ123/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
 	</a>
-	<a href="https://github.com/Benedikt05/BetterAltay/issues">
-		<img src="https://img.shields.io/github/issues/Benedikt05/BetterAltay?color=orange" alt="Issues">
+	<a href="https://github.com/DANRULEZ123/BetterAltay/issues">
+		<img src="https://img.shields.io/github/issues/DANRULEZ123/BetterAltay?color=white" alt="Issues">
 	</a>
 </p>
 
 ---
+
+## 🧰 BetterAltay Improved
+
+This is a fork of BetterAltay, used primarily for the addition of rich, vanilla additions. Blocks and Items have been added for more variety and diversity. Allowing for a more creative outline for your server!
+
+
+
+# 🧭 Original BetterAltay Contents:
+
+
+---
+
 
 ## 📖 About BetterAltay
 

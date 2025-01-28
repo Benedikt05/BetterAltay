@@ -70,7 +70,7 @@ class StartGamePacket extends DataPacket{
 	public bool $exportedFromEditor = false;
 	public int $time = -1;
 	public int $eduEditionOffer = EducationEditionOffer::NONE;
-	public bool $hasEduFeaturesEnabled = false;
+	public bool $hasEduFeaturesEnabled = true;
 	public string $eduProductUUID = "";
 	public float $rainLevel;
 	public float $lightningLevel;

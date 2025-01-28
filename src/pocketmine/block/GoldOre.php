@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\TieredTool;
+use pocketmine\item\{Item, ItemFactory, TieredTool};
 
 class GoldOre extends Solid{
 
@@ -47,5 +47,11 @@ class GoldOre extends Solid{
 
 	public function getToolHarvestLevel() : int{
 		return TieredTool::TIER_IRON;
+	}
+
+	public function getDropsForCompatibleTool(Item $item) : array{
+		return [
+			ItemFactory::get(Item::RAW_GOLD)
+		];
 	}
 }
