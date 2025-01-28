@@ -19,10 +19,10 @@
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
 		<img src="https://img.shields.io/badge/protocol-766-yellow?style=flat-square" alt="Protocol">
 	</a>
-	<a href="https://github.com/Benedikt05/BetterAltay/releases">
+	<a href="https://github.com/DANRULEZ123/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
 	</a>
-	<a href="https://github.com/Benedikt05/BetterAltay/issues">
+	<a href="https://github.com/DANRULEZ123/BetterAltay/issues">
 		<img src="https://img.shields.io/github/issues/Benedikt05/BetterAltay?color=orange" alt="Issues">
 	</a>
 </p>
