@@ -28,26 +28,23 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\ItemComponentPacketEntry;
+use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
+use pocketmine\Server;
+use RuntimeException;
 use function count;
 
-class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/
+class ItemRegistryPacket extends DataPacket/* implements ClientboundPacket*/
 {
-	public const NETWORK_ID = ProtocolInfo::ITEM_COMPONENT_PACKET;
+	public const NETWORK_ID = ProtocolInfo::ITEM_REGISTRY_PACKET;
 
 	/**
-	 * @var ItemComponentPacketEntry[]
-	 * @phpstan-var list<ItemComponentPacketEntry>
+	 * @var ItemTypeEntry[]
 	 */
-	private $entries;
+	public array $definitions;
 
-	/**
-	 * @param ItemComponentPacketEntry[]             $entries
-	 *
-	 * @phpstan-param list<ItemComponentPacketEntry> $entries
-	 */
 	public static function create(array $entries) : self{
 		$result = new self;
-		$result->entries = $entries;
+		$result->definitions = $entries;
 		return $result;
 	}
 
@@ -55,26 +52,24 @@ class ItemComponentPacket extends DataPacket/* implements ClientboundPacket*/
 	 * @return ItemComponentPacketEntry[]
 	 * @phpstan-return list<ItemComponentPacketEntry>
 	 */
-	public function getEntries() : array{ return $this->entries; }
+	public function getDefinitions() : array{ return $this->definitions; }
 
 	protected function decodePayload() : void{
-		$this->entries = [];
-		for($i = 0, $len = $this->getUnsignedVarInt(); $i < $len; ++$i){
-			$name = $this->getString();
-			$nbt = $this->getNbtCompoundRoot();
-			$this->entries[] = new ItemComponentPacketEntry($name, $nbt);
-		}
+		throw new RuntimeException("this should never happen");
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->entries));
-		foreach($this->entries as $entry){
-			$this->putString($entry->getName());
-			$this->put((new NetworkLittleEndianNBTStream())->write($entry->getComponentNbt()));
+		$this->putUnsignedVarInt(count($this->definitions));
+		foreach($this->definitions as $entry){
+			$this->putString($entry->getStringId());
+			$this->putLShort($entry->getNumericId());
+			$this->putBool($entry->isComponentBased());
+			$this->putVarInt($entry->getItemVersion());
+			$this->put((new NetworkLittleEndianNBTStream())->write($entry->getItemComponentData()));
 		}
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleItemComponent($this);
+		return $session->handleItemRegistry($this);
 	}
 }

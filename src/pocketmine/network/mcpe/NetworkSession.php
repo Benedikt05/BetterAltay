@@ -86,7 +86,7 @@ use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\ItemComponentPacket;
+use pocketmine\network\mcpe\protocol\ItemRegistryPacket;
 use pocketmine\network\mcpe\protocol\ItemFrameDropItemPacket;
 use pocketmine\network\mcpe\protocol\ItemStackRequestPacket;
 use pocketmine\network\mcpe\protocol\ItemStackResponsePacket;
@@ -812,7 +812,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleItemComponent(ItemComponentPacket $packet) : bool{
+	public function handleItemRegistry(ItemRegistryPacket $packet) : bool{
 		return false;
 	}
 

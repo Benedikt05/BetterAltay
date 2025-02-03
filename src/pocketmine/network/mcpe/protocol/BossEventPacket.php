@@ -60,14 +60,15 @@ class BossEventPacket extends DataPacket{
 	public $healthPercent;
 	/** @var string */
 	public $title;
+	private string $filteredTitle = "";
 	/** @var int */
-	public $unknownShort;
+	public $darkenScreen;
 	/** @var int */
 	public $color;
 	/** @var int */
 	public $overlay;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->bossEid = $this->getEntityUniqueId();
 		$this->eventType = $this->getUnsignedVarInt();
 		switch($this->eventType){
@@ -79,10 +80,11 @@ class BossEventPacket extends DataPacket{
 			/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_SHOW:
 				$this->title = $this->getString();
+				$this->filteredTitle = $this->getString();
 				$this->healthPercent = $this->getLFloat();
 			/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_UNKNOWN_6:
-				$this->unknownShort = $this->getLShort();
+				$this->darkenScreen = $this->getLShort();
 			case self::TYPE_TEXTURE:
 				$this->color = $this->getUnsignedVarInt();
 				$this->overlay = $this->getUnsignedVarInt();
@@ -92,13 +94,14 @@ class BossEventPacket extends DataPacket{
 				break;
 			case self::TYPE_TITLE:
 				$this->title = $this->getString();
+				$this->filteredTitle = $this->getString();
 				break;
 			default:
 				break;
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityUniqueId($this->bossEid);
 		$this->putUnsignedVarInt($this->eventType);
 		switch($this->eventType){
@@ -110,10 +113,11 @@ class BossEventPacket extends DataPacket{
 			/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_SHOW:
 				$this->putString($this->title);
+				$this->putString($this->filteredTitle);
 				$this->putLFloat($this->healthPercent);
 			/** @noinspection PhpMissingBreakStatementInspection */
 			case self::TYPE_UNKNOWN_6:
-				$this->putLShort($this->unknownShort);
+				$this->putLShort($this->darkenScreen);
 			case self::TYPE_TEXTURE:
 				$this->putUnsignedVarInt($this->color);
 				$this->putUnsignedVarInt($this->overlay);
@@ -123,6 +127,7 @@ class BossEventPacket extends DataPacket{
 				break;
 			case self::TYPE_TITLE:
 				$this->putString($this->title);
+				$this->putString($this->filteredTitle);
 				break;
 			default:
 				break;

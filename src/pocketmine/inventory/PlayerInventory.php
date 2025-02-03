@@ -195,7 +195,7 @@ class PlayerInventory extends BaseInventory{
 	/**
 	 * @return void
 	 */
-	public function sendCreativeContents(){
+	public function sendCreativeContents() : void{
 		//TODO: this mess shouldn't be in here
 		$holder = $this->getHolder();
 		if(!($holder instanceof Player)){

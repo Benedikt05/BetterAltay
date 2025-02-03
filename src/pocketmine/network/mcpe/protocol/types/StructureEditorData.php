@@ -31,18 +31,12 @@ class StructureEditorData{
 	public const TYPE_INVALID = 4;
 	public const TYPE_EXPORT = 5;
 
-	/** @var string */
-	public $structureName;
-	/** @var string */
-	public $structureDataField;
-	/** @var bool */
-	public $includePlayers;
-	/** @var bool */
-	public $showBoundingBox;
-	/** @var int */
-	public $structureBlockType;
-	/** @var StructureSettings */
-	public $structureSettings;
-	/** @var int */
-	public $structureRedstoneSaveMove;
+	public string $structureName;
+	public string $filterdStructureName;
+	public string $structureDataField;
+	public bool $includePlayers;
+	public bool $showBoundingBox;
+	public int $structureBlockType;
+	public StructureSettings $structureSettings;
+	public int $structureRedstoneSaveMove;
 }

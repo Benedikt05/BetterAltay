@@ -26,40 +26,31 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
-use pocketmine\network\mcpe\protocol\types\inventory\CreativeContentEntry;
+use RuntimeException;
 use function count;
 
 class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::CREATIVE_CONTENT_PACKET;
 
-	/** @var CreativeContentEntry[] */
-	private $entries;
 
-	/**
-	 * @param CreativeContentEntry[] $entries
-	 */
-	public static function create(array $entries) : self{
-		$result = new self;
-		$result->entries = $entries;
-		return $result;
+	public array $groups = [];
+	public array $items = [];
+
+	public static function create(/*array $groups, array $items*/) : self{
+		//$result->groups = $groups;
+		//$result->items = $items;
+		return new self;
 	}
 
-	/** @return CreativeContentEntry[] */
-	public function getEntries() : array{ return $this->entries; }
 
 	protected function decodePayload() : void{
-		$this->entries = [];
-		for($i = 0, $len = $this->getUnsignedVarInt(); $i < $len; ++$i){
-			$this->entries[] = CreativeContentEntry::read($this);
-		}
+		throw new RuntimeException("this should never happen");
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->entries));
-		foreach($this->entries as $entry){
-			$entry->write($this);
-		}
+		$this->putUnsignedVarInt(0); //groups list size
+		$this->putUnsignedVarInt(0); //entries list size
 	}
 
 	public function handle(NetworkSession $session) : bool{

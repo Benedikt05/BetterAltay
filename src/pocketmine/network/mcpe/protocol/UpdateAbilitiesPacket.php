@@ -18,9 +18,10 @@ class UpdateAbilitiesPacket extends DataPacket{
 	public int $commandPermission = CommandPermissions::NORMAL;
 	public int $playerPermission = PlayerPermissions::MEMBER;
 	public int $targetActorUniqueId;
+	/** @var AbilitiesLayer[] */
 	public array $abilityLayers = [];
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->targetActorUniqueId = $this->getLLong();
 		$this->playerPermission = $this->getByte();
 		$this->commandPermission = $this->getByte();
@@ -30,7 +31,7 @@ class UpdateAbilitiesPacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putLLong($this->targetActorUniqueId);
 		$this->putByte($this->playerPermission);
 		$this->putByte($this->commandPermission);

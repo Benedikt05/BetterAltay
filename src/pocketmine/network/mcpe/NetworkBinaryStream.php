@@ -851,6 +851,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$result = new StructureEditorData();
 
 		$result->structureName = $this->getString();
+		$result->filterdStructureName = $this->getString();
 		$result->structureDataField = $this->getString();
 
 		$result->includePlayers = $this->getBool();
@@ -865,6 +866,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 	protected function putStructureEditorData(StructureEditorData $structureEditorData) : void{
 		$this->putString($structureEditorData->structureName);
+		$this->putString($structureEditorData->filterdStructureName);
 		$this->putString($structureEditorData->structureDataField);
 
 		$this->putBool($structureEditorData->includePlayers);

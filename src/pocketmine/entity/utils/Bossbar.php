@@ -142,7 +142,7 @@ class Bossbar extends Vector3{
 				$pk->healthPercent = $this->healthPercent;
 				$pk->color = 0;
 				$pk->overlay = 0;
-				$pk->unknownShort = 0;
+				$pk->darkenScreen = 0;
 				break;
 			case BossEventPacket::TYPE_REGISTER_PLAYER:
 			case BossEventPacket::TYPE_UNREGISTER_PLAYER:

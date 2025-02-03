@@ -330,12 +330,12 @@ class StartGamePacket extends DataPacket{
 			$this->putString($entry->getName());
 			$this->put($nbtWriter->write($entry->getStates()));
 		}
-		$this->putUnsignedVarInt(count($this->itemTable));
+		/*$this->putUnsignedVarInt(count($this->itemTable));
 		foreach($this->itemTable as $entry){
 			$this->putString($entry->getStringId());
 			$this->putLShort($entry->getNumericId());
 			$this->putBool($entry->isComponentBased());
-		}
+		}*/
 
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);

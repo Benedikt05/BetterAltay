@@ -23,19 +23,21 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use pocketmine\nbt\tag\CompoundTag;
+
 final class ItemTypeEntry{
+	private string $stringId;
+	private int $numericId;
+	private bool $componentBased;
+	private int $itemVersion;
+	private CompoundTag $itemComponentData;
 
-	/** @var string */
-	private $stringId;
-	/** @var int */
-	private $numericId;
-	/** @var bool */
-	private $componentBased;
-
-	public function __construct(string $stringId, int $numericId, bool $componentBased){
+	public function __construct(string $stringId, int $numericId, bool $componentBased, int $itemVersion, CompoundTag $itemComponentData){
 		$this->stringId = $stringId;
 		$this->numericId = $numericId;
 		$this->componentBased = $componentBased;
+		$this->itemVersion = $itemVersion;
+		$this->itemComponentData = $itemComponentData;
 	}
 
 	public function getStringId() : string{ return $this->stringId; }
@@ -43,4 +45,8 @@ final class ItemTypeEntry{
 	public function getNumericId() : int{ return $this->numericId; }
 
 	public function isComponentBased() : bool{ return $this->componentBased; }
+
+	public function getItemVersion() : int{ return $this->itemVersion; }
+
+	public function getItemComponentData() : CompoundTag{ return $this->itemComponentData; }
 }
