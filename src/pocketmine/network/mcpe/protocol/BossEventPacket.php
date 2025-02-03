@@ -49,24 +49,23 @@ class BossEventPacket extends DataPacket{
 	/* C2S: Client asking the server to resend all boss data. */
 	public const TYPE_QUERY = 8;
 
+	public int $bossEid;
 	/** @var int */
-	public $bossEid;
-	/** @var int */
-	public $eventType;
+	public int $eventType;
 
 	/** @var int (long) */
-	public $playerEid;
+	public int $playerEid;
 	/** @var float */
-	public $healthPercent;
+	public float $healthPercent;
 	/** @var string */
-	public $title;
-	private string $filteredTitle = "";
+	public string $title;
+	public string $filteredTitle = "";
 	/** @var int */
-	public $darkenScreen;
+	public int $darkenScreen;
 	/** @var int */
-	public $color;
+	public int $color;
 	/** @var int */
-	public $overlay;
+	public int $overlay;
 
 	protected function decodePayload() : void{
 		$this->bossEid = $this->getEntityUniqueId();
