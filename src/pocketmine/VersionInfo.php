@@ -33,7 +33,7 @@ if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
 const _VERSION_INFO_INCLUDED = true;
 
 const NAME = "BetterAltay";
-const BASE_VERSION = "3.28.0"; //Don't change this anymore. Change the FORK_VERSION instead.
-const FORK_VERSION = "1.27.0";
-const IS_DEVELOPMENT_BUILD = false;
+const BASE_VERSION = "3.28.0"; //Do not modify this. Change FORK_VERSION instead.
+const FORK_VERSION = "1.28.0";
+const IS_DEVELOPMENT_BUILD = true;
 const BUILD_CHANNEL = "master";
