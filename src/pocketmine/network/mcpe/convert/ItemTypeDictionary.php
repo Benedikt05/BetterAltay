@@ -57,7 +57,7 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$data = file_get_contents(RESOURCE_PATH . '/vanilla/required_item_list.json');
+		$data = file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json');
 		if($data === false) throw new AssumptionFailedError("Missing required resource file");
 		$table = json_decode($data, true);
 		if(!is_array($table)){
@@ -65,11 +65,11 @@ final class ItemTypeDictionary{
 		}
 
 		$params = [];
-		foreach($table as $name => $entry){
-			if(!is_array($entry) || !is_string($name) || !isset($entry["component_based"], $entry["runtime_id"]) || !is_bool($entry["component_based"]) || !is_int($entry["runtime_id"])){
+		foreach($table as $entry){
+			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["componentBased"], $entry["id"], $entry["version"]) || !is_bool($entry["componentBased"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
-			$params[] = new ItemTypeEntry($name, $entry["runtime_id"], $entry["component_based"],-1, new CompoundTag());
+			$params[] = new ItemTypeEntry($entry["name"], $entry["id"], $entry["componentBased"], $entry["version"], new CompoundTag());
 		}
 		return new self($params);
 	}
