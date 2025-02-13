@@ -26,6 +26,8 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
+use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
 use RuntimeException;
 use function count;
 
@@ -33,24 +35,37 @@ class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::CREATIVE_CONTENT_PACKET;
 
+	public const CATEGORY_CONSTRUCTION = 1;
+	public const CATEGORY_NATURE = 2;
+	public const CATEGORY_EQUIPMENT = 3;
+	public const CATEGORY_ITEMS = 4;
 
+	/** @var CreativeGroupEntry[] */
 	public array $groups = [];
+	/** @var CreativeItemEntry[] */
 	public array $items = [];
 
-	public static function create(/*array $groups, array $items*/) : self{
-		//$result->groups = $groups;
-		//$result->items = $items;
-		return new self;
+	public static function create(array $groups, array $items) : self{
+		$result = new self;
+		$result->groups = $groups;
+		$result->items = $items;
+		return $result;
 	}
-
 
 	protected function decodePayload() : void{
 		throw new RuntimeException("this should never happen");
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(0); //groups list size
-		$this->putUnsignedVarInt(0); //entries list size
+		$this->putUnsignedVarInt(count($this->groups));
+		foreach($this->groups as $entry){
+			$entry->write($this);
+		}
+
+		$this->putUnsignedVarInt(count($this->items));
+		foreach($this->items as $entry){
+			$entry->write($this);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

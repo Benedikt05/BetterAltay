@@ -203,9 +203,13 @@ class PlayerInventory extends BaseInventory{
 		}
 
 		$nextEntryId = 1;
+		/*
 		$holder->sendDataPacket(CreativeContentPacket::create(array_map(function(Item $item) use (&$nextEntryId) : CreativeContentEntry{
 			return new CreativeContentEntry($nextEntryId++, clone $item);
 		}, $holder->isSpectator() ? [] : Item::getCreativeItems()))); //fill it for all gamemodes except spectator
+		 */
+		
+		$holder->sendDataPacket(CreativeContentPacket::create([],[]));
 	}
 
 	/**
