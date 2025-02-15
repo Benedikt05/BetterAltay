@@ -2577,10 +2577,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
 
-		$registry = new ItemRegistryPacket();
-		$registry->definitions = ItemTypeDictionary::getInstance()->getEntries();
-
-		$this->sendDataPacket($registry);
+		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
 		$this->sendDataPacket(new BiomeDefinitionListPacket());
 

@@ -38,29 +38,30 @@ class ItemRegistryPacket extends DataPacket/* implements ClientboundPacket*/
 	public const NETWORK_ID = ProtocolInfo::ITEM_REGISTRY_PACKET;
 
 	/**
-	 * @var ItemTypeEntry[]
+	 * @param ItemTypeEntry[] $entries
+	 * @phpstan-param list<ItemTypeEntry> $entries
 	 */
-	public array $definitions;
+	private array $entries;
 
 	public static function create(array $entries) : self{
 		$result = new self;
-		$result->definitions = $entries;
+		$result->entries = $entries;
 		return $result;
 	}
 
 	/**
-	 * @return ItemComponentPacketEntry[]
-	 * @phpstan-return list<ItemComponentPacketEntry>
+	 * @return ItemTypeEntry[]
+	 * @phpstan-return list<ItemTypeEntry>
 	 */
-	public function getDefinitions() : array{ return $this->definitions; }
+	public function getEntries() : array{ return $this->entries; }
 
 	protected function decodePayload() : void{
 		throw new RuntimeException("this should never happen");
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->definitions));
-		foreach($this->definitions as $entry){
+		$this->putUnsignedVarInt(count($this->entries));
+		foreach($this->entries as $entry){
 			$this->putString($entry->getStringId());
 			$this->putLShort($entry->getNumericId());
 			$this->putBool($entry->isComponentBased());
