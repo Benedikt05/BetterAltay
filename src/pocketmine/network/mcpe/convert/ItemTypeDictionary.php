@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use InvalidArgumentException;
+use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\utils\AssumptionFailedError;
@@ -57,11 +58,11 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$data = file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json');
-		if($data === false) throw new AssumptionFailedError("Missing required resource file");
-		$table = json_decode($data, true);
-		if(!is_array($table)){
-			throw new AssumptionFailedError("Invalid item list format");
+		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true);
+		$componentData = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/item_components.json'), true);
+
+		if(!is_array($table) || !is_array($componentData)){
+			throw new AssumptionFailedError("Invalid resource file format");
 		}
 
 		$params = [];
@@ -69,7 +70,18 @@ final class ItemTypeDictionary{
 			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["componentBased"], $entry["id"], $entry["version"]) || !is_bool($entry["componentBased"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
-			$params[] = new ItemTypeEntry($entry["name"], $entry["id"], $entry["componentBased"], $entry["version"], new CompoundTag());
+
+			$nbt = (isset($componentData[$entry["name"]]) && is_string($componentData[$entry["name"]]))
+				? (new LittleEndianNBTStream())->read(base64_decode($componentData[$entry["name"]], true))
+				: new CompoundTag();
+
+			$params[] = new ItemTypeEntry(
+				$entry["name"],
+				$entry["id"],
+				$entry["componentBased"],
+				$entry["version"],
+				$nbt
+			);
 		}
 		return new self($params);
 	}
