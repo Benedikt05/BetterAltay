@@ -28,6 +28,7 @@ use LogicException;
 use pocketmine\entity\Human;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Item;
+use pocketmine\network\mcpe\mapper\CreativeItemMapper;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\ContainerIds;
@@ -202,14 +203,8 @@ class PlayerInventory extends BaseInventory{
 			throw new LogicException("Cannot send creative inventory contents to non-player inventory holder");
 		}
 
-		$nextEntryId = 1;
-		/*
-		$holder->sendDataPacket(CreativeContentPacket::create(array_map(function(Item $item) use (&$nextEntryId) : CreativeContentEntry{
-			return new CreativeContentEntry($nextEntryId++, clone $item);
-		}, $holder->isSpectator() ? [] : Item::getCreativeItems()))); //fill it for all gamemodes except spectator
-		 */
-		
-		$holder->sendDataPacket(CreativeContentPacket::create([],[]));
+		$mapper = CreativeItemMapper::getInstance();
+		$holder->sendDataPacket(CreativeContentPacket::create($mapper->getGroups(), $mapper->getIcons()));
 	}
 
 	/**
