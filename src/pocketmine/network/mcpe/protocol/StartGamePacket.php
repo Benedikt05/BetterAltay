@@ -132,11 +132,6 @@ class StartGamePacket extends DataPacket{
 	 */
 	public array $blockPalette = [];
 
-	/**
-	 * @var ItemTypeEntry[]
-	 * @phpstan-var list<ItemTypeEntry>
-	 */
-	public array $itemTable;
 	public bool $enableNewInventorySystem = false; //TODO
 	public string $serverSoftwareVersion;
 	public CompoundTag $propertyData;
@@ -227,15 +222,6 @@ class StartGamePacket extends DataPacket{
 			$blockName = $this->getString();
 			$state = $this->getNbtCompoundRoot();
 			$this->blockPalette[] = new BlockPaletteEntry($blockName, $state);
-		}
-
-		$this->itemTable = [];
-		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
-			$stringId = $this->getString();
-			$numericId = $this->getSignedLShort();
-			$isComponentBased = $this->getBool();
-
-			$this->itemTable[] = new ItemTypeEntry($stringId, $numericId, $isComponentBased);
 		}
 
 		$this->multiplayerCorrelationId = $this->getString();
@@ -329,12 +315,6 @@ class StartGamePacket extends DataPacket{
 		foreach($this->blockPalette as $entry){
 			$this->putString($entry->getName());
 			$this->put($nbtWriter->write($entry->getStates()));
-		}
-		$this->putUnsignedVarInt(count($this->itemTable));
-		foreach($this->itemTable as $entry){
-			$this->putString($entry->getStringId());
-			$this->putLShort($entry->getNumericId());
-			$this->putBool($entry->isComponentBased());
 		}
 
 		$this->putString($this->multiplayerCorrelationId);

@@ -64,6 +64,17 @@ final class ItemTranslator{
 	 * @phpstan-var array<int, array{int, int}>
 	 */
 	private $complexNetToCoreMapping = [];
+	/**
+	 * @var int[]
+	 * @phpstan-var array<string, int>
+	 */
+	private array $simpleMappings = [];
+	/**
+	 * [internalId, metadata] = array[stringId]
+	 * @var int[][]
+	 * @phpstan-var array<string, array{int, int}>
+	 */
+	private array $complexMappings = [];
 
 	private static function make() : self{
 		$data = file_get_contents(RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
@@ -140,6 +151,8 @@ final class ItemTranslator{
 				//not all items have a legacy mapping - for now, we only support the ones that do
 				continue;
 			}
+			$this->simpleMappings = $simpleMappings;
+			$this->complexMappings = $complexMappings;
 		}
 	}
 
@@ -191,5 +204,20 @@ final class ItemTranslator{
 		}
 		[$id, $meta] = $this->fromNetworkId($networkId, 0, $isComplexMapping);
 		return [$id, $isComplexMapping ? $meta : -1];
+	}
+
+
+	/**
+	 * @return int[]
+	 * @phpstan-return array{int, int}
+	 */
+	public function fromStringId(string $stringId): array {
+		if(isset($this->complexMappings[$stringId])){
+			return $this->complexMappings[$stringId];
+		}elseif(isset($this->simpleMappings[$stringId])){
+			return [$this->simpleMappings[$stringId], 0];
+		}else{
+			return [$this->simpleMappings["minecraft:air"], 0];
+		}
 	}
 }

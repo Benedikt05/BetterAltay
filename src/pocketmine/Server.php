@@ -45,7 +45,6 @@ use pocketmine\event\server\QueryRegenerateEvent;
 use pocketmine\event\server\ServerCommandEvent;
 use pocketmine\inventory\CraftingManager;
 use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\lang\BaseLang;
 use pocketmine\lang\TextContainer;
@@ -74,6 +73,7 @@ use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\AdvancedSourceInterface;
 use pocketmine\network\CompressBatchedTask;
 use pocketmine\network\mcpe\encryption\EncryptionContext;
+use pocketmine\network\mcpe\mapper\CreativeItemMapper;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
@@ -1609,10 +1609,11 @@ class Server{
 			BlockFactory::init();
 			Enchantment::init();
 			ItemFactory::init();
-			Item::initCreativeItems();
 			Biome::init();
 			MapManager::loadIdCounts();
 			Color::initDyeColors();
+
+			CreativeItemMapper::getInstance()->initCreativeContent();
 
 			$this->commandMap = new SimpleCommandMap($this);
 

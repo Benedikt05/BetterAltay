@@ -30,39 +30,27 @@ use pocketmine\network\mcpe\NetworkSession;
 class CommandBlockUpdatePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::COMMAND_BLOCK_UPDATE_PACKET;
 
-	/** @var bool */
-	public $isBlock;
+	public bool $isBlock;
 
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
-	/** @var int */
-	public $commandBlockMode;
-	/** @var bool */
-	public $isRedstoneMode;
-	/** @var bool */
-	public $isConditional;
+	public int $x;
+	public int $y;
+	public int $z;
+	public int $commandBlockMode;
+	public bool $isRedstoneMode;
+	public bool $isConditional;
 
-	/** @var int */
-	public $minecartEid;
+	public int $minecartEid;
 
-	/** @var string */
-	public $command;
-	/** @var string */
-	public $lastOutput;
-	/** @var string */
-	public $name;
-	/** @var bool */
-	public $shouldTrackOutput;
-	/** @var int */
-	public $tickDelay;
-	/** @var bool */
-	public $executeOnFirstTick;
+	public string $command;
+	public string $lastOutput;
+	public string $name;
+	public string $filteredName;
 
-	protected function decodePayload(){
+	public bool $shouldTrackOutput;
+	public int $tickDelay;
+	public bool $executeOnFirstTick;
+
+	protected function decodePayload() : void{
 		$this->isBlock = $this->getBool();
 
 		if($this->isBlock){
@@ -78,13 +66,14 @@ class CommandBlockUpdatePacket extends DataPacket{
 		$this->command = $this->getString();
 		$this->lastOutput = $this->getString();
 		$this->name = $this->getString();
+		$this->filteredName = $this->getString();
 
 		$this->shouldTrackOutput = $this->getBool();
 		$this->tickDelay = $this->getLInt();
 		$this->executeOnFirstTick = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putBool($this->isBlock);
 
 		if($this->isBlock){
@@ -99,6 +88,7 @@ class CommandBlockUpdatePacket extends DataPacket{
 		$this->putString($this->command);
 		$this->putString($this->lastOutput);
 		$this->putString($this->name);
+		$this->putString($this->filteredName);
 
 		$this->putBool($this->shouldTrackOutput);
 		$this->putLInt($this->tickDelay);

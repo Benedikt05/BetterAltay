@@ -26,38 +26,44 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
-use pocketmine\network\mcpe\protocol\types\inventory\CreativeContentEntry;
+use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
+use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
+use RuntimeException;
 use function count;
 
 class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::CREATIVE_CONTENT_PACKET;
 
-	/** @var CreativeContentEntry[] */
-	private $entries;
+	public const CATEGORY_CONSTRUCTION = 1;
+	public const CATEGORY_NATURE = 2;
+	public const CATEGORY_EQUIPMENT = 3;
+	public const CATEGORY_ITEMS = 4;
 
-	/**
-	 * @param CreativeContentEntry[] $entries
-	 */
-	public static function create(array $entries) : self{
+	/** @var CreativeGroupEntry[] */
+	public array $groups = [];
+	/** @var CreativeItemEntry[] */
+	public array $items = [];
+
+	public static function create(array $groups, array $items) : self{
 		$result = new self;
-		$result->entries = $entries;
+		$result->groups = $groups;
+		$result->items = $items;
 		return $result;
 	}
 
-	/** @return CreativeContentEntry[] */
-	public function getEntries() : array{ return $this->entries; }
-
 	protected function decodePayload() : void{
-		$this->entries = [];
-		for($i = 0, $len = $this->getUnsignedVarInt(); $i < $len; ++$i){
-			$this->entries[] = CreativeContentEntry::read($this);
-		}
+		throw new RuntimeException("this should never happen");
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->entries));
-		foreach($this->entries as $entry){
+		$this->putUnsignedVarInt(count($this->groups));
+		foreach($this->groups as $entry){
+			$entry->write($this);
+		}
+
+		$this->putUnsignedVarInt(count($this->items));
+		foreach($this->items as $entry){
 			$entry->write($this);
 		}
 	}

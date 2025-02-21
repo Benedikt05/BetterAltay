@@ -142,6 +142,7 @@ use pocketmine\network\mcpe\protocol\DisconnectPacket;
 use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\ItemFrameDropItemPacket;
+use pocketmine\network\mcpe\protocol\ItemRegistryPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -2569,7 +2570,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->levelId = "";
 		$pk->worldName = $this->server->getMotd();
 		$pk->experiments = new Experiments([], false);
-		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->propertyData = new CompoundTag();
@@ -2577,6 +2577,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
 
+		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
 		$this->sendDataPacket(new BiomeDefinitionListPacket());
 

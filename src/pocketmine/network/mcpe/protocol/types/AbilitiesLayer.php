@@ -67,6 +67,7 @@ final class AbilitiesLayer{
 		$setAbilities = $in->getLInt();
 		$setAbilityValues = $in->getLInt();
 		$flySpeed = $in->getLFloat();
+		$in->getLFloat();
 		$walkSpeed = $in->getLFloat();
 
 		$boolAbilities = [];
@@ -113,6 +114,7 @@ final class AbilitiesLayer{
 		$out->putLInt($setAbilities);
 		$out->putLInt($setAbilityValues);
 		$out->putLFloat($this->flySpeed ?? 0);
+		$out->putLFloat(1); //verticalFlySpeed
 		$out->putLFloat($this->walkSpeed ?? 0);
 	}
 }

@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\command\defaults;
 
+use Exception;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandSelector;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
@@ -47,8 +48,8 @@ class ClearCommand extends VanillaCommand{
 			if(ItemFactory::isRegistered($id)){
 				for($i = 0; $i < 15; $i++){
 					if(ItemFactory::isRegistered($id)){
-						$itemName = (ItemFactory::get($id, $i))->getName();
-						$itemNames[$itemName] = $itemName;
+						$itemName = str_replace(" ", "_", trim((ItemFactory::get($id, $i))->getName()));
+						$itemNames[$itemName] = strtolower($itemName);
 					}else{
 						goto go_to_next;
 					}
@@ -93,10 +94,19 @@ class ClearCommand extends VanillaCommand{
 		if(isset($args[1])){
 			$removedCount = 0;
 
-			$item = ItemFactory::fromString($args[1]);
+			try{
+				$item = ItemFactory::fromString($args[1]);
+			}catch(Exception $e){
+				$item = null;
+			}
 			if(isset($args[2])){
 				$maxCount = (int) $args[2];
 				$removedCount = $maxCount;
+			}
+
+			if($item === null){
+				$sender->sendMessage("Unknown Item: " . $args[1]);
+				return true;
 			}
 
 			if($item->isNull() && isset($maxCount) && $maxCount <= 0){

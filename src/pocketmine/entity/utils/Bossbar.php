@@ -139,10 +139,11 @@ class Bossbar extends Vector3{
 		switch($eventType){
 			case BossEventPacket::TYPE_SHOW:
 				$pk->title = $this->title;
+				$pk->filteredTitle = $this->title;
 				$pk->healthPercent = $this->healthPercent;
 				$pk->color = 0;
 				$pk->overlay = 0;
-				$pk->unknownShort = 0;
+				$pk->darkenScreen = 0;
 				break;
 			case BossEventPacket::TYPE_REGISTER_PLAYER:
 			case BossEventPacket::TYPE_UNREGISTER_PLAYER:
@@ -150,6 +151,7 @@ class Bossbar extends Vector3{
 				break;
 			case BossEventPacket::TYPE_TITLE:
 				$pk->title = $this->title;
+				$pk->filteredTitle = $this->title;
 				break;
 			case BossEventPacket::TYPE_HEALTH_PERCENT:
 				$pk->healthPercent = $this->healthPercent;
