@@ -4,6 +4,7 @@ namespace pocketmine\network\mcpe\mapper;
 
 use InvalidArgumentException;
 use pocketmine\item\ItemFactory;
+use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
@@ -22,6 +23,7 @@ class CreativeItemMapper {
 	/** @var array CreativeGroupEntry[] */
 	private array $groups = [];
 
+	private int $nextIconIndex = 1;
 	/** @var array CreativeItemEntry[] */
 	private array $icons = [];
 
@@ -65,10 +67,11 @@ class CreativeItemMapper {
 			try{
 				$itemValue = ItemFactory::fromStringSingle($item["id"]);
 			}catch(InvalidArgumentException $ignore){
-				$itemValue = ItemFactory::fromStringSingle("minecraft:air");
+				[$id, $meta] = ItemTranslator::getInstance()->fromStringId($item["id"]);
+				$itemValue = ItemFactory::get($id, $meta);
 			}
 
-			$this->icons[] = new CreativeItemEntry($entryId++, $itemValue, $item["groupId"]);
+			$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
 		}
 
 		$this->initialized = true;
@@ -81,6 +84,10 @@ class CreativeItemMapper {
 		return $this->groups;
 	}
 
+	public function getNextIconIndex() : int{
+		return $this->nextIconIndex++;
+	}
+
 	/**
 	 * @return CreativeItemEntry[]
 	 */
@@ -88,4 +95,15 @@ class CreativeItemMapper {
 		return $this->icons;
 	}
 
+	public function removeIconByIndex(int $index) : void{
+		unset($this->icons[$index]);
+	}
+
+	public function addIcon(CreativeItemEntry $entry) : void {
+		$this->icons[] = $entry;
+	}
+
+	public function removeAllIcons() : void{
+		$this->icons = [];
+	}
 }
