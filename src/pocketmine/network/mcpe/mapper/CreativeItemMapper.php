@@ -4,6 +4,8 @@ namespace pocketmine\network\mcpe\mapper;
 
 use InvalidArgumentException;
 use pocketmine\item\ItemFactory;
+use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
@@ -64,11 +66,22 @@ class CreativeItemMapper {
 
 		$entryId = 1;
 		foreach($items as $item){
-			try{
-				$itemValue = ItemFactory::fromStringSingle($item["id"]);
-			}catch(InvalidArgumentException $ignore){
-				[$id, $meta] = ItemTranslator::getInstance()->fromStringId($item["id"]);
-				$itemValue = ItemFactory::get($id, $meta);
+			[$id, $meta] = ItemTranslator::getInstance()->fromStringId($item["id"]);
+			$itemValue = ItemFactory::get($id, $meta);
+
+			if (isset($item["damage"])) {
+				$itemValue->setDamage($item["damage"]);
+			}
+
+			if (isset($item["nbt_b64"])) {
+				$nbtBytes = base64_decode($item["nbt_b64"]);
+				$nbtSerializer = new LittleEndianNBTStream();
+				$decodedNbt	= $nbtSerializer->read($nbtBytes);
+
+				if(!($decodedNbt instanceof CompoundTag)){
+					throw new \UnexpectedValueException("Unexpected root tag type");
+				}
+				$itemValue->setNamedTag($decodedNbt);
 			}
 
 			$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
