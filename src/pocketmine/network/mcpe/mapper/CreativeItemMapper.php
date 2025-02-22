@@ -44,13 +44,13 @@ class CreativeItemMapper {
 			$category = $group["category"];
 			$icon = $group["icon"];
 
-			try {
+			try{
 				$iconValue = ItemFactory::fromStringSingle($icon["id"]);
-			} catch (InvalidArgumentException $ignore) {
+			}catch(InvalidArgumentException $ignore){
 				$iconValue = ItemFactory::fromStringSingle("minecraft:air");
 			}
 
-			$categoryId = match($category) {
+			$categoryId = match ($category) {
 				"construction" => CreativeContentPacket::CATEGORY_CONSTRUCTION,
 				"nature" => CreativeContentPacket::CATEGORY_NATURE,
 				"equipment" => CreativeContentPacket::CATEGORY_EQUIPMENT,
@@ -64,27 +64,29 @@ class CreativeItemMapper {
 		if(!is_array($items) or !count($items))
 			throw new AssumptionFailedError("Missing required items");
 
-		$entryId = 1;
 		foreach($items as $item){
 			[$id, $meta] = ItemTranslator::getInstance()->fromStringId($item["id"]);
 			$itemValue = ItemFactory::get($id, $meta);
 
-			if (isset($item["damage"])) {
+			if(isset($item["damage"])){
 				$itemValue->setDamage($item["damage"]);
 			}
 
-			if (isset($item["nbt_b64"])) {
+			if(isset($item["nbt_b64"])){
 				$nbtBytes = base64_decode($item["nbt_b64"]);
 				$nbtSerializer = new LittleEndianNBTStream();
-				$decodedNbt	= $nbtSerializer->read($nbtBytes);
+				$decodedNbt = $nbtSerializer->read($nbtBytes);
 
 				if(!($decodedNbt instanceof CompoundTag)){
 					throw new \UnexpectedValueException("Unexpected root tag type");
 				}
 				$itemValue->setNamedTag($decodedNbt);
-			}
 
-			$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
+
+			}
+			if($itemValue->getName() !== "Unknown"){
+				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
+			}
 		}
 
 		$this->initialized = true;
