@@ -1675,13 +1675,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		];
 
 		$pk->abilityLayers = [
-			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, $this->getFlightSpeed(), 0.1)
+			new AbilitiesLayer(AbilitiesLayer::LAYER_BASE, $boolAbilities, $this->getFlightSpeed(), 1,0.1)
 		];
 
 		if($this->isSpectator()){
 			$pk->abilityLayers[] = new AbilitiesLayer(AbilitiesLayer::LAYER_SPECTATOR,
 				[AbilitiesLayer::ABILITY_FLYING => true],
-				null, null);
+				null, null, null);
 		}
 		$this->dataPacket($pk);
 	}
