@@ -46,7 +46,6 @@ use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\mapper\CreativeItemMapper;
-use pocketmine\network\mcpe\protocol\types\CreativeItemCategory;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
@@ -54,14 +53,10 @@ use pocketmine\utils\Binary;
 use function array_map;
 use function base64_decode;
 use function base64_encode;
-use function file_get_contents;
 use function get_class;
 use function hex2bin;
 use function is_string;
-use function json_decode;
 use function strlen;
-use const DIRECTORY_SEPARATOR;
-use const pocketmine\RESOURCE_PATH;
 
 class Item implements ItemIds, JsonSerializable{
 	public const TAG_ENCH = "ench";
@@ -145,7 +140,7 @@ class Item implements ItemIds, JsonSerializable{
 	 *
 	 * @return void
 	 */
-	public static function addCreativeItem(Item $item, int $group = CreativeItemCategory::ALL) : void{
+	public static function addCreativeItem(Item $item, int $group = 0) : void{
 		CreativeItemMapper::getInstance()->addIcon(new CreativeItemEntry(CreativeItemMapper::getInstance()->getNextIconIndex(), $item, $group));
 	}
 
