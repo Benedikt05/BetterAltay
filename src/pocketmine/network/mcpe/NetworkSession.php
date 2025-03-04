@@ -199,6 +199,7 @@ use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockSyncedPacket;
 use pocketmine\network\mcpe\protocol\UpdateClientInputLocksPacket;
+use pocketmine\network\mcpe\protocol\UpdateClientOptionsPacket;
 use pocketmine\network\mcpe\protocol\UpdateEquipPacket;
 use pocketmine\network\mcpe\protocol\UpdatePlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;
@@ -933,6 +934,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleClientboundCloseForm(ClientboundCloseFormPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) {
 		return false;
 	}
 
