@@ -65,8 +65,6 @@ interface ProtocolInfo{
 	public const PASSENGER_JUMP_PACKET = 0x14;
 	public const UPDATE_BLOCK_PACKET = 0x15;
 	public const ADD_PAINTING_PACKET = 0x16;
-	
-	public const LEVEL_SOUND_EVENT_PACKET_V1 = 0x18;
 	public const LEVEL_EVENT_PACKET = 0x19;
 	public const BLOCK_EVENT_PACKET = 0x1a;
 	public const ACTOR_EVENT_PACKET = 0x1b;
@@ -159,7 +157,6 @@ interface ProtocolInfo{
 
 	public const SPAWN_PARTICLE_EFFECT_PACKET = 0x76;
 	public const AVAILABLE_ACTOR_IDENTIFIERS_PACKET = 0x77;
-	public const LEVEL_SOUND_EVENT_PACKET_V2 = 0x78;
 	public const NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET = 0x79;
 	public const BIOME_DEFINITION_LIST_PACKET = 0x7a;
 	public const LEVEL_SOUND_EVENT_PACKET = 0x7b;
