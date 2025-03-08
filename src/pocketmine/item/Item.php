@@ -45,6 +45,9 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\ItemTypeDictionary;
+use pocketmine\network\mcpe\convert\NetworkBlockMapping;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
@@ -53,11 +56,9 @@ use function base64_decode;
 use function base64_encode;
 use function file_get_contents;
 use function get_class;
-use function hex2bin;
 use function is_string;
 use function json_decode;
 use function strlen;
-use const DIRECTORY_SEPARATOR;
 use const pocketmine\RESOURCE_PATH;
 
 class Item implements ItemIds, JsonSerializable{
@@ -71,6 +72,8 @@ class Item implements ItemIds, JsonSerializable{
 
 	/** @var LittleEndianNBTStream|null */
 	private static $cachedParser = null;
+
+	private int $blockNetworkId = NetworkBlockMapping::NO_NETWORK_ID;
 
 	private static function parseCompoundTag(string $tag) : CompoundTag{
 		if($tag === ""){
@@ -128,11 +131,13 @@ class Item implements ItemIds, JsonSerializable{
 	public static function initCreativeItems(){
 		self::clearCreativeItems();
 
-		$creativeItems = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "creativeitems.json"), true);
-
-		foreach($creativeItems as $data){
+		$creativeItems = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/creative_items.json"), true)["items"] ?? [];
+		foreach ($creativeItems as $data) {
 			$item = Item::jsonDeserialize($data);
-			if($item->getName() === "Unknown"){
+			if ($item === null) {
+				continue;
+			}
+			if ($item->getName() === "Unknown") {
 				continue;
 			}
 			self::addCreativeItem($item);
@@ -257,6 +262,16 @@ class Item implements ItemIds, JsonSerializable{
 	 */
 	public function getCompoundTag() : string{
 		return $this->nbt !== null ? self::writeCompoundTag($this->nbt) : "";
+	}
+
+	public function setBlockNetworkId(int $value): void
+	{
+		$this->blockNetworkId = $value;
+	}
+
+	public function getBlockNetworkId(): int
+	{
+		return $this->blockNetworkId;
 	}
 
 	/**
@@ -803,7 +818,7 @@ class Item implements ItemIds, JsonSerializable{
 	 * @return mixed[]
 	 * @phpstan-return array{id: int, damage?: int, count?: int, nbt_b64?: string}
 	 */
-	final public function jsonSerialize() : array{
+	final public function jsonSerialize() : array{ // todo: this should contain block network id but later since it's not used in betteraltay
 		$data = [
 			"id" => $this->getId()
 		];
@@ -831,28 +846,31 @@ class Item implements ItemIds, JsonSerializable{
 	 * @phpstan-param array{
 	 *    id: int,
 	 *    damage?: int,
-	 *    count?: int,
 	 *    nbt?: string,
-	 *    nbt_hex?: string,
 	 *    nbt_b64?: string
+	 *    block_states_b64?: string
 	 * }              $data
 	 */
-	final public static function jsonDeserialize(array $data) : Item{
+	final public static function jsonDeserialize(array $data) : ?Item{
+		if(isset($data["block_state_b64"])){
+			$nbtStream = new NetworkBinaryStream(base64_decode($data["block_state_b64"], true));
+			$nbtRoot = $nbtStream->getNbtCompoundRoot(new LittleEndianNBTStream);
+			// todo: store the states as network states then in the item but that will be a work for later.
+			$blockNetworkId = $nbtRoot->getInt("network_id");
+		}
+
 		$nbt = "";
 
-		//Backwards compatibility
-		if(isset($data["nbt"])){
-			$nbt = $data["nbt"];
-		}elseif(isset($data["nbt_hex"])){
-			$nbt = hex2bin($data["nbt_hex"]);
-		}elseif(isset($data["nbt_b64"])){
+		if(isset($data["nbt_b64"])){
 			$nbt = base64_decode($data["nbt_b64"], true);
 		}
+
 		return ItemFactory::get(
-			(int) $data["id"],
+			(int) ItemTypeDictionary::getInstance()->fromStringId($data["id"]),
 			(int) ($data["damage"] ?? 0),
-			(int) ($data["count"] ?? 1),
-			(string) $nbt
+			(int) 1,
+			(string) $nbt,
+			(int) ($blockNetworkId ?? NetworkBlockMapping::NO_NETWORK_ID)
 		);
 	}
 

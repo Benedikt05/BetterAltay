@@ -353,12 +353,12 @@ parameters:
 		-
 			message: "#^Cannot access offset string on mixed\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Offset mixed does not exist on array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Property pocketmine\\\\network\\\\mcpe\\\\protocol\\\\AddActorPacket\\:\\:\\$metadata \\(array\\<int, array\\(int, mixed\\)\\>\\) does not accept array\\<int, mixed\\>\\.$#"

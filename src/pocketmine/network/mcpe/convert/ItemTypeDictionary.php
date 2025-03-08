@@ -30,7 +30,6 @@ use pocketmine\utils\SingletonTrait;
 use function array_key_exists;
 use function file_get_contents;
 use function is_array;
-use function is_bool;
 use function is_int;
 use function is_string;
 use function json_decode;
@@ -56,7 +55,7 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$data = file_get_contents(RESOURCE_PATH . '/vanilla/required_item_list.json');
+		$data = file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json');
 		if($data === false) throw new AssumptionFailedError("Missing required resource file");
 		$table = json_decode($data, true);
 		if(!is_array($table)){
@@ -64,11 +63,16 @@ final class ItemTypeDictionary{
 		}
 
 		$params = [];
-		foreach($table as $name => $entry){
-			if(!is_array($entry) || !is_string($name) || !isset($entry["component_based"], $entry["runtime_id"]) || !is_bool($entry["component_based"]) || !is_int($entry["runtime_id"])){
+		foreach($table as $entry){
+			if(!is_array($entry) || !isset($entry["name"], $entry["id"]) || !is_string($entry["name"]) || !is_int($entry["id"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
-			$params[] = new ItemTypeEntry($name, $entry["runtime_id"], $entry["component_based"]);
+
+			$params[] = new ItemTypeEntry(
+				stringId: $entry["name"],
+				numericId: $entry["id"],
+				componentBased: false
+			);
 		}
 		return new self($params);
 	}

@@ -29,7 +29,7 @@ use pocketmine\inventory\FurnaceRecipe;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\inventory\ShapelessRecipe;
 use pocketmine\item\ItemFactory;
-use pocketmine\network\mcpe\convert\ItemTranslator;
+use pocketmine\network\mcpe\convert\NetworkItemMapping;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\MaterialReducerRecipe;
@@ -133,10 +133,10 @@ class CraftingDataPacket extends DataPacket{
 				case self::ENTRY_FURNACE_DATA:
 					$inputIdNet = $this->getVarInt();
 					if($recipeType === self::ENTRY_FURNACE){
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, 0x7fff);
+						[$inputId, $inputData] = NetworkItemMapping::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, 0x7fff);
 					}else{
 						$inputMetaNet = $this->getVarInt();
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, $inputMetaNet);
+						[$inputId, $inputData] = NetworkItemMapping::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, $inputMetaNet);
 					}
 					$entry["input"] = ItemFactory::get($inputId, $inputData);
 					$entry["output"] = $out = $this->getItemStackWithoutStackId();
@@ -158,23 +158,23 @@ class CraftingDataPacket extends DataPacket{
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			$inputIdNet = $this->getVarInt();
 			$inputMetaNet = $this->getVarInt();
-			[$input, $inputMeta] = ItemTranslator::getInstance()->fromNetworkId($inputIdNet, $inputMetaNet);
+			[$input, $inputMeta] = NetworkItemMapping::getInstance()->fromNetworkId($inputIdNet, $inputMetaNet);
 			$ingredientIdNet = $this->getVarInt();
 			$ingredientMetaNet = $this->getVarInt();
-			[$ingredient, $ingredientMeta] = ItemTranslator::getInstance()->fromNetworkId($ingredientIdNet, $ingredientMetaNet);
+			[$ingredient, $ingredientMeta] = NetworkItemMapping::getInstance()->fromNetworkId($ingredientIdNet, $ingredientMetaNet);
 			$outputIdNet = $this->getVarInt();
 			$outputMetaNet = $this->getVarInt();
-			[$output, $outputMeta] = ItemTranslator::getInstance()->fromNetworkId($outputIdNet, $outputMetaNet);
+			[$output, $outputMeta] = NetworkItemMapping::getInstance()->fromNetworkId($outputIdNet, $outputMetaNet);
 			$this->potionTypeRecipes[] = new PotionTypeRecipe($input, $inputMeta, $ingredient, $ingredientMeta, $output, $outputMeta);
 		}
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			//TODO: we discard inbound ID here, not safe because netID on its own might map to internalID+internalMeta for us
 			$inputIdNet = $this->getVarInt();
-			[$input,] = ItemTranslator::getInstance()->fromNetworkId($inputIdNet, 0);
+			[$input,] = NetworkItemMapping::getInstance()->fromNetworkId($inputIdNet, 0);
 			$ingredientIdNet = $this->getVarInt();
-			[$ingredient,] = ItemTranslator::getInstance()->fromNetworkId($ingredientIdNet, 0);
+			[$ingredient,] = NetworkItemMapping::getInstance()->fromNetworkId($ingredientIdNet, 0);
 			$outputIdNet = $this->getVarInt();
-			[$output,] = ItemTranslator::getInstance()->fromNetworkId($outputIdNet, 0);
+			[$output,] = NetworkItemMapping::getInstance()->fromNetworkId($outputIdNet, 0);
 			$this->potionContainerRecipes[] = new PotionContainerChangeRecipe($input, $ingredient, $output);
 		}
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
@@ -259,10 +259,10 @@ class CraftingDataPacket extends DataPacket{
 	private static function writeFurnaceRecipe(FurnaceRecipe $recipe, NetworkBinaryStream $stream) : int{
 		$input = $recipe->getInput();
 		if($input->hasAnyDamageValue()){
-			[$netId,] = ItemTranslator::getInstance()->toNetworkId($input->getId(), 0);
+			[$netId,] = NetworkItemMapping::getInstance()->toNetworkId($input->getId(), 0);
 			$netData = 0x7fff;
 		}else{
-			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($input->getId(), $input->getDamage());
+			[$netId, $netData] = NetworkItemMapping::getInstance()->toNetworkId($input->getId(), $input->getDamage());
 		}
 		$stream->putVarInt($netId);
 		$stream->putVarInt($netData);

@@ -633,12 +633,12 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$buffer of class pocketmine\\\\network\\\\mcpe\\\\NetworkBinaryStream constructor expects string, string\\|false given\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Parameter \\#1 \\$str of method pocketmine\\\\utils\\\\BinaryStream\\:\\:put\\(\\) expects string, string\\|false given\\.$#"

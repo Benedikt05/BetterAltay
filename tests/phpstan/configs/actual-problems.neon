@@ -3378,37 +3378,37 @@ parameters:
 		-
 			message: "#^Argument of an invalid type array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null supplied for foreach, only iterables are supported\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Cannot access offset string on mixed\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
-			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\convert\\\\RuntimeBlockMapping\\:\\:getBedrockKnownStates\\(\\) should return array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\> but returns array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
+			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\convert\\\\NetworkBlockMapping\\:\\:getBedrockKnownStates\\(\\) should return array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\> but returns array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Offset mixed does not exist on array\\<pocketmine\\\\nbt\\\\tag\\\\CompoundTag\\>\\|null\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Parameter \\#1 \\$buffer of class pocketmine\\\\network\\\\mcpe\\\\NetworkBinaryStream constructor expects string, string\\|false given\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
-			message: "#^Parameter \\#2 \\$legacyId of static method pocketmine\\\\network\\\\mcpe\\\\convert\\\\RuntimeBlockMapping\\:\\:registerMapping\\(\\) expects int, mixed given\\.$#"
+			message: "#^Parameter \\#2 \\$legacyId of static method pocketmine\\\\network\\\\mcpe\\\\convert\\\\NetworkBlockMapping\\:\\:registerMapping\\(\\) expects int, mixed given\\.$#"
 			count: 1
-			path: ../../../src/pocketmine/network/mcpe/convert/RuntimeBlockMapping.php
+			path: ../../../src/pocketmine/network/mcpe/convert/NetworkBlockMapping.php
 
 		-
 			message: "#^Method pocketmine\\\\network\\\\mcpe\\\\encryption\\\\EncryptionUtils\\:\\:generateKey\\(\\) should return string but returns string\\|false\\.$#"

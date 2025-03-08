@@ -31,7 +31,7 @@ final class UpdateSubChunkBlocksPacketEntry{
 	private int $x;
 	private int $y;
 	private int $z;
-	private int $blockRuntimeId;
+	private int $blockNetworkId;
 
 	private int $flags;
 
@@ -39,18 +39,18 @@ final class UpdateSubChunkBlocksPacketEntry{
 	private int $syncedUpdateEntityUniqueId;
 	private int $syncedUpdateType;
 
-	public function __construct(int $x, int $y, int $z, int $blockRuntimeId, int $flags, int $syncedUpdateEntityUniqueId, int $syncedUpdateType){
+	public function __construct(int $x, int $y, int $z, int $blockNetworkId, int $flags, int $syncedUpdateEntityUniqueId, int $syncedUpdateType){
 		$this->x = $x;
 		$this->y = $y;
 		$this->z = $z;
-		$this->blockRuntimeId = $blockRuntimeId;
+		$this->blockNetworkId = $blockNetworkId;
 		$this->flags = $flags;
 		$this->syncedUpdateEntityUniqueId = $syncedUpdateEntityUniqueId;
 		$this->syncedUpdateType = $syncedUpdateType;
 	}
 
-	public static function simple(int $x, int $y, int $z, int $blockRuntimeId) : self{
-		return new self($x, $y, $z, $blockRuntimeId, UpdateBlockPacket::FLAG_NETWORK, 0, 0);
+	public static function simple(int $x, int $y, int $z, int $blockNetworkId) : self{
+		return new self($x, $y, $z, $blockNetworkId, UpdateBlockPacket::FLAG_NETWORK, 0, 0);
 	}
 
 	public function getX() : int{ return $this->x; }
@@ -59,7 +59,7 @@ final class UpdateSubChunkBlocksPacketEntry{
 
 	public function getZ() : int{ return $this->z; }
 
-	public function getBlockRuntimeId() : int{ return $this->blockRuntimeId; }
+	public function getBlockNetworkId() : int{ return $this->blockNetworkId; }
 
 	public function getFlags() : int{ return $this->flags; }
 
@@ -70,17 +70,17 @@ final class UpdateSubChunkBlocksPacketEntry{
 	public static function read(NetworkBinaryStream $in) : self{
 		$x = $y = $z = 0;
 		$in->getBlockPosition($x, $y, $z);
-		$blockRuntimeId = $in->getUnsignedVarInt();
+		$blockNetworkId = $in->getUnsignedVarInt();
 		$updateFlags = $in->getUnsignedVarInt();
 		$syncedUpdateEntityUniqueId = $in->getUnsignedVarLong(); //this can't use the standard method because it's unsigned as opposed to the usual signed... !!!!!!
 		$syncedUpdateType = $in->getUnsignedVarInt(); //this isn't even consistent with UpdateBlockSyncedPacket?!
 
-		return new self($x, $y, $z, $blockRuntimeId, $updateFlags, $syncedUpdateEntityUniqueId, $syncedUpdateType);
+		return new self($x, $y, $z, $blockNetworkId, $updateFlags, $syncedUpdateEntityUniqueId, $syncedUpdateType);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putBlockPosition($this->x, $this->y, $this->z);
-		$out->putUnsignedVarInt($this->blockRuntimeId);
+		$out->putUnsignedVarInt($this->blockNetworkId);
 		$out->putUnsignedVarInt($this->flags);
 		$out->putUnsignedVarLong($this->syncedUpdateEntityUniqueId);
 		$out->putUnsignedVarInt($this->syncedUpdateType);

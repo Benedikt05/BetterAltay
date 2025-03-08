@@ -44,7 +44,7 @@ class AvailableActorIdentifiersPacket extends DataPacket{
 		$this->put(
 			$this->namedtag ??
 			self::$DEFAULT_NBT_CACHE ??
-			(self::$DEFAULT_NBT_CACHE = file_get_contents(RESOURCE_PATH . '/vanilla/entity_identifiers.nbt'))
+			(self::$DEFAULT_NBT_CACHE = file_get_contents(RESOURCE_PATH . '/vanilla/entity_identifiers.dat'))
 		);
 	}
 

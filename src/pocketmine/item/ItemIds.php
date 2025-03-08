@@ -51,7 +51,7 @@ interface ItemIds extends BlockIds{
 	public const DIAMOND_SHOVEL = 277;
 	public const DIAMOND_PICKAXE = 278;
 	public const DIAMOND_AXE = 279;
-	public const STICK = 280;
+	public const STICK = 327;
 	public const BOWL = 281;
 	public const MUSHROOM_STEW = 282;
 	public const GOLDEN_SWORD = 283, GOLD_SWORD = 283;
@@ -95,12 +95,12 @@ interface ItemIds extends BlockIds{
 	public const PAINTING = 321;
 	public const GOLDEN_APPLE = 322;
 	public const SIGN = 323;
-	public const OAK_DOOR = 324, WOODEN_DOOR = 324;
+	public const OAK_DOOR = 366, WOODEN_DOOR = 366;
 	public const BUCKET = 325;
 
 	public const MINECART = 328;
 	public const SADDLE = 329;
-	public const IRON_DOOR = 330;
+	public const IRON_DOOR = 379;
 	public const REDSTONE = 331, REDSTONE_DUST = 331;
 	public const SNOWBALL = 332;
 	public const BOAT = 333;
@@ -136,7 +136,7 @@ interface ItemIds extends BlockIds{
 	public const BEEF = 363, RAW_BEEF = 363;
 	public const COOKED_BEEF = 364, STEAK = 364;
 	public const CHICKEN = 365, RAW_CHICKEN = 365;
-	public const COOKED_CHICKEN = 366;
+	public const COOKED_CHICKEN = 280;
 	public const ROTTEN_FLESH = 367;
 	public const ENDER_PEARL = 368;
 	public const BLAZE_ROD = 369;
@@ -149,7 +149,7 @@ interface ItemIds extends BlockIds{
 	public const FERMENTED_SPIDER_EYE = 376;
 	public const BLAZE_POWDER = 377;
 	public const MAGMA_CREAM = 378;
-	public const BREWING_STAND = 379;
+	public const BREWING_STAND = 440;
 	public const CAULDRON = 380;
 	public const ENDER_EYE = 381;
 	public const GLISTERING_MELON = 382, SPECKLED_MELON = 382;

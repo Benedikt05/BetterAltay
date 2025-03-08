@@ -26,7 +26,6 @@ namespace pocketmine\block;
 use InvalidArgumentException;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use RuntimeException;
 use SplFixedArray;
 use function min;
@@ -430,23 +429,5 @@ class BlockFactory{
 	public static function isRegistered(int $id) : bool{
 		$b = self::$fullList[$id << 4];
 		return $b !== null and !($b instanceof UnknownBlock);
-	}
-
-	/**
-	 * @internal
-	 * @deprecated
-	 */
-	public static function toStaticRuntimeId(int $id, int $meta = 0) : int{
-		return RuntimeBlockMapping::toStaticRuntimeId($id, $meta);
-	}
-
-	/**
-	 * @return int[] [id, meta]
-	 * @internal
-	 *
-	 * @deprecated
-	 */
-	public static function fromStaticRuntimeId(int $runtimeId) : array{
-		return RuntimeBlockMapping::fromStaticRuntimeId($runtimeId);
 	}
 }

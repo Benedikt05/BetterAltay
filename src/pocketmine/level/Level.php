@@ -81,7 +81,7 @@ use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\convert\NetworkBlockMapping;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -1071,10 +1071,10 @@ class Level implements ChunkManager, Metadatable{
 				$pk->z = $b->z;
 
 				if($b instanceof Block){
-					$pk->blockRuntimeId = $b->getRuntimeId();
+					$pk->blockNetworkId = $b->getNetworkId();
 				}else{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
-					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
+					$pk->blockNetworkId = NetworkBlockMapping::toStaticNetworkId($fullBlock >> 4, $fullBlock & 0xf);
 				}
 
 				$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
@@ -1093,10 +1093,10 @@ class Level implements ChunkManager, Metadatable{
 				$pk->z = $b->z;
 
 				if($b instanceof Block){
-					$pk->blockRuntimeId = $b->getRuntimeId();
+					$pk->blockNetworkId = $b->getNetworkId();
 				}else{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
-					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
+					$pk->blockNetworkId = NetworkBlockMapping::toStaticNetworkId($fullBlock >> 4, $fullBlock & 0xf);
 				}
 
 				$pk->flags = $flags;
@@ -2109,7 +2109,7 @@ class Level implements ChunkManager, Metadatable{
 		}
 
 		if($playSound){
-			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId());
+			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getNetworkId());
 		}
 
 		$item->pop();
