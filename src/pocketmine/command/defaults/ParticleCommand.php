@@ -210,17 +210,17 @@ class ParticleCommand extends VanillaCommand{
 		}
 
 		if(strpos($name, "iconcrack_") === 0){
-			$d = explode("_", $name);
+			$d = explode("_", $name, 3);
 			if(count($d) === 3){
 				return new ItemBreakParticle($pos, ItemFactory::get((int) $d[1], (int) $d[2]));
 			}
 		}elseif(strpos($name, "blockcrack_") === 0){
-			$d = explode("_", $name);
+			$d = explode("_", $name, 2);
 			if(count($d) === 2){
 				return new TerrainParticle($pos, BlockFactory::get(((int) $d[1]) & 0xff, ((int) $d[1]) >> 12));
 			}
 		}elseif(strpos($name, "blockdust_") === 0){
-			$d = explode("_", $name);
+			$d = explode("_", $name, 5);
 			if(count($d) >= 4){
 				return new DustParticle($pos, ((int) $d[1]) & 0xff, ((int) $d[2]) & 0xff, ((int) $d[3]) & 0xff, isset($d[4]) ? ((int) $d[4]) & 0xff : 255);
 			}

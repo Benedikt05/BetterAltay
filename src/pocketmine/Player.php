@@ -275,6 +275,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	private const RESOURCE_PACK_CHUNK_SIZE = 128 * 1024; //128KB
 
+
+	private const MAX_CHAT_CHAR_LENGTH = 512;
+	private const MAX_CHAT_BYTE_LENGTH = self::MAX_CHAT_CHAR_LENGTH * 4;
+
 	//TODO: HACK!>not needed after some removing of it
 	//these IDs are used for 1.16 to restore 1.14ish crafting & inventory behaviour; since they don't seem to have any
 	//effect on the behaviour of inventory transactions I don't currently plan to integrate these into the main system.
@@ -2630,8 +2634,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->doCloseInventory();
 
+		if (strlen($message) > $this->messageCounter * (self::MAX_CHAT_BYTE_LENGTH + 1)) {
+			return false;
+		}
+
 		$message = TextFormat::clean($message, $this->removeFormat);
-		foreach(explode("\n", $message) as $messagePart){
+		foreach(explode("\n", $message, $this->messageCounter + 1) as $messagePart){
 			if(trim($messagePart) !== "" and strlen($messagePart) <= 255 and $this->messageCounter-- > 0){
 				if(strpos($messagePart, './') === 0){
 					$messagePart = substr($messagePart, 1);

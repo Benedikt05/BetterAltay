@@ -32,6 +32,7 @@ use pocketmine\level\format\Chunk;
 use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function array_map;
@@ -112,7 +113,7 @@ class Flat extends Generator{
 	 */
 	public static function parseLayers(string $layers) : array{
 		$result = [];
-		$split = array_map('\trim', explode(',', $layers));
+		$split = array_map('\trim', explode(',', $layers, Level::Y_MAX - Level::Y_MIN));
 		$y = 0;
 		foreach($split as $line){
 			preg_match('#^(?:(\d+)[x|*])?(.+)$#', $line, $matches);
