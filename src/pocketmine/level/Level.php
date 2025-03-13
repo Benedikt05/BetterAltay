@@ -144,6 +144,7 @@ class Level implements ChunkManager, Metadatable{
 
 	public const Y_MASK = 0xFF;
 	public const Y_MAX = 0x100; //256
+	public const Y_MIN = -64;
 
 	public const TIME_DAY = 1000;
 	public const TIME_NOON = 6000;

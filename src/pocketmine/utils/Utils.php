@@ -519,7 +519,7 @@ class Utils{
 	 * @phpstan-return array<string, mixed>
 	 */
 	public static function decodeJWT(string $token) : array{
-		[$headB64, $payloadB64, $sigB64] = explode(".", $token);
+		[$headB64, $payloadB64, $sigB64] = explode(".", $token, 3);
 
 		$rawPayloadJSON = base64_decode(strtr($payloadB64, '-_', '+/'), true);
 		if($rawPayloadJSON === false){

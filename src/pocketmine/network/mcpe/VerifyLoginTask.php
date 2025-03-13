@@ -100,7 +100,7 @@ class VerifyLoginTask extends AsyncTask{
 	 * @throws VerifyLoginException if errors are encountered
 	 */
 	private function validateToken(string $jwt, ?string &$currentPublicKey, bool $first = false) : void{
-		$rawParts = explode('.', $jwt);
+		$rawParts = explode('.', $jwt, 3);
 		if(count($rawParts) !== 3){
 			throw new VerifyLoginException("Wrong number of JWT parts, expected 3, got " . count($rawParts));
 		}
