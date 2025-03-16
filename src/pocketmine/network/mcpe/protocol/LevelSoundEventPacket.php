@@ -489,6 +489,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$this->entityType = $this->getString();
 		$this->isBabyMob = $this->getBool();
 		$this->disableRelativeVolume = $this->getBool();
+		$this->entityUniqueId = $this->getLLong();
 	}
 
 	protected function encodePayload() : void{
