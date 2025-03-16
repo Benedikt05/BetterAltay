@@ -467,7 +467,10 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		return true; //silence debug spam
 	}
 
-	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet){
+	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) : bool{
+		if($packet->getGraphicsMode() === null){
+			return true;
+		}
 		$ev = new PlayerGameplayUpdateEvent($this->player, $packet->getGraphicsMode());
 		$ev->call();
 		return true;

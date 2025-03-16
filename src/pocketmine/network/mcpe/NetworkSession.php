@@ -927,7 +927,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) {
+	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) : bool{
 		return false;
 	}
 

@@ -15,21 +15,24 @@ class UpdateClientOptionsPacket extends DataPacket{
 	public const GRAPHICS_MODE_ADVANCED = 2;
 	public const GRAPHICS_MODE_RAY_TRACED = 3;
 
-	private int $graphicsMode;
+	private ?int $graphicsMode;
 
 	/**
-	 * @return int
+	 * @return int|null
 	 */
-	public function getGraphicsMode() : int{
+	public function getGraphicsMode() : ?int{
 		return $this->graphicsMode;
 	}
 
-	protected function decodePayload(){
-		$this->graphicsMode = $this->getByte();
+	protected function decodePayload() : void{
+		$this->graphicsMode = $this->getBool() ? $this->getByte() : null;
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->graphicsMode);
+	protected function encodePayload() : void{
+		$this->putBool($this->graphicsMode !== null);
+		if($this->graphicsMode !== null){
+			$this->putByte($this->graphicsMode);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{
