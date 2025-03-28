@@ -163,7 +163,7 @@ class BanEntry{
 		if(strlen($str) < 2){
 			return null;
 		}else{
-			$str = explode("|", trim($str));
+			$str = explode("|", trim($str), 6);
 			$entry = new BanEntry(trim(array_shift($str)));
 			if(count($str) === 0){
 				return $entry;

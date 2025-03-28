@@ -68,7 +68,7 @@ final class JwtUtils{
 	 * @throws JwtException
 	 */
 	public static function split(string $jwt) : array{
-		$v = explode(".", $jwt);
+		$v = explode(".", $jwt, 3);
 		if(count($v) !== 3){
 			throw new JwtException("Expected exactly 3 JWT parts, got " . count($v));
 		}

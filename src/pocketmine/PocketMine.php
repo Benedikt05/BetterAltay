@@ -250,7 +250,7 @@ JIT_WARNING
 
 		$composerGitHash = InstalledVersions::getReference('pocketmine/pocketmine-mp');
 		if($composerGitHash !== null){
-			$currentGitHash = explode("-", \pocketmine\GIT_COMMIT)[0];
+			$currentGitHash = explode("-", \pocketmine\GIT_COMMIT, 2)[0];
 			if($currentGitHash !== $composerGitHash){
 				critical_error("Composer dependencies and/or autoloader are out of sync.");
 				critical_error("- Current revision is $currentGitHash");
