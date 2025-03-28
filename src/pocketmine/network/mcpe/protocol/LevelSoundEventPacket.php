@@ -463,7 +463,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_CLOSE_LONG = 545;
 	public const SOUND_UNDEFINED = 546;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
+	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
 		$result = new self;
 		$result->sound = $sound;
 		$result->extraData = $extraData;
@@ -471,6 +471,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$result->disableRelativeVolume = $pos === null;
 		$result->entityType = $entityType;
 		$result->isBabyMob = $isBabyMob;
+		$result->entityUniqueId = $entityUniqueId;
 		return $result;
 	}
 
