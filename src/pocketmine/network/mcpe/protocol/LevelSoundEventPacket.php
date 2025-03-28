@@ -481,7 +481,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public string $entityType = ":"; //???
 	public bool $isBabyMob = false; //...
 	public bool $disableRelativeVolume = false;
-	public int $entityUniqueId = -1; //TODO: adjust everywhere in the code
+	public int $entityUniqueId = -1;
 
 	protected function decodePayload() : void{
 		$this->sound = $this->getUnsignedVarInt();
