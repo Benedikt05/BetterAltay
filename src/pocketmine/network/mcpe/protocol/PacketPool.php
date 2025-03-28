@@ -58,7 +58,6 @@ class PacketPool{
 		static::registerPacket(new PassengerJumpPacket());
 		static::registerPacket(new UpdateBlockPacket());
 		static::registerPacket(new AddPaintingPacket());
-		static::registerPacket(new LevelSoundEventPacketV1());
 		static::registerPacket(new LevelEventPacket());
 		static::registerPacket(new BlockEventPacket());
 		static::registerPacket(new ActorEventPacket());
@@ -149,7 +148,6 @@ class PacketPool{
 		static::registerPacket(new NetworkStackLatencyPacket());
 		static::registerPacket(new SpawnParticleEffectPacket());
 		static::registerPacket(new AvailableActorIdentifiersPacket());
-		static::registerPacket(new LevelSoundEventPacketV2());
 		static::registerPacket(new NetworkChunkPublisherUpdatePacket());
 		static::registerPacket(new BiomeDefinitionListPacket());
 		static::registerPacket(new LevelSoundEventPacket());
@@ -218,6 +216,7 @@ class PacketPool{
 		static::registerPacket(new SetHudPacket());
 		static::registerPacket(new AwardAchievementPacket());
 		static::registerPacket(new ClientboundCloseFormPacket());
+		static::registerPacket(new UpdateClientOptionsPacket());
 	}
 
 	/**

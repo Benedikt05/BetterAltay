@@ -17,15 +17,19 @@ class SetHudPacket extends DataPacket{
 	public int $visibility;
 
 	protected function decodePayload() : void{
-		//TODO
+		for($index = 0; $index < $this->getUnsignedVarInt(); $index++){
+			$this->hudElements[] = $this->getVarInt();
+		}
+
+		$this->visibility = $this->getVarInt();
 	}
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt(count($this->hudElements));
 		foreach($this->hudElements as $hudElement){
-			$this->putByte($hudElement);
+			$this->putVarInt($hudElement);
 		}
-		$this->putByte($this->visibility);
+		$this->putVarInt($this->visibility);
 	}
 
 	public function handle(NetworkSession $session) : bool{

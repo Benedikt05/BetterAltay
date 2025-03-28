@@ -463,7 +463,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_CLOSE_LONG = 545;
 	public const SOUND_UNDEFINED = 546;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false) : self{
+	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
 		$result = new self;
 		$result->sound = $sound;
 		$result->extraData = $extraData;
@@ -471,38 +471,36 @@ class LevelSoundEventPacket extends DataPacket{
 		$result->disableRelativeVolume = $pos === null;
 		$result->entityType = $entityType;
 		$result->isBabyMob = $isBabyMob;
+		$result->entityUniqueId = $entityUniqueId;
 		return $result;
 	}
 
-	/** @var int */
-	public $sound;
-	/** @var Vector3 */
-	public $position;
-	/** @var int */
-	public $extraData = -1;
-	/** @var string */
-	public $entityType = ":"; //???
-	/** @var bool */
-	public $isBabyMob = false; //...
-	/** @var bool */
-	public $disableRelativeVolume = false;
+	public int $sound;
+	public Vector3 $position;
+	public int $extraData = -1;
+	public string $entityType = ":"; //???
+	public bool $isBabyMob = false; //...
+	public bool $disableRelativeVolume = false;
+	public int $entityUniqueId = -1;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->sound = $this->getUnsignedVarInt();
 		$this->position = $this->getVector3();
 		$this->extraData = $this->getVarInt();
 		$this->entityType = $this->getString();
 		$this->isBabyMob = $this->getBool();
 		$this->disableRelativeVolume = $this->getBool();
+		$this->entityUniqueId = $this->getLLong();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->sound);
 		$this->putVector3($this->position);
 		$this->putVarInt($this->extraData);
 		$this->putString($this->entityType);
 		$this->putBool($this->isBabyMob);
 		$this->putBool($this->disableRelativeVolume);
+		$this->putLLong($this->entityUniqueId);
 	}
 
 	public function handle(NetworkSession $session) : bool{
