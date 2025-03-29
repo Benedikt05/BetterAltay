@@ -6,18 +6,18 @@
 	<br>
 	This is a fork of <a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a> and <a href="https://github.com/unresolved3169/Altay">Altay</a>.
 	<br><br>
-	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.60</i>
+	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.71</i>
 	<br><br>
 
 <p align="center">
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
-	<a href="https://www.minecraft.net/en-us/article/minecraft-1-21-60-bedrock-changelog">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.60-blue?style=flat-square" alt="Minecraft">
+	<a href="https://www.minecraft.net/en-us/article/minecraft-1-21-70-bedrock-changelog">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.70-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-776-yellow?style=flat-square" alt="Protocol">
+		<img src="https://img.shields.io/badge/protocol-786-yellow?style=flat-square" alt="Protocol">
 	</a>
 	<a href="https://github.com/Benedikt05/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
