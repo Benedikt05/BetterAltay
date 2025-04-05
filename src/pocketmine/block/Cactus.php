@@ -69,6 +69,12 @@ class Cactus extends Transparent{
 		$entity->attack($ev);
 	}
 
+	public function onEntityCollideUpon(Entity $entity): void
+	{
+		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_CONTACT, 1);
+		$entity->attack($ev);
+	}
+
 	public function onNearbyBlockChange() : void{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
 		if($down->getId() !== self::SAND and $down->getId() !== self::CACTUS){
