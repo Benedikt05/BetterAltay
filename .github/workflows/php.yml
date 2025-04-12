@@ -1,42 +1,65 @@
-name: PHP Composer
+name: Build and Release
 
 on:
   push:
     branches:
       - '*'
-
   pull_request:
     branches:
       - '*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build:
-
+  build_and_release:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --ignore-platform-req=ext-chunkutils2 --ignore-platform-req=ext-crypto --ignore-platform-req=ext-pthreads
+      - name: Build PHAR
+        run: composer make-server
 
-    - name: Run build script
-      run: composer make-server
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BetterAltay
+          path: BetterAltay.phar
 
-    - name: Archive generated Phar file
-      uses: actions/upload-artifact@v4
-      with:
-        name: BetterAltay
-        path: BetterAltay.phar
+      - name: Extract version
+        if: >
+          contains(github.event.head_commit.message, '[Release]') &&
+          startsWith(github.ref, 'refs/heads/master')
+        id: extract_version
+        run: |
+          version=$(echo "${{ github.event.head_commit.message }}" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$version" ]; then exit 1; fi
+          tagversion=${version:1}
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "tagversion=$tagversion" >> $GITHUB_OUTPUT
+
+      - name: Create tag and push
+        if: >
+          contains(github.event.head_commit.message, '[Release]') &&
+          startsWith(github.ref, 'refs/heads/master')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.extract_version.outputs.tagversion }}
+          git push origin ${{ steps.extract_version.outputs.tagversion }}
+
+      - name: Create GitHub Release
+        if: >
+          contains(github.event.head_commit.message, '[Release]') &&
+          startsWith(github.ref, 'refs/heads/master')
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.extract_version.outputs.tagversion }}
+          name: "Release ${{ steps.extract_version.outputs.tagversion }}"
+          generateReleaseNotes: true
+          artifacts: BetterAltay.phar
