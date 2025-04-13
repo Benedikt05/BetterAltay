@@ -62,7 +62,7 @@ class Bucket extends Item implements MaybeConsumable{
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		if($this->meta === 11) return false; // Temporary fix to prevent powder snow bucket from placing lava
-		if($this->meta === Block::FLOWING_WATER && $player->getLevelNonNull()->getDimension() === DimensionIds::NETHER) {
+		if($this->meta === Block::FLOWING_WATER && $player->getLevelNonNull()->getDimension() === DimensionIds::NETHER){
 			$player->getLevelNonNull()->broadcastLevelSoundEvent($blockClicked->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_EXTINGUISH_FIRE);
 			return false;
 		}
