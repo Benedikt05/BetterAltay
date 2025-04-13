@@ -36,16 +36,15 @@ class PlayerListPacket extends DataPacket{
 	public const TYPE_REMOVE = 1;
 
 	/** @var PlayerListEntry[] */
-	public $entries = [];
-	/** @var int */
-	public $type;
+	public array $entries = [];
+	public int $type;
 
-	public function clean(){
+	public function clean() : PlayerListPacket{
 		$this->entries = [];
 		return parent::clean();
 	}
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->type = $this->getByte();
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
@@ -62,6 +61,7 @@ class PlayerListPacket extends DataPacket{
 				$entry->isTeacher = $this->getBool();
 				$entry->isHost = $this->getBool();
 				$entry->isSubClient = $this->getBool();
+				$entry->color = $this->getInt();
 			}else{
 				$entry->uuid = $this->getUUID();
 			}
@@ -75,7 +75,7 @@ class PlayerListPacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putByte($this->type);
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
@@ -90,6 +90,7 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isTeacher);
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
+				$this->putInt($entry->color);
 			}else{
 				$this->putUUID($entry->uuid);
 			}

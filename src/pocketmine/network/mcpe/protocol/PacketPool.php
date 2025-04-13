@@ -55,7 +55,6 @@ class PacketPool{
 		static::registerPacket(new TakeItemActorPacket());
 		static::registerPacket(new MoveActorAbsolutePacket());
 		static::registerPacket(new MovePlayerPacket());
-		static::registerPacket(new PassengerJumpPacket());
 		static::registerPacket(new UpdateBlockPacket());
 		static::registerPacket(new AddPaintingPacket());
 		static::registerPacket(new LevelEventPacket());
@@ -87,7 +86,6 @@ class PacketPool{
 		static::registerPacket(new CraftingDataPacket());
 		static::registerPacket(new GuiDataPickItemPacket());
 		static::registerPacket(new BlockActorDataPacket());
-		static::registerPacket(new PlayerInputPacket());
 		static::registerPacket(new LevelChunkPacket());
 		static::registerPacket(new SetCommandsEnabledPacket());
 		static::registerPacket(new SetDifficultyPacket());

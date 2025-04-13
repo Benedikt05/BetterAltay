@@ -117,7 +117,6 @@ use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
-use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -125,7 +124,6 @@ use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerEnchantOptionsPacket;
 use pocketmine\network\mcpe\protocol\PlayerFogPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
-use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\network\mcpe\protocol\PlayerStartItemCooldownPacket;
@@ -283,10 +281,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handlePassengerJump(PassengerJumpPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleUpdateBlock(UpdateBlockPacket $packet) : bool{
 		return false;
 	}
@@ -408,10 +402,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleBlockActorData(BlockActorDataPacket $packet) : bool{
-		return false;
-	}
-
-	public function handlePlayerInput(PlayerInputPacket $packet) : bool{
 		return false;
 	}
 
