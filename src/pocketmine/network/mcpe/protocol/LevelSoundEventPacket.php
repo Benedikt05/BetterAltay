@@ -358,6 +358,8 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_AMBIENT_CRIMSON_FOREST_ADDITIONS = 327;
 	public const SOUND_BUCKET_FILL_POWDER_SNOW = 328;
 	public const SOUND_BUCKET_EMPTY_POWDER_SNOW = 329;
+	public const SOUND_RECORD_OTHERSIDE = 371;
+	public const SOUND_RECORD_5 = 439;
 	public const SOUND_BLOCK_ENCHANTING_TABLE_USE = 442;
 	public const SOUND_STEP_SAND = 443;
 	public const SOUND_DASH_READY = 444;

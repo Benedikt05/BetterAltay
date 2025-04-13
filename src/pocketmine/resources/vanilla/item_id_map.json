@@ -781,8 +781,9 @@
     "minecraft:record_11": 510,
     "minecraft:record_wait": 511,
     "minecraft:shield": 513,
-    "minecraft:goat_horn": 624,
+    "minecraft:record_5": 636,
     "minecraft:chest_boat": 646,
+    "minecraft:record_relic": 701,
     "minecraft:campfire": 720,
     "minecraft:suspicious_stew": 734,
     "minecraft:honeycomb": 736,
@@ -807,6 +808,8 @@
     "minecraft:chain": 758,
     "minecraft:record_pigstep": 759,
     "minecraft:nether_sprouts": 760,
+    "minecraft:goat_horn": 761,
     "minecraft:spyglass": 772,
+    "minecraft:record_otherside": 773,
     "minecraft:soul_campfire": 801
 }

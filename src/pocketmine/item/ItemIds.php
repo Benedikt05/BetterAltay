@@ -263,7 +263,9 @@ interface ItemIds extends BlockIds{
 
 	public const SHIELD = 513;
 
-	public const SPYGLASS = 772;
+	public const RECORD_5 = 636;
+
+	public const RECORD_RELIC = 701;
 
 	public const HONEYCOMB = 736;
 	public const HONEY_BOTTLE = 737;
@@ -280,4 +282,8 @@ interface ItemIds extends BlockIds{
 	public const NETHERITE_BOOTS = 751;
 	public const NETHERITE_SCRAP = 752;
 
+	public const RECORD_PIGSTEP = 759;
+
+	public const SPYGLASS = 772;
+	public const RECORD_OTHERSIDE = 773;
 }
