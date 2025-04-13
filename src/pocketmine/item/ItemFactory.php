@@ -294,6 +294,10 @@ class ItemFactory{
 		self::registerItem(new Record(Item::RECORD_WARD, LevelSoundEventPacket::SOUND_RECORD_WARD));
 		self::registerItem(new Record(Item::RECORD_11, LevelSoundEventPacket::SOUND_RECORD_11));
 		self::registerItem(new Record(Item::RECORD_WAIT, LevelSoundEventPacket::SOUND_RECORD_WAIT));
+		self::registerItem(new Record(Item::RECORD_OTHERSIDE, LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE));
+		self::registerItem(new Record(Item::RECORD_5, LevelSoundEventPacket::SOUND_RECORD_5));
+		self::registerItem(new Record(Item::RECORD_PIGSTEP, LevelSoundEventPacket::SOUND_RECORD_PIGSTEP));
+		self::registerItem(new Record(Item::RECORD_RELIC, LevelSoundEventPacket::SOUND_RECORD_RELIC));
 
 		self::registerItem(new Shield());
 
