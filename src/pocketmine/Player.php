@@ -2695,6 +2695,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 
 		$newPos = $rawPos->round(4)->subtract(0, $this->baseOffset);
+		$packetHandled = true;
 		if($this->forceMoveSync !== null and $newPos->distanceSquared($this->forceMoveSync) > 1){  //Tolerate up to 1 block to avoid problems with client-sided physics when spawning in blocks
 			$this->server->getLogger()->debug("Got outdated pre-teleport movement from " . $this->getName() . ", received " . $newPos . ", expected " . $this->asVector3());
 			//Still getting movements from before teleport, ignore them
@@ -2720,7 +2721,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				($swimming !== null && !$this->toggleSwim($swimming)) |
 				($gliding !== null && !$this->toggleGlide($gliding)) |
 				($flying !== null && !$this->toggleFlight($flying));
-			if($mismatch){
+			if((bool) $mismatch){
 				$this->sendData([$this]);
 			}
 
@@ -2754,13 +2755,24 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					}
 
 					if(!$actionHandled){
+						$packetHandled = false;
 						$this->getServer()->getLogger()->debug("Unhandled player block action at offset $k in PlayerAuthInputPacket");
 					}
 				}
 			}
-		}
+			$useItemTransaction = $packet->getItemInteractionData();
+			if($useItemTransaction !== null){
+				if(count($useItemTransaction->getTransactionData()->getActions()) > 100){
+					throw new RuntimeException("Too many actions in item use transaction");
+				}
 
-		return true;
+				if(!$this->handleUseItemTransaction($useItemTransaction->getTransactionData())){
+					$packetHandled = false;
+					$this->getServer()->getLogger()->debug("Unhandled transaction in PlayerAuthInputPacket (type " . $useItemTransaction->getTransactionData()->getActionType() . ")");
+				}
+			}
+		}
+		return $packetHandled;
 	}
 
 	public function handlePlayerAction(PlayerActionPacket $packet) : bool{

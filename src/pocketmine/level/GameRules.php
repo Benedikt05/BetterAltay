@@ -54,6 +54,7 @@ class GameRules{
 	public const RULE_NATURAL_REGENERATION = "naturalRegeneration";
 	public const RULE_RANDOM_TICK_SPEED = "randomtickspeed";
 	public const RULE_RECIPES_UNLOCK = "recipesunlock";
+	public const LOCATOR_BAR = "locatorBar";
 
 	public const RULE_TYPE_BOOL = 1;
 	public const RULE_TYPE_INT = 2;
@@ -89,6 +90,7 @@ class GameRules{
 		$this->setBool(self::RULE_TNT_EXPLODES, true);
 		$this->setInt(self::RULE_RANDOM_TICK_SPEED, 3);
 		$this->setBool(self::RULE_RECIPES_UNLOCK, false);
+		$this->setBool(self::LOCATOR_BAR, false);
 	}
 
 	/**

@@ -226,5 +226,7 @@ interface ProtocolInfo{
 	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
 	public const CLIENTBOUND_CLOSE_FORM_PACKET = 0x136;
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
+	public const PLAYER_LOCATION_PACKET = 0x146;
+	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
 
 }

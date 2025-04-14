@@ -40,8 +40,7 @@ use pocketmine\network\mcpe\protocol\types\PlayMode;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket as PlayerAction;
 use RuntimeException;
 
-class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
-{
+class PlayerAuthInputPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_AUTH_INPUT_PACKET;
 
 	private Vector3 $position;
@@ -64,33 +63,67 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 	private ?PlayerAuthInputVehicleInfo $vehicleInfo = null;
 	private float $analogMoveVecX;
 	private float $analogMoveVecZ;
-	private Vector3 $cameraOrientation; //Todo
+	private Vector3 $cameraOrientation;
 	private Vector2 $rawMove;
 
+	/**
+	 * @generate-create-func
+	 * @param PlayerBlockAction[] $blockActions
+	 */
+	private static function internalCreate(
+		Vector3 $position,
+		float $pitch,
+		float $yaw,
+		float $headYaw,
+		float $moveVecX,
+		float $moveVecZ,
+		BitSet $inputFlags,
+		int $inputMode,
+		int $playMode,
+		int $interactionMode,
+		Vector2 $interactRotation,
+		int $tick,
+		Vector3 $delta,
+		?ItemInteractionData $itemInteractionData,
+		?ItemStackRequest $itemStackRequest,
+		?array $blockActions,
+		?PlayerAuthInputVehicleInfo $vehicleInfo,
+		float $analogMoveVecX,
+		float $analogMoveVecZ,
+		Vector3 $cameraOrientation,
+		Vector2 $rawMove,
+	) : self{
+		$result = new self;
+		$result->position = $position;
+		$result->pitch = $pitch;
+		$result->yaw = $yaw;
+		$result->headYaw = $headYaw;
+		$result->moveVecX = $moveVecX;
+		$result->moveVecZ = $moveVecZ;
+		$result->inputFlags = $inputFlags;
+		$result->inputMode = $inputMode;
+		$result->playMode = $playMode;
+		$result->interactionMode = $interactionMode;
+		$result->interactRotation = $interactRotation;
+		$result->tick = $tick;
+		$result->delta = $delta;
+		$result->itemInteractionData = $itemInteractionData;
+		$result->itemStackRequest = $itemStackRequest;
+		$result->blockActions = $blockActions;
+		$result->vehicleInfo = $vehicleInfo;
+		$result->analogMoveVecX = $analogMoveVecX;
+		$result->analogMoveVecZ = $analogMoveVecZ;
+		$result->cameraOrientation = $cameraOrientation;
+		$result->rawMove = $rawMove;
+		return $result;
+	}
 
 	/**
-	 * @param Vector3                         $position
-	 * @param float                           $pitch
-	 * @param float                           $yaw
-	 * @param float                           $headYaw
-	 * @param float                           $moveVecX
-	 * @param float                           $moveVecZ
-	 * @param BitSet                          $inputFlags @see PlayerAuthInputFlags
-	 * @param int                             $inputMode @see InputMode
-	 * @param int                             $playMode @see PlayMode
-	 * @param int                             $interactionMode @see InteractionMode
-	 * @param Vector2                         $interactRotation
-	 * @param int                             $tick
-	 * @param Vector3                         $delta
-	 * @param ItemInteractionData|null        $itemInteractionData
-	 * @param ItemStackRequest|null           $itemStackRequest
-	 * @param PlayerBlockAction[]|null        $blockActions Blocks that the client has interacted with
-	 * @param PlayerAuthInputVehicleInfo|null $vehicleInfo
-	 * @param float                           $analogMoveVecX
-	 * @param float                           $analogMoveVecZ
-	 * @param Vector3                         $cameraOrientation
-	 *
-	 * @return PlayerAuthInputPacket
+	 * @param BitSet                   $inputFlags @see PlayerAuthInputFlags
+	 * @param int                      $inputMode @see InputMode
+	 * @param int                      $playMode @see PlayMode
+	 * @param int                      $interactionMode @see InteractionMode
+	 * @param PlayerBlockAction[]|null $blockActions Blocks that the client has interacted with
 	 */
 	public static function create(
 		Vector3 $position,
@@ -113,15 +146,8 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 		float $analogMoveVecX,
 		float $analogMoveVecZ,
 		Vector3 $cameraOrientation,
+		Vector2 $rawMove
 	) : self{
-		$result = new self;
-		$result->position = $position->asVector3();
-		$result->pitch = $pitch;
-		$result->yaw = $yaw;
-		$result->headYaw = $headYaw;
-		$result->moveVecX = $moveVecX;
-		$result->moveVecZ = $moveVecZ;
-
 		if($inputFlags->getLength() !== 65){
 			throw new \InvalidArgumentException("Input flags must be 65 bits long");
 		}
@@ -131,20 +157,29 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 		$inputFlags->set(PlayerAuthInputFlags::PERFORM_BLOCK_ACTIONS, $blockActions !== null);
 		$inputFlags->set(PlayerAuthInputFlags::IN_CLIENT_PREDICTED_VEHICLE, $vehicleInfo !== null);
 
-		$result->inputMode = $inputMode;
-		$result->playMode = $playMode;
-		$result->interactionMode = $interactionMode;
-		$result->interactRotation = $interactRotation;
-		$result->tick = $tick;
-		$result->delta = $delta;
-		$result->itemInteractionData = $itemInteractionData;
-		$result->itemStackRequest = $itemStackRequest;
-		$result->blockActions = $blockActions;
-		$result->vehicleInfo = $vehicleInfo;
-		$result->analogMoveVecX = $analogMoveVecX;
-		$result->analogMoveVecZ = $analogMoveVecZ;
-		$result->cameraOrientation = $cameraOrientation;
-		return $result;
+		return self::internalCreate(
+			$position,
+			$pitch,
+			$yaw,
+			$headYaw,
+			$moveVecX,
+			$moveVecZ,
+			$inputFlags,
+			$inputMode,
+			$playMode,
+			$interactionMode,
+			$interactRotation,
+			$tick,
+			$delta,
+			$itemInteractionData,
+			$itemStackRequest,
+			$blockActions,
+			$vehicleInfo,
+			$analogMoveVecX,
+			$analogMoveVecZ,
+			$cameraOrientation,
+			$rawMove
+		);
 	}
 
 	public function getPosition() : Vector3{
@@ -199,9 +234,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 		return $this->interactionMode;
 	}
 
-	public function getInteractRotation () : Vector2{
-		return $this->interactRotation;
-	}
+	public function getInteractRotation() : Vector2{ return $this->interactRotation; }
 
 	public function getTick() : int{
 		return $this->tick;
@@ -232,6 +265,8 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 
 	public function getAnalogMoveVecZ() : float{ return $this->analogMoveVecZ; }
 
+	public function getCameraOrientation() : Vector3{ return $this->cameraOrientation; }
+
 	public function getRawMove() : Vector2{ return $this->rawMove; }
 
 	protected function decodePayload() : void{
@@ -248,34 +283,27 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/
 		$this->interactRotation = $this->getVector2();
 		$this->tick = $this->getUnsignedVarLong();
 		$this->delta = $this->getVector3();
-
 		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_ITEM_INTERACTION)){
 			$this->itemInteractionData = ItemInteractionData::read($this);
 		}
-
 		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_ITEM_STACK_REQUEST)){
 			$this->itemStackRequest = ItemStackRequest::read($this);
 		}
-
 		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_BLOCK_ACTIONS)){
 			$this->blockActions = [];
 			$max = $this->getVarInt();
 			for($i = 0; $i < $max; ++$i){
 				$actionType = $this->getVarInt();
-				$this->blockActions[] = match (true) {
+				$this->blockActions[] = match(true){
 					PlayerBlockActionWithBlockInfo::isValidActionType($actionType) => PlayerBlockActionWithBlockInfo::read($this, $actionType),
 					$actionType === PlayerAction::ACTION_STOP_BREAK => new PlayerBlockActionStopBreak(),
 					default => throw new RuntimeException("Unexpected block action type $actionType")
 				};
 			}
-
 		}
-
-
 		if($this->inputFlags->get(PlayerAuthInputFlags::IN_CLIENT_PREDICTED_VEHICLE)){
-			PlayerAuthInputVehicleInfo::read($this);
+			$this->vehicleInfo = PlayerAuthInputVehicleInfo::read($this);
 		}
-
 		$this->analogMoveVecX = $this->getLFloat();
 		$this->analogMoveVecZ = $this->getLFloat();
 		$this->cameraOrientation = $this->getVector3();

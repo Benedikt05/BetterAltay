@@ -49,6 +49,7 @@ use pocketmine\network\mcpe\protocol\CameraShakePacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
+use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheBlobStatusPacket;
@@ -125,6 +126,7 @@ use pocketmine\network\mcpe\protocol\PlayerEnchantOptionsPacket;
 use pocketmine\network\mcpe\protocol\PlayerFogPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
+use pocketmine\network\mcpe\protocol\PlayerLocationPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\network\mcpe\protocol\PlayerStartItemCooldownPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
@@ -918,6 +920,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handlePlayerLocation(PlayerLocationPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundControlSchemeSet(ClientboundControlSchemeSetPacket $packet) : bool{
 		return false;
 	}
 
