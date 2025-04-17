@@ -428,6 +428,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $moveRateLimit = 10 * self::MOVES_PER_TICK;
 	/** @var float|null */
 	protected $lastMovementProcess = null;
+	/** @var float|null */
+	protected $lastPlayerAuthInputYaw = null;
+	/** @var float|null */
+	protected $lastPlayerAuthInputPitch = null;
+	/** @var Vector3|null */
+	protected $lastPlayerAuthInputPosition = null;
 	/** @var Vector3|null */
 	protected $forceMoveSync = null;
 
@@ -2729,15 +2735,23 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->jump();
 			}
 
-			$yaw = fmod($packet->getYaw(), 360);
-			$pitch = fmod($packet->getPitch(), 360);
+			if ($packet->getYaw() !== $this->lastPlayerAuthInputYaw || $packet->getPitch() !== $this->lastPlayerAuthInputPitch) {
+				$yaw = fmod($packet->getYaw(), 360);
+				$pitch = fmod($packet->getPitch(), 360);
 
-			if($packet->getYaw() < 0){
-				$yaw += 360;
+				if($packet->getYaw() < 0){
+					$yaw += 360;
+				}
+
+				$this->setRotation($yaw, $pitch);
+				$this->lastPlayerAuthInputYaw = $packet->getYaw();
+				$this->lastPlayerAuthInputPitch = $packet->getPitch();
 			}
 
-			$this->setRotation($yaw, $pitch);
-			$this->handleMovement($newPos);
+			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))) {
+				$this->handleMovement($newPos);
+				$this->lastPlayerAuthInputPosition = $rawPos;
+			}
 
 
 			$blockActions = $packet->getBlockActions();
