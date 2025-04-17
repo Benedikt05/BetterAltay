@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe;
 
 use InvalidArgumentException;
-use pocketmine\entity\passive\AbstractHorse;
 use pocketmine\event\player\PlayerGameplayUpdateEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\maps\MapData;
@@ -55,14 +54,11 @@ use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
-use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
-use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
-use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
-use pocketmine\network\mcpe\protocol\RequestAbilityPacket;
 use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
 use pocketmine\network\mcpe\protocol\RequestNetworkSettingsPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
@@ -77,7 +73,6 @@ use pocketmine\network\mcpe\protocol\SettingsCommandPacket;
 use pocketmine\network\mcpe\protocol\ShowCreditsPacket;
 use pocketmine\network\mcpe\protocol\SpawnExperienceOrbPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
-use pocketmine\network\mcpe\protocol\types\RequestAbilityType;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\UpdateClientOptionsPacket;
@@ -161,10 +156,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		return false;
 	}
 
-	public function handleMovePlayer(MovePlayerPacket $packet) : bool{
-		return $this->player->handleMovePlayer($packet);
-	}
-
 	public function handleActorEvent(ActorEventPacket $packet) : bool{
 		return $this->player->handleEntityEvent($packet);
 	}
@@ -221,25 +212,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handleBlockActorData(BlockActorDataPacket $packet) : bool{
 		return $this->player->handleBlockEntityData($packet);
-	}
-
-	public function handlePlayerInput(PlayerInputPacket $packet) : bool{
-		$this->player->setMoveForward($packet->motionY);
-		$this->player->setMoveStrafing($packet->motionX);
-
-		return true;
-	}
-
-	public function handlePassengerJump(PassengerJumpPacket $packet) : bool{
-		if($this->player->isRiding()){
-			$horse = $this->player->getRidingEntity();
-			if($horse instanceof AbstractHorse){
-				$horse->setJumpPower($packet->jumpStrength);
-
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public function handleSetPlayerGameType(SetPlayerGameTypePacket $packet) : bool{
@@ -444,25 +416,6 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		return $this->player->handleRequestNetworkSettings($packet);
 	}
 
-	public function handleRequestAbility(RequestAbilityPacket $packet) : bool{
-		if($packet->abilityId === RequestAbilityType::ABILITY_FLYING){
-			$isFlying = $packet->abilityValue;
-			if(!is_bool($isFlying)){
-				return false;
-			}
-
-			if($isFlying !== $this->player->isFlying()){
-				if(!$this->player->toggleFlight($isFlying)){
-					$this->player->sendAbilities();
-				}
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
 	public function handleSetPlayerInventoryOptions(SetPlayerInventoryOptionsPacket $packet) : bool{
 		return true; //silence debug spam
 	}
@@ -474,5 +427,9 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		$ev = new PlayerGameplayUpdateEvent($this->player, $packet->getGraphicsMode());
 		$ev->call();
 		return true;
+	}
+
+	public function handlePlayerAuthInput(PlayerAuthInputPacket $packet) : bool{
+		return $this->player->handlePlayerAuthInput($packet);
 	}
 }

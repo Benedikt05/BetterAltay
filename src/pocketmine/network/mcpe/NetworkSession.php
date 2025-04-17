@@ -49,6 +49,7 @@ use pocketmine\network\mcpe\protocol\CameraShakePacket;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
+use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheBlobStatusPacket;
@@ -117,7 +118,6 @@ use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
-use pocketmine\network\mcpe\protocol\PassengerJumpPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -125,8 +125,8 @@ use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerEnchantOptionsPacket;
 use pocketmine\network\mcpe\protocol\PlayerFogPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
-use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
+use pocketmine\network\mcpe\protocol\PlayerLocationPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\network\mcpe\protocol\PlayerStartItemCooldownPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
@@ -283,10 +283,6 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handlePassengerJump(PassengerJumpPacket $packet) : bool{
-		return false;
-	}
-
 	public function handleUpdateBlock(UpdateBlockPacket $packet) : bool{
 		return false;
 	}
@@ -408,10 +404,6 @@ abstract class NetworkSession{
 	}
 
 	public function handleBlockActorData(BlockActorDataPacket $packet) : bool{
-		return false;
-	}
-
-	public function handlePlayerInput(PlayerInputPacket $packet) : bool{
 		return false;
 	}
 
@@ -928,6 +920,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleUpdateClientOptions(UpdateClientOptionsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handlePlayerLocation(PlayerLocationPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundControlSchemeSet(ClientboundControlSchemeSetPacket $packet) : bool{
 		return false;
 	}
 

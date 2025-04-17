@@ -37,11 +37,11 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = 786;
+	public const CURRENT_PROTOCOL = 800;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v' . self::MINECRAFT_VERSION_NETWORK;
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.21.70';
+	public const MINECRAFT_VERSION_NETWORK = '1.21.80';
 
 	public const LOGIN_PACKET = 0x01;
 	public const PLAY_STATUS_PACKET = 0x02;
@@ -62,7 +62,6 @@ interface ProtocolInfo{
 	public const TAKE_ITEM_ACTOR_PACKET = 0x11;
 	public const MOVE_ACTOR_ABSOLUTE_PACKET = 0x12;
 	public const MOVE_PLAYER_PACKET = 0x13;
-	public const PASSENGER_JUMP_PACKET = 0x14;
 	public const UPDATE_BLOCK_PACKET = 0x15;
 	public const ADD_PAINTING_PACKET = 0x16;
 	public const LEVEL_EVENT_PACKET = 0x19;
@@ -95,7 +94,6 @@ interface ProtocolInfo{
 	public const CRAFTING_DATA_PACKET = 0x34;
 	public const GUI_DATA_PICK_ITEM_PACKET = 0x36;
 	public const BLOCK_ACTOR_DATA_PACKET = 0x38;
-	public const PLAYER_INPUT_PACKET = 0x39;
 	public const LEVEL_CHUNK_PACKET = 0x3a;
 	public const SET_COMMANDS_ENABLED_PACKET = 0x3b;
 	public const SET_DIFFICULTY_PACKET = 0x3c;
@@ -228,5 +226,7 @@ interface ProtocolInfo{
 	public const AWARD_ACHIEVEMENT_PACKET = 0x135;
 	public const CLIENTBOUND_CLOSE_FORM_PACKET = 0x136;
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
+	public const PLAYER_LOCATION_PACKET = 0x146;
+	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
 
 }
