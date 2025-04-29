@@ -436,6 +436,10 @@ abstract class Living extends Entity implements Damageable{
 		/** @var Color[] $colors */
 		$colors = [];
 		$ambient = true;
+
+		$effectsData = 0;
+		$packedCount = 0;
+
 		foreach($this->effects as $effect){
 			if($effect->isVisible() and $effect->getType()->hasBubbles()){
 				$level = $effect->getEffectLevel();
@@ -447,6 +451,13 @@ abstract class Living extends Entity implements Damageable{
 				if(!$effect->isAmbient()){
 					$ambient = false;
 				}
+
+				if($packedCount < 8){
+					$id = $effect->getId() & 0x3F; //6 Bit
+					$isAmbient = $effect->isAmbient() ? 1 : 0; //1 Bit
+					$effectsData = ($effectsData << 7) | ($id << 1) | $isAmbient;
+					++$packedCount;
+				}
 			}
 		}
 
@@ -457,6 +468,8 @@ abstract class Living extends Entity implements Damageable{
 			$this->propertyManager->setInt(Entity::DATA_POTION_COLOR, 0);
 			$this->propertyManager->setByte(Entity::DATA_POTION_AMBIENT, 0);
 		}
+
+		$this->propertyManager->setLong(Entity::DATA_VISIBLE_MOB_EFFECTS, $effectsData);
 	}
 
 	/**

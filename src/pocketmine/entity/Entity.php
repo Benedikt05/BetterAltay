@@ -272,6 +272,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public const DATA_FREEZING_EFFECT_STRENGTH = 120; //float
 
+	public const DATA_VISIBLE_MOB_EFFECTS = 131; //long
+
 	public const DATA_FLAG_ONFIRE = 0;
 	public const DATA_FLAG_SNEAKING = 1;
 	public const DATA_FLAG_RIDING = 2;
