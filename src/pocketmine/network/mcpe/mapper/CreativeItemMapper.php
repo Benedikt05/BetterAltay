@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace pocketmine\network\mcpe\mapper;
 
 use InvalidArgumentException;
@@ -41,7 +43,7 @@ class CreativeItemMapper {
 
 		foreach($groups as $group){
 			$name = $group["name"];
-			$category = $group["category"];
+			$categoryId = $group["creative_category"];
 			$icon = $group["icon"];
 
 			try{
@@ -49,13 +51,6 @@ class CreativeItemMapper {
 			}catch(InvalidArgumentException $ignore){
 				$iconValue = ItemFactory::fromStringSingle("minecraft:air");
 			}
-
-			$categoryId = match ($category) {
-				"construction" => CreativeContentPacket::CATEGORY_CONSTRUCTION,
-				"nature" => CreativeContentPacket::CATEGORY_NATURE,
-				"equipment" => CreativeContentPacket::CATEGORY_EQUIPMENT,
-				"items" => CreativeContentPacket::CATEGORY_ITEMS
-			};
 
 			$this->groups[] = new CreativeGroupEntry($categoryId, $name, $iconValue);
 		}
@@ -73,7 +68,7 @@ class CreativeItemMapper {
 			}
 
 			if(isset($item["nbt_b64"])){
-				$nbtBytes = base64_decode($item["nbt_b64"]);
+				$nbtBytes = base64_decode($item["nbt_b64"], true);
 				$nbtSerializer = new LittleEndianNBTStream();
 				$decodedNbt = $nbtSerializer->read($nbtBytes);
 
@@ -85,7 +80,7 @@ class CreativeItemMapper {
 
 			}
 			if($itemValue->getName() !== "Unknown"){
-				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
+				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["group_index"]);
 			}
 		}
 
