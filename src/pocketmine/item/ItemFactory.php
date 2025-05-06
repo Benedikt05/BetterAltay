@@ -280,7 +280,7 @@ class ItemFactory{
 		self::registerItem(new GoldenAppleEnchanted());
 		self::registerItem(new Item(Item::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
 		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
-		//TODO: TURTLE_HELMET
+		self::registerItem(new TurtleHelmet());
 
 		self::registerItem(new Record(Item::RECORD_13, LevelSoundEventPacket::SOUND_RECORD_13));
 		self::registerItem(new Record(Item::RECORD_CAT, LevelSoundEventPacket::SOUND_RECORD_CAT));

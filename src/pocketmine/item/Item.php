@@ -33,6 +33,7 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockToolType;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Living;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\math\Vector3;
@@ -474,6 +475,14 @@ class Item implements ItemIds, JsonSerializable{
 		}
 
 		return [];
+	}
+
+	/**
+	 * Called when this item is being worn by an entity.
+	 * Returns whether it did something.
+	 */
+	public function onTickWorn(Living $entity) : bool{
+		return false;
 	}
 
 	/**
