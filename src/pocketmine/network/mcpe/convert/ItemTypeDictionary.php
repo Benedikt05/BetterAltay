@@ -58,27 +58,31 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true);
-		$componentData = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/item_components.json'), true);
+		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true)["items"];
+		$itemComponents = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/item_components.json'), true);
 
-		if(!is_array($table) || !is_array($componentData)){
+		if(!is_array($table) || !is_array($itemComponents)){
 			throw new AssumptionFailedError("Invalid resource file format");
 		}
 
 		$params = [];
 		foreach($table as $entry){
-			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["componentBased"], $entry["id"], $entry["version"]) || !is_bool($entry["componentBased"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
+			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["component_based"], $entry["id"], $entry["version"]) || !is_bool($entry["component_based"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
 
-			$nbt = (isset($componentData[$entry["name"]]) && is_string($componentData[$entry["name"]]))
-				? (new LittleEndianNBTStream())->read(base64_decode($componentData[$entry["name"]], true))
+			$nbt = (isset($itemComponents[$entry["name"]]))
+				? (
+				is_string($itemComponents[$entry["name"]])
+					? (new LittleEndianNBTStream())->read(base64_decode($itemComponents[$entry["name"]], true))
+					: throw new AssumptionFailedError("Expected base64-encoded NBT string for item: " . $entry["name"])
+				)
 				: new CompoundTag();
 
 			$params[] = new ItemTypeEntry(
 				$entry["name"],
 				$entry["id"],
-				$entry["componentBased"],
+				$entry["component_based"],
 				$entry["version"],
 				$nbt
 			);
