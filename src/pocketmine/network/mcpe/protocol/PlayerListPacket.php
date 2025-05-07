@@ -61,7 +61,7 @@ class PlayerListPacket extends DataPacket{
 				$entry->isTeacher = $this->getBool();
 				$entry->isHost = $this->getBool();
 				$entry->isSubClient = $this->getBool();
-				$entry->color = $this->getInt();
+				$entry->color = $this->getLInt();
 			}else{
 				$entry->uuid = $this->getUUID();
 			}
@@ -90,7 +90,7 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isTeacher);
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
-				$this->putInt($entry->color);
+				$this->putLInt($entry->color);
 			}else{
 				$this->putUUID($entry->uuid);
 			}

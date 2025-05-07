@@ -6,6 +6,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use LogicException;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 
@@ -17,10 +18,10 @@ class PlayerLocationPacket extends DataPacket{
 
 	public int $packetType;
 	public int $entityUniqueId;
-	public Vector3 $position;
+	public ?Vector3 $position;
 
 	protected function decodePayload() : void{
-		$this->packetType = $this->getInt();
+		$this->packetType = $this->getLInt();
 		$this->entityUniqueId = $this->getEntityUniqueId();
 		if($this->packetType === PlayerLocationPacket::PLAYER_LOCATION_COORDINATES){
 			$this->position = $this->getVector3();
@@ -28,9 +29,12 @@ class PlayerLocationPacket extends DataPacket{
 	}
 
 	protected function encodePayload() : void{
-		$this->putInt($this->packetType);
+		$this->putLInt($this->packetType);
 		$this->putEntityUniqueId($this->entityUniqueId);
 		if($this->packetType === PlayerLocationPacket::PLAYER_LOCATION_COORDINATES){
+			if($this->position === null){
+				throw new LogicException("PlayerLocationPacket with type PLAYER_LOCATION_COORDINATES requires a position to be set");
+			}
 			$this->putVector3($this->position);
 		}
 	}
