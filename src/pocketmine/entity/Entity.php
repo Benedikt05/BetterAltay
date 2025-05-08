@@ -219,6 +219,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_RIDER_ROTATION_LOCKED = 57; //byte
 	public const DATA_RIDER_MAX_ROTATION = 58; //float
 	public const DATA_RIDER_MIN_ROTATION = 59; //float
+	public const DATA_RIDER_ROTATION_OFFSET = 60; //int
 	public const DATA_AREA_EFFECT_CLOUD_RADIUS = 61; //float
 	public const DATA_AREA_EFFECT_CLOUD_WAITING = 62; //int
 	public const DATA_AREA_EFFECT_CLOUD_PARTICLE_ID = 63; //int
@@ -270,7 +271,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_AMBIENT_SOUND_INTERVAL_RANGE = 109; //float
 	public const DATA_AMBIENT_SOUND_EVENT = 110; //string
 
+	public const DATA_IS_BUOYANT = 119; //byte
 	public const DATA_FREEZING_EFFECT_STRENGTH = 120; //float
+	public const DATA_BUOYANCY_DATA = 121; // string
 
 	public const DATA_VISIBLE_MOB_EFFECTS = 131; //long
 
@@ -1929,6 +1932,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$this->propertyManager->removeProperty(self::DATA_CONTROLLING_RIDER_SEAT_NUMBER);
 
 			$this->setRidingEntity(null);
+			$this->resetFallDistance();
 
 			$entity->sendLink($entity->getViewers(), $this->getId(), EntityLink::TYPE_REMOVE, $immediate);
 

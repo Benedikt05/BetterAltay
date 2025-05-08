@@ -2126,7 +2126,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 */
 	public function canInteract(Vector3 $pos, float $maxDistance, float $maxDiff = M_SQRT3 / 2) : bool{
 		$eyePos = $this->getPosition()->add(0, $this->getEyeHeight(), 0);
-		if($eyePos->distanceSquared($pos) > $maxDistance ** 2){
+		if($eyePos->distanceSquared($pos) > ceil($maxDistance ** 2)){
 			return false;
 		}
 
@@ -2752,6 +2752,17 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))) {
 				$this->handleMovement($newPos);
 				$this->lastPlayerAuthInputPosition = $rawPos;
+
+				if($this->isRiding()){
+					$ent = $this->getRidingEntity();
+					$vehicle = $packet->getVehicleInfo();
+
+					if (!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)) {
+						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
+							$ent->setClientPositionAndRotation($packet->getPosition(), ($ent->getYaw() + 90) % 360, 0, 3, true);
+						}
+					}
+				}
 			}
 
 
@@ -3119,7 +3130,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$heldItem = $this->inventory->getItemInHand();
 					$oldItem = clone $heldItem;
 
-					if(!$this->canInteract($target, 8) or $this->isSpectator()){
+					if(!$this->canInteract($target, $this->isCreative() ? 8 : 2.236) or $this->isSpectator()){
 						$cancelled = true;
 					}elseif($target instanceof Player){
 						if(!$this->server->getConfigBool("pvp")){
