@@ -35,7 +35,6 @@ use pocketmine\network\mcpe\protocol\types\EducationUriResource;
 use pocketmine\network\mcpe\protocol\types\Experiments;
 use pocketmine\network\mcpe\protocol\types\GameRuleType;
 use pocketmine\network\mcpe\protocol\types\GeneratorType;
-use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\network\mcpe\protocol\types\MultiplayerGameVisibility;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementSettings;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
@@ -117,6 +116,7 @@ class StartGamePacket extends DataPacket{
 	public string $serverId = "";
 	public string $worldId = "";
 	public string $scenarioId = "";
+	public string $ownerId = "";
 	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	public string $worldName;
 	public string $premiumWorldTemplateId = "";
@@ -141,7 +141,7 @@ class StartGamePacket extends DataPacket{
 	public bool $blockNetworkIdsAreHashes = false;
 	public bool $serverAuthSound = true;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityUniqueId = $this->getEntityUniqueId();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->playerGamemode = $this->getVarInt();
@@ -208,6 +208,7 @@ class StartGamePacket extends DataPacket{
 		$this->serverId = $this->getString();
 		$this->worldId = $this->getString();
 		$this->scenarioId = $this->getString();
+		$this->ownerId = $this->getString();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -235,7 +236,7 @@ class StartGamePacket extends DataPacket{
 		$this->serverAuthSound = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityUniqueId($this->entityUniqueId);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putVarInt($this->playerGamemode);
@@ -301,6 +302,7 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->serverId);
 		$this->putString($this->worldId);
 		$this->putString($this->scenarioId);
+		$this->putString($this->ownerId);
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);
