@@ -2470,6 +2470,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$manager = $this->server->getResourcePackManager();
 		$pk->resourcePackEntries = $manager->getResourceStack();
 		$pk->mustAccept = $manager->resourcePacksRequired();
+		$pk->forceDisableVibrantVisuals = $this->server->disableVibrantVisuals;
 		$this->dataPacket($pk);
 	}
 
