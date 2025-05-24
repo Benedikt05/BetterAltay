@@ -381,7 +381,7 @@ class Server{
 	public $internalErrorKick = false;
 	/** @var bool */
 	public $commandFix = false;
-	public bool $disableVibrantVisuals  = false;
+	public bool $disableVibrantVisuals = false;
 
 	public function loadBetterAltayConfig(){
 		$this->internalErrorKick = $this->getBetterAltayProperty("developer.internal-server-error-kick", false);
