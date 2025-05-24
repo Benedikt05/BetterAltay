@@ -36,6 +36,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 	public bool $mustAccept = false; //if true, forces client to choose between accepting packs or being disconnected
 	public bool $hasAddonPacks = false;
 	public bool $hasScripts = false; //if true, causes disconnect for any platform that doesn't support scripts yet
+	public bool $forceDisableVibrantVisuals = false;
 	public ?UUID $worldTemplateUUID = null;
 	public string $worldTemplateVersion = "";
 	/** @var ResourcePack[] */
@@ -45,6 +46,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->mustAccept = $this->getBool();
 		$this->hasAddonPacks = $this->getBool();
 		$this->hasScripts = $this->getBool();
+		$this->forceDisableVibrantVisuals = $this->getBool();
 		$this->worldTemplateUUID = $this->getUUID();
 		$this->worldTemplateVersion = $this->getString();
 
@@ -67,6 +69,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->putBool($this->mustAccept);
 		$this->putBool($this->hasAddonPacks);
 		$this->putBool($this->hasScripts);
+		$this->putBool($this->forceDisableVibrantVisuals);
 		$this->putUUID($this->worldTemplateUUID ??= new UUID());
 		$this->putString($this->worldTemplateVersion);
 

@@ -2586,6 +2586,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->commandsEnabled = true;
 		$pk->levelId = "";
 		$pk->worldName = $this->server->getMotd();
+		$pk->premiumWorldTemplateId = $this->server->getMotd();
 		$pk->experiments = new Experiments([], false);
 		$pk->playerMovementSettings = new PlayerMovementSettings(ServerAuthMovementMode::SERVER_AUTHORITATIVE_V2, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
