@@ -264,6 +264,7 @@ interface ItemIds extends BlockIds{
 	public const SHIELD = 513;
 
 	public const RECORD_5 = 636;
+	public const DISC_FRAGMENT_5 = 637;
 
 	public const RECORD_RELIC = 701;
 
@@ -286,4 +287,9 @@ interface ItemIds extends BlockIds{
 
 	public const SPYGLASS = 772;
 	public const RECORD_OTHERSIDE = 773;
+
+	public const RECORD_CREATOR = 783;
+	public const RECORD_CREATOR_MUSIC_BOX = 784;
+	public const RECORD_PRECIPICE = 785;
+	public const RECORD_TEARS = 786;
 }

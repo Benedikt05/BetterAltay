@@ -782,6 +782,7 @@
     "minecraft:record_wait": 511,
     "minecraft:shield": 513,
     "minecraft:record_5": 636,
+    "minecraft:disc_fragment_5": 637,
     "minecraft:chest_boat": 646,
     "minecraft:record_relic": 701,
     "minecraft:campfire": 720,
@@ -811,5 +812,9 @@
     "minecraft:goat_horn": 761,
     "minecraft:spyglass": 772,
     "minecraft:record_otherside": 773,
+    "minecraft:record_creator": 783,
+    "minecraft:record_creator_music_box": 784,
+    "minecraft:record_precipice": 785,
+    "minecraft:record_tears": 786,
     "minecraft:soul_campfire": 801
 }

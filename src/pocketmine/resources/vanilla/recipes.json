@@ -2407,6 +2407,26 @@
             "block": "crafting_table",
             "input": {
                 "A": {
+                    "id": 637,
+                    "damage": -1
+                }
+            },
+            "output": [
+                {
+                    "id": 636
+                }
+            ],
+            "priority": 1,
+            "shape": [
+                "AAA",
+                "AAA",
+                "AAA"
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                "A": {
                     "id": -10,
                     "damage": -1
                 },

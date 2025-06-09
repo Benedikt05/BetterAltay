@@ -381,11 +381,13 @@ class Server{
 	public $internalErrorKick = false;
 	/** @var bool */
 	public $commandFix = false;
+	public bool $disableVibrantVisuals = false;
 
 	public function loadBetterAltayConfig(){
 		$this->internalErrorKick = $this->getBetterAltayProperty("developer.internal-server-error-kick", false);
 		$this->customUnknownCommandMessage = $this->getBetterAltayProperty("general.custom-unknown-command-message.enabled", false);
 		$this->commandFix = $this->getBetterAltayProperty("general.command-fix", false);
+		$this->disableVibrantVisuals = $this->getBetterAltayProperty("general.disable-vibrant-visuals", false);
 	}
 
 	public function loadAltayConfig(){
