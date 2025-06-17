@@ -13,7 +13,7 @@
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
-	<a href="https://www.minecraft.net/en-us/article/minecraft-bedrock-edition-1-21-90">
+	<a href="https://www.minecraft.net/en-us/article/minecraft-1-21-90-bedrock-changelog">
 		<img src="https://img.shields.io/badge/Minecraft_1.21.90-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
