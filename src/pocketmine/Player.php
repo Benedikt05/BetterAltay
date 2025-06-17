@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine;
 
 use BadMethodCallException;
+use pocketmine\item\FoodSource;
 use pocketmine\network\mcpe\BitSet;
 use RuntimeException;
 use InvalidArgumentException;
@@ -4892,7 +4893,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				}
 
 				$ev = new PlayerInteractEvent($this, $item, null, $directionVector, $face, PlayerInteractEvent::RIGHT_CLICK_AIR);
-				if($this->hasItemCooldown($item) or $this->isSpectator()){
+				if($this->hasItemCooldown($item) or $this->isSpectator() or ($item instanceof MaybeConsumable and !$item->canBeConsumed()) or (!$this->isHungry() and $item instanceof FoodSource and $item->requiresHunger())){
 					$ev->setCancelled();
 				}
 

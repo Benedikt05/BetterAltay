@@ -66,7 +66,6 @@ class PlayerActionPacket extends DataPacket{
 	public const ACTION_STOP_CRAWLING = 33;
 	public const ACTION_START_FLYING = 34;
 	public const ACTION_STOP_FLYING = 35;
-	public const ACTION_ACK_ACTOR_DATA = 36;
 
 	public int $entityRuntimeId;
 	public int $action;
@@ -78,7 +77,7 @@ class PlayerActionPacket extends DataPacket{
 	public ?int $resultZ = null;
 	public int $face;
 	
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->action = $this->getVarInt();
 		$this->getBlockPosition($this->x, $this->y, $this->z);
@@ -86,7 +85,7 @@ class PlayerActionPacket extends DataPacket{
 		$this->face = $this->getVarInt();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putVarInt($this->action);
 		$this->putBlockPosition($this->x, $this->y, $this->z);
