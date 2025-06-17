@@ -73,9 +73,9 @@ class VerifyLoginTask extends AsyncTask{
 		$this->storeLocal([$player, $packet]);
 
 		$chainJwtsExtracted = [];
-		if (isset($packet->chainData["Certificate"]) && is_string($packet->chainData["Certificate"])) {
+		if(isset($packet->chainData["Certificate"]) && is_string($packet->chainData["Certificate"])){
 			$certificateData = json_decode($packet->chainData["Certificate"], true);
-			if (isset($certificateData["chain"]) && is_array($certificateData["chain"])) {
+			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
 				$chainJwtsExtracted = $certificateData["chain"];
 			}
 		}
