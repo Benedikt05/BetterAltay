@@ -45,8 +45,8 @@ This file defines all crafting-table, furnace and chemistry recipes. This includ
 ## creative_items.json
 This file contains the creative groups and items which appear in the vanilla creative inventory with Education Edition and Experimental Gameplay enabled.
 
-## biome_definitions.nbt
-This file contains a network-format NBT blob containing biome definitions obtained from `BiomeDefinitionListPacket`.
+## stripped_biome_definitions.json
+This file contains a stripped JSON representation of biome definitions obtained from `BiomeDefinitionListPacket`.
 
 ## biome_id_map.json
 This file contains a mapping of Minecraft string biome IDs to their legacy integer ID counterparts. While biome IDs aren't dynamic yet, it's expected they will become dynamic in the future.

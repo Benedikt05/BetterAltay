@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine;
 
 use BadMethodCallException;
+use pocketmine\item\FoodSource;
 use pocketmine\network\mcpe\BitSet;
 use RuntimeException;
 use InvalidArgumentException;
@@ -196,7 +197,6 @@ use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
 use pocketmine\network\mcpe\protocol\types\PlayerBlockActionStopBreak;
 use pocketmine\network\mcpe\protocol\types\PlayerBlockActionWithBlockInfo;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementSettings;
-use pocketmine\network\mcpe\protocol\types\ServerAuthMovementMode;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\types\SkinAnimation;
@@ -2471,6 +2471,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$manager = $this->server->getResourcePackManager();
 		$pk->resourcePackEntries = $manager->getResourceStack();
 		$pk->mustAccept = $manager->resourcePacksRequired();
+		$pk->forceDisableVibrantVisuals = $this->server->disableVibrantVisuals;
 		$this->dataPacket($pk);
 	}
 
@@ -2587,7 +2588,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->levelId = "";
 		$pk->worldName = $this->server->getMotd();
 		$pk->experiments = new Experiments([], false);
-		$pk->playerMovementSettings = new PlayerMovementSettings(ServerAuthMovementMode::SERVER_AUTHORITATIVE_V2, 0, false);
+		$pk->playerMovementSettings = new PlayerMovementSettings(0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->propertyData = new CompoundTag();
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
@@ -4892,7 +4893,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				}
 
 				$ev = new PlayerInteractEvent($this, $item, null, $directionVector, $face, PlayerInteractEvent::RIGHT_CLICK_AIR);
-				if($this->hasItemCooldown($item) or $this->isSpectator()){
+				if($this->hasItemCooldown($item) or $this->isSpectator() or ($item instanceof MaybeConsumable and !$item->canBeConsumed()) or (!$this->isHungry() and $item instanceof FoodSource and $item->requiresHunger())){
 					$ev->setCancelled();
 				}
 
