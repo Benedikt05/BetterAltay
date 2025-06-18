@@ -26,9 +26,11 @@ namespace pocketmine\tile;
 use pocketmine\inventory\ChestInventory;
 use pocketmine\inventory\DoubleChestInventory;
 use pocketmine\inventory\InventoryHolder;
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\Player;
 
 class Chest extends Spawnable implements InventoryHolder, Container, Nameable{
 	use NameableTrait {
@@ -39,6 +41,8 @@ class Chest extends Spawnable implements InventoryHolder, Container, Nameable{
 	public const TAG_PAIRX = "pairx";
 	public const TAG_PAIRZ = "pairz";
 	public const TAG_PAIR_LEAD = "pairlead";
+	public const TAG_FINDABLE = "Findable";
+	public const TAG_MOVABLE = "isMovable";
 
 	/** @var ChestInventory */
 	protected $inventory;
@@ -50,11 +54,17 @@ class Chest extends Spawnable implements InventoryHolder, Container, Nameable{
 	/** @var int|null */
 	private $pairZ;
 
+	private $findable = false;
+	private $isMovable = true;
+
 	protected function readSaveData(CompoundTag $nbt) : void{
 		if($nbt->hasTag(self::TAG_PAIRX, IntTag::class) and $nbt->hasTag(self::TAG_PAIRZ, IntTag::class)){
 			$this->pairX = $nbt->getInt(self::TAG_PAIRX);
 			$this->pairZ = $nbt->getInt(self::TAG_PAIRZ);
 		}
+
+		$this->findable = $nbt->getByte(self::TAG_FINDABLE, 0) === 1;
+		$this->isMovable = $nbt->getByte(self::TAG_MOVABLE, 1) === 1;
 		$this->loadName($nbt);
 
 		$this->inventory = new ChestInventory($this);
@@ -66,6 +76,9 @@ class Chest extends Spawnable implements InventoryHolder, Container, Nameable{
 			$nbt->setInt(self::TAG_PAIRX, $this->pairX);
 			$nbt->setInt(self::TAG_PAIRZ, $this->pairZ);
 		}
+
+		$nbt->setByte(self::TAG_FINDABLE, $this->findable ? 1 : 0);
+		$nbt->setByte(self::TAG_MOVABLE, $this->isMovable ? 1 : 0);
 		$this->saveName($nbt);
 		$this->saveItems($nbt);
 	}
@@ -223,6 +236,15 @@ class Chest extends Spawnable implements InventoryHolder, Container, Nameable{
 			$nbt->setInt(self::TAG_PAIRZ, $this->pairZ);
 		}
 
+		$nbt->setByte(self::TAG_FINDABLE, $this->findable ? 1 : 0);
+		$nbt->setByte(self::TAG_MOVABLE, $this->isMovable ? 1 : 0);
+
 		$this->addNameSpawnData($nbt);
+	}
+
+	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null) : void{
+		parent::createAdditionalNBT($nbt, $pos, $face, $item, $player);
+		$nbt->setByte(self::TAG_FINDABLE, 0);
+		$nbt->setByte(self::TAG_MOVABLE, 1);
 	}
 }

@@ -23,6 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format;
 
+use pocketmine\level\format\io\leveldb\LevelDB;
+use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\utils\Binary;
+use pocketmine\utils\BinaryStream;
+use pocketmine\world\format\PalettedBlockArray;
 use function assert;
 use function chr;
 use function define;
@@ -39,11 +46,16 @@ if(!defined(__NAMESPACE__ . '\ZERO_NIBBLE_ARRAY')){
 
 class SubChunk implements SubChunkInterface{
 	private const ZERO_NIBBLE_ARRAY = ZERO_NIBBLE_ARRAY;
+	public const MIN_LAYERS = 0;
+	public const MAX_LAYERS = 3;
 
 	/** @var string */
 	protected $ids;
 	/** @var string */
 	protected $data;
+	/** @var PalettedBlockArray[] */
+	protected array $layers = [];
+	protected int $emptyBlock;
 	/** @var string */
 	protected $blockLight;
 	/** @var string */
@@ -57,76 +69,46 @@ class SubChunk implements SubChunkInterface{
 		return $data;
 	}
 
-	public function __construct(string $ids = "", string $data = "", string $skyLight = "", string $blockLight = ""){
-		$this->ids = self::assignData($ids, 4096);
-		$this->data = self::assignData($data, 2048);
+	public function __construct(int $emptyBlock, array $layers = [], string $skyLight = "", string $blockLight = ""){
+		$this->emptyBlock = $emptyBlock;
+		foreach($layers as $layer){
+			if ($layer instanceof PalettedBlockArray) {
+				$this->layers[] = $layer;
+			}
+		}
+
 		$this->skyLight = self::assignData($skyLight, 2048, "\xff");
 		$this->blockLight = self::assignData($blockLight, 2048);
 		$this->collectGarbage();
 	}
 
-	public function isEmpty(bool $checkLight = true) : bool{
-		return (
-			substr_count($this->ids, "\x00") === 4096 and
-			(!$checkLight or (
-					substr_count($this->skyLight, "\xff") === 2048 and
-					$this->blockLight === self::ZERO_NIBBLE_ARRAY
-				))
-		);
+	public function isEmpty() : bool{
+		return count($this->layers) === 0;
 	}
 
-	public function getBlockId(int $x, int $y, int $z) : int{
-		return ord($this->ids[($x << 8) | ($z << 4) | $y]);
+	public function getBlockId(int $x, int $y, int $z, int $layer) : int{
+		return $this->getLayer($layer)->get($x, $y, $z);
 	}
 
-	public function setBlockId(int $x, int $y, int $z, int $id) : bool{
-		$this->ids[($x << 8) | ($z << 4) | $y] = chr($id);
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool{
+		$this->getLayer($layer)->set($x, $y, $z, $id);
 		return true;
 	}
 
-	public function getBlockData(int $x, int $y, int $z) : int{
-		return (ord($this->data[($x << 7) | ($z << 3) | ($y >> 1)]) >> (($y & 1) << 2)) & 0xf;
-	}
-
-	public function setBlockData(int $x, int $y, int $z, int $data) : bool{
-		$i = ($x << 7) | ($z << 3) | ($y >> 1);
-
-		$shift = ($y & 1) << 2;
-		$byte = ord($this->data[$i]);
-		$this->data[$i] = chr(($byte & ~(0xf << $shift)) | (($data & 0xf) << $shift));
-
-		return true;
-	}
-
-	public function getFullBlock(int $x, int $y, int $z) : int{
-		$i = ($x << 8) | ($z << 4) | $y;
-		return (ord($this->ids[$i]) << 4) | ((ord($this->data[$i >> 1]) >> (($y & 1) << 2)) & 0xf);
-	}
-
-	public function setBlock(int $x, int $y, int $z, ?int $id = null, ?int $data = null) : bool{
-		$i = ($x << 8) | ($z << 4) | $y;
-		$changed = false;
-		if($id !== null){
-			$block = chr($id);
-			if($this->ids[$i] !== $block){
-				$this->ids[$i] = $block;
-				$changed = true;
-			}
+	private function getLayer(int $layer, bool $generate = true) : PalettedBlockArray {
+		if ($layer < self::MIN_LAYERS || $layer > self::MAX_LAYERS) {
+			throw new \InvalidArgumentException("Invalid layer $layer, must be between " . self::MIN_LAYERS . " and " . self::MAX_LAYERS);
 		}
 
-		if($data !== null){
-			$i >>= 1;
-
-			$shift = ($y & 1) << 2;
-			$oldPair = ord($this->data[$i]);
-			$newPair = ($oldPair & ~(0xf << $shift)) | (($data & 0xf) << $shift);
-			if($newPair !== $oldPair){
-				$this->data[$i] = chr($newPair);
-				$changed = true;
+		if (!isset($this->layers[$layer])) {
+			if (!$generate) {
+				throw new \InvalidArgumentException("Layer $layer does not exist");
 			}
+
+			$this->layers[$layer] = new PalettedBlockArray($this->emptyBlock);
 		}
 
-		return $changed;
+		return $this->layers[$layer];
 	}
 
 	public function getBlockLight(int $x, int $y, int $z) : int{
@@ -157,16 +139,14 @@ class SubChunk implements SubChunkInterface{
 		return true;
 	}
 
-	public function getHighestBlockAt(int $x, int $z) : int{
-		$low = ($x << 8) | ($z << 4);
-		$i = $low | 0x0f;
-		for(; $i >= $low; --$i){
-			if($this->ids[$i] !== "\x00"){
-				return $i & 0x0f;
+	public function getHighestBlockAt(int $x, int $z) : ?int{
+		for ($y = 15; $y >= 0; --$y) {
+			if ($this->getBlockId($x, $y, $z, 0) !== 0) {
+				return $y;
 			}
 		}
 
-		return -1; //highest block not in this subchunk
+		return null; //highest block not in this subchunk
 	}
 
 	public function getBlockIdColumn(int $x, int $z) : string{
@@ -200,7 +180,7 @@ class SubChunk implements SubChunkInterface{
 		return $this->skyLight;
 	}
 
-	public function setBlockSkyLightArray(string $data){
+	public function setBlockSkyLightArray(string $data) : void{
 		assert(strlen($data) === 2048, "Wrong length of skylight array, expecting 2048 bytes, got " . strlen($data));
 		$this->skyLight = $data;
 	}
@@ -210,13 +190,28 @@ class SubChunk implements SubChunkInterface{
 		return $this->blockLight;
 	}
 
-	public function setBlockLightArray(string $data){
+	public function setBlockLightArray(string $data) : void{
 		assert(strlen($data) === 2048, "Wrong length of light array, expecting 2048 bytes, got " . strlen($data));
 		$this->blockLight = $data;
 	}
 
-	public function networkSerialize() : string{
-		return "\x00" . $this->ids . $this->data;
+	public function networkSerialize(NetworkBinaryStream $stream) : void{
+		$stream->putByte(LevelDB::CURRENT_SUBCHUNK_VERSION);
+		$stream->putByte(count($this->layers));
+		foreach ($this->layers as $layer) {
+			$bitsPerBlock = $layer->getBitsPerBlock();
+			$stream->putByte($bitsPerBlock << 1 | 1);
+			$stream->put($layer->getWordArray());
+
+			$palette = $layer->getPalette();
+			if ($bitsPerBlock !== 0) {
+				$stream->putUnsignedVarInt(count($palette) << 1);
+			}
+
+			foreach ($palette as $id) {
+				$stream->put(Binary::writeUnsignedVarInt($id << 1));
+			}
+		}
 	}
 
 	/**
@@ -232,14 +227,81 @@ class SubChunk implements SubChunkInterface{
 		 * reference to the const instead of duplicating the whole string. The string will only be duplicated when
 		 * modified, which is perfect for this purpose.
 		 */
-		if($this->data === self::ZERO_NIBBLE_ARRAY){
-			$this->data = self::ZERO_NIBBLE_ARRAY;
+		$cleanedLayers = [];
+		foreach($this->layers as $layer){
+			$layer->collectGarbage();
+
+			if($layer->getBitsPerBlock() !== 0 || $layer->get(0, 0, 0) !== $this->emptyBlock){
+				$cleanedLayers[] = $layer;
+			}
 		}
+		$this->layers = $cleanedLayers;
+
 		if($this->skyLight === self::ZERO_NIBBLE_ARRAY){
 			$this->skyLight = self::ZERO_NIBBLE_ARRAY;
 		}
 		if($this->blockLight === self::ZERO_NIBBLE_ARRAY){
 			$this->blockLight = self::ZERO_NIBBLE_ARRAY;
+		}
+	}
+
+	public function fastSerialize(BinaryStream $stream, bool $lightPopulated) : void{
+		$stream->putInt($this->emptyBlock);
+		$stream->putByte(count($this->layers));
+		foreach ($this->layers as $layer) {
+			$wordArray = $layer->getWordArray();
+			$palette = $layer->getPalette();
+
+			$stream->putByte($layer->getBitsPerBlock());
+			$stream->put($wordArray);
+			$serialPalette = pack("L*", ...$palette);
+			$stream->putInt(strlen($serialPalette));
+			$stream->put($serialPalette);
+		}
+
+		if ($lightPopulated) {
+			$stream->put($this->getBlockSkyLightArray() . $this->getBlockLightArray());
+		}
+	}
+
+	public static function fastDeserialize(BinaryStream $stream, bool $lightPopulated) : SubChunkInterface{
+		$emptyBlock = $stream->getInt();
+		$layerCount = $stream->getByte();
+
+		$layers = [];
+		for ($i = 0; $i < $layerCount; ++$i) {
+			$bitsPerBlock = $stream->getByte();
+			$words = $stream->get(PalettedBlockArray::getExpectedWordArraySize($bitsPerBlock));
+			/** @var int[] $unpackedPalette */
+			$unpackedPalette = unpack("L*", $stream->get($stream->getInt())); //unpack() will never fail here
+			$palette = array_values($unpackedPalette);
+			$layers[] = PalettedBlockArray::fromData($bitsPerBlock, $words, $palette);
+		}
+
+		$skyLight = $lightPopulated ? $stream->get(2048) : "";
+		$blockLight = $lightPopulated ? $stream->get(2048) : "";
+		return new SubChunk($emptyBlock, $layers, $skyLight, $blockLight);
+	}
+
+	public function diskSerialize(BinaryStream $stream) : void{
+		$stream->putByte(LevelDB::CURRENT_SUBCHUNK_VERSION);
+		$stream->putByte(count($this->layers));
+		foreach($this->layers as $layer) {
+			$stream->putByte($layer->getBitsPerBlock() << 1);
+			$stream->put($layer->getWordArray());
+
+			$palette = $layer->getPalette();
+			if ($layer->getBitsPerBlock() !== 0) {
+				$stream->putLInt(count($palette));
+			}
+
+			$tags = [];
+			foreach($palette as $block) {
+				$tags[] = RuntimeBlockMapping::getBedrockKnownStates()[$block];
+			}
+
+			$nbt = new LittleEndianNBTStream();
+			$stream->put($nbt->write($tags));
 		}
 	}
 }

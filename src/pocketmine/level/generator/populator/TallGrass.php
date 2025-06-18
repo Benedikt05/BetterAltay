@@ -25,6 +25,7 @@ namespace pocketmine\level\generator\populator;
 
 use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 
 class TallGrass extends Populator{
@@ -56,27 +57,29 @@ class TallGrass extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount) + $this->baseAmount;
+		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::TALL_GRASS, 1);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
 			$y = $this->getHighestWorkableBlock($x, $z);
 
 			if($y !== -1 and $this->canTallGrassStay($x, $y, $z)){
-				$this->level->setBlockIdAt($x, $y, $z, Block::TALL_GRASS);
-				$this->level->setBlockDataAt($x, $y, $z, 1);
+				$this->level->setBlockIdAt($x, $y, $z, $rid);
 			}
 		}
 	}
 
 	private function canTallGrassStay(int $x, int $y, int $z) : bool{
-		$b = $this->level->getBlockIdAt($x, $y, $z);
-		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $this->level->getBlockIdAt($x, $y - 1, $z) === Block::GRASS;
+		[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId( $this->level->getBlockIdAt($x, $y, $z));
+		[$up, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y - 1, $z));
+		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $up === Block::GRASS;
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b !== Block::AIR and $b !== Block::LEAVES and $b !== Block::LEAVES2 and $b !== Block::SNOW_LAYER){
+			$rid = $this->level->getBlockIdAt($x, $y, $z);
+			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($rid);
+			if($rid === RuntimeBlockMapping::AIR() and $b !== Block::LEAVES and $b !== Block::LEAVES2 and $b !== Block::SNOW_LAYER){
 				return $y + 1;
 			}
 		}

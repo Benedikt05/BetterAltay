@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format;
 
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\utils\BinaryStream;
 use function str_repeat;
 
 class EmptySubChunk implements SubChunkInterface{
@@ -37,31 +40,15 @@ class EmptySubChunk implements SubChunkInterface{
 		return self::$instance;
 	}
 
-	public function isEmpty(bool $checkLight = true) : bool{
+	public function isEmpty() : bool{
 		return true;
 	}
 
-	public function getBlockId(int $x, int $y, int $z) : int{
-		return 0;
+	public function getBlockId(int $x, int $y, int $z, int $layer) : int{
+		return RuntimeBlockMapping::AIR();
 	}
 
-	public function setBlockId(int $x, int $y, int $z, int $id) : bool{
-		return false;
-	}
-
-	public function getBlockData(int $x, int $y, int $z) : int{
-		return 0;
-	}
-
-	public function setBlockData(int $x, int $y, int $z, int $data) : bool{
-		return false;
-	}
-
-	public function getFullBlock(int $x, int $y, int $z) : int{
-		return 0;
-	}
-
-	public function setBlock(int $x, int $y, int $z, ?int $id = null, ?int $data = null) : bool{
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool{
 		return false;
 	}
 
@@ -81,8 +68,8 @@ class EmptySubChunk implements SubChunkInterface{
 		return false;
 	}
 
-	public function getHighestBlockAt(int $x, int $z) : int{
-		return -1;
+	public function getHighestBlockAt(int $x, int $z) : ?int{
+		return null;
 	}
 
 	public function getBlockIdColumn(int $x, int $z) : string{
@@ -113,7 +100,7 @@ class EmptySubChunk implements SubChunkInterface{
 		return str_repeat("\x00", 2048);
 	}
 
-	public function setBlockLightArray(string $data){
+	public function setBlockLightArray(string $data) : void{
 
 	}
 
@@ -121,11 +108,23 @@ class EmptySubChunk implements SubChunkInterface{
 		return str_repeat("\xff", 2048);
 	}
 
-	public function setBlockSkyLightArray(string $data){
+	public function setBlockSkyLightArray(string $data) : void{
 
 	}
 
-	public function networkSerialize() : string{
-		return "\x00" . str_repeat("\x00", 6144);
+	public function networkSerialize(NetworkBinaryStream $stream) : void{
+		$stream->put("\x00" . str_repeat("\x00", 6144));
+	}
+
+	public function fastSerialize(BinaryStream $stream, bool $lightPopulated) : void{
+
+	}
+
+	public static function fastDeserialize(BinaryStream $stream, bool $lightPopulated) : SubChunkInterface{
+		return self::getInstance();
+	}
+
+	public function diskSerialize(BinaryStream $stream) : void{
+
 	}
 }

@@ -42,6 +42,8 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	public const TAG_FACING = "facing";
 	public const TAG_UNDYED = "isUndyed";
+	public const TAG_FINDABLE = "Findable";
+	public const TAG_MOVABLE = "isMovable";
 
 	/** @var int */
 	protected $facing = Vector3::SIDE_UP;
@@ -50,6 +52,9 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	/** @var ShulkerBoxInventory */
 	protected $inventory;
+
+	private $findable = false;
+	private $isMovable = true;
 
 	/**
 	 * @param int $facing
@@ -104,6 +109,8 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 		$this->inventory = new ShulkerBoxInventory($this);
 
+		$this->findable = $nbt->getByte(self::TAG_FINDABLE) === 1;
+		$this->isMovable = $nbt->getByte(self::TAG_MOVABLE) === 1;
 		$this->loadName($nbt);
 		$this->loadItems($nbt);
 	}
@@ -112,6 +119,8 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 		$nbt->setTag(new ByteTag(self::TAG_FACING, $this->facing));
 		$nbt->setTag(new ByteTag(self::TAG_UNDYED, $this->isUndyed ? 1 : 0));
 
+		$nbt->setByte(self::TAG_FINDABLE, $this->findable ? 1 : 0);
+		$nbt->setByte(self::TAG_MOVABLE, $this->isMovable ? 1 : 0);
 		$this->saveName($nbt);
 		$this->saveItems($nbt);
 	}
@@ -124,6 +133,8 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
 		$nbt->setTag(new ByteTag(self::TAG_FACING, $this->facing));
 		$nbt->setTag(new ByteTag(self::TAG_UNDYED, $this->isUndyed ? 1 : 0));
+		$nbt->setByte(self::TAG_FINDABLE, $this->findable ? 1 : 0);
+		$nbt->setByte(self::TAG_MOVABLE, $this->isMovable ? 1 : 0);
 
 		$this->addNameSpawnData($nbt);
 	}
@@ -132,6 +143,8 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 		parent::createAdditionalNBT($nbt, $pos, $face, $item, $player);
 
 		$nbt->setByte(self::TAG_FACING, $face ?? Vector3::SIDE_DOWN);
+		$nbt->setByte(self::TAG_FINDABLE, 0);
+		$nbt->setByte(self::TAG_MOVABLE, 1);
 		if($item !== null){
 			$nbt->setByte(self::TAG_UNDYED, $item->getId() == Block::UNDYED_SHULKER_BOX ? 1 : 0);
 		}

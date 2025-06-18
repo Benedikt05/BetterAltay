@@ -190,8 +190,8 @@ abstract class BaseLevelProvider implements LevelProvider{
 	 * @throws CorruptedChunkException
 	 * @throws UnsupportedChunkFormatException
 	 */
-	public function loadChunk(int $chunkX, int $chunkZ) : ?Chunk{
-		return $this->readChunk($chunkX, $chunkZ);
+	public function loadChunk(int $chunkX, int $chunkZ, int $dimension) : ?Chunk{
+		return $this->readChunk($chunkX, $chunkZ, $dimension);
 	}
 
 	public function saveChunk(Chunk $chunk) : void{
@@ -205,7 +205,7 @@ abstract class BaseLevelProvider implements LevelProvider{
 	 * @throws UnsupportedChunkFormatException
 	 * @throws CorruptedChunkException
 	 */
-	abstract protected function readChunk(int $chunkX, int $chunkZ) : ?Chunk;
+	abstract protected function readChunk(int $chunkX, int $chunkZ, int $dimension) : ?Chunk;
 
 	abstract protected function writeChunk(Chunk $chunk) : void;
 }

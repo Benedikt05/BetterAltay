@@ -27,6 +27,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\Liquid;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function count;
 use function min;
@@ -38,7 +39,7 @@ class GroundCover extends Populator{
 		$chunk = $level->getChunk($chunkX, $chunkZ);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
-				$biome = Biome::getBiome($chunk->getBiomeId($x, $z));
+				$biome = Biome::getBiome($chunk->getBiomeId($x, 0, $z));
 				$cover = $biome->getGroundCover();
 				if(count($cover) > 0){
 					$diffY = 0;
@@ -46,10 +47,10 @@ class GroundCover extends Populator{
 						$diffY = 1;
 					}
 
-					$column = $chunk->getBlockIdColumn($x, $z);
 					$startY = 127;
 					for(; $startY > 0; --$startY){
-						if($column[$startY] !== "\x00" and !BlockFactory::get(ord($column[$startY]))->isTransparent()){
+						$rid = $chunk->getBlockId($x, $startY, $z, 0);
+						if(!BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($rid))->isTransparent()){
 							break;
 						}
 					}
@@ -57,17 +58,15 @@ class GroundCover extends Populator{
 					$endY = $startY - count($cover);
 					for($y = $startY; $y > $endY and $y >= 0; --$y){
 						$b = $cover[$startY - $y];
-						if($column[$y] === "\x00" and $b->isSolid()){
+						$cRid = $chunk->getBlockId($x, $y, $z, 0);
+						if($cRid === RuntimeBlockMapping::AIR() and $b->isSolid()){
 							break;
 						}
-						if($b->canBeFlowedInto() and BlockFactory::get(ord($column[$y])) instanceof Liquid){
+						if($b->canBeFlowedInto() and BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($cRid)) instanceof Liquid){
 							continue;
 						}
-						if($b->getDamage() === 0){
-							$chunk->setBlockId($x, $y, $z, $b->getId());
-						}else{
-							$chunk->setBlock($x, $y, $z, $b->getId(), $b->getDamage());
-						}
+
+						$chunk->setBlockId($x, $y, $z, $b->getRuntimeId(), 0);
 					}
 				}
 			}

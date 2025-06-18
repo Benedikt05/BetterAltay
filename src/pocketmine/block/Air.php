@@ -25,6 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 /**
  * Air block
@@ -79,5 +80,9 @@ class Air extends Transparent{
 
 	public function getBlastResistance() : float{
 		return 0;
+	}
+
+	public function getRuntimeId() : int{
+		return RuntimeBlockMapping::AIR();
 	}
 }

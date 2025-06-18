@@ -98,6 +98,7 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
@@ -1142,7 +1143,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public function saveNBT() : void{
 		if(!($this instanceof Player)){
-			$this->namedtag->setString("id", $this->getSaveId(), true);
+			$this->namedtag->setString("identifier", $this->getSaveId(), true);
 
 			if($this->getNameTag() !== ""){
 				$this->namedtag->setString("CustomName", $this->getNameTag());
@@ -1324,7 +1325,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 		$this->checkBlockCollision();
 
-		if($this->y <= -16 and $this->isAlive()){
+		if($this->y <= Level::Y_MIN - 16 and $this->isAlive()){
 			$ev = new EntityDamageEvent($this, EntityDamageEvent::CAUSE_VOID, 10);
 			$this->attack($ev);
 			$hasUpdate = true;
@@ -1609,13 +1610,20 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$diffY = $y - $floorY;
 		$diffZ = $z - $floorZ;
 
-		if(BlockFactory::$solid[$this->level->getBlockIdAt($floorX, $floorY, $floorZ)]){
-			$westNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX - 1, $floorY, $floorZ)];
-			$eastNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX + 1, $floorY, $floorZ)];
-			$downNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX, $floorY - 1, $floorZ)];
-			$upNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX, $floorY + 1, $floorZ)];
-			$northNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX, $floorY, $floorZ - 1)];
-			$southNonSolid = !BlockFactory::$solid[$this->level->getBlockIdAt($floorX, $floorY, $floorZ + 1)];
+		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ));
+		[$wastId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX - 1, $floorY, $floorZ));
+		[$eastId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX + 1, $floorY, $floorZ));
+		[$downId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY - 1, $floorZ));
+		[$upId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY + 1, $floorZ));
+		[$northId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ - 1));
+		[$southId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ + 1));
+		if(BlockFactory::$solid[$id] ?? false){
+			$westNonSolid = !(BlockFactory::$solid[$wastId] ?? true);
+			$eastNonSolid = !(BlockFactory::$solid[$eastId] ?? true);
+			$downNonSolid = !(BlockFactory::$solid[$downId] ?? true);
+			$upNonSolid = !(BlockFactory::$solid[$upId] ?? true);
+			$northNonSolid = !(BlockFactory::$solid[$northId] ?? true);
+			$southNonSolid = !(BlockFactory::$solid[$southId] ?? true);
 
 			$direction = -1;
 			$limit = 9999;

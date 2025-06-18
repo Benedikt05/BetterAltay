@@ -26,6 +26,7 @@ namespace pocketmine\level\generator\populator;
 
 use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function rand;
 
@@ -46,6 +47,7 @@ class Cactus extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
+		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::CACTUS);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -55,19 +57,19 @@ class Cactus extends Populator{
 			}
 
 			if(rand(1, 2) === 1){
-				$this->level->setBlockIdAt($x, $y, $z, Block::CACTUS);
-				$this->level->setBlockIdAt($x, $y + 1, $z, Block::CACTUS);
+				$this->level->setBlockIdAt($x, $y, $z, $rid);
+				$this->level->setBlockIdAt($x, $y + 1, $z, $rid);
 			}else{
-				$this->level->setBlockIdAt($x, $y, $z, Block::CACTUS);
-				$this->level->setBlockIdAt($x, $y + 1, $z, Block::CACTUS);
-				$this->level->setBlockIdAt($x, $y + 2, $z, Block::CACTUS);
+				$this->level->setBlockIdAt($x, $y, $z, $rid);
+				$this->level->setBlockIdAt($x, $y + 1, $z, $rid);
+				$this->level->setBlockIdAt($x, $y + 2, $z, $rid);
 			}
 		}
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
+			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
 			if($b === Block::SAND){
 				break;
 			}elseif($b !== Block::AIR){

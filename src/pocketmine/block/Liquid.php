@@ -105,7 +105,12 @@ abstract class Liquid extends Transparent{
 
 	protected function getFlowDecay(Block $block) : int{
 		if($block->getId() !== $this->getId()){
-			return -1;
+			$liquidBlock = $block->getLevel()->getBlock($block, true, true, 1);
+			if ($liquidBlock->getId() !== $this->getId()){
+				return -1;
+			} else {
+				return $liquidBlock->getDamage();
+			}
 		}
 
 		return $block->getDamage();
@@ -113,11 +118,13 @@ abstract class Liquid extends Transparent{
 
 	protected function getEffectiveFlowDecay(Block $block) : int{
 		if($block->getId() !== $this->getId()){
-			return -1;
+			$liquidBlock = $block->getLevel()->getBlock($block, true, true, 1);
+			if($liquidBlock->getId() !== $this->getId()){
+				return -1;
+			}
 		}
 
 		$decay = $block->getDamage();
-
 		if($decay >= 8){
 			$decay = 0;
 		}
@@ -245,9 +252,12 @@ abstract class Liquid extends Transparent{
 
 			if($this->adjacentSources >= 2 and $this instanceof Water){
 				$bottomBlock = $this->level->getBlockAt($this->x, $this->y - 1, $this->z);
+				$bottomWaterBlock = $this->level->getBlockAt($this->x, $this->y - 1, $this->z, true, true, 1);
 				if($bottomBlock->isSolid()){
 					$newDecay = 0;
-				}elseif($bottomBlock instanceof Water and $bottomBlock->getDamage() === 0){
+				}elseif($bottomWaterBlock instanceof Water and $bottomWaterBlock->getDamage() === 0){
+					$newDecay = 0;
+				} elseif($bottomBlock instanceof Water and $bottomBlock->getDamage() === 0) {
 					$newDecay = 0;
 				}
 			}
@@ -255,9 +265,9 @@ abstract class Liquid extends Transparent{
 			if($newDecay !== $decay){
 				$decay = $newDecay;
 				if($decay < 0){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR), true, true);
+					$this->level->setBlock($this, BlockFactory::get(Block::AIR), true);
 				}else{
-					$this->level->setBlock($this, BlockFactory::get($this->id, $decay), true, true);
+					$this->level->setBlock($this, BlockFactory::get($this->id, $decay), true);
 					$this->level->scheduleDelayedBlockUpdate($this, $this->tickRate());
 				}
 			}

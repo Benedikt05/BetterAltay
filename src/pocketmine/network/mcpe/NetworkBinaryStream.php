@@ -604,7 +604,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 */
 	public function getBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
-		$y = $this->getUnsignedVarInt();
+		$y = Binary::signInt($this->getUnsignedVarInt());
 		$z = $this->getVarInt();
 	}
 
@@ -613,7 +613,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 */
 	public function putBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);
-		$this->putUnsignedVarInt($y);
+		$this->putUnsignedVarInt(Binary::unsignInt($y));
 		$this->putVarInt($z);
 	}
 

@@ -397,7 +397,7 @@ class BlockFactory{
 		}
 
 		try{
-			if(self::$fullList !== null){
+			if(self::$fullList !== null && isset(self::$fullList[($id << 4) | $meta])){
 				$block = clone self::$fullList[($id << 4) | $meta];
 			}else{
 				$block = new UnknownBlock($id, $meta);

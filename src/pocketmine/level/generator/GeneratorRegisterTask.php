@@ -47,7 +47,9 @@ class GeneratorRegisterTask extends AsyncTask{
 	/** @var int */
 	public $levelId;
 	/** @var int */
-	public $worldHeight = Level::Y_MAX;
+	public $worldMaxHeight = Level::Y_MAX;
+	/** @var int */
+	public $worldMinHeight = Level::Y_MIN;
 
 	/**
 	 * @param mixed[]                         $generatorSettings
@@ -60,14 +62,15 @@ class GeneratorRegisterTask extends AsyncTask{
 		$this->settings = serialize($generatorSettings);
 		$this->seed = $level->getSeed();
 		$this->levelId = $level->getId();
-		$this->worldHeight = $level->getWorldHeight();
+		$this->worldMaxHeight = $level->getWorldMaxHeight();
+		$this->worldMinHeight = $level->getWorldMinHeight();
 	}
 
 	public function onRun(){
 		BlockFactory::init();
 		ItemFactory::init();
 		Biome::init();
-		$manager = new SimpleChunkManager($this->seed, $this->worldHeight);
+		$manager = new SimpleChunkManager($this->seed, $this->worldMaxHeight, $this->worldMinHeight);
 		$this->saveToThreadStore("generation.level{$this->levelId}.manager", $manager);
 
 		/**

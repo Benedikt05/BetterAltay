@@ -36,6 +36,7 @@ use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function abs;
 
@@ -99,24 +100,29 @@ class Nether extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
+		$bedrockRid = RuntimeBlockMapping::toStaticRuntimeId(Block::BEDROCK);
+		$netherrackRid = RuntimeBlockMapping::toStaticRuntimeId(Block::NETHERRACK);
+		$stillLavaRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STILL_LAVA);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 
 				$biome = Biome::getBiome(Biome::HELL);
-				$chunk->setBiomeId($x, $z, $biome->getId());
+				for ($y = 0; $y < 127; $y++){
+					$chunk->setBiomeId($x, $y, $z, $biome->getId());
+				}
 
 				for($y = 0; $y < 128; ++$y){
 					if($y === 0 or $y === 127){
-						$chunk->setBlock($x, $y, $z, Block::BEDROCK, 0);
+						$chunk->setBlockId($x, $y, $z, $bedrockRid, 0);
 						continue;
 					}
 					$noiseValue = (abs($this->emptyHeight - $y) / $this->emptyHeight) * $this->emptyAmplitude - $noise[$x][$z][$y];
 					$noiseValue -= 1 - $this->density;
 
 					if($noiseValue > 0){
-						$chunk->setBlock($x, $y, $z, Block::NETHERRACK, 0);
+						$chunk->setBlockId($x, $y, $z, $netherrackRid, 0);
 					}elseif($y <= $this->lavaHeight){
-						$chunk->setBlock($x, $y, $z, Block::STILL_LAVA, 0);
+						$chunk->setBlockId($x, $y, $z, $stillLavaRid, 0);
 					}
 				}
 			}
@@ -134,7 +140,7 @@ class Nether extends Generator{
 		}
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
-		$biome = Biome::getBiome($chunk->getBiomeId(7, 7));
+		$biome = Biome::getBiome($chunk->getBiomeId(7, 7, 7));
 		$biome->populateChunk($this->level, $chunkX, $chunkZ, $this->random);
 	}
 

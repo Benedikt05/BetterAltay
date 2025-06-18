@@ -35,6 +35,7 @@ class PopulationTask extends AsyncTask{
 	public $state;
 	/** @var int */
 	public $levelId;
+	public int $dimension;
 	/** @var string */
 	public $chunk;
 
@@ -61,6 +62,7 @@ class PopulationTask extends AsyncTask{
 	public function __construct(Level $level, Chunk $chunk){
 		$this->state = true;
 		$this->levelId = $level->getId();
+		$this->dimension = $level->getDimension();
 		$this->chunk = $chunk->fastSerialize();
 
 		foreach($level->getAdjacentChunks($chunk->getX(), $chunk->getZ()) as $i => $c){
@@ -89,7 +91,7 @@ class PopulationTask extends AsyncTask{
 			$zz = -1 + (int) ($i / 3);
 			$ck = $this->{"chunk$i"};
 			if($ck === null){
-				$chunks[$i] = new Chunk($chunk->getX() + $xx, $chunk->getZ() + $zz);
+				$chunks[$i] = new Chunk($chunk->getX() + $xx, $chunk->getZ() + $zz, $this->dimension);
 			}else{
 				$chunks[$i] = Chunk::fastDeserialize($ck);
 			}

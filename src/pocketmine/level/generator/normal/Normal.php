@@ -29,7 +29,6 @@ use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\biome\BiomeSelector;
 use pocketmine\level\generator\Generator;
-use pocketmine\level\generator\InvalidGeneratorOptionsException;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\GroundCover;
@@ -37,6 +36,7 @@ use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function exp;
 
@@ -45,7 +45,7 @@ class Normal extends Generator{
 	/** @var Populator[] */
 	private $populators = [];
 	/** @var int */
-	private $waterHeight = 63;
+	private $waterHeight = 62;
 
 	/** @var Populator[] */
 	private $generationPopulators = [];
@@ -159,6 +159,9 @@ class Normal extends Generator{
 
 		$biomeCache = [];
 
+		$bedrockRid = RuntimeBlockMapping::toStaticRuntimeId(Block::BEDROCK);
+		$stoneRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STONE);
+		$stillWaterRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STILL_WATER);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 				$minSum = 0;
@@ -166,7 +169,9 @@ class Normal extends Generator{
 				$weightSum = 0;
 
 				$biome = $this->pickBiome($chunkX * 16 + $x, $chunkZ * 16 + $z);
-				$chunk->setBiomeId($x, $z, $biome->getId());
+				for($y = 0; $y <= Level::Y_MAX; $y++){
+					$chunk->setBiomeId($x, Level::Y_MIN+$y, $z, $biome->getId());
+				}
 
 				for($sx = -2; $sx <= 2; ++$sx){
 					for($sz = -2; $sz <= 2; ++$sz){
@@ -197,15 +202,15 @@ class Normal extends Generator{
 
 				for($y = 0; $y < 128; ++$y){
 					if($y === 0){
-						$chunk->setBlockId($x, $y, $z, Block::BEDROCK);
+						$chunk->setBlockId($x, $y, $z, $bedrockRid, 0);
 						continue;
 					}
 					$noiseValue = $noise[$x][$z][$y] - 1 / $smoothHeight * ($y - $smoothHeight - $minSum);
 
 					if($noiseValue > 0){
-						$chunk->setBlockId($x, $y, $z, Block::STONE);
+						$chunk->setBlockId($x, $y, $z, $stoneRid, 0);
 					}elseif($y <= $this->waterHeight){
-						$chunk->setBlockId($x, $y, $z, Block::STILL_WATER);
+						$chunk->setBlockId($x, $y, $z, $stillWaterRid, 0);
 					}
 				}
 			}
@@ -223,7 +228,7 @@ class Normal extends Generator{
 		}
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
-		$biome = Biome::getBiome($chunk->getBiomeId(7, 7));
+		$biome = Biome::getBiome($chunk->getBiomeId(7, 7,7));
 		$biome->populateChunk($this->level, $chunkX, $chunkZ, $this->random);
 	}
 

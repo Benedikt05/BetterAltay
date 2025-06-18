@@ -27,7 +27,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use function count;
 
-abstract class Thin extends Transparent{
+abstract class Thin extends Waterloggable {
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
 		$width = 0.5 - 0.125 / 2;

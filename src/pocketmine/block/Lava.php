@@ -75,7 +75,7 @@ class Lava extends Liquid{
 	protected function checkForHarden(){
 		$colliding = null;
 		for($side = 1; $side <= 5; ++$side){ //don't check downwards side
-			$blockSide = $this->getSide($side);
+			$blockSide = $this->getSide($side, 1, 1);
 			if($blockSide instanceof Water){
 				$colliding = $blockSide;
 				break;

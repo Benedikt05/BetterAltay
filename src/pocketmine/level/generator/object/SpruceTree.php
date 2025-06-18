@@ -27,6 +27,7 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\Wood;
 use pocketmine\level\ChunkManager;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function abs;
 
@@ -54,6 +55,7 @@ class SpruceTree extends Tree{
 		$maxR = 1;
 		$minR = 0;
 
+		$rid = RuntimeBlockMapping::toStaticRuntimeId($this->leafBlock, $this->type);
 		for($yy = 0; $yy <= $topSize; ++$yy){
 			$yyy = $y + $this->treeHeight - $yy;
 
@@ -65,9 +67,8 @@ class SpruceTree extends Tree{
 						continue;
 					}
 
-					if(!BlockFactory::$solid[$level->getBlockIdAt($xx, $yyy, $zz)]){
-						$level->setBlockIdAt($xx, $yyy, $zz, $this->leafBlock);
-						$level->setBlockDataAt($xx, $yyy, $zz, $this->type);
+					if(!BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($xx, $yyy, $zz)))->isSolid()){
+						$level->setBlockIdAt($xx, $yyy, $zz, $rid);
 					}
 				}
 			}

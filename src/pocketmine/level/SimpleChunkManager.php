@@ -35,63 +35,39 @@ class SimpleChunkManager implements ChunkManager{
 	/** @var int */
 	protected $seed;
 	/** @var int */
-	protected $worldHeight;
+	protected $worldMaxHeight;
+	/** @var int */
+	protected $worldMinHeight;
 
 	/**
 	 * SimpleChunkManager constructor.
 	 */
-	public function __construct(int $seed, int $worldHeight = Level::Y_MAX){
+	public function __construct(int $seed, int $maxHeight = Level::Y_MAX, $minHeight = Level::Y_MIN){
 		$this->seed = $seed;
-		$this->worldHeight = $worldHeight;
+		$this->worldMaxHeight = $maxHeight;
+		$this->worldMinHeight = $minHeight;
 	}
 
 	/**
-	 * Gets the raw block id.
+	 * Gets the runtime ID of the block at the specified coordinates.
 	 *
-	 * @return int 0-255
+	 * @return int
 	 */
-	public function getBlockIdAt(int $x, int $y, int $z) : int{
+	public function getBlockIdAt(int $x, int $y, int $z, int $layer = 0) : int{
 		if(($chunk = $this->getChunk($x >> 4, $z >> 4)) !== null){
-			return $chunk->getBlockId($x & 0xf, $y, $z & 0xf);
+			return $chunk->getBlockId($x & Chunk::COORD_MASK, $y, $z & Chunk::COORD_MASK, $layer);
 		}
 		return 0;
 	}
 
 	/**
-	 * Sets the raw block id.
-	 *
-	 * @param int $id 0-255
+	 * Sets the runtime ID of the block at the specified coordinates.
 	 *
 	 * @return void
 	 */
-	public function setBlockIdAt(int $x, int $y, int $z, int $id){
+	public function setBlockIdAt(int $x, int $y, int $z, int $id, int $layer = 0) : void{
 		if(($chunk = $this->getChunk($x >> 4, $z >> 4)) !== null){
-			$chunk->setBlockId($x & 0xf, $y, $z & 0xf, $id);
-		}
-	}
-
-	/**
-	 * Gets the raw block metadata
-	 *
-	 * @return int 0-15
-	 */
-	public function getBlockDataAt(int $x, int $y, int $z) : int{
-		if(($chunk = $this->getChunk($x >> 4, $z >> 4)) !== null){
-			return $chunk->getBlockData($x & 0xf, $y, $z & 0xf);
-		}
-		return 0;
-	}
-
-	/**
-	 * Sets the raw block metadata.
-	 *
-	 * @param int $data 0-15
-	 *
-	 * @return void
-	 */
-	public function setBlockDataAt(int $x, int $y, int $z, int $data){
-		if(($chunk = $this->getChunk($x >> 4, $z >> 4)) !== null){
-			$chunk->setBlockData($x & 0xf, $y, $z & 0xf, $data);
+			$chunk->setBlockId($x & Chunk::COORD_MASK, $y, $z & Chunk::COORD_MASK, $id, $layer);
 		}
 	}
 
@@ -155,14 +131,18 @@ class SimpleChunkManager implements ChunkManager{
 		return $this->seed;
 	}
 
-	public function getWorldHeight() : int{
-		return $this->worldHeight;
+	public function getWorldMaxHeight() : int{
+		return $this->worldMaxHeight;
+	}
+
+	public function getWorldMinHeight() : int{
+		return $this->worldMinHeight;
 	}
 
 	public function isInWorld(int $x, int $y, int $z) : bool{
 		return (
 			$x <= INT32_MAX and $x >= INT32_MIN and
-			$y < $this->worldHeight and $y >= 0 and
+			$y < $this->worldMaxHeight and $y >= 0 and
 			$z <= INT32_MAX and $z >= INT32_MIN
 		);
 	}

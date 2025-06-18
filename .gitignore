@@ -17,6 +17,8 @@ memory_dumps/*
 resource_packs/
 server.lock
 /phpstan.neon
+.phpactor.json
+.phpcs.xml
 
 # Common IDEs
 .idea/*
