@@ -28,6 +28,7 @@ use pocketmine\block\Block;
 use pocketmine\block\Sapling;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\Tree as ObjectTree;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function rand;
 
@@ -48,6 +49,8 @@ class Mushroom extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
+		$redMushroom = RuntimeBlockMapping::toStaticRuntimeId(Block::RED_MUSHROOM);
+		$brownMushroom = RuntimeBlockMapping::toStaticRuntimeId(Block::BROWN_MUSHROOM);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -58,9 +61,9 @@ class Mushroom extends Populator{
 
 			if(rand(1, 2) === 1){
 				$r = rand(1, 2);
-				$this->level->setBlockIdAt($x, $y, $z, $r === 1 ? Block::RED_MUSHROOM : Block::BROWN_MUSHROOM);
-				$this->level->setBlockIdAt($x + 1, $y, $z, $r === 1 ? Block::RED_MUSHROOM : Block::BROWN_MUSHROOM);
-				$this->level->setBlockIdAt($x, $y, $z + 1, $r === 1 ? Block::BROWN_MUSHROOM : Block::RED_MUSHROOM);
+				$this->level->setBlockIdAt($x, $y, $z, $r === 1 ? $redMushroom : $brownMushroom);
+				$this->level->setBlockIdAt($x + 1, $y, $z, $r === 1 ? $redMushroom : $brownMushroom);
+				$this->level->setBlockIdAt($x, $y, $z + 1, $r === 1 ? $brownMushroom : $brownMushroom);
 			}else{
 				ObjectTree::growTree($this->level, $x, $y, $z, $random, Sapling::OAK);
 			}
@@ -69,10 +72,11 @@ class Mushroom extends Populator{
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
+			$rid = $this->level->getBlockIdAt($x, $y, $z);
+			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($rid);
 			if($b === Block::DIRT or $b === Block::GRASS){
 				break;
-			}elseif($b !== Block::AIR and $b !== Block::SNOW_LAYER){
+			}elseif($rid !== RuntimeBlockMapping::AIR() and $b !== Block::SNOW_LAYER){
 				return -1;
 			}
 		}

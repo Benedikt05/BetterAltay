@@ -25,8 +25,10 @@ namespace pocketmine\level\light;
 
 use pocketmine\block\BlockFactory;
 use pocketmine\level\ChunkManager;
+use pocketmine\level\format\Chunk;
 use pocketmine\level\Level;
 use pocketmine\level\utils\SubChunkIteratorManager;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use SplQueue;
 
 //TODO: make light updates asynchronous
@@ -190,7 +192,8 @@ abstract class LightUpdate{
 	 */
 	protected function computeSpreadLight(int $x, int $y, int $z, int $newAdjacentLevel){
 		$current = $this->getLight($x, $y, $z);
-		$potentialLight = $newAdjacentLevel - BlockFactory::$lightFilter[$this->subChunkHandler->currentSubChunk->getBlockId($x & 0x0f, $y & 0x0f, $z & 0x0f)];
+		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($x & Chunk::COORD_MASK, $y & Chunk::COORD_MASK, $z & Chunk::COORD_MASK, 0));
+		$potentialLight = $newAdjacentLevel - (BlockFactory::$lightFilter[$id] ?? 15);
 
 		if($current < $potentialLight){
 			$this->setLight($x, $y, $z, $potentialLight);

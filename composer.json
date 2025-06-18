@@ -33,6 +33,8 @@
       "ext-zlib": ">=1.2.11",
       "composer-runtime-api": "^2.0",
       "adhocore/json-comment": "^1.1",
+      "benedikt05/nbt": "3.0.1",
+      "exussum12/xxhash": "^1.3",
       "fgrosse/phpasn1": "^2.3",
       "pocketmine/binaryutils": "^0.1.9",
       "pocketmine/callback-validator": "^1.0.2",
@@ -40,7 +42,6 @@
       "pocketmine/log": "^0.2.0",
       "pocketmine/log-pthreads": "^0.1.0",
       "pocketmine/math": "^0.2.0",
-      "benedikt05/nbt": "3.0.1",
       "pocketmine/raklib": "^0.12.7",
       "pocketmine/snooze": "^0.1.0",
       "pocketmine/spl": "^0.4.0"

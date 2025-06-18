@@ -148,6 +148,10 @@ class Block extends Position implements BlockIds, Metadatable{
 		return false;
 	}
 
+	public function isWaterloggable(): bool{
+		return false;
+	}
+
 	public function canBePlacedAt(Block $blockReplace, Vector3 $clickVector, int $face, bool $isClickedBlock) : bool{
 		return $blockReplace->canBeReplaced();
 	}
@@ -489,9 +493,9 @@ class Block extends Position implements BlockIds, Metadatable{
 	 *
 	 * @return Block
 	 */
-	public function getSide(int $side, int $step = 1){
+	public function getSide(int $side, int $step = 1, int $layer = 0){
 		if($this->isValid()){
-			return $this->getLevelNonNull()->getBlock(Vector3::getSide($side, $step));
+			return $this->getLevelNonNull()->getBlock(Vector3::getSide($side, $step), true, true, $layer);
 		}
 
 		return BlockFactory::get(Block::AIR, 0, Position::fromObject(Vector3::getSide($side, $step)));

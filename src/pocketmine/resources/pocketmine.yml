@@ -112,7 +112,7 @@ player:
 
 level-settings:
   #The default format that worlds will use when created
-  default-format: pmanvil
+  default-format: leveldb
 
 chunk-sending:
   #To change server normal render distance, change view-distance in server.properties.

@@ -30,7 +30,7 @@ use pocketmine\Player;
 use pocketmine\tile\Chest as TileChest;
 use pocketmine\tile\Tile;
 
-class Chest extends Transparent{
+class Chest extends Waterloggable{
 
 	protected $id = self::CHEST;
 

@@ -25,9 +25,6 @@ namespace pocketmine\level\format\io;
 
 use InvalidArgumentException;
 use pocketmine\level\format\io\leveldb\LevelDB;
-use pocketmine\level\format\io\region\Anvil;
-use pocketmine\level\format\io\region\McRegion;
-use pocketmine\level\format\io\region\PMAnvil;
 use ReflectionClass;
 use ReflectionException;
 use function strtolower;
@@ -41,9 +38,6 @@ abstract class LevelProviderManager{
 	protected static $providers = [];
 
 	public static function init() : void{
-		self::addProvider(Anvil::class);
-		self::addProvider(McRegion::class);
-		self::addProvider(PMAnvil::class);
 		self::addProvider(LevelDB::class);
 	}
 

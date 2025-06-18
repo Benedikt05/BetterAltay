@@ -4787,40 +4787,40 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				$this->setUsingItem(false);
 
-				if(!$this->canInteract($blockVector->add(0.5, 0.5, 0.5), 13)){
-				}elseif($this->isCreative()){
-					$item = $this->inventory->getItemInHand();
-					if($this->level->useItemOn($blockVector, $item, $face, $trData->getClickPos(), $this, true)){
-						return true;
-					}
-				}elseif(!$this->inventory->getItemInHand()->equals($trData->getItemInHand()->getItemStack())){
-					$this->inventory->sendHeldItem($this);
-				}else{
-					$item = $this->inventory->getItemInHand();
-					$oldItem = clone $item;
-					if($this->level->useItemOn($blockVector, $item, $face, $trData->getClickPos(), $this, true)){
-						if(!$item->equalsExact($oldItem) and $oldItem->equalsExact($this->inventory->getItemInHand())){
-							$this->inventory->setItemInHand($item);
-							$this->inventory->sendHeldItem($this->hasSpawned);
+				if($this->canInteract($blockVector->add(0.5, 0.5, 0.5), $this->isCreative() ? 13 : 7)){
+					if($this->isCreative()){
+						$item = $this->inventory->getItemInHand();
+						if($this->level->useItemOn($blockVector, $item, $face, $trData->getClickPos(), $this, true)){
+							return true;
 						}
+					}elseif(!$this->inventory->getItemInHand()->equals($trData->getItemInHand()->getItemStack())){
+						$this->inventory->sendHeldItem($this);
+					}else{
+						$item = $this->inventory->getItemInHand();
+						$oldItem = clone $item;
+						if($this->level->useItemOn($blockVector, $item, $face, $trData->getClickPos(), $this, true)){
+							if(!$item->equalsExact($oldItem) and $oldItem->equalsExact($this->inventory->getItemInHand())){
+								$this->inventory->setItemInHand($item);
+								$this->inventory->sendHeldItem($this->hasSpawned);
+							}
+							return true;
+						}
+					}
 
+					$this->inventory->sendHeldItem($this);
+
+					if($blockVector->distanceSquared($this) > 10000){
 						return true;
 					}
+
+					$target = $this->level->getBlock($blockVector);
+					$block = $target->getSide($face);
+
+					/** @var Block[] $blocks */
+					$blocks = array_merge($target->getAllSides(), $block->getAllSides()); //getAllSides() on each of these will include $target and $block because they are next to each other
+
+					$this->level->sendBlocks([$this], $blocks);
 				}
-
-				$this->inventory->sendHeldItem($this);
-
-				if($blockVector->distanceSquared($this) > 10000){
-					return true;
-				}
-
-				$target = $this->level->getBlock($blockVector);
-				$block = $target->getSide($face);
-
-				/** @var Block[] $blocks */
-				$blocks = array_merge($target->getAllSides(), $block->getAllSides()); //getAllSides() on each of these will include $target and $block because they are next to each other
-
-				$this->level->sendBlocks([$this], $blocks, UpdateBlockPacket::FLAG_ALL_PRIORITY);
 
 				return true;
 			case UseItemTransactionData::ACTION_BREAK_BLOCK:
@@ -4849,7 +4849,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$blocks = $target->getAllSides();
 				$blocks[] = $target;
 
-				$this->level->sendBlocks([$this], $blocks, UpdateBlockPacket::FLAG_ALL_PRIORITY);
+				$this->level->sendBlocks([$this], $blocks);
 
 				foreach($blocks as $b){
 					$tile = $this->level->getTile($b);

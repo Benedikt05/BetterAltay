@@ -23,21 +23,16 @@ declare(strict_types=1);
 
 namespace pocketmine\level\format;
 
+use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\utils\BinaryStream;
+
 interface SubChunkInterface{
 
-	public function isEmpty(bool $checkLight = true) : bool;
+	public function isEmpty() : bool;
 
-	public function getBlockId(int $x, int $y, int $z) : int;
+	public function getBlockId(int $x, int $y, int $z, int $layer) : int;
 
-	public function setBlockId(int $x, int $y, int $z, int $id) : bool;
-
-	public function getBlockData(int $x, int $y, int $z) : int;
-
-	public function setBlockData(int $x, int $y, int $z, int $data) : bool;
-
-	public function getFullBlock(int $x, int $y, int $z) : int;
-
-	public function setBlock(int $x, int $y, int $z, ?int $id = null, ?int $data = null) : bool;
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool;
 
 	public function getBlockLight(int $x, int $y, int $z) : int;
 
@@ -47,11 +42,9 @@ interface SubChunkInterface{
 
 	public function setBlockSkyLight(int $x, int $y, int $z, int $level) : bool;
 
-	public function getHighestBlockAt(int $x, int $z) : int;
+	public function getHighestBlockAt(int $x, int $z) : ?int;
 
 	public function getBlockIdColumn(int $x, int $z) : string;
-
-	public function getBlockDataColumn(int $x, int $z) : string;
 
 	public function getBlockLightColumn(int $x, int $z) : string;
 
@@ -66,14 +59,20 @@ interface SubChunkInterface{
 	/**
 	 * @return void
 	 */
-	public function setBlockSkyLightArray(string $data);
+	public function setBlockSkyLightArray(string $data) : void;
 
 	public function getBlockLightArray() : string;
 
 	/**
 	 * @return void
 	 */
-	public function setBlockLightArray(string $data);
+	public function setBlockLightArray(string $data) : void;
 
-	public function networkSerialize() : string;
+	public function networkSerialize(NetworkBinaryStream $stream) : void;
+
+	public function fastSerialize(BinaryStream $stream, bool $lightPopulated) : void;
+
+	public function diskSerialize(BinaryStream $stream) : void;
+
+	public static function fastDeserialize(BinaryStream $stream, bool $lightPopulated) : SubChunkInterface;
 }

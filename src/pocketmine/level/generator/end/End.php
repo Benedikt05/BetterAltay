@@ -32,6 +32,7 @@ use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function abs;
 use function exp;
@@ -107,6 +108,7 @@ class End extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
+		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::END_STONE);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 
@@ -114,7 +116,11 @@ class End extends Generator{
 				$biome->setGroundCover([
 					Block::get(Block::OBSIDIAN, 0)
 				]);
-				$chunk->setBiomeId($x, $z, $biome->getId());
+
+				for ($y = 0; $y < 255; $y++){
+					$chunk->setBiomeId($x, $y, $z, $biome->getId());
+				}
+
 				$color = [0, 0, 0];
 				$bColor = 2;
 				$color[0] += (($bColor >> 16) ** 2);
@@ -130,7 +136,7 @@ class End extends Generator{
 					$distance = $distance->distance(new Vector3($chunkX * 16 + $x, ($y / 1.3), $chunkZ * 16 + $z));
 
 					if($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400){
-						$chunk->setBlock($x, $y, $z, Block::END_STONE, 0);
+						$chunk->setBlockId($x, $y, $z, $rid, 0);
 					}
 				}
 			}
@@ -148,7 +154,7 @@ class End extends Generator{
 		}
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
-		$biome = Biome::getBiome($chunk->getBiomeId(7, 7));
+		$biome = Biome::getBiome($chunk->getBiomeId(7, 7, 7));
 		$biome->populateChunk($this->level, $chunkX, $chunkZ, $this->random);
 	}
 

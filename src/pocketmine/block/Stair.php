@@ -28,7 +28,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-abstract class Stair extends Transparent{
+abstract class Stair extends Waterloggable{
 
 	protected function recalculateCollisionBoxes() : array{
 		//TODO: handle corners

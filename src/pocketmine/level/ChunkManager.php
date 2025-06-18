@@ -27,36 +27,20 @@ use pocketmine\level\format\Chunk;
 
 interface ChunkManager{
 	/**
-	 * Gets the raw block id.
+	 * Gets the runtime ID of the block at the specified coordinates.
 	 *
-	 * @return int 0-255
+	 * @return int
 	 */
-	public function getBlockIdAt(int $x, int $y, int $z) : int;
+	public function getBlockIdAt(int $x, int $y, int $z, int $layer = 0) : int;
 
 	/**
-	 * Sets the raw block id.
+	 * Sets the runtime ID of the block at the specified coordinates.
 	 *
-	 * @param int $id 0-255
+	 * @param int $id
 	 *
 	 * @return void
 	 */
-	public function setBlockIdAt(int $x, int $y, int $z, int $id);
-
-	/**
-	 * Gets the raw block metadata
-	 *
-	 * @return int 0-15
-	 */
-	public function getBlockDataAt(int $x, int $y, int $z) : int;
-
-	/**
-	 * Sets the raw block metadata.
-	 *
-	 * @param int $data 0-15
-	 *
-	 * @return void
-	 */
-	public function setBlockDataAt(int $x, int $y, int $z, int $data);
+	public function setBlockIdAt(int $x, int $y, int $z, int $id, int $layer = 0);
 
 	/**
 	 * Returns the raw block light level
@@ -98,9 +82,14 @@ interface ChunkManager{
 	public function getSeed() : int;
 
 	/**
-	 * Returns the height of the world
+	 * Returns the max height of the world
 	 */
-	public function getWorldHeight() : int;
+	public function getWorldMaxHeight() : int;
+
+	/**
+	 * Returns the max height of the world
+	 */
+	public function getWorldMinHeight() : int;
 
 	/**
 	 * Returns whether the specified coordinates are within the valid world boundaries, taking world format limitations

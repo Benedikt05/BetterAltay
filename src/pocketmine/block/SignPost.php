@@ -37,7 +37,7 @@ use pocketmine\tile\Tile;
 use pocketmine\utils\Color;
 use function floor;
 
-class SignPost extends Transparent{
+class SignPost extends Waterloggable{
 
 	protected $id = self::SIGN_POST;
 

@@ -27,6 +27,7 @@ use pocketmine\block\Block;
 use pocketmine\block\Sapling;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\Tree as ObjectTree;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 
 class Tree extends Populator{
@@ -81,7 +82,7 @@ class Tree extends Populator{
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
+			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
 			if($b === Block::DIRT or $b === Block::GRASS){
 				return $y + 1;
 			}elseif($b !== Block::AIR and $b !== Block::SNOW_LAYER){

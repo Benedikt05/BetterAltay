@@ -28,7 +28,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-abstract class Slab extends Transparent{
+abstract class Slab extends Waterloggable{
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

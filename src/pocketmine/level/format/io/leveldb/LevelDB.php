@@ -25,7 +25,6 @@ namespace pocketmine\level\format\io\leveldb;
 
 use pocketmine\level\format\Chunk;
 use pocketmine\level\format\io\BaseLevelProvider;
-use pocketmine\level\format\io\ChunkUtils;
 use pocketmine\level\format\io\exception\CorruptedChunkException;
 use pocketmine\level\format\io\exception\UnsupportedChunkFormatException;
 use pocketmine\level\format\SubChunk;
@@ -40,9 +39,11 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryStream;
+use pocketmine\world\format\PalettedBlockArray;
 use UnexpectedValueException;
 use function array_values;
 use function chr;
@@ -70,25 +71,7 @@ use const LEVELDB_ZLIB_RAW_COMPRESSION;
 class LevelDB extends BaseLevelProvider{
 
 	//According to Tomasso, these aren't supposed to be readable anymore. Thankfully he didn't change the readable ones...
-	public const TAG_DATA_2D = "\x2d";
-	public const TAG_DATA_2D_LEGACY = "\x2e";
-	public const TAG_SUBCHUNK_PREFIX = "\x2f";
-	public const TAG_LEGACY_TERRAIN = "0";
-	public const TAG_BLOCK_ENTITY = "1";
-	public const TAG_ENTITY = "2";
-	public const TAG_PENDING_TICK = "3";
-	public const TAG_BLOCK_EXTRA_DATA = "4";
-	public const TAG_BIOME_STATE = "5";
-	public const TAG_STATE_FINALISATION = "6";
-
-	public const TAG_BORDER_BLOCKS = "8";
-	public const TAG_HARDCODED_SPAWNERS = "9";
-
-	public const FINALISATION_NEEDS_INSTATICKING = 0;
-	public const FINALISATION_NEEDS_POPULATION = 1;
 	public const FINALISATION_DONE = 2;
-
-	public const TAG_VERSION = "v";
 
 	public const ENTRY_FLAT_WORLD_LAYERS = "game_flatworldlayers";
 
@@ -96,9 +79,9 @@ class LevelDB extends BaseLevelProvider{
 	public const GENERATOR_INFINITE = 1;
 	public const GENERATOR_FLAT = 2;
 
-	public const CURRENT_STORAGE_VERSION = 6; //Current MCPE level format version
-	public const CURRENT_LEVEL_CHUNK_VERSION = 7;
-	public const CURRENT_LEVEL_SUBCHUNK_VERSION = 0;
+	public const CURRENT_STORAGE_VERSION = 10;
+	public const CURRENT_CHUNK_VERSION = 41;
+	public const CURRENT_SUBCHUNK_VERSION = 8;
 
 	/** @var \LevelDB */
 	protected $db;
@@ -190,8 +173,12 @@ class LevelDB extends BaseLevelProvider{
 		return "leveldb";
 	}
 
-	public function getWorldHeight() : int{
-		return 256;
+	public function getWorldMaxHeight() : int{
+		return 320;
+	}
+
+	public function getWorldMinHeight() : int{
+		return -64;
 	}
 
 	public static function isValid(string $path) : bool{
@@ -297,125 +284,57 @@ class LevelDB extends BaseLevelProvider{
 
 	/**
 	 * @throws UnsupportedChunkFormatException
+	 * @throws \Exception
 	 */
-	protected function readChunk(int $chunkX, int $chunkZ) : ?Chunk{
-		$index = LevelDB::chunkIndex($chunkX, $chunkZ);
-
-		$chunkVersionRaw = $this->db->get($index . self::TAG_VERSION);
+	protected function readChunk(int $chunkX, int $chunkZ, int $dimension) : ?Chunk{
+		$index = Key::get($chunkX, $chunkZ, $dimension);
+		$chunkVersionRaw = $this->db->get($index . Key::TAG_CHUNK_VERSION);
 		if($chunkVersionRaw === false){
 			return null;
 		}
 
 		/** @var SubChunk[] $subChunks */
 		$subChunks = [];
-
-		/** @var int[] $heightMap */
-		$heightMap = [];
-		/** @var string $biomeIds */
-		$biomeIds = "";
-
-		/** @var bool $lightPopulated */
-		$lightPopulated = true;
+		/** @var PalettedBlockArray[] $biomes */
+		$biomes = [];
 
 		$chunkVersion = ord($chunkVersionRaw);
-		$hasBeenUpgraded = $chunkVersion < self::CURRENT_LEVEL_CHUNK_VERSION;
-
-		$binaryStream = new BinaryStream();
+		$hasBeenUpgraded = $chunkVersion < self::CURRENT_CHUNK_VERSION;
 
 		switch($chunkVersion){
-			case 7: //MCPE 1.2 (???)
-			case 4: //MCPE 1.1
-				//TODO: check beds
-			case 3: //MCPE 1.0
-				for($y = 0; $y < Chunk::MAX_SUBCHUNKS; ++$y){
-					if(($data = $this->db->get($index . self::TAG_SUBCHUNK_PREFIX . chr($y))) === false){
-						continue;
+			case self::CURRENT_CHUNK_VERSION:
+				$maxY = Chunk::getMaxSubChunk($dimension);
+				$biomeStream = new BinaryStream();
+				$lastBiome = null;
+
+				if (($rawBiomes = $this->db->get($index . Key::TAG_BIOMES)) !== false){
+					if(strlen($rawBiomes) <= 512){
+						throw new CorruptedChunkException("Biomes must have at least 513 bytes.");
 					}
 
-					$binaryStream->setBuffer($data, 0);
-					$subChunkVersion = $binaryStream->getByte();
-					if($subChunkVersion < self::CURRENT_LEVEL_SUBCHUNK_VERSION){
-						$hasBeenUpgraded = true;
-					}
-
-					switch($subChunkVersion){
-						case 0:
-							$blocks = $binaryStream->get(4096);
-							$blockData = $binaryStream->get(2048);
-							if($chunkVersion < 4){
-								$blockSkyLight = $binaryStream->get(2048);
-								$blockLight = $binaryStream->get(2048);
-								$hasBeenUpgraded = true; //drop saved light
-							}else{
-								//Mojang didn't bother changing the subchunk version when they stopped saving sky light -_-
-								$blockSkyLight = "";
-								$blockLight = "";
-								$lightPopulated = false;
-							}
-
-							$subChunks[$y] = new SubChunk($blocks, $blockData, $blockSkyLight, $blockLight);
-							break;
-						default:
-							//TODO: set chunks read-only so the version on disk doesn't get overwritten
-							throw new UnsupportedChunkFormatException("don't know how to decode LevelDB subchunk format version $subChunkVersion");
-					}
+					$biomeStream->setBuffer($rawBiomes);
+					$biomeStream->get(512);
 				}
 
-				if(($maps2d = $this->db->get($index . self::TAG_DATA_2D)) !== false){
-					$binaryStream->setBuffer($maps2d, 0);
+				for ($y = Chunk::getMinSubChunk($dimension); $y <= $maxY; ++$y) {
+					if(($rawSubChunk = $this->db->get($index . Key::TAG_SUBCHUNK . chr($y))) !== false){
+						$subChunks[$y] = $this->decodeSubChunk(new BinaryStream($rawSubChunk));
+					}
 
-					/** @var int[] $unpackedHeightMap */
-					$unpackedHeightMap = unpack("v*", $binaryStream->get(512)); //unpack() will never fail here
-					$heightMap = array_values($unpackedHeightMap);
-					$biomeIds = $binaryStream->get(256);
+					if (!$biomeStream->feof()) {
+						$biome = $this->decodeBiome($biomeStream);
+						if ($biome === null && $lastBiome === null) {
+							throw new CorruptedChunkException("Unable to decode biome, and the last biome was null");
+						}
+
+						if ($biome !== null) {
+							$lastBiome = $biome;
+						} else {
+							$biome = $lastBiome;
+						}
+						$biomes[$y] = $biome;
+					}
 				}
-				break;
-			case 2: // < MCPE 1.0
-				$legacyTerrain = $this->db->get($index . self::TAG_LEGACY_TERRAIN);
-				if($legacyTerrain === false){
-					throw new CorruptedChunkException("Expected to find a LEGACY_TERRAIN key for this chunk version, but none found");
-				}
-				$binaryStream->setBuffer($legacyTerrain);
-				$fullIds = $binaryStream->get(32768);
-				$fullData = $binaryStream->get(16384);
-				$fullSkyLight = $binaryStream->get(16384);
-				$fullBlockLight = $binaryStream->get(16384);
-
-				for($yy = 0; $yy < 8; ++$yy){
-					$subOffset = ($yy << 4);
-					$ids = "";
-					for($i = 0; $i < 256; ++$i){
-						$ids .= substr($fullIds, $subOffset, 16);
-						$subOffset += 128;
-					}
-					$data = "";
-					$subOffset = ($yy << 3);
-					for($i = 0; $i < 256; ++$i){
-						$data .= substr($fullData, $subOffset, 8);
-						$subOffset += 64;
-					}
-					$skyLight = "";
-					$subOffset = ($yy << 3);
-					for($i = 0; $i < 256; ++$i){
-						$skyLight .= substr($fullSkyLight, $subOffset, 8);
-						$subOffset += 64;
-					}
-					$blockLight = "";
-					$subOffset = ($yy << 3);
-					for($i = 0; $i < 256; ++$i){
-						$blockLight .= substr($fullBlockLight, $subOffset, 8);
-						$subOffset += 64;
-					}
-					$subChunks[$yy] = new SubChunk($ids, $data, $skyLight, $blockLight);
-				}
-
-				/** @var int[] $unpackedHeightMap */
-				$unpackedHeightMap = unpack("C*", $binaryStream->get(256)); //unpack() will never fail here, but static analysers don't know that
-				$heightMap = array_values($unpackedHeightMap);
-
-				/** @var int[] $unpackedBiomeIds */
-				$unpackedBiomeIds = unpack("N*", $binaryStream->get(1024)); //nor here
-				$biomeIds = ChunkUtils::convertBiomeColors(array_values($unpackedBiomeIds));
 				break;
 			default:
 				//TODO: set chunks read-only so the version on disk doesn't get overwritten
@@ -426,14 +345,14 @@ class LevelDB extends BaseLevelProvider{
 
 		/** @var CompoundTag[] $entities */
 		$entities = [];
-		if(($entityData = $this->db->get($index . self::TAG_ENTITY)) !== false and $entityData !== ""){
+		if(($entityData = $this->db->get($index . Key::TAG_ENTITIES)) !== false and $entityData !== ""){
 			$entityTags = $nbt->read($entityData, true);
 			foreach((is_array($entityTags) ? $entityTags : [$entityTags]) as $entityTag){
 				if(!($entityTag instanceof CompoundTag)){
 					throw new CorruptedChunkException("Entity root tag should be TAG_Compound");
 				}
-				if($entityTag->hasTag("id", IntTag::class)){
-					$entityTag->setInt("id", $entityTag->getInt("id") & 0xff); //remove type flags - TODO: use these instead of removing them)
+				if($entityTag->hasTag("identifier", IntTag::class)){
+					$entityTag->setInt("identifier", $entityTag->getInt("id") & 0xff); //remove type flags - TODO: use these instead of removing them)
 				}
 				$entities[] = $entityTag;
 			}
@@ -441,7 +360,7 @@ class LevelDB extends BaseLevelProvider{
 
 		/** @var CompoundTag[] $tiles */
 		$tiles = [];
-		if(($tileData = $this->db->get($index . self::TAG_BLOCK_ENTITY)) !== false and $tileData !== ""){
+		if(($tileData = $this->db->get($index . Key::TAG_BLOCK_ENTITIES)) !== false and $tileData !== ""){
 			$tileTags = $nbt->read($tileData, true);
 			foreach((is_array($tileTags) ? $tileTags : [$tileTags]) as $tileTag){
 				if(!($tileTag instanceof CompoundTag)){
@@ -451,68 +370,57 @@ class LevelDB extends BaseLevelProvider{
 			}
 		}
 
-		//TODO: extra data should be converted into blockstorage layers (first they need to be implemented!)
-		/*
-		$extraData = [];
-		if(($extraRawData = $this->db->get($index . self::TAG_BLOCK_EXTRA_DATA)) !== false and $extraRawData !== ""){
-			$binaryStream->setBuffer($extraRawData, 0);
-			$count = $binaryStream->getLInt();
-			for($i = 0; $i < $count; ++$i){
-				$key = $binaryStream->getLInt();
-				$value = $binaryStream->getLShort();
-				$extraData[$key] = $value;
-			}
-		}*/
-
 		$chunk = new Chunk(
 			$chunkX,
 			$chunkZ,
+			$dimension,
 			$subChunks,
 			$entities,
 			$tiles,
-			$biomeIds,
-			$heightMap
+			$biomes,
+			[]
 		);
 
 		//TODO: tile ticks, biome states (?)
 
-		$chunk->setGenerated(true);
-		$chunk->setPopulated(true);
-		$chunk->setLightPopulated($lightPopulated);
+		$chunk->setGenerated();
+		$chunk->setPopulated();
+		$chunk->setLightPopulated();
 		$chunk->setChanged($hasBeenUpgraded); //trigger rewriting chunk to disk if it was converted from an older format
 
 		return $chunk;
 	}
 
 	protected function writeChunk(Chunk $chunk) : void{
-		$index = LevelDB::chunkIndex($chunk->getX(), $chunk->getZ());
-		$this->db->put($index . self::TAG_VERSION, chr(self::CURRENT_LEVEL_CHUNK_VERSION));
+		$index = Key::get($chunk->getX(), $chunk->getZ(), $chunk->getDimension());
+		$this->db->put($index . Key::TAG_CHUNK_VERSION, chr(self::CURRENT_CHUNK_VERSION));
 
+		$chunk->collectGarbage();
 		$subChunks = $chunk->getSubChunks();
 		foreach($subChunks as $y => $subChunk){
-			$key = $index . self::TAG_SUBCHUNK_PREFIX . chr($y);
-			if($subChunk->isEmpty(false)){ //MCPE doesn't save light anymore as of 1.1
+			$key = $index . Key::TAG_SUBCHUNK . chr($y);
+			if($subChunk->isEmpty()){
 				$this->db->delete($key);
 			}else{
-				$this->db->put($key,
-					chr(self::CURRENT_LEVEL_SUBCHUNK_VERSION) .
-					$subChunk->getBlockIdArray() .
-					$subChunk->getBlockDataArray()
-				);
+				$stream = new BinaryStream();
+				$subChunk->diskSerialize($stream);
+				$this->db->put($key, $stream->getBuffer());
 			}
 		}
 
-		$this->db->put($index . self::TAG_DATA_2D, pack("v*", ...$chunk->getHeightMapArray()) . $chunk->getBiomeIdArray());
+		$biomeStream = new BinaryStream();
+		$biomeStream->put(str_repeat("\x00", 512));
+		$chunk->diskSerializeBiomes($biomeStream);
+		$this->db->put($index . Key::TAG_BIOMES, $biomeStream->getBuffer());
 
-		//TODO: use this properly
-		$this->db->put($index . self::TAG_STATE_FINALISATION, chr(self::FINALISATION_DONE));
+		$this->db->put($index . Key::TAG_FINALISATION, chr(self::FINALISATION_DONE));
 
 		/** @var CompoundTag[] $tiles */
 		$tiles = [];
 		foreach($chunk->getTiles() as $tile){
 			$tiles[] = $tile->saveNBT();
 		}
-		$this->writeTags($tiles, $index . self::TAG_BLOCK_ENTITY);
+		$this->writeTags($tiles, $index . Key::TAG_BLOCK_ENTITIES);
 
 		/** @var CompoundTag[] $entities */
 		$entities = [];
@@ -520,10 +428,98 @@ class LevelDB extends BaseLevelProvider{
 			$entity->saveNBT();
 			$entities[] = $entity->namedtag;
 		}
-		$this->writeTags($entities, $index . self::TAG_ENTITY);
+		$this->writeTags($entities, $index . Key::TAG_ENTITIES);
+	}
 
-		$this->db->delete($index . self::TAG_DATA_2D_LEGACY);
-		$this->db->delete($index . self::TAG_LEGACY_TERRAIN);
+	public function decodeSubChunk(BinaryStream $stream) : SubChunk {
+		if ($stream->feof()) {
+			throw new CorruptedChunkException("Unexpected empty data");
+		}
+
+		$version = $stream->getByte();
+		if ($version === 1) {
+			return new SubChunk(RuntimeBlockMapping::AIR(), [$this->decodeBlockPalette($stream)]);
+		}
+
+		if ($version < 8) {
+			throw new CorruptedChunkException("Unknown subchunk version " . $version);
+		}
+
+		$storageCount = $stream->getByte();
+		if($version >= 9){
+			$stream->getByte();
+		}
+
+		$storages = [];
+		for ($i = 0; $i < $storageCount; ++$i) {
+			$storages[$i] = $this->decodeBlockPalette($stream);
+		}
+
+		return new SubChunk(RuntimeBlockMapping::AIR(), $storages);
+	}
+
+	public function decodeBiome(BinaryStream $stream): ?PalettedBlockArray
+	{
+		$bitsPerBlock = $stream->getByte() >> 1;
+		if ($bitsPerBlock === 127) {
+			return null;
+		}
+
+		try{
+			$words = $stream->get(PalettedBlockArray::getExpectedWordArraySize($bitsPerBlock));
+		}catch(\InvalidArgumentException $e){
+			throw new \Exception("Failed to deserialize paletted biomes: " . $e->getMessage(), 0, $e);
+		}
+		$palette = [];
+		$paletteCount = $bitsPerBlock !== 0 ? $stream->getLInt() : 1;
+
+		for($i = 0; $i < $paletteCount; ++$i){
+			$palette[] = $stream->getLInt();
+		}
+
+		return PalettedBlockArray::fromData($bitsPerBlock, $words, $palette);
+	}
+
+	public function decodeBiomes() {
+
+	}
+
+	/**
+	 * @param BinaryStream $stream
+	 *
+	 * @return PalettedBlockArray
+	 */
+	public function decodeBlockPalette(BinaryStream $stream): PalettedBlockArray {
+		$bitsPerBlock = $stream->getByte() >> 1;
+		try{
+			$words = $stream->get(PalettedBlockArray::getExpectedWordArraySize($bitsPerBlock));
+		}catch(\Exception $e){
+			throw new CorruptedChunkException("Failed to deserialize paletted storage: " . $e->getMessage(), 0, $e);
+		}
+
+		$paletteCount = $bitsPerBlock !== 0 ? $stream->getLInt() : 1;
+
+		$palette = [];
+		$nbt = new LittleEndianNBTStream();
+
+		for($i = 0; $i < $paletteCount; ++$i) {
+			try {
+				$offset = $stream->getOffset();
+				$blockStateNbt = $nbt->read($stream->getBuffer(), false, $offset);
+				if (!$blockStateNbt instanceof CompoundTag) {
+					throw new CorruptedChunkException("Expected TAG_Compound, got " . get_class($blockStateNbt));
+				}
+
+				$stream->setOffset($offset);
+				$runtimeId = RuntimeBlockMapping::fromBlockStateNBT($blockStateNbt);
+			} catch (\Exception $e) {
+				throw new CorruptedChunkException("Invalid blockstate NBT at offset $i in paletted storage: " . $e->getMessage(), 0, $e);
+			}
+
+			$palette[] = $runtimeId;
+		}
+
+		return PalettedBlockArray::fromData($bitsPerBlock, $words, $palette);
 	}
 
 	/**
@@ -542,11 +538,7 @@ class LevelDB extends BaseLevelProvider{
 		return $this->db;
 	}
 
-	public static function chunkIndex(int $chunkX, int $chunkZ) : string{
-		return Binary::writeLInt($chunkX) . Binary::writeLInt($chunkZ);
-	}
-
-	public function close(){
+	public function close() : void{
 		unset($this->db);
 	}
 }

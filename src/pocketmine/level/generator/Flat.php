@@ -34,6 +34,8 @@ use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\utils\Random;
 use function array_map;
 use function count;
@@ -163,24 +165,19 @@ class Flat extends Generator{
 	}
 
 	protected function generateBaseChunk() : void{
-		$this->chunk = new Chunk(0, 0);
+		$this->chunk = new Chunk(0, 0, DimensionIds::OVERWORLD);
 		$this->chunk->setGenerated();
 
-		for($Z = 0; $Z < 16; ++$Z){
-			for($X = 0; $X < 16; ++$X){
-				$this->chunk->setBiomeId($X, $Z, $this->biome);
-			}
-		}
-
 		$count = count($this->structure);
+		$min = Chunk::getMinSubChunk(DimensionIds::OVERWORLD);
 		for($sy = 0; $sy < $count; $sy += 16){
-			$subchunk = $this->chunk->getSubChunk($sy >> 4, true);
+			$subchunk = $this->chunk->getSubChunk($min + ($sy >> 4), true);
 			for($y = 0; $y < 16 and isset($this->structure[$y | $sy]); ++$y){
-				[$id, $meta] = $this->structure[$y | $sy];
+				$rid = RuntimeBlockMapping::toStaticRuntimeId(...$this->structure[$y | $sy]);
 
 				for($Z = 0; $Z < 16; ++$Z){
 					for($X = 0; $X < 16; ++$X){
-						$subchunk->setBlock($X, $y, $Z, $id, $meta);
+						$subchunk->setBlockId($X, $y, $Z, $rid, 0);
 					}
 				}
 			}

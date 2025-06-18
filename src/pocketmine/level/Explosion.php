@@ -35,9 +35,11 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\level\format\Chunk;
 use pocketmine\level\utils\SubChunkIteratorManager;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\tile\Chest;
@@ -128,13 +130,13 @@ class Explosion{
 								continue;
 							}
 
-							$blockId = $this->subChunkHandler->currentSubChunk->getBlockId($vBlock->x & 0x0f, $vBlock->y & 0x0f, $vBlock->z & 0x0f);
+							[$blockId, $meta] = RuntimeBlockMapping::fromStaticRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($vBlock->x & Chunk::COORD_MASK, $vBlock->y & Chunk::COORD_MASK, $vBlock->z & Chunk::COORD_MASK, 0));
 
 							if($blockId !== 0){
 								$blastForce -= (BlockFactory::$blastResistance[$blockId] / 5 + 0.3) * $this->stepLen;
 								if($blastForce > 0){
 									if(!isset($this->affectedBlocks[Level::blockHash($vBlock->x, $vBlock->y, $vBlock->z)])){
-										$_block = BlockFactory::get($blockId, $this->subChunkHandler->currentSubChunk->getBlockData($vBlock->x & 0x0f, $vBlock->y & 0x0f, $vBlock->z & 0x0f), $vBlock);
+										$_block = BlockFactory::get($blockId, $meta, $vBlock);
 										foreach($_block->getAffectedBlocks() as $_affectedBlock){
 											$this->affectedBlocks[Level::blockHash($_affectedBlock->x, $_affectedBlock->y, $_affectedBlock->z)] = $_affectedBlock;
 										}
@@ -218,8 +220,7 @@ class Explosion{
 				}
 			}
 
-			$this->level->setBlockIdAt($block->x, $block->y, $block->z, 0);
-			$this->level->setBlockDataAt($block->x, $block->y, $block->z, 0);
+			$this->level->setBlockIdAt($block->x, $block->y, $block->z, RuntimeBlockMapping::AIR());
 
 			$t = $this->level->getTileAt($block->x, $block->y, $block->z);
 			if($t instanceof Tile){

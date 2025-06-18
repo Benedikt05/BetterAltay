@@ -31,6 +31,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\level\GameRules;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 class Farmland extends Transparent{
 
@@ -94,7 +95,7 @@ class Farmland extends Transparent{
 		for($y = $start->y; $y <= $end->y; ++$y){
 			for($z = $start->z; $z <= $end->z; ++$z){
 				for($x = $start->x; $x <= $end->x; ++$x){
-					$id = $this->level->getBlockIdAt($x, $y, $z);
+					[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z, 1));
 					if($id === Block::STILL_WATER or $id === Block::FLOWING_WATER){
 						return true;
 					}

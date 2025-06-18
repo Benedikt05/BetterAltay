@@ -99,7 +99,7 @@ class Bucket extends Item implements MaybeConsumable{
 			$ev = new PlayerBucketEmptyEvent($player, $blockReplace, $face, $this, ItemFactory::get(Item::BUCKET));
 			$ev->call();
 			if(!$ev->isCancelled()){
-				$player->getLevelNonNull()->setBlock($blockReplace, $resultBlock->getFlowingForm(), true, true);
+				$player->getLevelNonNull()->setBlock($blockReplace, $resultBlock->getFlowingForm(), true);
 				$player->getLevelNonNull()->broadcastLevelSoundEvent($blockReplace->add(0.5, 0.5, 0.5), $resultBlock->getBucketEmptySound());
 
 				if($player->isSurvival()){

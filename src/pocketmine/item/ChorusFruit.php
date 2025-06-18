@@ -52,7 +52,7 @@ class ChorusFruit extends Food{
 		$level = $consumer->getLevelNonNull();
 
 		$minX = $consumer->getFloorX() - 8;
-		$minY = min($consumer->getFloorY(), $consumer->getLevelNonNull()->getWorldHeight()) - 8;
+		$minY = min($consumer->getFloorY(), $consumer->getLevelNonNull()->getWorldMaxHeight()) - 8;
 		$minZ = $consumer->getFloorZ() - 8;
 
 		$maxX = $minX + 16;

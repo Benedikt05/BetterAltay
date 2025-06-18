@@ -33,7 +33,7 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use function count;
 
-abstract class Fence extends Transparent{
+abstract class Fence extends Waterloggable{
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

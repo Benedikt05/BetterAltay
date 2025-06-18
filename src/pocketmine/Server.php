@@ -1075,8 +1075,8 @@ class Server{
 			$generator = GeneratorManager::getGenerator($this->getLevelType());
 		}
 
-		if(($providerClass = LevelProviderManager::getProviderByName($this->getProperty("level-settings.default-format", "pmanvil"))) === null){
-			$providerClass = LevelProviderManager::getProviderByName("pmanvil");
+		if(($providerClass = LevelProviderManager::getProviderByName($this->getProperty("level-settings.default-format", "leveldb"))) === null){
+			$providerClass = LevelProviderManager::getProviderByName("leveldb");
 			if($providerClass === null){
 				throw new \InvalidStateException("Default world provider has not been registered");
 			}

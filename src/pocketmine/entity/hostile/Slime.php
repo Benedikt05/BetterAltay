@@ -240,7 +240,7 @@ class Slime extends Monster{
 		if($this->level->random->nextBoundedInt(4) !== 1){
 			return false;
 		}else{
-			$biome = $this->level->getBiome($this->getFloorX(), $this->getFloorZ());
+			$biome = $this->level->getBiome($this->getFloorX(), $this->getFloorY(), $this->getFloorZ());
 
 			if(($biome->getId() === Biome::SWAMP and $this->y > 50 and $this->y < 70 and $this->level->random->nextFloat() < 0.5) or ($this->random->nextBoundedInt(10) === 0 and $this->y < 40)){
 				return parent::canSpawnHere();

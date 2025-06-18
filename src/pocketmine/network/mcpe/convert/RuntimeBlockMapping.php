@@ -23,11 +23,18 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\convert;
 
+use exussum12\xxhash\V32;
 use pocketmine\block\BlockIds;
+use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\NBTStream;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\AssumptionFailedError;
+use pocketmine\utils\BinaryStream;
 use RuntimeException;
 use function file_get_contents;
 use function json_decode;
@@ -44,6 +51,15 @@ final class RuntimeBlockMapping{
 	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
+	/** @var CompoundTag[]|null */
+	private static $stateToRuntimeMap = [];
+
+	private static $hasher = null;
+
+	/** @var int */
+	private static $airRid = -1;
+	/** @var int */
+	private static $unknownRid = -1;
 
 	private function __construct(){
 		//NOOP
@@ -54,18 +70,28 @@ final class RuntimeBlockMapping{
 		if($canonicalBlockStatesFile === false){
 			throw new AssumptionFailedError("Missing required resource file");
 		}
+
 		$stream = new NetworkBinaryStream($canonicalBlockStatesFile);
-		$list = [];
+		self::$bedrockKnownStates = [];
+		/**
+		 * @var int[][] $idToStatesMap string id -> int[] list of candidate state indices
+		 */
+		$idToStatesMap = [];
+
+		$rid = 0;
 		while(!$stream->feof()){
-			$list[] = $stream->getNbtCompoundRoot();
+			$state = $stream->getNbtCompoundRoot();
+			self::$bedrockKnownStates[] = $state;
+			$idToStatesMap[$state->getString("name")][] = $rid;
+
+			self::$stateToRuntimeMap[self::hashBlockStateNBT($state)] = $rid;
+			if (self::$airRid === -1 && $state->getString("name") === "minecraft:air") {
+				self::$airRid = $rid;
+			} elseif (self::$unknownRid === -1 && $state->getString("name") === "minecraft:unknown") {
+				self::$unknownRid = $rid;
+			}
+			$rid++;
 		}
-		self::$bedrockKnownStates = $list;
-
-		self::setupLegacyMappings();
-	}
-
-	private static function setupLegacyMappings() : void{
-		$legacyIdMap = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/block_id_map.json"), true);
 
 		/** @var R12ToCurrentBlockMapEntry[] $legacyStateMap */
 		$legacyStateMap = [];
@@ -84,13 +110,11 @@ final class RuntimeBlockMapping{
 			$legacyStateMap[] = new R12ToCurrentBlockMapEntry($id, $meta, $state);
 		}
 
-		/**
-		 * @var int[][] $idToStatesMap string id -> int[] list of candidate state indices
-		 */
-		$idToStatesMap = [];
-		foreach(self::$bedrockKnownStates as $k => $state){
-			$idToStatesMap[$state->getString("name")][] = $k;
-		}
+		self::setupLegacyMappings($idToStatesMap, $legacyStateMap);
+	}
+
+	private static function setupLegacyMappings(array $idToStatesMap, array $legacyStateMap) : void{
+		$legacyIdMap = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/block_id_map.json"), true);
 		foreach($legacyStateMap as $pair){
 			$id = $legacyIdMap[$pair->getId()] ?? null;
 			if($id === null){
@@ -118,6 +142,7 @@ final class RuntimeBlockMapping{
 			}
 			throw new RuntimeException("Mapped new state does not appear in network table");
 		}
+		self::registerMapping(self::UNKNOWN(), -1, 0);
 	}
 
 	private static function lazyInit() : void{
@@ -141,7 +166,7 @@ final class RuntimeBlockMapping{
 	 */
 	public static function fromStaticRuntimeId(int $runtimeId) : array{
 		self::lazyInit();
-		$v = self::$runtimeToLegacyMap[$runtimeId];
+		$v = self::$runtimeToLegacyMap[$runtimeId] ?? RuntimeBlockMapping::$runtimeToLegacyMap[self::$unknownRid];
 		return [$v >> 4, $v & 0xf];
 	}
 
@@ -156,5 +181,88 @@ final class RuntimeBlockMapping{
 	public static function getBedrockKnownStates() : array{
 		self::lazyInit();
 		return self::$bedrockKnownStates;
+	}
+
+	public static function fromBlockStateNBT(CompoundTag $nbt) {
+		$hash = self::hashBlockStateNBT($nbt);
+		return self::$stateToRuntimeMap[$hash] ?? throw new RuntimeException("Unknown block state NBT");
+	}
+
+	public static function AIR() : int{
+		self::lazyInit();
+		return self::$airRid;
+	}
+
+	public static function UNKNOWN() : int{
+		self::lazyInit();
+		return self::$unknownRid;
+	}
+
+	private static function getHasher() : V32{
+		if (self::$hasher === null){
+			self::$hasher = new V32();
+		}
+
+		return self::$hasher;
+	}
+
+	/**
+	 * @param CompoundTag $blockState
+	 *
+	 * @return string
+	 */
+	private static function hashBlockStateNBT(CompoundTag $blockState) : string {
+		$name = $blockState->getTag("name");
+		if (!$name instanceof StringTag) {
+			throw new \InvalidArgumentException("Missing or invalid 'name'");
+		}
+
+		$states = $blockState->getTag("states");
+		if (!$states instanceof CompoundTag) {
+			throw new \InvalidArgumentException("Missing or invalid 'states'");
+		}
+
+		$version = $blockState->getTag("version");
+		if (!$version instanceof IntTag) {
+			throw new \InvalidArgumentException("Missing or invalid 'version'");
+		}
+
+		$stream = new BinaryStream();
+		$nbtStream = new LittleEndianNBTStream();
+
+		$name->write($nbtStream);
+		self::serializeNBT($nbtStream, $states);
+		$version->write($nbtStream);
+
+		$stream->put($nbtStream->getString());
+
+		return self::getHasher()->hash($stream->getBuffer());
+	}
+
+	/**
+	 * @param NBTStream   $writer
+	 * @param CompoundTag $states
+	 *
+	 * @return void
+	 */
+	private static function serializeNBT(NBTStream $writer, CompoundTag $states) : void {
+		$tags = $states->getValue();
+		ksort($tags);
+
+		foreach ($tags as $tag) {
+			if ($tag instanceof CompoundTag) {
+				self::serializeNBT($writer, $tag);
+			} elseif ($tag instanceof ListTag) {
+				foreach ($tag->getValue() as $childTag) {
+					if ($childTag instanceof CompoundTag) {
+						self::serializeNBT($writer, $childTag);
+					} else {
+						$childTag->write($writer);
+					}
+				}
+			} else {
+				$tag->write($writer);
+			}
+		}
 	}
 }

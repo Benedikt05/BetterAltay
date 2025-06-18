@@ -40,9 +40,14 @@ interface LevelProvider{
 	public static function getProviderName() : string;
 
 	/**
-	 * Gets the build height limit of this world
+	 * Gets the build height limit of this world.
 	 */
-	public function getWorldHeight() : int;
+	public function getWorldMaxHeight() : int;
+
+	/**
+	 * Gets the minimum build height of this world.
+	 */
+	public function getWorldMinHeight() : int;
 
 	public function getPath() : string;
 
@@ -86,7 +91,7 @@ interface LevelProvider{
 	 * @throws CorruptedChunkException
 	 * @throws UnsupportedChunkFormatException
 	 */
-	public function loadChunk(int $chunkX, int $chunkZ) : ?Chunk;
+	public function loadChunk(int $chunkX, int $chunkZ, int $dimension) : ?Chunk;
 
 	public function getName() : string;
 

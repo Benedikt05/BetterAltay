@@ -26,6 +26,7 @@ namespace pocketmine\level\generator;
 
 use pocketmine\block\BlockIds;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 class VoidGenerator extends Generator{
 
@@ -46,10 +47,10 @@ class VoidGenerator extends Generator{
 		$spawn = $this->getSpawn();
 
 		if($spawn->x >> 4 === $chunkX and $spawn->z >> 4 === $chunkZ){
-			$chunk->setBlock(0, $spawn->y - 1, 0, BlockIds::GRASS, 0);
+			$chunk->setBlockId(0, $spawn->y - 1, 0, RuntimeBlockMapping::toStaticRuntimeId(BlockIds::DIRT), 0);
 		}
 
-		$chunk->setGenerated(true);
+		$chunk->setGenerated();
 	}
 
 	public function populateChunk(int $chunkX, int $chunkZ) : void{
