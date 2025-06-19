@@ -51,7 +51,7 @@ final class RuntimeBlockMapping{
 	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
-	/** @var CompoundTag[]|null */
+	/** @var int[]|null */
 	private static $stateToRuntimeMap = [];
 
 	private static $hasher = null;
@@ -183,9 +183,10 @@ final class RuntimeBlockMapping{
 		return self::$bedrockKnownStates;
 	}
 
-	public static function fromBlockStateNBT(CompoundTag $nbt) {
+	public static function fromBlockStateNBT(CompoundTag $nbt) : int{
+		self::lazyInit();
 		$hash = self::hashBlockStateNBT($nbt);
-		return self::$stateToRuntimeMap[$hash] ?? throw new RuntimeException("Unknown block state NBT");
+		return self::$stateToRuntimeMap[$hash] ?? self::UNKNOWN();
 	}
 
 	public static function AIR() : int{
