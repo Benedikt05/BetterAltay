@@ -3131,7 +3131,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$heldItem = $this->inventory->getItemInHand();
 					$oldItem = clone $heldItem;
 
-					if(!$this->canInteract($target, $this->isCreative() ? 8 : 2.236) or $this->isSpectator()){
+					if(!$this->canInteract($target, 8) or $this->isSpectator()){
 						$cancelled = true;
 					}elseif($target instanceof Player){
 						if(!$this->server->getConfigBool("pvp")){
@@ -4788,7 +4788,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				$this->setUsingItem(false);
 
-				if(!$this->canInteract($blockVector->add(0.5, 0.5, 0.5), 13)){
+				if(!$this->canInteract($blockVector->add(0.5, 0.5, 0.5), $this->isCreative() ? 13 : 7)){
 				}elseif($this->isCreative()){
 					$item = $this->inventory->getItemInHand();
 					if($this->level->useItemOn($blockVector, $item, $face, $trData->getClickPos(), $this, true)){
