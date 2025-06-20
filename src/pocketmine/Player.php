@@ -25,6 +25,7 @@ namespace pocketmine;
 
 use BadMethodCallException;
 use pocketmine\item\FoodSource;
+use pocketmine\item\ProjectileItem;
 use pocketmine\network\mcpe\BitSet;
 use RuntimeException;
 use InvalidArgumentException;
@@ -3131,7 +3132,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$heldItem = $this->inventory->getItemInHand();
 					$oldItem = clone $heldItem;
 
-					if(!$this->canInteract($target, $this->isCreative() ? 8 : 2.236) or $this->isSpectator()){
+					if(!$this->canInteract($target, 8) or $this->isSpectator()){
 						$cancelled = true;
 					}elseif($target instanceof Player){
 						if(!$this->server->getConfigBool("pvp")){
@@ -4908,9 +4909,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					if($this->isSurvival()){
 						$this->inventory->setItemInHand($item);
 					}
-				}
 
-				$this->setUsingItem(true);
+					if(!$item instanceof ProjectileItem) {
+						$this->setUsingItem(true);
+					}
+				}
 
 				return true;
 			default:
