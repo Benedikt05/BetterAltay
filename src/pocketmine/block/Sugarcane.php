@@ -82,28 +82,33 @@ class Sugarcane extends Flowable{
 	}
 
 	public function onRandomTick() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::SUGARCANE_BLOCK){
-			if($this->meta === 0x0F){
-				for($y = 1; $y < 3; ++$y){
-					$b = $this->getLevelNonNull()->getBlockAt($this->x, $this->y + $y, $this->z);
-					if($b->getId() === self::AIR){
-						$ev = new BlockGrowEvent($b, BlockFactory::get(Block::SUGARCANE_BLOCK));
-						$ev->call();
-						if($ev->isCancelled()){
-							break;
-						}
-						$this->getLevelNonNull()->setBlock($b, $ev->getNewState(), true);
+	if(mt_rand(0, 9) !== 0){ // 1 in 10 chance to grow
+		return;
+	}
+
+	if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::SUGARCANE_BLOCK){
+		if($this->meta === 0x0F){
+			for($y = 1; $y < 3; ++$y){
+				$b = $this->getLevelNonNull()->getBlockAt($this->x, $this->y + $y, $this->z);
+				if($b->getId() === self::AIR){
+					$ev = new BlockGrowEvent($b, BlockFactory::get(Block::SUGARCANE_BLOCK));
+					$ev->call();
+					if($ev->isCancelled()){
 						break;
 					}
+					$this->getLevelNonNull()->setBlock($b, $ev->getNewState(), true);
+					break;
 				}
-				$this->meta = 0;
-				$this->getLevelNonNull()->setBlock($this, $this, true);
-			}else{
-				++$this->meta;
-				$this->getLevelNonNull()->setBlock($this, $this, true);
 			}
+			$this->meta = 0;
+			$this->getLevelNonNull()->setBlock($this, $this, true);
+		}else{
+			++$this->meta;
+			$this->getLevelNonNull()->setBlock($this, $this, true);
 		}
 	}
+}
+
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);

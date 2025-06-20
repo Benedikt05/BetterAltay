@@ -1,24 +1,5 @@
 <?php
 
-/*
- *
- *  ____            _        _   __  __ _                  __  __ ____
- * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
- * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
- * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
- * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * @author PocketMine Team
- * @link http://www.pocketmine.net/
- *
- *
-*/
-
 declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
@@ -31,44 +12,25 @@ class SkinData{
 	public const ARM_SIZE_SLIM = "slim";
 	public const ARM_SIZE_WIDE = "wide";
 
-	/** @var string */
 	private $skinId;
-	/** @var string */
 	private $playFabId;
-	/** @var string */
 	private $resourcePatch;
-	/** @var SkinImage */
 	private $skinImage;
-	/** @var SkinAnimation[] */
 	private $animations;
-	/** @var SkinImage */
 	private $capeImage;
-	/** @var string */
 	private $geometryData;
 	private string $geometryDataEngineVersion;
-	/** @var string */
 	private $animationData;
-	/** @var string */
 	private $capeId;
-	/** @var string */
 	private $fullSkinId;
-	/** @var string */
 	private $armSize;
-	/** @var string */
 	private $skinColor;
-	/** @var PersonaSkinPiece[] */
 	private $personaPieces;
-	/** @var PersonaPieceTintColor[] */
 	private $pieceTintColors;
-	/** @var bool */
 	private $isVerified;
-	/** @var bool */
 	private $persona;
-	/** @var bool */
 	private $premium;
-	/** @var bool */
 	private $personaCapeOnClassic;
-	/** @var bool */
 	private $isPrimaryUser;
 	private bool $override;
 
@@ -77,18 +39,42 @@ class SkinData{
 	 * @param PersonaSkinPiece[]      $personaPieces
 	 * @param PersonaPieceTintColor[] $pieceTintColors
 	 */
-	public function __construct(string $skinId, string $playFabId, string $resourcePatch, SkinImage $skinImage, array $animations = [], SkinImage $capeImage = null, string $geometryData = "", string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK, string $animationData = "", string $capeId = "", ?string $fullSkinId = null, string $armSize = self::ARM_SIZE_WIDE, string $skinColor = "", array $personaPieces = [], array $pieceTintColors = [], bool $isVerified = true, bool $premium = false, bool $persona = false, bool $personaCapeOnClassic = false, bool $isPrimaryUser = true, bool $override = true){
+	public function __construct(
+		string $skinId, 
+		string $playFabId, 
+		string $resourcePatch, 
+		SkinImage $skinImage, 
+		array $animations = [], 
+		SkinImage $capeImage = null, 
+		$geometryData = "", 
+		string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK, 
+		string $animationData = "", 
+		string $capeId = "", 
+		?string $fullSkinId = null, 
+		string $armSize = self::ARM_SIZE_WIDE, 
+		string $skinColor = "", 
+		array $personaPieces = [], 
+		array $pieceTintColors = [], 
+		bool $isVerified = true, 
+		bool $premium = false, 
+		bool $persona = false, 
+		bool $personaCapeOnClassic = false, 
+		bool $isPrimaryUser = true, 
+		bool $override = true
+	){
 		$this->skinId = $skinId;
 		$this->playFabId = $playFabId;
 		$this->resourcePatch = $resourcePatch;
 		$this->skinImage = $skinImage;
 		$this->animations = $animations;
-		$this->capeImage = $capeImage ?? new SkinImage(0, 0, "");
+	         $this->capeImage = $capeImage ?? new SkinImage(32, 64, str_repeat("\x00", 8192));
+		if(!is_string($geometryData)){
+			$geometryData = "";
+		}
 		$this->geometryData = $geometryData;
 		$this->geometryDataEngineVersion = $geometryDataEngineVersion;
 		$this->animationData = $animationData;
 		$this->capeId = $capeId;
-		//this has to be unique or the client will do stupid things
 		$this->fullSkinId = $fullSkinId ?? UUID::fromRandom()->toString();
 		$this->armSize = $armSize;
 		$this->skinColor = $skinColor;
@@ -106,7 +92,9 @@ class SkinData{
 		return $this->skinId;
 	}
 
-	public function getPlayFabId() : string{ return $this->playFabId; }
+	public function getPlayFabId() : string{
+		return $this->playFabId;
+	}
 
 	public function getResourcePatch() : string{
 		return $this->resourcePatch;
@@ -131,7 +119,9 @@ class SkinData{
 		return $this->geometryData;
 	}
 
-	public function getGeometryDataEngineVersion() : string{ return $this->geometryDataEngineVersion; }
+	public function getGeometryDataEngineVersion() : string{
+		return $this->geometryDataEngineVersion;
+	}
 
 	public function getAnimationData() : string{
 		return $this->animationData;

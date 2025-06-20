@@ -840,12 +840,15 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 *
 	 * @throws InvalidStateException if the player is closed
 	 */
-	public function hasPermission($name) : bool{
-		if($this->closed){
-			throw new InvalidStateException("Trying to get permissions of closed player");
-		}
-		return $this->perm->hasPermission($name);
-	}
+	public function hasPermission($name) : bool {
+    if ($this->closed) {
+        return false; // safely fail instead of crashing
+    }
+    if ($this->perm === null) {
+        return false; // prevent crash if perm isn't ready
+    }
+    return $this->perm->hasPermission($name);
+}
 
 	public function addAttachment(Plugin $plugin, string $name = null, bool $value = null) : PermissionAttachment{
 		return $this->perm->addAttachment($plugin, $name, $value);
@@ -3224,6 +3227,27 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 							return true;
 						}
 						break;
+					case ReleaseItemTransactionData::ACTION_CONSUME:
+						$item = $this->inventory->getItemInHand();
+						if($item instanceof \pocketmine\item\Consumable && (!($item instanceof \pocketmine\item\MaybeConsumable) || $item->canBeConsumed())){
+							$ev = new \pocketmine\event\player\PlayerItemConsumeEvent($this, $item);
+							if($this->hasItemCooldown($item)){
+								$ev->setCancelled();
+							}
+							$ev->call();
+							if(!$ev->isCancelled() && $this->consumeObject($item)){
+								$this->resetItemCooldown($item);
+								if($this->isSurvival()){
+									$item->pop();
+									$this->inventory->setItemInHand($item);
+									$this->inventory->addItem($item->getResidue());
+								}
+							}
+							$this->setUsingItem(false);
+							$this->inventory->sendContents($this);
+							return true;
+						}
+						break;
 					default:
 						break;
 				}
@@ -3779,37 +3803,38 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @return bool|int
 	 */
 	public function sendDataPacket(DataPacket $packet, bool $needACK = false, bool $immediate = false){
-		if(!$this->isConnected()){
-			return false;
-		}
+        if(!$this->isConnected()){
+        return false;
+    }
 
-		//Basic safety restriction. TODO: improve this
-		if(!$this->loggedIn and !$packet->canBeSentBeforeLogin()){
-			throw new InvalidArgumentException("Attempted to send " . get_class($packet) . " to " . $this->getName() . " too early");
-		}
+    //Basic safety restriction. TODO: improve this
+    if(!$this->loggedIn and !$packet->canBeSentBeforeLogin()){
+        // Instead of crashing the server, just skip sending too-early packets
+        Server::getInstance()->getLogger()->debug("Skipped sending " . get_class($packet) . " to " . $this->getName() . " (too early)");
+        return false;
+    }
 
-		$timings = Timings::getSendDataPacketTimings($packet);
-		$timings->startTiming();
-		try{
-			$ev = new DataPacketSendEvent($this, $packet);
-			$ev->call();
-			if($ev->isCancelled()){
-				return false;
-			}
+    $timings = Timings::getSendDataPacketTimings($packet);
+    $timings->startTiming();
+    try{
+        $ev = new DataPacketSendEvent($this, $packet);
+        $ev->call();
+        if($ev->isCancelled()){
+            return false;
+        }
 
-			$identifier = $this->interface->putPacket($this, $packet, $needACK, $immediate);
+        $identifier = $this->interface->putPacket($this, $packet, $needACK, $immediate);
 
-			if($needACK and $identifier !== null){
-				$this->needACK[$identifier] = false;
-				return $identifier;
-			}
+        if($needACK and $identifier !== null){
+            $this->needACK[$identifier] = false;
+            return $identifier;
+        }
 
-			return true;
-		}finally{
-			$timings->stopTiming();
-		}
-	}
-
+        return true;
+    }finally{
+        $timings->stopTiming();
+    }
+}
 	/**
 	 * @internal
 	 */
@@ -4619,39 +4644,55 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @throws InvalidStateException if trying to add a window without forceID when no slots are free
 	 */
 	public function addWindow(Inventory $inventory, int $forceId = null, bool $isPermanent = false) : int{
-		if(($id = $this->getWindowId($inventory)) !== ContainerIds::NONE){
-			return $id;
-		}
+    if(($id = $this->getWindowId($inventory)) !== ContainerIds::NONE){
+        return $id;
+    }
 
-		if($forceId === null){
-			$cnt = $this->windowCnt;
-			do{
-				$cnt = max(ContainerIds::FIRST, ($cnt + 1) % self::RESERVED_WINDOW_ID_RANGE_START);
-				if($cnt === $this->windowCnt){ //wraparound, no free slots
-					throw new InvalidStateException("No free window IDs found");
-				}
-			}while(isset($this->windowIndex[$cnt]));
-			$this->windowCnt = $cnt;
-		}else{
-			$cnt = $forceId;
-			if(isset($this->windowIndex[$cnt]) or ($cnt >= self::RESERVED_WINDOW_ID_RANGE_START && $cnt <= self::RESERVED_WINDOW_ID_RANGE_END)){
-				throw new InvalidArgumentException("Requested force ID $forceId already in use");
-			}
-		}
+    if($forceId === null){
+        $cnt = $this->windowCnt;
+        $found = false;
+        do{
+            $cnt = max(ContainerIds::FIRST, ($cnt + 1) % self::RESERVED_WINDOW_ID_RANGE_START);
+            if(!isset($this->windowIndex[$cnt])){
+                $found = true;
+                break;
+            }
+        }while($cnt !== $this->windowCnt);
 
-		$this->windowIndex[$cnt] = $inventory;
-		$this->windows[spl_object_hash($inventory)] = $cnt;
-		if($inventory->open($this)){
-			if($isPermanent){
-				$this->permanentWindows[$cnt] = true;
-			}
-			return $cnt;
-		}else{
-			$this->removeWindow($inventory);
+        if(!$found){
+            // Graceful fail: send a message + avoid crash
+            if($this instanceof \pocketmine\Player){
+                $this->sendMessage("§cUnable to open the menu: no free window slots available right now.");
+            }
+            return -1;
+        }
 
-			return -1;
-		}
-	}
+        $this->windowCnt = $cnt;
+    }else{
+        $cnt = $forceId;
+        if(isset($this->windowIndex[$cnt]) or ($cnt >= self::RESERVED_WINDOW_ID_RANGE_START && $cnt <= self::RESERVED_WINDOW_ID_RANGE_END)){
+            if($this instanceof \pocketmine\Player){
+                $this->sendMessage("§cUnable to open the menu: window ID conflict (force ID is already in use).");
+            }
+            return -1;
+        }
+    }
+
+    $this->windowIndex[$cnt] = $inventory;
+    $this->windows[spl_object_hash($inventory)] = $cnt;
+    if($inventory->open($this)){
+        if($isPermanent){
+            $this->permanentWindows[$cnt] = true;
+        }
+        return $cnt;
+    }else{
+        $this->removeWindow($inventory);
+        if($this instanceof \pocketmine\Player){
+            $this->sendMessage("§cFailed to open the menu.");
+        }
+        return -1;
+    }
+}
 
 	/**
 	 * Removes an inventory window from the player.
@@ -4908,9 +4949,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					if($this->isSurvival()){
 						$this->inventory->setItemInHand($item);
 					}
+					// Only set using item if it's a consumable and can be consumed
+					if($item instanceof Consumable && (!($item instanceof MaybeConsumable) || $item->canBeConsumed())){
+						$this->setUsingItem(true);
+					}
 				}
-
-				$this->setUsingItem(true);
 
 				return true;
 			default:
