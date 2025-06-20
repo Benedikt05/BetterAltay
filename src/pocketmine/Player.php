@@ -25,6 +25,7 @@ namespace pocketmine;
 
 use BadMethodCallException;
 use pocketmine\item\FoodSource;
+use pocketmine\item\ProjectileItem;
 use pocketmine\network\mcpe\BitSet;
 use RuntimeException;
 use InvalidArgumentException;
@@ -4908,9 +4909,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					if($this->isSurvival()){
 						$this->inventory->setItemInHand($item);
 					}
-				}
 
-				$this->setUsingItem(true);
+					if(!$item instanceof ProjectileItem) {
+						$this->setUsingItem(true);
+					}
+				}
 
 				return true;
 			default:
