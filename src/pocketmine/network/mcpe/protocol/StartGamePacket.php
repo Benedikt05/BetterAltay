@@ -131,7 +131,11 @@ class StartGamePacket extends DataPacket{
 	 * @phpstan-var list<BlockPaletteEntry>
 	 */
 	public array $blockPalette = [];
-
+	/**
+	 * @var ItemTypeEntry[]
+	 * @phpstan-var list<ItemTypeEntry>
+	 */
+	public array $itemTable;
 	public bool $enableNewInventorySystem = false; //TODO
 	public string $serverSoftwareVersion;
 	public CompoundTag $propertyData;
@@ -315,6 +319,14 @@ class StartGamePacket extends DataPacket{
 		foreach($this->blockPalette as $entry){
 			$this->putString($entry->getName());
 			$this->put($nbtWriter->write($entry->getStates()));
+		}
+		if($this->protocol <= ProtocolInfo::PROTOCOL_1_21_50){
+			$this->putUnsignedVarInt(count($this->itemTable));
+			foreach($this->itemTable as $entry){
+				$this->putString($entry->getStringId());
+				$this->putLShort($entry->getNumericId());
+				$this->putBool($entry->isComponentBased());
+			}
 		}
 
 		$this->putString($this->multiplayerCorrelationId);

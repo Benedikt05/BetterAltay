@@ -373,7 +373,7 @@ class Cauldron extends Solid{
 		$pk->x = $this->x;
 		$pk->y = $this->y;
 		$pk->z = $this->z;
-		$pk->blockRuntimeId = $this->getRuntimeId();
+		$pk->blockRuntimeId = $this->getRuntimeId($pk->protocol);
 		$pk->dataLayerId = UpdateBlockPacket::DATA_LAYER_LIQUID;
 		$pk->flags = UpdateBlockPacket::FLAG_ALL_PRIORITY;
 

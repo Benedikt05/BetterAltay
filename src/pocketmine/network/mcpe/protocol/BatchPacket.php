@@ -51,6 +51,10 @@ class BatchPacket extends DataPacket{
 
 	/** @var string */
 	public $payload = "";
+	/**
+	 * @var int
+	 */
+	public int $protocol;
 	/** @var int */
 	protected $compressionLevel = 7;
 

@@ -4,6 +4,7 @@ namespace pocketmine\network\mcpe\protocol\types\inventory;
 
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 
 final class CreativeItemEntry{
 	public function __construct(
@@ -29,6 +30,7 @@ final class CreativeItemEntry{
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putUnsignedVarInt($this->entryId);
 		$out->putItemStackWithoutStackId($this->item);
+		if($out->protocol >= ProtocolInfo::PROTOCOL_1_21_60)
 		$out->putUnsignedVarInt($this->groupId);
 	}
 }

@@ -482,7 +482,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $commandPermission = CommandPermissions::NORMAL;
 	/** @var bool */
 	protected $keepExperience = false;
+	protected int $protocol = -1;
 
+	public function getProtocol() : int{
+		return $this->protocol;
+	}
 
 	/**
 	 * @return bool
@@ -2133,11 +2137,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
-		$protocolVersion = $packet->protocolVersion;
-		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL){
-			$this->sendPlayStatus($protocolVersion < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
+		$this->protocol = $packet->protocol;
+		if(!in_array($this->protocol, ProtocolInfo::ACCEPTED_PROTOCOLS, true)){
+			$this->sendPlayStatus($this->protocol < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
 			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
-			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$protocolVersion]), false);
+			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$this->protocol]), false);
 
 			return true;
 		}
@@ -2574,14 +2578,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->levelId = "";
 		$pk->worldName = $this->server->getMotd();
 		$pk->experiments = new Experiments([], false);
+		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->playerMovementSettings = new PlayerMovementSettings(PlayerMovementType::LEGACY, 0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->propertyData = new CompoundTag();
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
-
-		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60)  $this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
 		$this->sendDataPacket(new BiomeDefinitionListPacket());
 
@@ -3335,7 +3339,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					//TODO: improve this to take stuff like swimming, ladders, enchanted tools into account, fix wrong tool break time calculations for bad tools (pmmp/PocketMine-MP#211)
 					$breakTime = ceil($target->getBreakTime($this->inventory->getItemInHand()) * 20);
 					if($breakTime > 0){
-						$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_BLOCK_START_BREAK, (int) (65535 / $breakTime));
+						//$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_BLOCK_START_BREAK, (int) (65535 / $breakTime));
 					}
 				}
 
@@ -3343,7 +3347,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 			case PlayerActionPacket::ACTION_ABORT_BREAK:
 			case PlayerActionPacket::ACTION_STOP_BREAK:
-				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_BLOCK_STOP_BREAK);
+				 //$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_BLOCK_STOP_BREAK);
 				break;
 			case PlayerActionPacket::ACTION_START_SLEEPING:
 				//unused
@@ -3381,7 +3385,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				break;
 			case PlayerActionPacket::ACTION_CRACK_BREAK:
 				$block = $this->level->getBlock($pos);
-				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_PARTICLE_PUNCH_BLOCK, $block->getRuntimeId() | ($packet->face << 24));
+				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_PARTICLE_PUNCH_BLOCK, $block->getRuntimeId($this->protocol) | ($packet->face << 24));
 				//TODO: destroy-progress level event
 				break;
 			case PlayerActionPacket::ACTION_START_SWIMMING:
@@ -3849,13 +3853,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$timings = Timings::getSendDataPacketTimings($packet);
 		$timings->startTiming();
 		try{
+			$identifier = $this->interface->putPacket($this, $packet, $needACK, $immediate);
 			$ev = new DataPacketSendEvent($this, $packet);
 			$ev->call();
 			if($ev->isCancelled()){
 				return false;
 			}
 
-			$identifier = $this->interface->putPacket($this, $packet, $needACK, $immediate);
 
 			if($needACK and $identifier !== null){
 				$this->needACK[$identifier] = false;

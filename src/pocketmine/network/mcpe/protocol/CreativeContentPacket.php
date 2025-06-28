@@ -57,9 +57,12 @@ class CreativeContentPacket extends DataPacket/* implements ClientboundPacket*/
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->groups));
-		foreach($this->groups as $entry){
-			$entry->write($this);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60){
+			$this->putUnsignedVarInt(count($this->groups));
+			foreach($this->groups as $entry){
+				$entry->write($this);
+			}
+
 		}
 
 		$this->putUnsignedVarInt(count($this->items));

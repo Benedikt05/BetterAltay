@@ -43,6 +43,7 @@ use pocketmine\nbt\tag\NamedTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\types\GameRuleType;
@@ -53,6 +54,7 @@ use pocketmine\network\mcpe\protocol\types\SkinData;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\types\StructureEditorData;
 use pocketmine\network\mcpe\protocol\types\StructureSettings;
+use pocketmine\Player;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\Binary;
 use pocketmine\utils\UUID;
@@ -66,6 +68,15 @@ class NetworkBinaryStream extends BinaryStream{
 	private const DAMAGE_TAG = "Damage"; //TAG_Int
 	private const DAMAGE_TAG_CONFLICT_RESOLUTION = "___Damage_ProtocolCollisionResolution___";
 	private const PM_META_TAG = "___Meta___";
+
+	public int $protocol = -2;
+	private array $protocolPlayer;
+	public function setProtocol($protocol): void{
+		$this->protocol = $protocol;
+	}
+	public function getProtocol(): int{
+		return $this->protocol;
+	}
 
 	public function getString() : string{
 		return $this->get($this->getUnsignedVarInt());
@@ -326,7 +337,7 @@ class NetworkBinaryStream extends BinaryStream{
 		if($isBlockItem){
 			$block = $item->getBlock();
 			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
+				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage(), $this->protocol);
 			}
 		}
 		$this->putVarInt($blockRuntimeId);
@@ -866,7 +877,9 @@ class NetworkBinaryStream extends BinaryStream{
 
 	protected function putStructureEditorData(StructureEditorData $structureEditorData) : void{
 		$this->putString($structureEditorData->structureName);
-		$this->putString($structureEditorData->filterdStructureName);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60){
+			$this->putString($structureEditorData->filterdStructureName);
+		}
 		$this->putString($structureEditorData->structureDataField);
 
 		$this->putBool($structureEditorData->includePlayers);

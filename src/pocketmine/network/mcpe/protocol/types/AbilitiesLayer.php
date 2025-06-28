@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use AssertionError;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 
 final class AbilitiesLayer{
@@ -71,7 +72,11 @@ final class AbilitiesLayer{
 		$setAbilities = $in->getLInt();
 		$setAbilityValues = $in->getLInt();
 		$flySpeed = $in->getLFloat();
-		$verticalFlySpeed = $in->getLFloat();
+		if($in->protocol >= ProtocolInfo::PROTOCOL_1_21_60){
+			$verticalFlySpeed = $in->getLFloat();
+		}else{
+			$verticalFlySpeed = 0;
+		}
 		$walkSpeed = $in->getLFloat();
 
 		$boolAbilities = [];
@@ -127,7 +132,9 @@ final class AbilitiesLayer{
 		$out->putLInt($setAbilities);
 		$out->putLInt($setAbilityValues);
 		$out->putLFloat($this->flySpeed ?? 0);
-		$out->putLFloat($this->verticalFlySpeed ?? 0);
+		if($out->protocol >= ProtocolInfo::PROTOCOL_1_21_60){
+			$out->putLFloat($this->verticalFlySpeed ?? 0);
+		}
 		$out->putLFloat($this->walkSpeed ?? 0);
 	}
 }

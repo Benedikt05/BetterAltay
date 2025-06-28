@@ -36,6 +36,7 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddPaintingPacket;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\Player;
 use function ceil;
 
@@ -105,7 +106,7 @@ class Painting extends Entity{
 			//non-living entities don't have a way to create drops generically yet
 			$this->level->dropItem($this, ItemFactory::get(Item::PAINTING));
 		}
-		$this->level->addParticle(new DestroyBlockParticle($this->add(0.5, 0.5, 0.5), BlockFactory::get(Block::PLANKS)));
+		$this->level->addParticle(new DestroyBlockParticle($this->add(0.5, 0.5, 0.5), BlockFactory::get(Block::PLANKS), ProtocolInfo::CURRENT_PROTOCOL));
 	}
 
 	protected function recalculateBoundingBox() : void{

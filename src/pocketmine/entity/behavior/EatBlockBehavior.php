@@ -31,6 +31,7 @@ use pocketmine\entity\Animal;
 use pocketmine\level\GameRules;
 use pocketmine\level\particle\DestroyBlockParticle;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use function max;
 
 class EatBlockBehavior extends Behavior{
@@ -66,7 +67,7 @@ class EatBlockBehavior extends Behavior{
 
 			if($this->mob->level->getBlock($pos) instanceof Grass){
 				if($this->mob->level->getGameRules()->getBool(GameRules::RULE_MOB_GRIEFING)){
-					$this->mob->level->addParticle(new DestroyBlockParticle($this->mob->floor(), Block::get(Block::GRASS)));
+					$this->mob->level->addParticle(new DestroyBlockParticle($this->mob->floor(), Block::get(Block::GRASS),ProtocolInfo::CURRENT_PROTOCOL));
 					$this->mob->level->setBlock($pos, Block::get(Block::DIRT));
 				}
 

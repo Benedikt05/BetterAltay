@@ -110,7 +110,7 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		$this->player = $player;
 	}
 
-	public function handleDataPacket(DataPacket $packet){
+	public function handleDataPacket(DataPacket $packet) : void{
 		if($packet instanceof BatchPacket && !$this->player->isFirstBatchConfigSequenceCompleted()){
 			$packet->enableCompression = false;
 		}
@@ -121,7 +121,7 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 		$timings = Timings::getReceiveDataPacketTimings($packet);
 		$timings->startTiming();
-
+		$packet->protocol = $this->player->getProtocol();
 		try{
 			$packet->decode();
 		}catch(\Exception $exception){

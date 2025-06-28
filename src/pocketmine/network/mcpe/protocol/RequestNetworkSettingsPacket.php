@@ -12,14 +12,15 @@ class RequestNetworkSettingsPacket extends DataPacket{
 
 	public const NETWORK_ID = ProtocolInfo::REQUEST_NETWORK_SETTINGS_PACKET;
 
-	public int $protocolVersion;
+	public int $protocol;
 
 	protected function decodePayload(){
-		$this->protocolVersion = $this->getInt();
+		$this->protocol = $this->getInt();
+		$this->setProtocol($this->protocol);
 	}
 
 	protected function encodePayload(){
-		$this->putInt($this->protocolVersion);
+		$this->putInt($this->protocol);
 	}
 
 	public function handle(NetworkSession $session) : bool{

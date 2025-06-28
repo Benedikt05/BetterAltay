@@ -126,6 +126,7 @@ class BossEventPacket extends DataPacket{
 				break;
 			case self::TYPE_TITLE:
 				$this->putString($this->title);
+				if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60)
 				$this->putString($this->filteredTitle);
 				break;
 			default:

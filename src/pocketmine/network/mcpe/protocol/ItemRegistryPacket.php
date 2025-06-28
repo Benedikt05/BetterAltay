@@ -27,9 +27,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\network\mcpe\NetworkSession;
-use pocketmine\network\mcpe\protocol\types\ItemComponentPacketEntry;
 use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
-use pocketmine\Server;
 use RuntimeException;
 use function count;
 
@@ -63,9 +61,11 @@ class ItemRegistryPacket extends DataPacket/* implements ClientboundPacket*/
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
 			$this->putString($entry->getStringId());
-			$this->putLShort($entry->getNumericId());
-			$this->putBool($entry->isComponentBased());
-			$this->putVarInt($entry->getItemVersion());
+			if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60){
+				$this->putLShort($entry->getNumericId());
+				$this->putBool($entry->isComponentBased());
+				$this->putVarInt($entry->getItemVersion());
+			}
 			$this->put((new NetworkLittleEndianNBTStream())->write($entry->getItemComponentData()));
 		}
 	}

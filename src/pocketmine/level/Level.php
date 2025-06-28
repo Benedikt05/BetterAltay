@@ -1051,62 +1051,63 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return void
 	 */
-	public function sendBlocks(array $target, array $blocks, int $flags = UpdateBlockPacket::FLAG_NONE, bool $optimizeRebuilds = false){
-		$packets = [];
-		if($optimizeRebuilds){
-			$chunks = [];
-			foreach($blocks as $b){
-				if(!($b instanceof Vector3)){
-					throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
+	public function sendBlocks(array $target, array $blocks, int $flags = UpdateBlockPacket::FLAG_NONE, bool $optimizeRebuilds = false) : void{
+		foreach($target as $player){
+			$packets = [];
+			if($optimizeRebuilds){
+				$chunks = [];
+				foreach($blocks as $b){
+					if(!($b instanceof Vector3)){
+						throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
+					}
+					$pk = new UpdateBlockPacket();
+
+					$first = false;
+					if(!isset($chunks[$index = Level::chunkHash($b->x >> 4, $b->z >> 4)])){
+						$chunks[$index] = true;
+						$first = true;
+					}
+
+					$pk->x = $b->x;
+					$pk->y = $b->y;
+					$pk->z = $b->z;
+
+					if($b instanceof Block){
+						$pk->blockRuntimeId = $b->getRuntimeId($player->getProtocol());
+					}else{
+						$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
+						$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf, $pk->protocol);
+					}
+
+					$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
+
+					$packets[] = $pk;
 				}
-				$pk = new UpdateBlockPacket();
+			}else{
+				foreach($blocks as $b){
+					if(!($b instanceof Vector3)){
+						throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
+					}
+					$pk = new UpdateBlockPacket();
 
-				$first = false;
-				if(!isset($chunks[$index = Level::chunkHash($b->x >> 4, $b->z >> 4)])){
-					$chunks[$index] = true;
-					$first = true;
+					$pk->x = $b->x;
+					$pk->y = $b->y;
+					$pk->z = $b->z;
+
+					if($b instanceof Block){
+						$pk->blockRuntimeId = $b->getRuntimeId($player->getProtocol());
+					}else{
+						$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
+						$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf, $pk->protocol);
+					}
+
+					$pk->flags = $flags;
+
+					$packets[] = $pk;
 				}
-
-				$pk->x = $b->x;
-				$pk->y = $b->y;
-				$pk->z = $b->z;
-
-				if($b instanceof Block){
-					$pk->blockRuntimeId = $b->getRuntimeId();
-				}else{
-					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
-					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
-				}
-
-				$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
-
-				$packets[] = $pk;
 			}
-		}else{
-			foreach($blocks as $b){
-				if(!($b instanceof Vector3)){
-					throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
-				}
-				$pk = new UpdateBlockPacket();
-
-				$pk->x = $b->x;
-				$pk->y = $b->y;
-				$pk->z = $b->z;
-
-				if($b instanceof Block){
-					$pk->blockRuntimeId = $b->getRuntimeId();
-				}else{
-					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
-					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
-				}
-
-				$pk->flags = $flags;
-
-				$packets[] = $pk;
-			}
+			$this->server->batchPackets($target, $packets, false, false);
 		}
-
-		$this->server->batchPackets($target, $packets, false, false);
 	}
 
 	/**
@@ -1983,7 +1984,7 @@ class Level implements ChunkManager, Metadatable{
 
 	private function destroyBlockInternal(Block $target, Item $item, ?Player $player = null, bool $createParticles = false) : void{
 		if($createParticles){
-			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target));
+			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target, $player->getProtocol()));
 		}
 
 		$target->onBreak($item, $player);
@@ -2108,11 +2109,14 @@ class Level implements ChunkManager, Metadatable{
 		if(!$hand->place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
 			return false;
 		}
+		//$playSound causes disconnect
 
 		if($playSound){
-			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId());
+			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId($player->getProtocol()), -1, false, false,
+				function (int $protocol) use ($hand) : int {
+					return RuntimeBlockMapping::toStaticRuntimeId($hand->getId(), $hand->getDamage());
+				});
 		}
-
 		$item->pop();
 
 		return true;
