@@ -49,7 +49,7 @@ class GameRuleCommand extends VanillaCommand{
 		$this->setPermission("altay.command.gamerule");
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
 		if(!$this->testPermission($sender)){
 			return true;
 		}
@@ -88,7 +88,7 @@ class GameRuleCommand extends VanillaCommand{
 			"domobspawning", "dotiledrops", "doimmediaterespawn", "doweathercycle", "drowningdamage", "falldamage", "firedamage",
 			"keepinventory", "mobgriefing", "naturalregeneration", "pvp",
 			"sendcommandfeedback", "showcoordinates", "tntexplodes",
-			"commandblocksenabled", "showdeathmessages", "recipesunlock",
+			"commandblocksenabled", "showdeathmessages", "recipesunlock", "locatorbar"
 		];
 	}
 

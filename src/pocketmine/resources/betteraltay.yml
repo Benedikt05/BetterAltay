@@ -10,7 +10,10 @@ general:
   custom-unknown-command-message:
     enabled: false
     message: "§cThis command was not found!"
+  # This setting allows to prevent the client from crashing by not sending AvailableCommandsPacket
   command-fix: false
+  # This setting allows to forcefully disable Vibrant Visuals for all clients
+  disable-vibrant-visuals: false
 developer:
   # This setting allows to disable the internal server error kick
   internal-server-error-kick: false

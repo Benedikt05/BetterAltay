@@ -26,26 +26,67 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\utils\Color;
 use function file_get_contents;
-use const pocketmine\RESOURCE_PATH;
 
 class BiomeDefinitionListPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::BIOME_DEFINITION_LIST_PACKET;
 
-	private static ?string $DEFAULT_NBT_CACHE = null;
+	/** @var array<string, array> */
+	public array $biomeDefinitions = [];
 
-	public string $namedtag;
-
-	protected function decodePayload(){
-		$this->namedtag = $this->getRemaining();
+	protected function decodePayload() : void{
+		//TODO: not implemented
 	}
 
-	protected function encodePayload(){
-		$this->put(
-			$this->namedtag ??
-			self::$DEFAULT_NBT_CACHE ??
-			(self::$DEFAULT_NBT_CACHE = file_get_contents(RESOURCE_PATH . '/vanilla/biome_definitions.nbt'))
-		);
+	protected function encodePayload() : void{
+		$stringPool = [];
+		$stringIndices = [];
+
+		$this->putUnsignedVarInt(count($this->biomeDefinitions));
+
+		foreach($this->biomeDefinitions as $name => $def){
+			$index = $stringIndices[$name] ??= count($stringPool);
+			if(!in_array($name, $stringPool, true)){
+				$stringPool[] = $name;
+			}
+			$this->putLShort($index);
+			$this->putBool(false); //optional ID
+			$this->putLFloat((float) $def["temperature"]);
+			$this->putLFloat((float) $def["downfall"]);
+			$this->putLFloat((float) $def["redSporeDensity"]);
+			$this->putLFloat((float) $def["blueSporeDensity"]);
+			$this->putLFloat((float) $def["ashDensity"]);
+			$this->putLFloat((float) $def["whiteAshDensity"]);
+			$this->putLFloat((float) $def["depth"]);
+			$this->putLFloat((float) $def["scale"]);
+			$this->putLInt($def["mapWaterColor"] instanceof Color ? $def["mapWaterColor"]->toARGB() : 0);
+			$this->putBool((bool) $def["rain"]);
+			$this->putBool(false); //optional tags
+			$this->putBool(false); //optional chunk gen
+		}
+
+		$this->putUnsignedVarInt(count($stringPool));
+		foreach($stringPool as $str){
+			$this->putString($str);
+		}
+	}
+
+	public static function fromJsonFile(string $path) : self{
+		$data = json_decode(file_get_contents($path), true);
+		foreach($data as &$def){
+			if(isset($def["mapWaterColor"])){
+				$def["mapWaterColor"] = new Color(
+					$def["mapWaterColor"]["r"] ?? 0,
+					$def["mapWaterColor"]["g"] ?? 0,
+					$def["mapWaterColor"]["b"] ?? 0,
+					$def["mapWaterColor"]["a"] ?? 255
+				);
+			}
+		}
+		$pk = new self;
+		$pk->biomeDefinitions = $data;
+		return $pk;
 	}
 
 	public function handle(NetworkSession $session) : bool{

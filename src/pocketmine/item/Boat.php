@@ -43,7 +43,7 @@ class Boat extends Item{
 	}
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
-		$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5));
+		$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5), null, (int) round($player->getYaw() + 90) % 360, 0);
 		$nbt->setInt("Variant", $this->getDamage());
 		$entity = Entity::createEntity("Boat", $player->level, $nbt);
 		$entity->spawnToAll();
