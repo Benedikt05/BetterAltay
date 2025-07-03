@@ -27,7 +27,9 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
+use pocketmine\utils\Color;
 use function count;
+use function rand;
 
 class PlayerListPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_LIST_PACKET;
@@ -61,7 +63,7 @@ class PlayerListPacket extends DataPacket{
 				$entry->isTeacher = $this->getBool();
 				$entry->isHost = $this->getBool();
 				$entry->isSubClient = $this->getBool();
-				$entry->color = $this->getLInt();
+				$entry->color = Color::fromARGB($this->getLInt());
 			}else{
 				$entry->uuid = $this->getUUID();
 			}
@@ -90,7 +92,7 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isTeacher);
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
-				$this->putLInt($entry->color);
+				$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
 			}else{
 				$this->putUUID($entry->uuid);
 			}
