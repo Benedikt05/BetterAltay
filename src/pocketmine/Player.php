@@ -265,7 +265,6 @@ use function trim;
 use const M_PI;
 use const M_SQRT3;
 use const PHP_INT_MAX;
-use const pocketmine\RESOURCE_PATH;
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -2598,7 +2597,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
-		$this->sendDataPacket(BiomeDefinitionListPacket::fromJsonFile(RESOURCE_PATH . '/vanilla/stripped_biome_definitions.json'));
+		$this->sendDataPacket(BiomeDefinitionListPacket::create());
 
 		$this->level->sendTime($this);
 
