@@ -26,14 +26,18 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Color;
 use function file_get_contents;
+use function json_decode;
+use const pocketmine\RESOURCE_PATH;
 
 class BiomeDefinitionListPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::BIOME_DEFINITION_LIST_PACKET;
 
 	/** @var array<string, array> */
-	public array $biomeDefinitions = [];
+	private array $biomeDefinitions = [];
+	private static ?array $DEFAULT_BIOME_CACHE = null;
 
 	protected function decodePayload() : void{
 		//TODO: not implemented
@@ -72,8 +76,29 @@ class BiomeDefinitionListPacket extends DataPacket{
 		}
 	}
 
-	public static function fromJsonFile(string $path) : self{
-		$data = json_decode(file_get_contents($path), true);
+	public static function create() : self{
+		if(self::$DEFAULT_BIOME_CACHE === null){
+			$data = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/stripped_biome_definitions.json'), true);
+
+			if(!is_array($data)){
+				throw new AssumptionFailedError("Invalid resource file format");
+			}
+
+			self::processBiomeData($data);
+			self::$DEFAULT_BIOME_CACHE = $data;
+		}
+
+		$pk = new self;
+		$pk->biomeDefinitions = self::$DEFAULT_BIOME_CACHE;
+		return $pk;
+	}
+
+	/**
+	 * Helper method to process raw biome data, converting mapWaterColor to Color objects.
+	 *
+	 * @param array<string, array> $data
+	 */
+	private static function processBiomeData(array &$data) : void{
 		foreach($data as &$def){
 			if(isset($def["mapWaterColor"])){
 				$def["mapWaterColor"] = new Color(
@@ -84,10 +109,16 @@ class BiomeDefinitionListPacket extends DataPacket{
 				);
 			}
 		}
-		$pk = new self;
-		$pk->biomeDefinitions = $data;
-		return $pk;
 	}
+
+	public function getBiomeDefinitions() : array{
+		return $this->biomeDefinitions;
+	}
+
+	public function setBiomeDefinitions(array $biomeDefinitions) : void{
+		$this->biomeDefinitions = $biomeDefinitions;
+	}
+
 
 	public function handle(NetworkSession $session) : bool{
 		return $session->handleBiomeDefinitionList($this);
