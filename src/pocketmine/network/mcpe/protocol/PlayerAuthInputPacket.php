@@ -27,8 +27,9 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\BitSet;
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket as PlayerAction;
+use pocketmine\network\mcpe\protocol\types\BitSet;
 use pocketmine\network\mcpe\protocol\types\InputMode;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\ItemStackRequest;
 use pocketmine\network\mcpe\protocol\types\ItemInteractionData;
@@ -37,7 +38,6 @@ use pocketmine\network\mcpe\protocol\types\PlayerBlockAction;
 use pocketmine\network\mcpe\protocol\types\PlayerBlockActionStopBreak;
 use pocketmine\network\mcpe\protocol\types\PlayerBlockActionWithBlockInfo;
 use pocketmine\network\mcpe\protocol\types\PlayMode;
-use pocketmine\network\mcpe\protocol\PlayerActionPacket as PlayerAction;
 use RuntimeException;
 
 class PlayerAuthInputPacket extends DataPacket{
