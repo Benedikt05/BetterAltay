@@ -40,15 +40,18 @@ interface ProtocolInfo{
 	public const CURRENT_PROTOCOL = self::PROTOCOL_1_21_93;
 
 	public const ACCEPTED_PROTOCOLS = [
-		self::PROTOCOL_1_21_60,
 		self::CURRENT_PROTOCOL,
+		self::PROTOCOL_1_21_90,
+		self::PROTOCOL_1_21_80,
+		self::PROTOCOL_1_21_70,
+		self::PROTOCOL_1_21_60,
 		self::PROTOCOL_1_21_50
 	];
 
 	public const PROTOCOL_1_21_50 = 766;
 	public const PROTOCOL_1_21_60 = 776;
 	public const PROTOCOL_1_21_70 = 786;
-	public const PROTOCOL_1_21_80 = 786;
+	public const PROTOCOL_1_21_80 = 800;
 	public const PROTOCOL_1_21_90 = 818;
 	public const PROTOCOL_1_21_93 = 819;
 
@@ -244,5 +247,6 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
 	public const PLAYER_LOCATION_PACKET = 0x146;
 	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
+	public const SERVER_SCRIPT_DEBUG_DRAWER_PACKET = 0x148;
 
 }

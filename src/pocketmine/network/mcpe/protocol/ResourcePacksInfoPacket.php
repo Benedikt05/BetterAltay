@@ -69,7 +69,9 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->putBool($this->mustAccept);
 		$this->putBool($this->hasAddonPacks);
 		$this->putBool($this->hasScripts);
-		$this->putBool($this->forceDisableVibrantVisuals);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_90){
+			$this->putBool($this->forceDisableVibrantVisuals);
+		}
 		$this->putUUID($this->worldTemplateUUID ??= new UUID());
 		$this->putString($this->worldTemplateVersion);
 

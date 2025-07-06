@@ -54,7 +54,7 @@ class BatchPacket extends DataPacket{
 	/**
 	 * @var int
 	 */
-	public int $protocol;
+	public int $protocol = -3;
 	/** @var int */
 	protected $compressionLevel = 7;
 

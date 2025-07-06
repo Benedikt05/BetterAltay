@@ -10,6 +10,7 @@ use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\protocol\VanillaProtocolMapping;
 use pocketmine\utils\AssumptionFailedError;
 use RuntimeException;
 use const pocketmine\RESOURCE_PATH;
@@ -20,24 +21,24 @@ final class RuntimeBlockMappingMV{
 	private array $runtimeToLegacyMap = [];
 	private ?array $bedrockKnownStates = null;
 
-	public function __construct(private int $protocol) {
+	public function __construct(private int $protocol){
 		$this->init();
 	}
 
-	private function init(): void {
-		$fileSuffix = ($this->protocol === ProtocolInfo::CURRENT_PROTOCOL || $this->protocol === -2) ? "" : $this->protocol;
+	private function init() : void{
+		$fileSuffix = (($p = VanillaProtocolMapping::getBlockStatesProtocol($this->protocol)) === ProtocolInfo::CURRENT_PROTOCOL) ? "" : $p;
 		$statesFilename = "canonical_block_states{$fileSuffix}.nbt";
 		$statesPath = RESOURCE_PATH . "vanilla/" . $statesFilename;
 
 		$data = file_get_contents($statesPath);
-		if ($data === false) {
+		if($data === false){
 			throw new AssumptionFailedError("Missing block state file for protocol {$this->protocol}");
 		}
 
 		$stream = new NetworkBinaryStream($data);
 		$stream->setProtocol($this->protocol);
 		$states = [];
-		while (!$stream->feof()) {
+		while(!$stream->feof()){
 			$states[] = $stream->getNbtCompoundRoot();
 		}
 		$this->bedrockKnownStates = $states;
@@ -45,10 +46,10 @@ final class RuntimeBlockMappingMV{
 		$this->setupLegacyMappings();
 	}
 
-	private function setupLegacyMappings(): void {
+	private function setupLegacyMappings() : void{
 		$legacyIdMap = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/block_id_map.json"), true);
 
-		$fileSuffix = ($this->protocol === ProtocolInfo::CURRENT_PROTOCOL || $this->protocol === ProtocolInfo::PROTOCOL_1_21_60 || $this->protocol === -2) ? "" : $this->protocol;
+		$fileSuffix = (($p = VanillaProtocolMapping::getR12BlockMapProtocol($this->protocol)) === ProtocolInfo::CURRENT_PROTOCOL) ? "" : $p;
 		$legacyMapFilename = "r12_to_current_block_map{$fileSuffix}.bin";
 		$legacyMapPath = RESOURCE_PATH . "vanilla/" . $legacyMapFilename;
 
@@ -57,39 +58,39 @@ final class RuntimeBlockMappingMV{
 		$nbtReader = new NetworkLittleEndianNBTStream();
 
 		$legacyStateMap = [];
-		while (!$stateMapReader->feof()) {
+		while(!$stateMapReader->feof()){
 			$id = $stateMapReader->getString();
 			$meta = $stateMapReader->getLShort();
 			$offset = $stateMapReader->getOffset();
 			$state = $nbtReader->read($stateMapReader->getBuffer(), false, $offset);
 			$stateMapReader->setOffset($offset);
 
-			if (!($state instanceof CompoundTag)) {
+			if(!($state instanceof CompoundTag)){
 				throw new RuntimeException("Expected CompoundTag for block state");
 			}
 			$legacyStateMap[] = new R12ToCurrentBlockMapEntry($id, $meta, $state);
 		}
 
 		$idToStatesMap = [];
-		foreach ($this->bedrockKnownStates as $k => $state) {
+		foreach($this->bedrockKnownStates as $k => $state){
 			$idToStatesMap[$state->getString("name")][] = $k;
 		}
 
-		foreach ($legacyStateMap as $pair) {
+		foreach($legacyStateMap as $pair){
 			$id = $legacyIdMap[$pair->getId()] ?? null;
-			if ($id === null) {
+			if($id === null){
 				throw new RuntimeException("No legacy ID matches " . $pair->getId());
 			}
 
 			$meta = $pair->getMeta();
-			if ($meta > 15) continue;
+			if($meta > 15) continue;
 
 			$mappedState = $pair->getBlockState();
 			$mappedState->setName("");
 			$mappedName = $mappedState->getString("name");
 
-			foreach ($idToStatesMap[$mappedName] ?? [] as $k) {
-				if ($mappedState->equals($this->bedrockKnownStates[$k])) {
+			foreach($idToStatesMap[$mappedName] ?? [] as $k){
+				if($mappedState->equals($this->bedrockKnownStates[$k])){
 					$this->registerMapping($k, $id, $meta);
 					continue 2;
 				}
@@ -99,19 +100,19 @@ final class RuntimeBlockMappingMV{
 		}
 	}
 
-	private function registerMapping(int $runtimeId, int $legacyId, int $meta): void {
+	private function registerMapping(int $runtimeId, int $legacyId, int $meta) : void{
 		$key = ($legacyId << 4) | $meta;
 		$this->legacyToRuntimeMap[$key] = $runtimeId;
 		$this->runtimeToLegacyMap[$runtimeId] = $key;
 	}
 
-	public function toStaticRuntimeId(int $id, int $meta = 0): int {
+	public function toStaticRuntimeId(int $id, int $meta = 0) : int{
 		return $this->legacyToRuntimeMap[($id << 4) | $meta]
 			?? $this->legacyToRuntimeMap[$id << 4]
 			?? $this->legacyToRuntimeMap[BlockIds::INFO_UPDATE << 4];
 	}
 
-	public function fromStaticRuntimeId(int $runtimeId): array {
+	public function fromStaticRuntimeId(int $runtimeId) : array{
 		$v = $this->runtimeToLegacyMap[$runtimeId] ?? (BlockIds::INFO_UPDATE << 4);
 		return [$v >> 4, $v & 0xf];
 	}
@@ -119,7 +120,7 @@ final class RuntimeBlockMappingMV{
 	/**
 	 * @return CompoundTag[]
 	 */
-	public function getBedrockKnownStates(): array {
+	public function getBedrockKnownStates() : array{
 		return $this->bedrockKnownStates ?? [];
 	}
 }

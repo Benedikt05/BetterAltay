@@ -306,7 +306,9 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->serverId);
 		$this->putString($this->worldId);
 		$this->putString($this->scenarioId);
-		$this->putString($this->ownerId);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_90){
+			$this->putString($this->ownerId);
+		}
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 
 final class PlayerMovementSettings{
 	public function __construct(
@@ -42,6 +43,9 @@ final class PlayerMovementSettings{
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
+		if($out->protocol <= ProtocolInfo::PROTOCOL_1_21_80){
+			$out->putVarInt(ServerAuthMovementMode::SERVER_AUTHORITATIVE_V2);
+		}
 		$out->putVarInt($this->rewindHistorySize);
 		$out->putBool($this->serverAuthoritativeBlockBreaking);
 	}

@@ -1884,7 +1884,8 @@ class Server{
 					$pk->enableCompression = false;
 				}
 				$pk->protocol = $target->getProtocol();
-				foreach($packets as $p){
+				foreach($packets as $pt){
+					$p = clone $pt;
 					$p->protocol = $target->getProtocol();
 					$pk->addPacket($p);
 				}

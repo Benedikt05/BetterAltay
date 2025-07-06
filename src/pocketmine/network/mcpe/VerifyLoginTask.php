@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe;
 
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\Player;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
@@ -71,14 +72,18 @@ class VerifyLoginTask extends AsyncTask{
 
 	public function __construct(Player $player, LoginPacket $packet){
 		$this->storeLocal([$player, $packet]);
-
-		$chainJwtsExtracted = [];
-		if(isset($packet->chainData["Certificate"]) && is_string($packet->chainData["Certificate"])){
-			$certificateData = json_decode($packet->chainData["Certificate"], true);
-			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
-				$chainJwtsExtracted = $certificateData["chain"];
+		if($packet->protocol <= ProtocolInfo::PROTOCOL_1_21_80){
+			$chainJwtsExtracted = $packet->chainData["chain"];
+		}else{
+			$chainJwtsExtracted = [];
+			if(isset($packet->chainData["Certificate"]) && is_string($packet->chainData["Certificate"])){
+				$certificateData = json_decode($packet->chainData["Certificate"], true);
+				if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
+					$chainJwtsExtracted = $certificateData["chain"];
+				}
 			}
 		}
+
 		$this->chainJwts = serialize($chainJwtsExtracted);
 		$this->clientDataJwt = $packet->clientDataJwt;
 	}

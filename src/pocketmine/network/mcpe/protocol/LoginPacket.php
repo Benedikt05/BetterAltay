@@ -105,18 +105,20 @@ class LoginPacket extends DataPacket{
 		$buffer = new BinaryStream($this->getString());
 
 		$this->chainData = json_decode($buffer->get($buffer->getLInt()), true);
-
-		if(isset($this->chainData["Certificate"]) && is_string($this->chainData["Certificate"])){
-			$certificateData = json_decode($this->chainData["Certificate"], true);
-			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
-				$chainArray = $certificateData["chain"];
-			}else{
-				throw new RuntimeException("Invalid 'chain' data in Certificate field");
-			}
+		if($this->protocol <= ProtocolInfo::PROTOCOL_1_21_80){
+			$chainArray = $this->chainData["chain"];
 		}else{
-			throw new RuntimeException("Missing or invalid 'Certificate' field in chain data");
+			if(isset($this->chainData["Certificate"]) && is_string($this->chainData["Certificate"])){
+				$certificateData = json_decode($this->chainData["Certificate"], true);
+				if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
+					$chainArray = $certificateData["chain"];
+				}else{
+					throw new RuntimeException("Invalid 'chain' data in Certificate field");
+				}
+			}else{
+				throw new RuntimeException("Missing or invalid 'Certificate' field in chain data");
+			}
 		}
-
 		$hasExtraData = false;
 		foreach($chainArray as $chain){
 			$webtoken = Utils::decodeJWT($chain);

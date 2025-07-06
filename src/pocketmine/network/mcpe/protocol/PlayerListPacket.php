@@ -92,7 +92,9 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isTeacher);
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
-				$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
+				if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_80){
+					$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
+				}
 			}else{
 				$this->putUUID($entry->uuid);
 			}

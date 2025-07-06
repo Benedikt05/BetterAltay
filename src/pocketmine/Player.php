@@ -496,7 +496,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	protected $commandPermission = CommandPermissions::NORMAL;
 	/** @var bool */
 	protected $keepExperience = false;
+	protected int $protocol = -1;
 
+	public function getProtocol() : int{
+		return $this->protocol;
+	}
 
 	/**
 	 * @return bool
@@ -2147,11 +2151,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
-		$protocolVersion = $packet->protocolVersion;
-		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL){
-			$this->sendPlayStatus($protocolVersion < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
+		$this->protocol = $packet->protocol;
+		if(!in_array($this->protocol, ProtocolInfo::ACCEPTED_PROTOCOLS, true)){
+			$this->sendPlayStatus($this->protocol < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
 			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
-			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$protocolVersion]), false);
+			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$this->protocol]), false);
 
 			return true;
 		}
@@ -2598,7 +2602,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
-		$this->sendDataPacket(BiomeDefinitionListPacket::create());
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_80) $this->sendDataPacket(BiomeDefinitionListPacket::create());//TODO: translate
 
 		$this->level->sendTime($this);
 
@@ -2898,7 +2902,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				break;
 			case PlayerActionPacket::ACTION_CRACK_BREAK:
 				$block = $this->level->getBlock($pos);
-				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_PARTICLE_PUNCH_BLOCK, $block->getRuntimeId() | ($face << 24));
+				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_PARTICLE_PUNCH_BLOCK, $block->getRuntimeId($this->protocol) | ($face << 24));
 				//TODO: destroy-progress level event
 				break;
 			case PlayerActionPacket::ACTION_START_SWIMMING:
