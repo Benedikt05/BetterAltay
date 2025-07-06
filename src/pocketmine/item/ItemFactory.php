@@ -302,6 +302,7 @@ class ItemFactory{
 		self::registerItem(new Record(Item::RECORD_CREATOR_MUSIC_BOX, LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX));
 		self::registerItem(new Record(Item::RECORD_PRECIPICE, LevelSoundEventPacket::SOUND_RECORD_PRECIPICE));
 		self::registerItem(new Record(Item::RECORD_TEARS, LevelSoundEventPacket::SOUND_RECORD_TEARS));
+		self::registerItem(new Record(Item::RECORD_LAVA_CHICKEN, LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN));
 
 		self::registerItem(new Item(Item::DISC_FRAGMENT_5, 0, "Disc Fragment"));
 
