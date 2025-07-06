@@ -2109,13 +2109,9 @@ class Level implements ChunkManager, Metadatable{
 		if(!$hand->place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
 			return false;
 		}
-		//$playSound causes disconnect
 
 		if($playSound){
-			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId($player->getProtocol()), -1, false, false,
-				function (int $protocol) use ($hand) : int {
-					return RuntimeBlockMapping::toStaticRuntimeId($hand->getId(), $hand->getDamage());
-				});
+			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId($player->getProtocol()), -1);
 		}
 		$item->pop();
 
