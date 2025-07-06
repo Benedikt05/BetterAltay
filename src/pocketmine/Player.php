@@ -24,10 +24,6 @@ declare(strict_types=1);
 namespace pocketmine;
 
 use BadMethodCallException;
-use pocketmine\item\Bow;
-use pocketmine\item\FoodSource;
-use pocketmine\network\mcpe\BitSet;
-use RuntimeException;
 use InvalidArgumentException;
 use InvalidStateException;
 use pocketmine\block\Bed;
@@ -96,10 +92,12 @@ use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\inventory\transaction\TransactionValidationException;
+use pocketmine\item\Bow;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\MeleeWeaponEnchantment;
+use pocketmine\item\FoodSource;
 use pocketmine\item\Item;
 use pocketmine\item\MaybeConsumable;
 use pocketmine\item\WritableBook;
@@ -177,6 +175,8 @@ use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
+use pocketmine\network\mcpe\protocol\types\AbilitiesLayer;
+use pocketmine\network\mcpe\protocol\types\BitSet;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\CommandPermissions;
@@ -205,7 +205,6 @@ use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\SkinData;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\types\SpawnSettings;
-use pocketmine\network\mcpe\protocol\types\AbilitiesLayer;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
@@ -226,6 +225,7 @@ use pocketmine\timings\Timings;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
+use RuntimeException;
 use UnexpectedValueException;
 use function abs;
 use function array_key_exists;
@@ -266,7 +266,6 @@ use function trim;
 use const M_PI;
 use const M_SQRT3;
 use const PHP_INT_MAX;
-use const pocketmine\RESOURCE_PATH;
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -2599,7 +2598,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
-		$this->sendDataPacket(BiomeDefinitionListPacket::fromJsonFile(RESOURCE_PATH . '/vanilla/stripped_biome_definitions.json'));
+		$this->sendDataPacket(BiomeDefinitionListPacket::create());
 
 		$this->level->sendTime($this);
 
