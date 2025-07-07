@@ -72,6 +72,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\player\PlayerToggleCrawlEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\player\PlayerToggleGlideEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
@@ -1532,6 +1533,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 	}
 
+	public function setCrawling(bool $value = true) : void{
+		parent::setCrawling($value);
+
+		if($value){
+			$this->updateBoundingBox(0.625, 0.6);
+		}else{
+			$this->updateBoundingBox(1.8, 0.6);
+		}
+	}
+
 	public function hasAchievement(string $achievementId) : bool{
 		if(!isset(Achievement::$list[$achievementId])){
 			return false;
@@ -2723,12 +2734,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$swimming = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_SWIMMING, PlayerAuthInputFlags::STOP_SWIMMING);
 			$gliding = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_GLIDING, PlayerAuthInputFlags::STOP_GLIDING);
 			$flying = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_FLYING, PlayerAuthInputFlags::STOP_FLYING);
+			$crawling = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_CRAWLING, PlayerAuthInputFlags::STOP_CRAWLING);
 			$mismatch =
 				($sneaking !== null && !$this->toggleSneak($sneaking)) |
 				($sprinting !== null && !$this->toggleSprint($sprinting)) |
 				($swimming !== null && !$this->toggleSwim($swimming)) |
 				($gliding !== null && !$this->toggleGlide($gliding)) |
-				($flying !== null && !$this->toggleFlight($flying));
+				($flying !== null && !$this->toggleFlight($flying)) |
+				($crawling !== null && !$this->toggleCrawl($crawling));
 			if((bool) $mismatch){
 				$this->sendData([$this]);
 			}
@@ -3406,6 +3419,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			return false;
 		}
 		$this->setSwimming($swimming);
+		return true;
+	}
+
+	public function toggleCrawl(bool $crawling) : bool{
+		$ev = new PlayerToggleCrawlEvent($this, $crawling);
+		$ev->call();
+		if($ev->isCancelled()){
+			return false;
+		}
+		$this->setCrawling($crawling);
 		return true;
 	}
 
