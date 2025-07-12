@@ -2594,13 +2594,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->worldName = $this->server->getMotd();
 		$pk->experiments = new Experiments([], false);
 		$pk->playerMovementSettings = new PlayerMovementSettings(0, false);
+		$pk->itemTable = ItemTypeDictionary::getInstance()->getEntries();
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->propertyData = new CompoundTag();
 		$pk->blockPaletteChecksum = 0; //we don't bother with this (0 skips verification) - the preimage is some dumb stringified NBT, not even actual NBT
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
-
-		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_60) $this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
 		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_80) $this->sendDataPacket(BiomeDefinitionListPacket::create());//TODO: translate
 
