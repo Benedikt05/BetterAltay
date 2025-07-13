@@ -313,6 +313,11 @@ class ItemFactory{
 		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
 		self::registerItem(new HoneyBottle());
 		self::registerItem(new Spyglass());
+
+		self::registerItem(new DiamondHorseArmor());
+		self::registerItem(new IronHorseArmor());
+		self::registerItem(new GoldenHorseArmor());
+		self::registerItem(new LeatherHorseArmor());
 	}
 
 	/**
