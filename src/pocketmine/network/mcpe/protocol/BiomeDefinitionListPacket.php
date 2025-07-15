@@ -47,7 +47,7 @@ class BiomeDefinitionListPacket extends DataPacket{
 		$stringPool = [];
 		$stringIndices = [];
 
-		$this->putUnsignedVarInt(count($this->biomeDefinitions = []));
+		$this->putUnsignedVarInt(count($this->biomeDefinitions));
 
 		foreach($this->biomeDefinitions as $name => $def){
 			$index = $stringIndices[$name] ??= count($stringPool);
@@ -55,7 +55,7 @@ class BiomeDefinitionListPacket extends DataPacket{
 				$stringPool[] = $name;
 			}
 			$this->putLShort($index);
-			$this->putLShort(0); //TODO: BiomeId
+			$this->putLShort(-1); //TODO: BiomeId
 			$this->putLFloat((float) $def["temperature"]);
 			$this->putLFloat((float) $def["downfall"]);
 			$this->putLFloat((float) $def["redSporeDensity"]);
