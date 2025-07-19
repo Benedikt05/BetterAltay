@@ -3297,7 +3297,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case InteractPacket::ACTION_MOUSEOVER:
 				break; //TODO: handle these
 			case InteractPacket::ACTION_OPEN_INVENTORY:
-				if(($target === $this || $this->ridingEid === $packet->target && $target instanceof PlayerInventoryMount) && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
+				if(($target === $this || ($this->ridingEid === $packet->target && $target instanceof PlayerInventoryMount)) && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
 					//TODO: HACK! this restores 1.14ish behaviour, but this should be able to be listened to and
 					//controlled by plugins. However, the player is always a subscriber to their own inventory so it
 					//doesn't integrate well with the regular container system right now.
