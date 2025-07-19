@@ -24,12 +24,13 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\vehicle;
 
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\Vehicle;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 
-class Minecart extends Vehicle{
+class Minecart extends Vehicle implements PlayerInventoryMount{
 	public const NETWORK_ID = self::MINECART;
 
 	public $height = 0.7;

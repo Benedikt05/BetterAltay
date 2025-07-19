@@ -26,6 +26,7 @@ namespace pocketmine\entity\vehicle;
 
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\Vehicle;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -38,7 +39,7 @@ use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
 
-class Boat extends Vehicle{
+class Boat extends Vehicle implements PlayerInventoryMount{
 	public const NETWORK_ID = self::BOAT;
 
 	public const TAG_VARIANT = "Variant";
