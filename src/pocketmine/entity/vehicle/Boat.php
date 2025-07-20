@@ -95,6 +95,7 @@ class Boat extends Vehicle implements PlayerInventoryMount{
 			$this->setPositionAndRotation($pos, $yaw, $pitch);
 			$this->clientMoveTicks = 0;
 			$this->resetMotion();
+			$riddenByEntity->y = $pos->y;
 
 			$this->velocity->setComponents(0, 0, 0);
 		}else{
