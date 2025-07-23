@@ -41,6 +41,7 @@ use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\passive\AbstractHorse;
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\entity\Skin;
@@ -2763,7 +2764,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->lastPlayerAuthInputPitch = $packet->getPitch();
 			}
 
-			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))) {
+			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))){
 				$this->handleMovement($newPos);
 				$this->lastPlayerAuthInputPosition = $rawPos;
 
@@ -2771,7 +2772,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$ent = $this->getRidingEntity();
 					$vehicle = $packet->getVehicleInfo();
 
-					if (!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)) {
+					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$ent->setClientPositionAndRotation($packet->getPosition(), ($ent->getYaw() + 90) % 360, 0, 3, true);
 						}
@@ -3296,7 +3297,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case InteractPacket::ACTION_MOUSEOVER:
 				break; //TODO: handle these
 			case InteractPacket::ACTION_OPEN_INVENTORY:
-				if($target === $this && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
+				if(($target === $this || ($this->ridingEid === $packet->target && $target instanceof PlayerInventoryMount)) && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
 					//TODO: HACK! this restores 1.14ish behaviour, but this should be able to be listened to and
 					//controlled by plugins. However, the player is always a subscriber to their own inventory so it
 					//doesn't integrate well with the regular container system right now.
