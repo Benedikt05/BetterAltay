@@ -42,7 +42,7 @@ class GamemodeCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.gamemode.description", "%commands.gamemode.usage", ["gm"], [
 			[
 				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("gameMode", [
-					"creative", "survival", "adventure"
+					"adventure", "creative", "spectator", "survival",
 				])), new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
 			], [
 				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
