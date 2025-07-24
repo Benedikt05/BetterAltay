@@ -71,6 +71,9 @@ class ZippedResourcePack implements ResourcePack{
 	/** @var resource */
 	protected $fileResource;
 
+	/** @var string|null  */
+	protected ?string $encryptionKey = null;
+
 	/**
 	 * @param string $zipPath Path to the resource pack zip
 	 * @throws ResourcePackException
@@ -85,6 +88,10 @@ class ZippedResourcePack implements ResourcePack{
 		$archive = new \ZipArchive();
 		if(($openResult = $archive->open($zipPath)) !== true){
 			throw new ResourcePackException("Encountered ZipArchive error code $openResult while trying to open $zipPath");
+		}
+
+		if(($key = $archive->getFromName("encryption.key")) !== false){
+			$this->encryptionKey = $key;
 		}
 
 		if(($manifestData = $archive->getFromName("manifest.json")) === false){
@@ -152,6 +159,10 @@ class ZippedResourcePack implements ResourcePack{
 
 	public function getPackSize() : int{
 		return filesize($this->path);
+	}
+
+	public function getEncryptionKey() : ?string{
+		return $this->encryptionKey;
 	}
 
 	public function getSha256(bool $cached = true) : string{

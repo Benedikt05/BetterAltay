@@ -78,7 +78,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putUUID(UUID::fromString($entry->getPackId()));
 			$this->putString($entry->getPackVersion());
 			$this->putLLong($entry->getPackSize());
-			$this->putString(""); //TODO: encryption key
+			$this->putString($entry->getEncryptionKey() ?? "");
 			$this->putString(""); //TODO: subpack name
 			$this->putString(""); //TODO: content identity
 			$this->putBool(false); //TODO: has scripts (seems useless for resource packs)
