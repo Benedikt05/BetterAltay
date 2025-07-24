@@ -38,6 +38,7 @@ use function hash_file;
 use function implode;
 use function preg_match;
 use function strlen;
+use function file_get_contents;
 
 class ZippedResourcePack implements ResourcePack{
 
@@ -90,8 +91,11 @@ class ZippedResourcePack implements ResourcePack{
 			throw new ResourcePackException("Encountered ZipArchive error code $openResult while trying to open $zipPath");
 		}
 
-		if(($key = $archive->getFromName("encryption.key")) !== false){
-			$this->encryptionKey = $key;
+		if(file_exists($keyPath = $zipPath . ".key")){
+			$keyContent = file_get_contents($keyPath);
+			if($keyContent !== false){
+				$this->encryptionKey = $keyContent;
+			}
 		}
 
 		if(($manifestData = $archive->getFromName("manifest.json")) === false){

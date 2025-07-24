@@ -80,7 +80,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 			$this->putLLong($entry->getPackSize());
 			$this->putString($entry->getEncryptionKey() ?? "");
 			$this->putString(""); //TODO: subpack name
-			$this->putString(""); //TODO: content identity
+			$this->putString($entry->getPackId()); //content identity
 			$this->putBool(false); //TODO: has scripts (seems useless for resource packs)
 			$this->putBool(false); //TODO: is addon pack
 			$this->putBool(false); //TODO: supports RTX
