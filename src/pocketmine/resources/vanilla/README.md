@@ -1,5 +1,5 @@
 # BedrockData
-Blobs of data generated from Minecraft: Bedrock Edition used by PocketMine-MP
+Blobs of data generated from Minecraft: Bedrock Edition used by BetterAltay
 
 ## canonical_block_states.nbt
 This file contains an ordered list of `TAG_Compound`s (in varint NBT format) representing the pre-agreed blockstates in MCPE.
@@ -43,7 +43,7 @@ This file defines all the known banner pattern types and their crafting requirem
 This file defines all crafting-table, furnace and chemistry recipes. This includes recipes for the smoker, cartography table etc.
 
 ## creative_items.json
-This file contains the creative groups and items which appear in the vanilla creative inventory with Education Edition and Experimental Gameplay enabled.
+This file contains the creative groups and items which appear in the vanilla creative inventory with Education Edition and Experimental Gameplay disabled.
 
 ## stripped_biome_definitions.json
 This file contains a stripped JSON representation of biome definitions obtained from `BiomeDefinitionListPacket`.
