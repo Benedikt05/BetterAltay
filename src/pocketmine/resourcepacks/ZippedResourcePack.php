@@ -94,6 +94,10 @@ class ZippedResourcePack implements ResourcePack{
 		if(file_exists($keyPath = $zipPath . ".key")){
 			$keyContent = file_get_contents($keyPath);
 			if($keyContent !== false){
+				if(!in_array(strlen($keyContent), [16, 24, 32])){ // AES valid keys sizes
+					throw new ResourcePackException("Key content is not valid");
+				}
+
 				$this->encryptionKey = $keyContent;
 			}
 		}
