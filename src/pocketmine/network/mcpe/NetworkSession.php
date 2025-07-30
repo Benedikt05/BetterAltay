@@ -148,6 +148,7 @@ use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
+use pocketmine\network\mcpe\protocol\ServerScriptDebugDrawerPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerStatsPacket;
@@ -928,6 +929,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleClientboundControlSchemeSet(ClientboundControlSchemeSetPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerScriptDebugDrawer(ServerScriptDebugDrawerPacket $packet) : bool{
 		return false;
 	}
 

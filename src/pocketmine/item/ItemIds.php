@@ -292,4 +292,5 @@ interface ItemIds extends BlockIds{
 	public const RECORD_CREATOR_MUSIC_BOX = 784;
 	public const RECORD_PRECIPICE = 785;
 	public const RECORD_TEARS = 786;
+	public const RECORD_LAVA_CHICKEN = 787;
 }

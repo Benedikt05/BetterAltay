@@ -161,6 +161,8 @@ class Level implements ChunkManager, Metadatable{
 	public const DIFFICULTY_NORMAL = 2;
 	public const DIFFICULTY_HARD = 3;
 
+	public const DEFAULT_TICKED_BLOCKS_PER_SUBCHUNK_PER_TICK = 3;
+
 	/** @var Tile[] */
 	private $tiles = [];
 
@@ -291,6 +293,8 @@ class Level implements ChunkManager, Metadatable{
 	private $chunkTickList = [];
 	/** @var int */
 	private $chunksPerTick;
+	/** @var int */
+	private $tickedBlocksPerSubchunkPerTick = self::DEFAULT_TICKED_BLOCKS_PER_SUBCHUNK_PER_TICK;
 	/** @var bool */
 	private $clearChunksOnTick;
 	/** @var SplFixedArray<Block|null> */
@@ -454,6 +458,7 @@ class Level implements ChunkManager, Metadatable{
 
 		$this->chunkTickRadius = min($this->server->getViewDistance(), max(1, (int) $this->server->getProperty("chunk-ticking.tick-radius", 4)));
 		$this->chunksPerTick = (int) $this->server->getProperty("chunk-ticking.per-tick", 40);
+		$this->tickedBlocksPerSubchunkPerTick = (int) $this->server->getProperty("chunk-ticking.blocks-per-subchunk-per-tick", self::DEFAULT_TICKED_BLOCKS_PER_SUBCHUNK_PER_TICK);
 		$this->chunkPopulationQueueSize = (int) $this->server->getProperty("chunk-generation.population-queue-size", 2);
 		$this->clearChunksOnTick = (bool) $this->server->getProperty("chunk-ticking.clear-tick-list", true);
 
@@ -1201,7 +1206,7 @@ class Level implements ChunkManager, Metadatable{
 			foreach($chunk->getSubChunks() as $Y => $subChunk){
 				if(!($subChunk instanceof EmptySubChunk)){
 					$k = 0;
-					for($i = 0; $i < 3; ++$i){
+					for($i = 0; $i < $this->tickedBlocksPerSubchunkPerTick; ++$i){
 						if(($i % 5) === 0){
 							$k = mt_rand(0, (1 << 60) - 1);
 						}

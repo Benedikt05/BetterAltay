@@ -50,6 +50,8 @@ interface ResourcePack{
 	 */
 	public function getPackVersion() : string;
 
+	public function getEncryptionKey() : ?string;
+
 	/**
 	 * Returns the raw SHA256 sum of the compressed resource pack zip. This is used by clients to validate pack downloads.
 	 * @return string byte-array length 32 bytes

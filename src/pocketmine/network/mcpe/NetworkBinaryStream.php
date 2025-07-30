@@ -903,4 +903,30 @@ class NetworkBinaryStream extends BinaryStream{
 	public function writeGenericTypeNetworkId(int $id) : void{
 		$this->putVarInt($id);
 	}
+
+	/**
+	 * @phpstan-template T
+	 * @phpstan-param Closure() : T $reader
+	 * @phpstan-return T|null
+	 */
+	public function readOptional(Closure $reader) : mixed{
+		if($this->getBool()){
+			return $reader();
+		}
+		return null;
+	}
+
+	/**
+	 * @phpstan-template T
+	 * @phpstan-param T|null            $value
+	 * @phpstan-param Closure(T) : void $writer
+	 */
+	public function writeOptional(mixed $value, Closure $writer) : void{
+		if($value !== null){
+			$this->putBool(true);
+			$writer($value);
+		}else{
+			$this->putBool(false);
+		}
+	}
 }

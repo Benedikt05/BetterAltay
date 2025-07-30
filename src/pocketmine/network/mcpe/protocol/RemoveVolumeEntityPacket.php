@@ -30,10 +30,8 @@ use pocketmine\network\mcpe\NetworkSession;
 class RemoveVolumeEntityPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::REMOVE_VOLUME_ENTITY_PACKET;
 
-	/** @var int */
-	private $entityNetId;
-	/** @var int */
-	private $dimension;
+	private int $entityNetId;
+	private int $dimension;
 
 	public static function create(int $entityNetId, int $dimension) : self{
 		$result = new self;
@@ -53,7 +51,7 @@ class RemoveVolumeEntityPacket extends DataPacket{
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->entityNetId);
-		$this->writeVarInt($this->dimension);
+		$this->putVarInt($this->dimension);
 	}
 
 	public function handle(NetworkSession $session) : bool{

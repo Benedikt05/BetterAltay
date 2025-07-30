@@ -99,7 +99,7 @@ class PacketPool{
 		static::registerPacket(new MapInfoRequestPacket());
 		static::registerPacket(new RequestChunkRadiusPacket());
 		static::registerPacket(new ChunkRadiusUpdatedPacket());
-		static::registerPacket(new ItemFrameDropItemPacket());
+		//static::registerPacket(new ItemFrameDropItemPacket());
 		static::registerPacket(new GameRulesChangedPacket());
 		static::registerPacket(new CameraPacket());
 		static::registerPacket(new BossEventPacket());
@@ -217,6 +217,7 @@ class PacketPool{
 		static::registerPacket(new UpdateClientOptionsPacket());
 		static::registerPacket(new PlayerLocationPacket());
 		static::registerPacket(new ClientboundControlSchemeSetPacket());
+		static::registerPacket(new ServerScriptDebugDrawerPacket());
 	}
 
 	/**

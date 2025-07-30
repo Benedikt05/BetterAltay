@@ -230,10 +230,10 @@ class ItemFactory{
 		self::registerItem(new RabbitStew());
 		self::registerItem(new Item(Item::RABBIT_FOOT, 0, "Rabbit's Foot"));
 		self::registerItem(new Item(Item::RABBIT_HIDE, 0, "Rabbit Hide"));
-		//TODO: HORSEARMORLEATHER
-		//TODO: HORSEARMORIRON
-		//TODO: GOLD_HORSE_ARMOR
-		//TODO: DIAMOND_HORSE_ARMOR
+		self::registerItem(new LeatherHorseArmor());
+		self::registerItem(new IronHorseArmor());
+		self::registerItem(new GoldenHorseArmor());
+		self::registerItem(new DiamondHorseArmor());
 		self::registerItem(new Item(Item::LEAD, 0, "Lead"));
 		//TODO: NAMETAG
 		self::registerItem(new Item(Item::PRISMARINE_CRYSTALS, 0, "Prismarine Crystals"));
@@ -282,26 +282,34 @@ class ItemFactory{
 		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
 		self::registerItem(new TurtleHelmet());
 
-		self::registerItem(new Record(Item::RECORD_13, LevelSoundEventPacket::SOUND_RECORD_13));
-		self::registerItem(new Record(Item::RECORD_CAT, LevelSoundEventPacket::SOUND_RECORD_CAT));
-		self::registerItem(new Record(Item::RECORD_BLOCKS, LevelSoundEventPacket::SOUND_RECORD_BLOCKS));
-		self::registerItem(new Record(Item::RECORD_CHIRP, LevelSoundEventPacket::SOUND_RECORD_CHIRP));
-		self::registerItem(new Record(Item::RECORD_FAR, LevelSoundEventPacket::SOUND_RECORD_FAR));
-		self::registerItem(new Record(Item::RECORD_MALL, LevelSoundEventPacket::SOUND_RECORD_MALL));
-		self::registerItem(new Record(Item::RECORD_MELLOHI, LevelSoundEventPacket::SOUND_RECORD_MELLOHI));
-		self::registerItem(new Record(Item::RECORD_STAL, LevelSoundEventPacket::SOUND_RECORD_STAL));
-		self::registerItem(new Record(Item::RECORD_STRAD, LevelSoundEventPacket::SOUND_RECORD_STRAD));
-		self::registerItem(new Record(Item::RECORD_WARD, LevelSoundEventPacket::SOUND_RECORD_WARD));
-		self::registerItem(new Record(Item::RECORD_11, LevelSoundEventPacket::SOUND_RECORD_11));
-		self::registerItem(new Record(Item::RECORD_WAIT, LevelSoundEventPacket::SOUND_RECORD_WAIT));
-		self::registerItem(new Record(Item::RECORD_OTHERSIDE, LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE));
-		self::registerItem(new Record(Item::RECORD_5, LevelSoundEventPacket::SOUND_RECORD_5));
-		self::registerItem(new Record(Item::RECORD_PIGSTEP, LevelSoundEventPacket::SOUND_RECORD_PIGSTEP));
-		self::registerItem(new Record(Item::RECORD_RELIC, LevelSoundEventPacket::SOUND_RECORD_RELIC));
-		self::registerItem(new Record(Item::RECORD_CREATOR, LevelSoundEventPacket::SOUND_RECORD_CREATOR));
-		self::registerItem(new Record(Item::RECORD_CREATOR_MUSIC_BOX, LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX));
-		self::registerItem(new Record(Item::RECORD_PRECIPICE, LevelSoundEventPacket::SOUND_RECORD_PRECIPICE));
-		self::registerItem(new Record(Item::RECORD_TEARS, LevelSoundEventPacket::SOUND_RECORD_TEARS));
+		$records = [
+			Item::RECORD_13 => LevelSoundEventPacket::SOUND_RECORD_13,
+			Item::RECORD_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
+			Item::RECORD_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
+			Item::RECORD_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
+			Item::RECORD_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
+			Item::RECORD_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
+			Item::RECORD_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
+			Item::RECORD_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
+			Item::RECORD_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
+			Item::RECORD_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
+			Item::RECORD_11 => LevelSoundEventPacket::SOUND_RECORD_11,
+			Item::RECORD_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
+			Item::RECORD_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
+			Item::RECORD_5 => LevelSoundEventPacket::SOUND_RECORD_5,
+			Item::RECORD_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
+			Item::RECORD_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
+			Item::RECORD_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
+			Item::RECORD_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
+			Item::RECORD_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
+			Item::RECORD_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
+			Item::RECORD_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
+		];
+
+		foreach($records as $itemId => $soundId){
+			self::registerItem(new Record($itemId, $soundId));
+		}
+
 
 		self::registerItem(new Item(Item::DISC_FRAGMENT_5, 0, "Disc Fragment"));
 

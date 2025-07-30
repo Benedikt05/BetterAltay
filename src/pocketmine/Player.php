@@ -24,10 +24,6 @@ declare(strict_types=1);
 namespace pocketmine;
 
 use BadMethodCallException;
-use pocketmine\item\Bow;
-use pocketmine\item\FoodSource;
-use pocketmine\network\mcpe\BitSet;
-use RuntimeException;
 use InvalidArgumentException;
 use InvalidStateException;
 use pocketmine\block\Bed;
@@ -45,6 +41,7 @@ use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\passive\AbstractHorse;
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\entity\Skin;
@@ -76,6 +73,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\player\PlayerToggleCrawlEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\player\PlayerToggleGlideEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
@@ -96,10 +94,12 @@ use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\CraftingTransaction;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\inventory\transaction\TransactionValidationException;
+use pocketmine\item\Bow;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\MeleeWeaponEnchantment;
+use pocketmine\item\FoodSource;
 use pocketmine\item\Item;
 use pocketmine\item\MaybeConsumable;
 use pocketmine\item\WritableBook;
@@ -177,6 +177,8 @@ use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
+use pocketmine\network\mcpe\protocol\types\AbilitiesLayer;
+use pocketmine\network\mcpe\protocol\types\BitSet;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\CommandPermissions;
@@ -204,7 +206,6 @@ use pocketmine\network\mcpe\protocol\types\SkinAnimation;
 use pocketmine\network\mcpe\protocol\types\SkinData;
 use pocketmine\network\mcpe\protocol\types\SkinImage;
 use pocketmine\network\mcpe\protocol\types\SpawnSettings;
-use pocketmine\network\mcpe\protocol\types\AbilitiesLayer;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
@@ -225,6 +226,7 @@ use pocketmine\timings\Timings;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
+use RuntimeException;
 use UnexpectedValueException;
 use function abs;
 use function array_key_exists;
@@ -265,7 +267,6 @@ use function trim;
 use const M_PI;
 use const M_SQRT3;
 use const PHP_INT_MAX;
-use const pocketmine\RESOURCE_PATH;
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -1533,6 +1534,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 	}
 
+	public function setCrawling(bool $value = true) : void{
+		parent::setCrawling($value);
+
+		if($value){
+			$this->updateBoundingBox(0.625, 0.6);
+		}else{
+			$this->updateBoundingBox(1.8, 0.6);
+		}
+	}
+
 	public function hasAchievement(string $achievementId) : bool{
 		if(!isset(Achievement::$list[$achievementId])){
 			return false;
@@ -2598,7 +2609,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
-		$this->sendDataPacket(BiomeDefinitionListPacket::fromJsonFile(RESOURCE_PATH . '/vanilla/stripped_biome_definitions.json'));
+		$this->sendDataPacket(BiomeDefinitionListPacket::create());
 
 		$this->level->sendTime($this);
 
@@ -2724,12 +2735,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$swimming = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_SWIMMING, PlayerAuthInputFlags::STOP_SWIMMING);
 			$gliding = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_GLIDING, PlayerAuthInputFlags::STOP_GLIDING);
 			$flying = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_FLYING, PlayerAuthInputFlags::STOP_FLYING);
+			$crawling = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_CRAWLING, PlayerAuthInputFlags::STOP_CRAWLING);
 			$mismatch =
 				($sneaking !== null && !$this->toggleSneak($sneaking)) |
 				($sprinting !== null && !$this->toggleSprint($sprinting)) |
 				($swimming !== null && !$this->toggleSwim($swimming)) |
 				($gliding !== null && !$this->toggleGlide($gliding)) |
-				($flying !== null && !$this->toggleFlight($flying));
+				($flying !== null && !$this->toggleFlight($flying)) |
+				($crawling !== null && !$this->toggleCrawl($crawling));
 			if((bool) $mismatch){
 				$this->sendData([$this]);
 			}
@@ -2751,7 +2764,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->lastPlayerAuthInputPitch = $packet->getPitch();
 			}
 
-			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))) {
+			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))){
 				$this->handleMovement($newPos);
 				$this->lastPlayerAuthInputPosition = $rawPos;
 
@@ -2759,7 +2772,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$ent = $this->getRidingEntity();
 					$vehicle = $packet->getVehicleInfo();
 
-					if (!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)) {
+					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$ent->setClientPositionAndRotation($packet->getPosition(), ($ent->getYaw() + 90) % 360, 0, 3, true);
 						}
@@ -3284,7 +3297,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case InteractPacket::ACTION_MOUSEOVER:
 				break; //TODO: handle these
 			case InteractPacket::ACTION_OPEN_INVENTORY:
-				if($target === $this && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
+				if(($target === $this || ($this->ridingEid === $packet->target && $target instanceof PlayerInventoryMount)) && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
 					//TODO: HACK! this restores 1.14ish behaviour, but this should be able to be listened to and
 					//controlled by plugins. However, the player is always a subscriber to their own inventory so it
 					//doesn't integrate well with the regular container system right now.
@@ -3407,6 +3420,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			return false;
 		}
 		$this->setSwimming($swimming);
+		return true;
+	}
+
+	public function toggleCrawl(bool $crawling) : bool{
+		$ev = new PlayerToggleCrawlEvent($this, $crawling);
+		$ev->call();
+		if($ev->isCancelled()){
+			return false;
+		}
+		$this->setCrawling($crawling);
 		return true;
 	}
 
