@@ -478,8 +478,9 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_LEAD_UNLEASH = 558;
 	public const SOUND_LEAD_BREAK = 559;
 	public const SOUND_UNSADDLE = 560;
-	public const SOUND_RECORD_LAVA_CHICKEN = 561;
-	public const SOUND_UNDEFINED = 562;
+	public const SOUND_ARMOR_EQUIP_COPPER  = 561;
+	public const SOUND_RECORD_LAVA_CHICKEN = 562;
+	public const SOUND_UNDEFINED = 563;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
 		$result = new self;
