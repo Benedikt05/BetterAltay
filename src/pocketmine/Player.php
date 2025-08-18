@@ -185,6 +185,7 @@ use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\CompressionAlgorithm;
 use pocketmine\network\mcpe\protocol\types\ContainerIds;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 use pocketmine\network\mcpe\protocol\types\Experiments;
 use pocketmine\network\mcpe\protocol\types\GameMode;
 use pocketmine\network\mcpe\protocol\types\inventory\MismatchTransactionData;
@@ -2203,7 +2204,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->deviceModel = $packet->clientData["DeviceModel"] ?? null;
 		$this->deviceOS = $packet->clientData["DeviceOS"] ?? null;
 
-		if(count($this->server->getOnlinePlayers()) >= $this->server->getMaxPlayers() and $this->kick("disconnectionScreen.serverFull", false)){
+		if(count($this->server->getOnlinePlayers()) >= $this->server->getMaxPlayers() and $this->kick("disconnectionScreen.serverFull", false, null, DisconnectFailReason::SERVER_FULL)){
 			return true;
 		}
 
@@ -2278,7 +2279,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$skin->validate();
 		}catch(InvalidSkinException $e){
 			$this->server->getLogger()->debug("$this->username: Invalid skin: " . $e->getMessage());
-			$this->close("", "disconnectionScreen.invalidSkin");
+			$this->close("", "disconnectionScreen.invalidSkin", true, DisconnectFailReason::SKIN_ISSUE);
 
 			return true;
 		}
@@ -2424,8 +2425,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				if($kickForXUIDMismatch($p->getXuid())){
 					return;
 				}
-				if(!$p->kick("logged in from another location")){
-					$this->close($this->getLeaveMessage(), "Logged in from another location");
+				if(!$p->kick("logged in from another location", true, null, DisconnectFailReason::LOGGED_IN_OTHER_LOCATION)){
+					$this->close($this->getLeaveMessage(), "Logged in from another location", true, DisconnectFailReason::LOGGED_IN_OTHER_LOCATION);
 					return;
 				}
 			}
@@ -2508,7 +2509,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$pack = $manager->getPackById($uuid);
 					if(!($pack instanceof ResourcePack)){
 						//Client requested a resource pack but we don't have it available on the server
-						$this->close("", "disconnectionScreen.resourcePack", true);
+						$this->close("", "disconnectionScreen.resourcePack", true, DisconnectFailReason::RESOURCE_PACK_PROBLEM);
 						$this->server->getLogger()->debug("Got a resource pack request for unknown pack with UUID " . $uuid . ", available packs: " . implode(", ", $manager->getPackIdList()));
 
 						return false;
@@ -3651,7 +3652,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$manager = $this->server->getResourcePackManager();
 		$pack = $manager->getPackById($packet->packId);
 		if(!($pack instanceof ResourcePack)){
-			$this->close("", "disconnectionScreen.resourcePack", true);
+			$this->close("", "disconnectionScreen.resourcePack", true, DisconnectFailReason::RESOURCE_PACK_PROBLEM);
 			$this->server->getLogger()->debug("Got a resource pack chunk request for unknown pack with UUID " . $packet->packId . ", available packs: " . implode(", ", $manager->getPackIdList()));
 
 			return false;
@@ -3884,7 +3885,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 *
 	 * @param TextContainer|string $quitMessage
 	 */
-	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool{
+	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null, int $reasonType = DisconnectFailReason::DISCONNECTED) : bool{
 		$ev = new PlayerKickEvent($this, $reason, $quitMessage ?? $this->getLeaveMessage());
 		$ev->call();
 		if(!$ev->isCancelled()){
@@ -3899,7 +3900,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$message = "disconnectionScreen.noReason";
 				}
 			}
-			$this->close($ev->getQuitMessage(), $message);
+			$this->close($ev->getQuitMessage(), $message, true, $reasonType);
 
 			return true;
 		}
@@ -4180,11 +4181,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @param TextContainer|string $message Message to be broadcasted
 	 * @param string               $reason Reason showed in console
 	 */
-	final public function close($message = "", string $reason = "generic reason", bool $notify = true) : void{
+	final public function close($message = "", string $reason = "generic reason", bool $notify = true, int $reasonType = DisconnectFailReason::DISCONNECTED) : void{
 		if($this->isConnected() and !$this->closed){
 			if($notify and strlen($reason) > 0){
 				$pk = new DisconnectPacket();
 				$pk->message = $reason;
+				$pk->reason = $reasonType;
 				$this->directDataPacket($pk);
 			}
 			$this->interface->close($this, $notify ? $reason : "");
