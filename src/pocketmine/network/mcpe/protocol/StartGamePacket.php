@@ -144,6 +144,7 @@ class StartGamePacket extends DataPacket{
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
 	public bool $blockNetworkIdsAreHashes = false;
+	public bool $tickDeathSystemsEnabled = false;
 	public bool $serverAuthSound = true;
 
 	protected function decodePayload() : void{
@@ -238,6 +239,7 @@ class StartGamePacket extends DataPacket{
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
+		$this->tickDeathSystemsEnabled = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
 	}
 
@@ -342,6 +344,7 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
+		$this->putBool($this->tickDeathSystemsEnabled);
 		$this->putBool($this->serverAuthSound);
 	}
 

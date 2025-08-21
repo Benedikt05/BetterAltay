@@ -33,6 +33,7 @@ use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
@@ -41,7 +42,7 @@ use function boolval;
 use function intval;
 use function rand;
 
-class Pig extends Animal{
+class Pig extends Animal implements PlayerInventoryMount{
 
 	public const NETWORK_ID = self::PIG;
 

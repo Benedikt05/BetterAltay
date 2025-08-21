@@ -41,6 +41,7 @@ use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\passive\AbstractHorse;
+use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\entity\Skin;
@@ -72,6 +73,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\player\PlayerToggleCrawlEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\player\PlayerToggleGlideEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
@@ -183,6 +185,7 @@ use pocketmine\network\mcpe\protocol\types\CommandPermissions;
 use pocketmine\network\mcpe\protocol\types\CompressionAlgorithm;
 use pocketmine\network\mcpe\protocol\types\ContainerIds;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
+use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 use pocketmine\network\mcpe\protocol\types\Experiments;
 use pocketmine\network\mcpe\protocol\types\GameMode;
 use pocketmine\network\mcpe\protocol\types\inventory\MismatchTransactionData;
@@ -1537,6 +1540,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 	}
 
+	public function setCrawling(bool $value = true) : void{
+		parent::setCrawling($value);
+
+		if($value){
+			$this->updateBoundingBox(0.625, 0.6);
+		}else{
+			$this->updateBoundingBox(1.8, 0.6);
+		}
+	}
+
 	public function hasAchievement(string $achievementId) : bool{
 		if(!isset(Achievement::$list[$achievementId])){
 			return false;
@@ -2196,7 +2209,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->deviceModel = $packet->clientData["DeviceModel"] ?? null;
 		$this->deviceOS = $packet->clientData["DeviceOS"] ?? null;
 
-		if(count($this->server->getOnlinePlayers()) >= $this->server->getMaxPlayers() and $this->kick("disconnectionScreen.serverFull", false)){
+		if(count($this->server->getOnlinePlayers()) >= $this->server->getMaxPlayers() and $this->kick("disconnectionScreen.serverFull", false, null, DisconnectFailReason::SERVER_FULL)){
 			return true;
 		}
 
@@ -2271,7 +2284,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$skin->validate();
 		}catch(InvalidSkinException $e){
 			$this->server->getLogger()->debug("$this->username: Invalid skin: " . $e->getMessage());
-			$this->close("", "disconnectionScreen.invalidSkin");
+			$this->close("", "disconnectionScreen.invalidSkin", true, DisconnectFailReason::SKIN_ISSUE);
 
 			return true;
 		}
@@ -2417,8 +2430,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				if($kickForXUIDMismatch($p->getXuid())){
 					return;
 				}
-				if(!$p->kick("logged in from another location")){
-					$this->close($this->getLeaveMessage(), "Logged in from another location");
+				if(!$p->kick("logged in from another location", true, null, DisconnectFailReason::LOGGED_IN_OTHER_LOCATION)){
+					$this->close($this->getLeaveMessage(), "Logged in from another location", true, DisconnectFailReason::LOGGED_IN_OTHER_LOCATION);
 					return;
 				}
 			}
@@ -2501,7 +2514,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$pack = $manager->getPackById($uuid);
 					if(!($pack instanceof ResourcePack)){
 						//Client requested a resource pack but we don't have it available on the server
-						$this->close("", "disconnectionScreen.resourcePack", true);
+						$this->close("", "disconnectionScreen.resourcePack", true, DisconnectFailReason::RESOURCE_PACK_PROBLEM);
 						$this->server->getLogger()->debug("Got a resource pack request for unknown pack with UUID " . $uuid . ", available packs: " . implode(", ", $manager->getPackIdList()));
 
 						return false;
@@ -2728,12 +2741,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$swimming = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_SWIMMING, PlayerAuthInputFlags::STOP_SWIMMING);
 			$gliding = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_GLIDING, PlayerAuthInputFlags::STOP_GLIDING);
 			$flying = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_FLYING, PlayerAuthInputFlags::STOP_FLYING);
+			$crawling = $this->resolveOnOffInputFlags($inputFlags, PlayerAuthInputFlags::START_CRAWLING, PlayerAuthInputFlags::STOP_CRAWLING);
 			$mismatch =
 				($sneaking !== null && !$this->toggleSneak($sneaking)) |
 				($sprinting !== null && !$this->toggleSprint($sprinting)) |
 				($swimming !== null && !$this->toggleSwim($swimming)) |
 				($gliding !== null && !$this->toggleGlide($gliding)) |
-				($flying !== null && !$this->toggleFlight($flying));
+				($flying !== null && !$this->toggleFlight($flying)) |
+				($crawling !== null && !$this->toggleCrawl($crawling));
 			if((bool) $mismatch){
 				$this->sendData([$this]);
 			}
@@ -2755,7 +2770,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->lastPlayerAuthInputPitch = $packet->getPitch();
 			}
 
-			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))) {
+			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))){
 				$this->handleMovement($newPos);
 				$this->lastPlayerAuthInputPosition = $rawPos;
 
@@ -2763,7 +2778,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$ent = $this->getRidingEntity();
 					$vehicle = $packet->getVehicleInfo();
 
-					if (!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)) {
+					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$ent->setClientPositionAndRotation($packet->getPosition(), ($ent->getYaw() + 90) % 360, 0, 3, true);
 						}
@@ -3288,7 +3303,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case InteractPacket::ACTION_MOUSEOVER:
 				break; //TODO: handle these
 			case InteractPacket::ACTION_OPEN_INVENTORY:
-				if($target === $this && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
+				if(($target === $this || ($this->ridingEid === $packet->target && $target instanceof PlayerInventoryMount)) && !array_key_exists($windowId = self::HARDCODED_INVENTORY_WINDOW_ID, $this->openHardcodedWindows)){
 					//TODO: HACK! this restores 1.14ish behaviour, but this should be able to be listened to and
 					//controlled by plugins. However, the player is always a subscriber to their own inventory so it
 					//doesn't integrate well with the regular container system right now.
@@ -3411,6 +3426,16 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			return false;
 		}
 		$this->setSwimming($swimming);
+		return true;
+	}
+
+	public function toggleCrawl(bool $crawling) : bool{
+		$ev = new PlayerToggleCrawlEvent($this, $crawling);
+		$ev->call();
+		if($ev->isCancelled()){
+			return false;
+		}
+		$this->setCrawling($crawling);
 		return true;
 	}
 
@@ -3632,7 +3657,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$manager = $this->server->getResourcePackManager();
 		$pack = $manager->getPackById($packet->packId);
 		if(!($pack instanceof ResourcePack)){
-			$this->close("", "disconnectionScreen.resourcePack", true);
+			$this->close("", "disconnectionScreen.resourcePack", true, DisconnectFailReason::RESOURCE_PACK_PROBLEM);
 			$this->server->getLogger()->debug("Got a resource pack chunk request for unknown pack with UUID " . $packet->packId . ", available packs: " . implode(", ", $manager->getPackIdList()));
 
 			return false;
@@ -3865,7 +3890,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 *
 	 * @param TextContainer|string $quitMessage
 	 */
-	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool{
+	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null, int $reasonType = DisconnectFailReason::DISCONNECTED) : bool{
 		$ev = new PlayerKickEvent($this, $reason, $quitMessage ?? $this->getLeaveMessage());
 		$ev->call();
 		if(!$ev->isCancelled()){
@@ -3880,7 +3905,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$message = "disconnectionScreen.noReason";
 				}
 			}
-			$this->close($ev->getQuitMessage(), $message);
+			$this->close($ev->getQuitMessage(), $message, true, $reasonType);
 
 			return true;
 		}
@@ -4161,11 +4186,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @param TextContainer|string $message Message to be broadcasted
 	 * @param string               $reason Reason showed in console
 	 */
-	final public function close($message = "", string $reason = "generic reason", bool $notify = true) : void{
+	final public function close($message = "", string $reason = "generic reason", bool $notify = true, int $reasonType = DisconnectFailReason::DISCONNECTED) : void{
 		if($this->isConnected() and !$this->closed){
 			if($notify and strlen($reason) > 0){
 				$pk = new DisconnectPacket();
 				$pk->message = $reason;
+				$pk->reason = $reasonType;
 				$this->directDataPacket($pk);
 			}
 			$this->interface->close($this, $notify ? $reason : "");

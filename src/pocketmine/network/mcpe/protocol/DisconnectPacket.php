@@ -31,7 +31,7 @@ use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 class DisconnectPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::DISCONNECT_PACKET;
 
-	public int $reason = DisconnectFailReason::UNKNOWN;
+	public int $reason = DisconnectFailReason::DISCONNECTED;
 	public bool $hideDisconnectionScreen = false;
 	public string $message = "";
 	public string $filteredMessage = "";

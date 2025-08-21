@@ -398,6 +398,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_TIMER_FLAG_2 = 116;
 	public const DATA_FLAG_TIMER_FLAG_3 = 117;
 	public const DATA_FLAG_BODY_ROTATION_BLOCKED = 118;
+	public const DATA_FLAG_RENDER_WHEN_INVISIBLE = 119;
+	public const DATA_FLAG_ROTATION_AXIS_ALIGNED = 120;
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
 	public const DATA_PLAYER_FLAG_DEAD = 2; //TODO: CHECK
@@ -975,6 +977,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public function setSwimmer(bool $value = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_SWIMMER, $value);
+	}
+
+	public function isCrawling() : bool{
+		return $this->getGenericFlag(self::DATA_FLAG_CRAWLING);
+	}
+
+	public function setCrawling(bool $value = true) : void{
+		$this->setGenericFlag(self::DATA_FLAG_CRAWLING, $value);
 	}
 
 	public function isImmobile() : bool{

@@ -38,6 +38,7 @@ use function hash_file;
 use function implode;
 use function preg_match;
 use function strlen;
+use function file_get_contents;
 
 class ZippedResourcePack implements ResourcePack{
 
@@ -71,6 +72,9 @@ class ZippedResourcePack implements ResourcePack{
 	/** @var resource */
 	protected $fileResource;
 
+	/** @var string|null  */
+	protected ?string $encryptionKey = null;
+
 	/**
 	 * @param string $zipPath Path to the resource pack zip
 	 * @throws ResourcePackException
@@ -85,6 +89,17 @@ class ZippedResourcePack implements ResourcePack{
 		$archive = new \ZipArchive();
 		if(($openResult = $archive->open($zipPath)) !== true){
 			throw new ResourcePackException("Encountered ZipArchive error code $openResult while trying to open $zipPath");
+		}
+
+		if(file_exists($keyPath = $zipPath . ".key")){
+			$keyContent = file_get_contents($keyPath);
+			if($keyContent !== false){
+				if(!in_array(strlen($keyContent), [16, 24, 32])){ // AES valid keys sizes
+					throw new ResourcePackException("Key content is not valid");
+				}
+
+				$this->encryptionKey = $keyContent;
+			}
 		}
 
 		if(($manifestData = $archive->getFromName("manifest.json")) === false){
@@ -152,6 +167,10 @@ class ZippedResourcePack implements ResourcePack{
 
 	public function getPackSize() : int{
 		return filesize($this->path);
+	}
+
+	public function getEncryptionKey() : ?string{
+		return $this->encryptionKey;
 	}
 
 	public function getSha256(bool $cached = true) : string{
