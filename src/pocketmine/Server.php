@@ -1876,12 +1876,12 @@ class Server{
 		Timings::$playerNetworkTimer->startTiming();
 
 		$targets = array_filter($players, function(Player $player) : bool{ return $player->isConnected(); });
-
+		$pk = new BatchPacket();
+		if(!$compress){
+			$pk->enableCompression = false;
+		}
 		if(count($targets) > 0){
 			foreach($targets as $target){
-				$pk = new BatchPacket();
-				if(!$compress){
-					$pk->enableCompression = false;
 				}
 				$pk->protocol = $target->getProtocol();
 				foreach($packets as $pt){
