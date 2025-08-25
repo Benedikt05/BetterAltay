@@ -55,13 +55,10 @@ class BiomeDefinitionListPacket extends DataPacket{
 				$stringPool[] = $name;
 			}
 			$this->putLShort($index);
-			$this->putLShort(-1); //TODO: BiomeId
+			$this->putLShort((int) ($def["id"] ?? -1));
 			$this->putLFloat((float) $def["temperature"]);
 			$this->putLFloat((float) $def["downfall"]);
-			$this->putLFloat((float) $def["redSporeDensity"]);
-			$this->putLFloat((float) $def["blueSporeDensity"]);
-			$this->putLFloat((float) $def["ashDensity"]);
-			$this->putLFloat((float) $def["whiteAshDensity"]);
+			$this->putLFloat(1); //TODO: foliage snow
 			$this->putLFloat((float) $def["depth"]);
 			$this->putLFloat((float) $def["scale"]);
 			$this->putLInt($def["mapWaterColor"] instanceof Color ? $def["mapWaterColor"]->toARGB() : 0);
