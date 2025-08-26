@@ -320,6 +320,12 @@ class ItemFactory{
 		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
 		self::registerItem(new HoneyBottle());
 		self::registerItem(new Spyglass());
+		self::registerItem(new CopperHorseArmor());
+		self::registerItem(new CopperHelmet());
+		self::registerItem(new CopperChestplate());
+		self::registerItem(new CopperLeggings());
+		self::registerItem(new CopperBoots());
+		self::registerItem(new Item(Item::COPPER_INGOT, 0, "Copper Ingot"));
 	}
 
 	/**

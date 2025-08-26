@@ -263,6 +263,8 @@ interface ItemIds extends BlockIds{
 
 	public const SHIELD = 513;
 
+	public const COPPER_INGOT = 519;
+
 	public const RECORD_5 = 636;
 	public const DISC_FRAGMENT_5 = 637;
 
@@ -293,4 +295,11 @@ interface ItemIds extends BlockIds{
 	public const RECORD_PRECIPICE = 785;
 	public const RECORD_TEARS = 786;
 	public const RECORD_LAVA_CHICKEN = 787;
+
+	public const COPPER_HORSE_ARMOR = 788, HORSEARMORCOPPER = 788, HORSE_ARMOR_COPPER = 788;
+	public const COPPER_HELMET = 789;
+	public const COPPER_CHESTPLATE = 790;
+	public const COPPER_LEGGINGS = 791;
+	public const COPPER_BOOTS = 792;
+
 }
