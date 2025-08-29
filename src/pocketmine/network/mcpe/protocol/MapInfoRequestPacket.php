@@ -30,18 +30,17 @@ use pocketmine\network\mcpe\NetworkSession;
 class MapInfoRequestPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::MAP_INFO_REQUEST_PACKET;
 
-	/** @var int */
-	public $mapId;
+	public int $mapId;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->mapId = $this->getEntityUniqueId();
-		for($i = 0, $count = $this->getLInt(); $i < $count; $i++){
+		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; $i++){
 			$this->getLInt();
 			$this->getLShort();
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityUniqueId($this->mapId);
 	}
 
