@@ -177,7 +177,7 @@ class StartGamePacket extends DataPacket{
 		$this->platformBroadcastMode = $this->getVarInt();
 		$this->commandsEnabled = $this->getBool();
 		$this->isTexturePacksRequired = $this->getBool();
-		$this->gameRules = $this->getGameRules();
+		$this->gameRules = $this->getGameRules(true);
 		$this->experiments = Experiments::read($this);
 		$this->hasBonusChestEnabled = $this->getBool();
 		$this->hasStartWithMapEnabled = $this->getBool();
@@ -305,6 +305,8 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->worldId);
 		$this->putString($this->scenarioId);
 		$this->putString($this->ownerId);
+		//Level settings end
+
 		$this->putString($this->levelId);
 		$this->putString($this->worldName);
 		$this->putString($this->premiumWorldTemplateId);

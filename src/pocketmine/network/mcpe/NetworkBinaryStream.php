@@ -708,7 +708,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @return mixed[][], members are in the structure [name => [type, value, isPlayerModifiable]]
 	 * @phpstan-return array<string, array{0: int, 1: bool|int|float, 2: bool}>
 	 */
-	public function getGameRules() : array{
+	public function getGameRules(bool $isLevelSettings = false) : array{
 		$count = $this->getUnsignedVarInt();
 		$rules = [];
 		for($i = 0; $i < $count; ++$i){
@@ -721,7 +721,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$value = $this->getBool();
 					break;
 				case GameRuleType::INT:
-					$value = $this->getUnsignedVarInt();
+					$value = $isLevelSettings ? $this->getUnsignedVarInt() : $this->getLFloat();
 					break;
 				case GameRuleType::FLOAT:
 					$value = $this->getLFloat();
@@ -753,11 +753,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$this->putBool($rule[1]);
 					break;
 				case GameRuleType::INT:
-					if($isLevelSettings){
-						$this->putUnsignedVarInt($rule[1]);
-					}else{
-						$this->putLInt($rule[1]);
-					}
+					$isLevelSettings ? $this->putUnsignedVarInt($rule[1]) : $this->putLInt($rule[1]);
 					break;
 				case GameRuleType::FLOAT:
 					$this->putLFloat($rule[1]);
