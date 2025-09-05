@@ -273,7 +273,7 @@ class StartGamePacket extends DataPacket{
 		$this->putVarInt($this->platformBroadcastMode);
 		$this->putBool($this->commandsEnabled);
 		$this->putBool($this->isTexturePacksRequired);
-		$this->putGameRules($this->gameRules);
+		$this->putGameRules($this->gameRules, true);
 		$this->experiments->write($this);
 		$this->putBool($this->hasBonusChestEnabled);
 		$this->putBool($this->hasStartWithMapEnabled);

@@ -742,18 +742,22 @@ class NetworkBinaryStream extends BinaryStream{
 	 *
 	 * @phpstan-param array<string, array{0: int, 1: bool|int|float, 2: bool}> $rules
 	 */
-	public function putGameRules(array $rules) : void{
+	public function putGameRules(array $rules, bool $isLevelSettings = false) : void{
 		$this->putUnsignedVarInt(count($rules));
 		foreach($rules as $name => $rule){
 			$this->putString($name);
 			$this->putBool($rule[2] ?? false);
-			$this->putUnsignedVarInt($rule[0]);
-			switch($rule[0]){
+			$this->putUnsignedVarInt($type = $rule[0]);
+			switch($type){
 				case GameRuleType::BOOL:
 					$this->putBool($rule[1]);
 					break;
 				case GameRuleType::INT:
-					$this->putUnsignedVarInt($rule[1]);
+					if($isLevelSettings){
+						$this->putUnsignedVarInt($rule[1]);
+					}else{
+						$this->putLInt($rule[1]);
+					}
 					break;
 				case GameRuleType::FLOAT:
 					$this->putLFloat($rule[1]);
