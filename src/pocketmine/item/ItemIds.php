@@ -301,5 +301,10 @@ interface ItemIds extends BlockIds{
 	public const COPPER_CHESTPLATE = 790;
 	public const COPPER_LEGGINGS = 791;
 	public const COPPER_BOOTS = 792;
+	public const COPPER_SWORD = 793;
+	public const COPPER_AXE = 794;
+	public const COPPER_PICKAXE = 795;
+	public const COPPER_SHOVEL = 796;
+	public const COPPER_HOE = 797;
 
 }

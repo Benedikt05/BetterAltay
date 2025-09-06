@@ -823,5 +823,10 @@
     "minecraft:copper_chestplate": 790,
     "minecraft:copper_leggings": 791,
     "minecraft:copper_boots": 792,
+    "minecraft:copper_sword": 793,
+    "minecraft:copper_axe": 794,
+    "minecraft:copper_pickaxe": 795,
+    "minecraft:copper_shovel": 796,
+    "minecraft:copper_hoe": 797,
     "minecraft:soul_campfire": 801
 }

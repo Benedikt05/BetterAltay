@@ -28,6 +28,7 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\ProtectionEnchantment;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Color;
@@ -40,6 +41,15 @@ abstract class Armor extends Durable{
 	public const SLOT_CHESTPLATE = 1;
 	public const SLOT_LEGGINGS = 2;
 	public const SLOT_BOOTS = 3;
+
+	public const TIER_LEATHER = 1;
+	public const TIER_COPPER = 2;
+	public const TIER_IRON = 3;
+	public const TIER_CHAIN = 4;
+	public const TIER_GOLD = 5;
+	public const TIER_DIAMOND = 6;
+	public const TIER_NETHERITE = 7;
+	public const TIER_OTHER = 8;
 
 	public const TAG_CUSTOM_COLOR = "customColor"; //TAG_Int
 
@@ -106,18 +116,35 @@ abstract class Armor extends Durable{
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+		$sound = match ($this->getTier()) {
+			self::TIER_LEATHER => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_LEATHER,
+			self::TIER_COPPER => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_COPPER,
+			self::TIER_CHAIN => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_CHAIN,
+			self::TIER_IRON => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_IRON,
+			self::TIER_GOLD => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_GOLD,
+			self::TIER_DIAMOND => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_DIAMOND,
+			self::TIER_NETHERITE => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_NETHERITE,
+			default => LevelSoundEventPacket::SOUND_ARMOR_EQUIP_GENERIC,
+		};
+
 		$current = $player->getArmorInventory()->getItem($this->getArmorSlot());
 		if($current->isNull()){
 			$player->getArmorInventory()->setItem($this->getArmorSlot(), $this->pop());
+			$player->level->broadcastLevelSoundEvent($player, $sound);
 
 			return true;
 		}elseif(!$current->equals($this) and $player->getInventory()->canAddItem($current)){
 			$player->getArmorInventory()->setItem($this->getArmorSlot(), $this->pop());
 			$player->getInventory()->addItem($current);
+			$player->getLevelNonNull()->broadcastLevelSoundEvent($player, $sound);
 
 			return true;
 		}
 
 		return false;
+	}
+
+	public function getTier() : int{
+		return self::TIER_OTHER;
 	}
 }

@@ -20,4 +20,8 @@ class CopperChestplate extends Armor{
 	public function getArmorSlot() : int{
 		return 1;
 	}
+
+	public function getTier() : int{
+		return self::TIER_COPPER;
+	}
 }
