@@ -32,7 +32,8 @@ final class SubChunkPacketEntryCommon{
 		private SubChunkPositionOffset $offset,
 		private int $requestResult,
 		private string $terrainData,
-		private ?SubChunkPacketHeightMapInfo $heightMap
+		private ?SubChunkPacketHeightMapInfo $heightMap,
+		private ?SubChunkPacketHeightMapInfo $renderHeightMap
 	){
 	}
 
@@ -44,6 +45,8 @@ final class SubChunkPacketEntryCommon{
 
 	/** @return SubChunkPacketHeightMapInfo|null */
 	public function getHeightMap() : ?SubChunkPacketHeightMapInfo{ return $this->heightMap; }
+
+	public function getRenderHeightMap() : ?SubChunkPacketHeightMapInfo{ return $this->renderHeightMap; }
 
 	public static function read(NetworkBinaryStream $in, bool $cacheEnabled) : self{
 		$offset = SubChunkPositionOffset::read($in);
@@ -61,11 +64,22 @@ final class SubChunkPacketEntryCommon{
 			default => throw new UnexpectedValueException("Unknown heightmap data type $heightMapDataType")
 		};
 
+		$renderHeightMapDataType = $in->getByte();
+		$renderHeightMapData = match ($renderHeightMapDataType) {
+			SubChunkPacketHeightMapType::NO_DATA => null,
+			SubChunkPacketHeightMapType::DATA => SubChunkPacketHeightMapInfo::read($in),
+			SubChunkPacketHeightMapType::ALL_TOO_HIGH => SubChunkPacketHeightMapInfo::allTooHigh(),
+			SubChunkPacketHeightMapType::ALL_TOO_LOW => SubChunkPacketHeightMapInfo::allTooLow(),
+			SubChunkPacketHeightMapType::ALL_COPIED => $heightMapData,
+			default => throw new UnexpectedValueException("Unknown render heightmap data type $renderHeightMapDataType")
+		};
+
 		return new self(
 			$offset,
 			$requestResult,
 			$data,
-			$heightMapData
+			$heightMapData,
+			$renderHeightMapData
 		);
 	}
 
@@ -88,6 +102,18 @@ final class SubChunkPacketEntryCommon{
 			$heightMapData = $this->heightMap; //avoid PHPStan purity issue
 			$out->putByte(SubChunkPacketHeightMapType::DATA);
 			$heightMapData->write($out);
+		}
+
+		if($this->renderHeightMap === null){
+			$out->putByte(SubChunkPacketHeightMapType::ALL_COPIED);
+		}elseif($this->renderHeightMap->isAllTooLow()){
+			$out->putByte(SubChunkPacketHeightMapType::ALL_TOO_LOW);
+		}elseif($this->renderHeightMap->isAllTooHigh()){
+			$out->putByte(SubChunkPacketHeightMapType::ALL_TOO_HIGH);
+		}else{
+			$renderHeightMapData = $this->renderHeightMap; //avoid PHPStan purity issue
+			$out->putByte(SubChunkPacketHeightMapType::DATA);
+			$renderHeightMapData->write($out);
 		}
 	}
 }
