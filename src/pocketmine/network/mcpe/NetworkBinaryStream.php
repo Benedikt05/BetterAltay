@@ -721,7 +721,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$value = $this->getBool();
 					break;
 				case GameRuleType::INT:
-					$value = $isLevelSettings ? $this->getUnsignedVarInt() : $this->getLFloat();
+					$value = $isLevelSettings ? $this->getUnsignedVarInt() : $this->getLInt();
 					break;
 				case GameRuleType::FLOAT:
 					$value = $this->getLFloat();
