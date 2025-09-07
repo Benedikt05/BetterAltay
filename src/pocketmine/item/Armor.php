@@ -130,7 +130,7 @@ abstract class Armor extends Durable{
 		$current = $player->getArmorInventory()->getItem($this->getArmorSlot());
 		if($current->isNull()){
 			$player->getArmorInventory()->setItem($this->getArmorSlot(), $this->pop());
-			$player->level->broadcastLevelSoundEvent($player, $sound);
+			$player->getLevelNonNull()->broadcastLevelSoundEvent($player, $sound);
 
 			return true;
 		}elseif(!$current->equals($this) and $player->getInventory()->canAddItem($current)){
