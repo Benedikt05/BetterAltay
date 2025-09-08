@@ -2409,6 +2409,124 @@
                 "A": {
                     "id": 519,
                     "damage": -1
+                },
+                "B": {
+                    "id": 280,
+                    "damage": -1
+                }    
+            },
+            "output": [
+                {
+                    "id": 793
+                }
+            ],
+            "priority": 0,
+            "shape": [
+                "A",
+                "A",
+                "B"
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                "A": {
+                    "id": 519,
+                    "damage": -1
+                },
+                "B": {
+                    "id": 280,
+                    "damage": -1
+                }    
+            },
+            "output": [
+                {
+                    "id": 794
+                }
+            ],
+            "priority": 0,
+            "shape": [
+                "AA",
+                "AB",
+                " B"
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                    "damage": -1
+                },
+                "B": {
+                    "id": 280,
+                    "damage": -1
+                }    
+            },
+            "output": [
+                {
+                    "id": 795
+                }
+            ],
+            "priority": 0,
+            "shape": [
+                "AAA",
+                " B ",
+                " B "
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                "A": {
+                    "id": 519,
+                    "damage": -1
+                },
+                "B": {
+                    "id": 280,
+                    "damage": -1
+                }    
+            },
+            "output": [
+                {
+                    "id": 796
+                }
+            ],
+            "priority": 0,
+            "shape": [
+                "A",
+                "B",
+                "B"
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                "A": {
+                    "id": 519,
+                    "damage": -1
+                },
+                "B": {
+                    "id": 280,
+                    "damage": -1
+                }    
+            },
+            "output": [
+                {
+                    "id": 797
+                }
+            ],
+            "priority": 0,
+            "shape": [
+                "AA",
+                " B",
+                " B"
+            ]
+        },
+        {
+            "block": "crafting_table",
+            "input": {
+                "A": {
+                    "id": 519,
+                    "damage": -1
                 }
             },
             "output": [
