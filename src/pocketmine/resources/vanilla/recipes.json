@@ -2454,6 +2454,8 @@
         {
             "block": "crafting_table",
             "input": {
+                "A": {
+                    "id": 519,
                     "damage": -1
                 },
                 "B": {
