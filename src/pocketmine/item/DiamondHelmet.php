@@ -39,4 +39,8 @@ class DiamondHelmet extends Armor{
 	public function getArmorSlot() : int{
 		return 0;
 	}
+
+	public function getTier() : int{
+		return self::TIER_DIAMOND;
+	}
 }
