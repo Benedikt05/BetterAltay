@@ -52,7 +52,7 @@ When Mojang introduces new content, several server-side data files must often be
 
   Sources:
 
-  * [Kaooot/bedrock-network-data – item\_palette.json](https://github.com/Kaooot/bedrock-network-data/blob/master/preview/1.21.110.26/item_palette.json) (rename to `runtime_item_states.json` and sort using [sort_item_palette.py](https://gist.github.com/Benedikt05/73e9970ba18b9d46cf9fbcf261f5448d))
+  * [Kaooot/bedrock-network-data – item\_palette.json](https://github.com/Kaooot/bedrock-network-data/blob/master/preview/1.21.110.26/item_palette.json) (renamed to `runtime_item_states.json` and sorted by [sort_item_palette.py](https://gist.github.com/Benedikt05/73e9970ba18b9d46cf9fbcf261f5448d))
   * [CloudburstMC/Data](https://github.com/CloudburstMC/Data) or generated via ProxyPass – runtime_item_states.json (needs slight adjustments for BetterAltay)
 
 * **`canonical_block_states.nbt`** – Can be taken from [pmmp/BedrockData](https://github.com/pmmp/BedrockData) or generated from `block_palette.nbt` found in [Kaooot/bedrock-network-data](https://github.com/Kaooot/bedrock-network-data/) or [CloudburstMC/Data](https://github.com/CloudburstMC/Data), using [this script](https://gist.github.com/DavyCraft648/942e8cf8534d3e48ea990aa4503b59f1).
@@ -79,7 +79,7 @@ If the client disconnects or crashes, you will need to investigate packet mismat
 
 ---
 
-## 7. Final notes
+## 6. Final notes
 
 * Expect surprises: Mojang sometimes changes the protocol without increasing the protocol version.
 * While most updates are straightforward and can be handled using these instructions, some may require advanced protocol knowledge and the guide alone might not be sufficient.
