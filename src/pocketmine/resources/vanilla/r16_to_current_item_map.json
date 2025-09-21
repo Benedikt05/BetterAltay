@@ -695,6 +695,7 @@
     },
     "simple": {
         "minecraft:appleenchanted": "minecraft:enchanted_golden_apple",
+        "minecraft:chain": "minecraft:iron_chain",
         "minecraft:carrotonastick": "minecraft:carrot_on_a_stick",
         "minecraft:chorus_fruit_popped": "minecraft:popped_chorus_fruit",
         "minecraft:clownfish": "minecraft:tropical_fish",
@@ -727,6 +728,7 @@
         "minecraft:glazedterracotta.white": "minecraft:white_glazed_terracotta",
         "minecraft:glazedterracotta.yellow": "minecraft:yellow_glazed_terracotta",
         "minecraft:grass": "minecraft:grass_block",
+        "minecraft:horsearmorcopper": "minecraft:copper_horse_armor",
         "minecraft:horsearmordiamond": "minecraft:diamond_horse_armor",
         "minecraft:horsearmorgold": "minecraft:golden_horse_armor",
         "minecraft:horsearmoriron": "minecraft:iron_horse_armor",

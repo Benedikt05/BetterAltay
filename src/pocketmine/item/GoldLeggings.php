@@ -39,4 +39,8 @@ class GoldLeggings extends Armor{
 	public function getArmorSlot() : int{
 		return 2;
 	}
+
+	public function getTier() : int{
+		return self::TIER_GOLD;
+	}
 }
