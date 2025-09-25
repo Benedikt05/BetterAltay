@@ -751,7 +751,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->fallDistance = $this->namedtag->getFloat("FallDistance", 0.0);
 
 		$this->propertyManager = new DataPropertyManager();
-
+		if($this instanceof Player){
+			$this->propertyManager->protocol = $this->getProtocol();
+		}
 		$this->propertyManager->setLong(self::DATA_FLAGS, 0);
 		$this->propertyManager->setShort(self::DATA_MAX_AIR, 400);
 		$this->propertyManager->setString(self::DATA_NAMETAG, "");

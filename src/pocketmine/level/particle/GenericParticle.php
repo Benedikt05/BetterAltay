@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\particle;
 
+use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 
@@ -31,11 +32,14 @@ class GenericParticle extends Particle{
 	protected $id;
 	/** @var int */
 	protected $data;
+	/** @var Block|null */
+	protected ?Block $block;
 
-	public function __construct(Vector3 $pos, int $id, int $data = 0){
+	public function __construct(Vector3 $pos, int $id, int $data = 0, ?Block $block = null){
 		parent::__construct($pos->x, $pos->y, $pos->z);
 		$this->id = $id & 0xFFF;
 		$this->data = $data;
+		$this->block = $block;
 	}
 
 	public function encode(){
@@ -43,6 +47,7 @@ class GenericParticle extends Particle{
 		$pk->evid = LevelEventPacket::EVENT_ADD_PARTICLE_MASK | $this->id;
 		$pk->position = $this->asVector3();
 		$pk->data = $this->data;
+		$pk->block = $this->block;
 
 		return $pk;
 	}

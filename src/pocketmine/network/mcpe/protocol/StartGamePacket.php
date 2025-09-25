@@ -344,7 +344,9 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
-		$this->putBool($this->tickDeathSystemsEnabled);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_100){
+			$this->putBool($this->tickDeathSystemsEnabled);
+		}
 		$this->putBool($this->serverAuthSound);
 	}
 

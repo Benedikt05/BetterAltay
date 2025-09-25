@@ -55,7 +55,11 @@ class BiomeDefinitionListPacket extends DataPacket{
 				$stringPool[] = $name;
 			}
 			$this->putLShort($index);
-			$this->putLShort(-1); //TODO: BiomeId
+			if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_100){
+				$this->putLShort(-1); //TODO: BiomeId
+			}else{
+				$this->putBool(false); //optional Id
+			}
 			$this->putLFloat((float) $def["temperature"]);
 			$this->putLFloat((float) $def["downfall"]);
 			$this->putLFloat((float) $def["redSporeDensity"]);

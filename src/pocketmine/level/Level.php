@@ -1992,7 +1992,7 @@ class Level implements ChunkManager, Metadatable{
 
 	private function destroyBlockInternal(Block $target, Item $item, ?Player $player = null, bool $createParticles = false) : void{
 		if($createParticles){
-			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target, $player->getProtocol()));
+			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target, $player->getProtocol()), $target);
 		}
 
 		$target->onBreak($item, $player);
@@ -2118,8 +2118,9 @@ class Level implements ChunkManager, Metadatable{
 			return false;
 		}
 
-		if($playSound){
+		if(false){
 			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId($player->getProtocol()), -1);
+			var_dump($player->getProtocol());
 		}
 		$item->pop();
 

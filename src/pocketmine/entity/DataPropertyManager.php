@@ -32,6 +32,10 @@ use function is_int;
 use function is_string;
 
 class DataPropertyManager{
+	/**
+	 * @var int|null
+	 */
+	public ?int $protocol = null;
 
 	/**
 	 * @var mixed[][]

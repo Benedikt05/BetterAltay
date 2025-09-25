@@ -1883,7 +1883,6 @@ class Server{
 		}
 		if(count($targets) > 0){
 			foreach($targets as $target){
-				}
 				$pk->protocol = $target->getProtocol();
 				foreach($packets as $pt){
 					$p = clone $pt;

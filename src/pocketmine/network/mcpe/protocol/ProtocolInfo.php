@@ -41,6 +41,7 @@ interface ProtocolInfo{
 
 	public const ACCEPTED_PROTOCOLS = [
 		self::CURRENT_PROTOCOL,
+		self::PROTOCOL_1_21_93,
 		self::PROTOCOL_1_21_90,
 		self::PROTOCOL_1_21_80,
 		self::PROTOCOL_1_21_70,

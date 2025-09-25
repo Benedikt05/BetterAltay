@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 
@@ -140,6 +141,7 @@ class LevelEventPacket extends DataPacket{
 	public $position;
 	/** @var int */
 	public $data;
+	public ?Block $block = null;
 
 	protected function decodePayload(){
 		$this->evid = $this->getVarInt();
@@ -150,7 +152,8 @@ class LevelEventPacket extends DataPacket{
 	protected function encodePayload(){
 		$this->putVarInt($this->evid);
 		$this->putVector3Nullable($this->position);
-		$this->putVarInt($this->data);
+		$this->putVarInt($this->block === null ? $this->data : $this->block->getRuntimeId($this->protocol));
+		//$this->putVarInt($this->block?->getRuntimeId($this->protocol) ?? $this->data);
 	}
 
 	public function handle(NetworkSession $session) : bool{
