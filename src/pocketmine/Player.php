@@ -2757,7 +2757,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->jump();
 			}
 
-			if ($packet->getYaw() !== $this->lastPlayerAuthInputYaw || $packet->getPitch() !== $this->lastPlayerAuthInputPitch) {
+			if($packet->getYaw() !== $this->lastPlayerAuthInputYaw || $packet->getPitch() !== $this->lastPlayerAuthInputPitch){
 				$yaw = fmod($packet->getYaw(), 360);
 				$pitch = fmod($packet->getPitch(), 360);
 
@@ -2770,7 +2770,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->lastPlayerAuthInputPitch = $packet->getPitch();
 			}
 
-			if (!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))){
+			if(!$rawPos->equals($this->lastPlayerAuthInputPosition !== null ? $this->lastPlayerAuthInputPosition : new Vector3(0, 0, 0))){
 				$this->handleMovement($newPos);
 				$this->lastPlayerAuthInputPosition = $rawPos;
 
@@ -2780,7 +2780,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
-							$ent->setClientPositionAndRotation($packet->getPosition(), ($ent->getYaw() + 90) % 360, 0, 3, true);
+							$yaw = fmod($packet->getYaw() + 90, 360);
+							$ent->setClientPositionAndRotation($packet->getPosition(), $yaw, 0, 3, true);
 						}
 					}
 				}
