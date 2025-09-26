@@ -1992,7 +1992,7 @@ class Level implements ChunkManager, Metadatable{
 
 	private function destroyBlockInternal(Block $target, Item $item, ?Player $player = null, bool $createParticles = false) : void{
 		if($createParticles){
-			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target, $player->getProtocol()), $target);
+			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target, $player->getProtocol()));
 		}
 
 		$target->onBreak($item, $player);

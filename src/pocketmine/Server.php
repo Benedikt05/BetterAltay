@@ -1858,7 +1858,6 @@ class Server{
 	 * @return void
 	 */
 	public function broadcastPacket(array $players, DataPacket $packet){
-		$packet->encode();
 		$this->batchPackets($players, [$packet], false);
 	}
 
@@ -1884,8 +1883,7 @@ class Server{
 		if(count($targets) > 0){
 			foreach($targets as $target){
 				$pk->protocol = $target->getProtocol();
-				foreach($packets as $pt){
-					$p = clone $pt;
+				foreach($packets as $p){
 					$p->protocol = $target->getProtocol();
 					$pk->addPacket($p);
 				}

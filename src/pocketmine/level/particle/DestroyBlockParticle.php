@@ -31,13 +31,14 @@ class DestroyBlockParticle extends Particle{
 
 	/** @var int */
 	protected int $data;
+	protected ?Block $block = null;
 
-	public function __construct(Vector3 $pos, Block $b, ?int $p, protected ?Block $block){
+	public function __construct(Vector3 $pos, ?Block $block = null, ?int $p = null){
 		parent::__construct($pos->x, $pos->y, $pos->z);
 		if($p !== null){
-			$this->data = $b->getRuntimeId($p);
+			$this->data = $block->getRuntimeId($p);
 		}else{
-			$this->block = $b;
+			$this->block = $block;
 		}
 	}
 
