@@ -49009,6 +49009,106 @@
         {
             "block": "furnace",
             "input": {
+                "id": 793,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 794,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 795,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 796,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 797,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 789,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 790,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 791,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 792,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
+                "id": 788,
+                "damage": -1
+            },
+            "output": {
+                "id": 798
+            }
+        },
+        {
+            "block": "furnace",
+            "input": {
                 "id": -10,
                 "damage": -1
             },
