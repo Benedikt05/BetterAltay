@@ -331,6 +331,7 @@ class ItemFactory{
 		self::registerItem(new CopperLeggings());
 		self::registerItem(new CopperBoots());
 		self::registerItem(new Item(Item::COPPER_INGOT, 0, "Copper Ingot"));
+		self::registerItem(new Item(Item::COPPER_NUGGET, 0, "Copper Nugget"));
 	}
 
 	/**
