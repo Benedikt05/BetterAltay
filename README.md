@@ -6,15 +6,15 @@
 	<br>
 	This is a fork of <a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a> and <a href="https://github.com/unresolved3169/Altay">Altay</a>.
 	<br><br>
-	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.110</i>
+	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.111</i>
 	<br><br>
 
 <p align="center">
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
-	<a href="https://feedback.minecraft.net/hc/en-us/articles/37810171798029-Minecraft-1-21-110-Bedrock">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.110-blue?style=flat-square" alt="Minecraft">
+	<a href="https://www.minecraft.net/en-us/article/the-copper-age---minecraft--bedrock-edition-1-21-111-changelog">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.111-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
 		<img src="https://img.shields.io/badge/protocol-843-yellow?style=flat-square" alt="Protocol">
