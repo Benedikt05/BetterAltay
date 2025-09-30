@@ -2244,7 +2244,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$skinData = new SkinData(
 			$packet->clientData["SkinId"],
-			$packet->clientData["PlayFabId"],
+			"",
 			base64_decode($packet->clientData["SkinResourcePatch"] ?? "", true),
 			new SkinImage(
 				$packet->clientData["SkinImageHeight"],
