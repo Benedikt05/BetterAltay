@@ -17,7 +17,7 @@
 		<img src="https://img.shields.io/badge/Minecraft_1.21.111-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-843-yellow?style=flat-square" alt="Protocol">
+		<img src="https://img.shields.io/badge/protocol-844-yellow?style=flat-square" alt="Protocol">
 	</a>
 	<a href="https://github.com/Benedikt05/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
