@@ -27,6 +27,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
+//TODO: update to 1.21.111
 class PlayerArmorDamagePacket extends DataPacket/* implements ClientboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::PLAYER_ARMOR_DAMAGE_PACKET;

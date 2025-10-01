@@ -39,4 +39,8 @@ class DiamondBoots extends Armor{
 	public function getArmorSlot() : int{
 		return 3;
 	}
+
+	public function getTier() : int{
+		return self::TIER_DIAMOND;
+	}
 }

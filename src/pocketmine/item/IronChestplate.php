@@ -39,4 +39,8 @@ class IronChestplate extends Armor{
 	public function getArmorSlot() : int{
 		return 1;
 	}
+
+	public function getTier() : int{
+		return self::TIER_IRON;
+	}
 }
