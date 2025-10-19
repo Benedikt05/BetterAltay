@@ -61,14 +61,6 @@ For support, discussions, and the latest updates, join our community on Discord:
 
 ---
 
-## 📱 Unofficial App
-
-An unofficial app is available that works seamlessly with BetterAltay. Please note that this app is not officially supported by us. You can download it here:
-
-[Unofficial BetterAltay App](https://play.google.com/store/apps/details?id=com.kpwnapps.pmmpplugins.betteraltay) 
-
----
-
 ## 📄 License
 
 BetterAltay is licensed under the [LGPL-3.0 License](https://github.com/Benedikt05/BetterAltay/blob/master/LICENSE).
