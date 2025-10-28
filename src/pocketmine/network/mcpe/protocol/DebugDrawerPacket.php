@@ -59,6 +59,6 @@ class DebugDrawerPacket extends DataPacket{
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleServerScriptDebugDrawer($this);
+		return $session->handleDebugDrawer($this);
 	}
 }

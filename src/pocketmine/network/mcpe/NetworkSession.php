@@ -932,7 +932,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleServerScriptDebugDrawer(DebugDrawerPacket $packet) : bool{
+	public function handleDebugDrawer(DebugDrawerPacket $packet) : bool{
 		return false;
 	}
 
