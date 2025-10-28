@@ -5709,6 +5709,70 @@
       "group_index": 65
     },
     {
+      "id": "minecraft:suspicious_stew",
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 1,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 2,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 3,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 4,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 5,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 6,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 7,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 8,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 9,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 10,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 11,
+      "group_index": 65
+    },
+    {
+      "id": "minecraft:suspicious_stew",
+      "damage": 12,
+      "group_index": 65
+    },
+    {
       "id": "minecraft:baked_potato",
       "group_index": 65
     },
