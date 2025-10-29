@@ -483,7 +483,15 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_PLACE_ITEM = 563;
 	public const SOUND_SINGLE_ITEM_SWAP = 564;
 	public const SOUND_MULTI_ITEM_SWAP = 565;
-	public const SOUND_UNDEFINED = 566;
+	public const SOUND_SPEAR_LUNGE1 = 566;
+	public const SOUND_SPEAR_LUNGE2 = 567;
+	public const SOUND_SPEAR_LUNGE3 = 568;
+	public const SOUND_ATTACK_CRITICAL = 569;
+	public const SOUND_SPEAR_ATTACK_HIT = 570;
+	public const SOUND_SPEAR_ATTACK_MISS = 571;
+	public const SOUND_WOODEN_SPEAR_ATTACK_HIT = 572;
+	public const SOUND_WOODEN_SPEAR_ATTACK_MISS = 573;
+	public const SOUND_UNDEFINED = 574;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
 		$result = new self;
