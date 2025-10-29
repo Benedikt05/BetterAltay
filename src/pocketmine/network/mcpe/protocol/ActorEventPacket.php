@@ -91,6 +91,7 @@ class ActorEventPacket extends DataPacket{
 	public const GROW_UP = 76;
 	public const VIBRATION_DETECTED = 77;
 	public const DRINK_MILK = 78;
+	public const SHAKE_WETNESS_STOP = 79;
 
 	//TODO: add more events
 
@@ -98,13 +99,13 @@ class ActorEventPacket extends DataPacket{
 	public int $event;
 	public int $data = 0;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->event = $this->getByte();
 		$this->data = $this->getVarInt();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putByte($this->event);
 		$this->putVarInt($this->data);

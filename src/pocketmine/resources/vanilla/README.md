@@ -48,7 +48,7 @@ This file contains the creative groups and items which appear in the vanilla cre
 ## stripped_biome_definitions.json
 This file contains a stripped JSON representation of biome definitions obtained from `BiomeDefinitionListPacket`.
 
-## biome_id_map.json
+## biomes.json
 This file contains a mapping of Minecraft string biome IDs to their legacy integer ID counterparts. While biome IDs aren't dynamic yet, it's expected they will become dynamic in the future.
 
 ## entity_identifiers.nbt

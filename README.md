@@ -6,18 +6,18 @@
 	<br>
 	This is a fork of <a href="https://github.com/pmmp/PocketMine-MP/tree/3.28.0">PocketMine-MP</a> and <a href="https://github.com/unresolved3169/Altay">Altay</a>.
 	<br><br>
-	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.111</i>
+	<i>This fork was created due to the inactivity of Altay and currently supports Minecraft: Bedrock Edition v1.21.120</i>
 	<br><br>
 
 <p align="center">
 	<a href="https://discord.gg/spquK3Q66W">
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
-	<a href="https://www.minecraft.net/en-us/article/the-copper-age---minecraft--bedrock-edition-1-21-111-changelog">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.111-blue?style=flat-square" alt="Minecraft">
+	<a href="https://www.minecraft.net/en-us/article/minecraft--bedrock-edition-1-21-120">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.120-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-844-yellow?style=flat-square" alt="Protocol">
+		<img src="https://img.shields.io/badge/protocol-859-yellow?style=flat-square" alt="Protocol">
 	</a>
 	<a href="https://github.com/Benedikt05/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
@@ -58,14 +58,6 @@ To get started with BetterAltay, follow these steps:
 For support, discussions, and the latest updates, join our community on Discord:
 
 [![Discord](https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white)](https://discord.gg/spquK3Q66W)
-
----
-
-## 📱 Unofficial App
-
-An unofficial app is available that works seamlessly with BetterAltay. Please note that this app is not officially supported by us. You can download it here:
-
-[Unofficial BetterAltay App](https://play.google.com/store/apps/details?id=com.kpwnapps.pmmpplugins.betteraltay) 
 
 ---
 
