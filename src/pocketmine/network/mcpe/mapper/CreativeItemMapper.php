@@ -20,7 +20,7 @@ use function is_array;
 use function count;
 use const pocketmine\RESOURCE_PATH;
 
-class CreativeItemMapper {
+class CreativeItemMapper{
 	use SingletonTrait;
 
 	private bool $initialized = false;
@@ -65,6 +65,8 @@ class CreativeItemMapper {
 
 			if(isset($item["damage"])){
 				$itemValue->setDamage($item["damage"]);
+			}elseif($item["id"] === "minecraft:brown_mushroom_block" || $item["id"] === "minecraft:red_mushroom_block"){
+				$itemValue->setDamage(14);
 			}
 
 			if(isset($item["nbt_b64"])){
@@ -109,7 +111,7 @@ class CreativeItemMapper {
 		unset($this->icons[$index]);
 	}
 
-	public function addIcon(CreativeItemEntry $entry) : void {
+	public function addIcon(CreativeItemEntry $entry) : void{
 		$this->icons[] = $entry;
 	}
 
