@@ -2890,41 +2890,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				$this->respawn();
 				break;
-			case PlayerActionPacket::ACTION_JUMP:
-				$this->jump();
-				return true;
-			case PlayerActionPacket::ACTION_START_SPRINT:
-				$this->toggleSprint(true);
-				return true;
-			case PlayerActionPacket::ACTION_STOP_SPRINT:
-				$this->toggleSprint(false);
-				return true;
-			case PlayerActionPacket::ACTION_START_SNEAK:
-				$this->toggleSneak(true);
-				return true;
-			case PlayerActionPacket::ACTION_STOP_SNEAK:
-				$this->toggleSneak(false);
-				return true;
-			case PlayerActionPacket::ACTION_START_GLIDE:
-				$this->toggleGlide(true);
-				break;
-			case PlayerActionPacket::ACTION_STOP_GLIDE:
-				$this->toggleGlide(false);
-				break;
 			case PlayerActionPacket::ACTION_CRACK_BREAK:
 				$block = $this->level->getBlock($pos);
 				$this->level->broadcastLevelEvent($pos, LevelEventPacket::EVENT_PARTICLE_PUNCH_BLOCK, $block->getRuntimeId() | ($face << 24));
 				//TODO: destroy-progress level event
-				break;
-			case PlayerActionPacket::ACTION_START_SWIMMING:
-				if(!$this->isSwimming()){
-					$this->toggleSwim(true);
-				}
-				break;
-			case PlayerActionPacket::ACTION_STOP_SWIMMING:
-				if($this->isSwimming()){ // for spam issue
-					$this->toggleSwim(false);
-				}
 				break;
 			case PlayerActionPacket::ACTION_INTERACT_BLOCK: //TODO: ignored (for now)
 				break;
