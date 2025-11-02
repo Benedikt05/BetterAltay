@@ -285,52 +285,13 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 		if($packet->cancelReason !== null){
 			return $this->player->onFormSubmit($packet->formId, null);
 		}else{
-			return $this->player->onFormSubmit($packet->formId, self::stupid_json_decode($packet->formData ?? "", true));
-		}
-	}
-
-	/**
-	 * Hack to work around a stupid bug in Minecraft W10 which causes empty strings to be sent unquoted in form responses.
-	 *
-	 * @return mixed
-	 */
-	private static function stupid_json_decode(string $json, bool $assoc = false){
-		if(preg_match('/^\[(.+)\]$/s', $json, $matches) > 0){
-			$raw = $matches[1];
-			$lastComma = -1;
-			$newParts = [];
-			$inQuotes = false;
-			for($i = 0, $len = strlen($raw); $i <= $len; ++$i){
-				if($i === $len or ($raw[$i] === "," and !$inQuotes)){
-					$part = substr($raw, $lastComma + 1, $i - ($lastComma + 1));
-					if(trim($part) === ""){ //regular parts will have quotes or something else that makes them non-empty
-						$part = '""';
-					}
-					$newParts[] = $part;
-					$lastComma = $i;
-				}elseif($raw[$i] === '"'){
-					if(!$inQuotes){
-						$inQuotes = true;
-					}else{
-						$backslashes = 0;
-						for(; $backslashes < $i && $raw[$i - $backslashes - 1] === "\\"; ++$backslashes){
-						}
-						if(($backslashes % 2) === 0){ //unescaped quote
-							$inQuotes = false;
-						}
-					}
-				}
+			try{
+				$data = json_decode($packet->formData ?? "", true, 2, JSON_THROW_ON_ERROR);
+			}catch(\JsonException $e){
+				throw new InvalidArgumentException("Failed to decode form response data: " . $e->getMessage());
 			}
-
-			$fixed = "[" . implode(",", $newParts) . "]";
-			if(($ret = json_decode($fixed, $assoc)) === null){
-				throw new InvalidArgumentException("Failed to fix JSON: " . json_last_error_msg() . "(original: $json, modified: $fixed)");
-			}
-
-			return $ret;
+			return $this->player->onFormSubmit($packet->formId, $data);
 		}
-
-		return json_decode($json, $assoc);
 	}
 
 	public function handleServerSettingsRequest(ServerSettingsRequestPacket $packet) : bool{
