@@ -66,7 +66,7 @@ class LoginPacket extends DataPacket{
 	 *   Token: string
 	 * }
 	 */
-	public $chainData = [];
+	public $authData = [];
 	/** @var string */
 	public $clientDataJwt;
 	/**
@@ -112,12 +112,12 @@ class LoginPacket extends DataPacket{
 	protected function decodeConnectionRequest() : void{
 		$buffer = new BinaryStream($this->getString());
 
-		$this->chainData = json_decode($buffer->get($buffer->getLInt()), true);
+		$this->authData = json_decode($buffer->get($buffer->getLInt()), true);
 
 		$chainArray = null;
 
-		if(isset($this->chainData["Certificate"]) && is_string($this->chainData["Certificate"])){
-			$certificateData = json_decode($this->chainData["Certificate"], true);
+		if(isset($this->authData["Certificate"]) && is_string($this->authData["Certificate"])){
+			$certificateData = json_decode($this->authData["Certificate"], true);
 			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
 				$chainArray = $certificateData["chain"];
 			}
@@ -143,9 +143,9 @@ class LoginPacket extends DataPacket{
 					$this->identityPublicKey = $webtoken["identityPublicKey"];
 				}
 			}
-		}elseif(isset($this->chainData["Token"])){
+		}elseif(isset($this->authData["Token"])){
 			try{
-				$authToken = $this->chainData["Token"];
+				$authToken = $this->authData["Token"];
 				[$header, $claimsArray,] = JwtUtils::parse($authToken);
 				$claims = new JwtClaims($claimsArray);
 				$token = new JwtToken($header, $claims);
@@ -176,7 +176,7 @@ class LoginPacket extends DataPacket{
 	}
 
 	public function getAuthenticationType() : int{
-		return $this->chainData["AuthenticationType"];
+		return $this->authData["AuthenticationType"];
 	}
 	
 	protected function encodePayload(){
