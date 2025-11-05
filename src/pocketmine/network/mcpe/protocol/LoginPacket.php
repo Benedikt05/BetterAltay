@@ -25,10 +25,14 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\network\mcpe\auth\JwtClaims;
+use pocketmine\network\mcpe\auth\JwtToken;
+use pocketmine\network\mcpe\JwtUtils;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Utils;
+use pocketmine\utils\UUID;
 use RuntimeException;
 use Throwable;
 use function get_class;
@@ -55,8 +59,12 @@ class LoginPacket extends DataPacket{
 	public $locale;
 
 	/**
-	 * @var string[][] (the "chain" index contains one or more JWTs)
-	 * @phpstan-var array{chain?: list<string>}
+	 * @var array<string, mixed> Raw login data from the client
+	 * @phpstan-var array{
+	 *   AuthenticationType: int,
+	 *   Certificate: string,
+	 *   Token: string
+	 * }
 	 */
 	public $chainData = [];
 	/** @var string */
@@ -106,39 +114,56 @@ class LoginPacket extends DataPacket{
 
 		$this->chainData = json_decode($buffer->get($buffer->getLInt()), true);
 
-		if(isset($this->chainData["Certificate"]) && is_string($this->chainData["Certificate"])){
+		$chainArray = null;
+
+		if(isset($this->chainData["Certificatea"]) && is_string($this->chainData["Certificate"])){
 			$certificateData = json_decode($this->chainData["Certificate"], true);
 			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
 				$chainArray = $certificateData["chain"];
-			}else{
-				throw new RuntimeException("Invalid 'chain' data in Certificate field");
 			}
-		}else{
-			throw new RuntimeException("Missing or invalid 'Certificate' field in chain data");
 		}
 
-		$hasExtraData = false;
-		foreach($chainArray as $chain){
-			$webtoken = Utils::decodeJWT($chain);
-			if(isset($webtoken["extraData"])){
-				if($hasExtraData){
-					throw new RuntimeException("Found 'extraData' multiple times in key chain");
-				}
-				$hasExtraData = true;
-				if(isset($webtoken["extraData"]["displayName"])){
-					$this->username = $webtoken["extraData"]["displayName"];
-				}
-				if(isset($webtoken["extraData"]["identity"])){
-					$this->clientUUID = $webtoken["extraData"]["identity"];
-				}
-				if(isset($webtoken["extraData"]["XUID"])){
-					$this->xuid = $webtoken["extraData"]["XUID"];
-				}
-			}
+		if(is_array($chainArray)){
+			var_dump("legacy auth");
+			$hasExtraData = false;
+			foreach($chainArray as $chain){
+				$webtoken = Utils::decodeJWT($chain);
+				if(isset($webtoken["extraData"])){
+					if($hasExtraData){
+						throw new RuntimeException("Found 'extraData' multiple times in key chain");
+					}
+					$hasExtraData = true;
 
-			if(isset($webtoken["identityPublicKey"])){
-				$this->identityPublicKey = $webtoken["identityPublicKey"];
+					$this->username = $webtoken["extraData"]["displayName"] ?? $this->username;
+					$this->clientUUID = $webtoken["extraData"]["identity"] ?? $this->clientUUID;
+					$this->xuid = $webtoken["extraData"]["XUID"] ?? $this->xuid;
+				}
+
+				if(isset($webtoken["identityPublicKey"])){
+					$this->identityPublicKey = $webtoken["identityPublicKey"];
+				}
 			}
+		}elseif(isset($this->chainData["Token"])){
+			try{
+				$authToken = $this->chainData["Token"];
+				[$header, $claimsArray,] = JwtUtils::parse($authToken);
+				$claims = new JwtClaims($claimsArray);
+				$token = new JwtToken($header, $claims);
+				//var_dump($token->header);
+
+				$this->username = $claims->get("xname") ?? $this->username;
+
+				if(($xid = $claims->get("xid")) !== null){
+					$this->clientUUID = UUID::fromXuid($xid)->toString();
+					$this->xuid = $xid;
+				}
+
+				$this->identityPublicKey = $claims->get("cpk") ?? $this->identityPublicKey;
+			}catch(\Throwable $e){
+				var_dump("Could not parse token: " . $e->getMessage());
+			}
+		}else{
+			var_dump("Neither Certificate nor Token field found");
 		}
 
 		$this->clientDataJwt = $buffer->get($buffer->getLInt());
@@ -150,6 +175,10 @@ class LoginPacket extends DataPacket{
 		$this->locale = $this->clientData["LanguageCode"] ?? null;
 	}
 
+	public function getAuthenticationType() : int{
+		return $this->chainData["AuthenticationType"];
+	}
+	
 	protected function encodePayload(){
 		//TODO
 	}

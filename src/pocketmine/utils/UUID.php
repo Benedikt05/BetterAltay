@@ -96,6 +96,16 @@ class UUID{
 		return self::fromData(Binary::writeInt(time()), Binary::writeShort(($pid = getmypid()) !== false ? $pid : 0), Binary::writeShort(($uid = getmyuid()) !== false ? $uid : 0), Binary::writeInt(mt_rand(-0x7fffffff, 0x7fffffff)), Binary::writeInt(mt_rand(-0x7fffffff, 0x7fffffff)));
 	}
 
+	/**
+	 * Derive UUID from XUID
+	 */
+	public static function fromXuid(string $xuid) : UUID{
+		$hash = md5("pocket-auth-1-xuid:" . $xuid, true);
+		$hash[6] = chr((ord($hash[6]) & 0x0f) | 0x30);
+		$hash[8] = chr((ord($hash[8]) & 0x3f) | 0x80);
+		return UUID::fromBinary($hash);
+	}
+
 	public function toBinary() : string{
 		return Binary::writeInt($this->parts[0]) . Binary::writeInt($this->parts[1]) . Binary::writeInt($this->parts[2]) . Binary::writeInt($this->parts[3]);
 	}
