@@ -116,7 +116,7 @@ class LoginPacket extends DataPacket{
 
 		$chainArray = null;
 
-		if(isset($this->chainData["Certificatea"]) && is_string($this->chainData["Certificate"])){
+		if(isset($this->chainData["Certificate"]) && is_string($this->chainData["Certificate"])){
 			$certificateData = json_decode($this->chainData["Certificate"], true);
 			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
 				$chainArray = $certificateData["chain"];
