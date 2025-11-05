@@ -42,21 +42,21 @@ class LoginPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LOGIN_PACKET;
 
 	/** @var string */
-	public $username;
+	public string $username;
 	/** @var int */
-	public $protocol;
+	public int $protocol;
 	/** @var string */
-	public $clientUUID;
+	public string $clientUUID;
 	/** @var int */
-	public $clientId;
+	public int $clientId;
 	/** @var string|null */
-	public $xuid = null;
+	public ?string $xuid = null;
 	/** @var string */
-	public $identityPublicKey;
+	public string $identityPublicKey;
 	/** @var string */
-	public $serverAddress;
+	public string $serverAddress;
 	/** @var string */
-	public $locale;
+	public string $locale;
 
 	/**
 	 * @var array<string, mixed> Raw login data from the client
@@ -66,14 +66,14 @@ class LoginPacket extends DataPacket{
 	 *   Token: string
 	 * }
 	 */
-	public $authData = [];
+	public array $loginData = [];
 	/** @var string */
-	public $clientDataJwt;
+	public string $clientDataJwt;
 	/**
 	 * @var mixed[] decoded payload of the clientData JWT
 	 * @phpstan-var array<string, mixed>
 	 */
-	public $clientData = [];
+	public array $clientData = [];
 
 	/**
 	 * This field may be used by plugins to bypass keychain verification. It should only be used for plugins such as
@@ -81,7 +81,7 @@ class LoginPacket extends DataPacket{
 	 *
 	 * @var bool
 	 */
-	public $skipVerification = false;
+	public bool $skipVerification = false;
 
 	public function canBeSentBeforeLogin() : bool{
 		return true;
@@ -91,7 +91,7 @@ class LoginPacket extends DataPacket{
 		return $this->protocol !== ProtocolInfo::CURRENT_PROTOCOL;
 	}
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->protocol = $this->getInt();
 
 		try{
@@ -112,12 +112,12 @@ class LoginPacket extends DataPacket{
 	protected function decodeConnectionRequest() : void{
 		$buffer = new BinaryStream($this->getString());
 
-		$this->authData = json_decode($buffer->get($buffer->getLInt()), true);
+		$this->loginData = json_decode($buffer->get($buffer->getLInt()), true);
 
 		$chainArray = null;
 
-		if(isset($this->authData["Certificate"]) && is_string($this->authData["Certificate"])){
-			$certificateData = json_decode($this->authData["Certificate"], true);
+		if(isset($this->loginData["Certificate"]) && is_string($this->loginData["Certificate"])){
+			$certificateData = json_decode($this->loginData["Certificate"], true);
 			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
 				$chainArray = $certificateData["chain"];
 			}
@@ -143,9 +143,9 @@ class LoginPacket extends DataPacket{
 					$this->identityPublicKey = $webtoken["identityPublicKey"];
 				}
 			}
-		}elseif(isset($this->authData["Token"])){
+		}elseif(isset($this->loginData["Token"])){
 			try{
-				$authToken = $this->authData["Token"];
+				$authToken = $this->loginData["Token"];
 				[$header, $claimsArray,] = JwtUtils::parse($authToken);
 				$claims = new JwtClaims($claimsArray);
 				$token = new JwtToken($header, $claims);
@@ -176,10 +176,10 @@ class LoginPacket extends DataPacket{
 	}
 
 	public function getAuthenticationType() : int{
-		return $this->authData["AuthenticationType"];
+		return $this->loginData["AuthenticationType"];
 	}
 	
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		//TODO
 	}
 
