@@ -1869,7 +1869,7 @@ class Server{
 	 *
 	 * @return void
 	 */
-	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false, bool $compress = true){
+	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false, bool $compress = true) : void{
 		if(count($packets) === 0){
 			throw new \InvalidArgumentException("Cannot send empty batch");
 		}
@@ -1883,7 +1883,8 @@ class Server{
 		if(count($targets) > 0){
 			foreach($targets as $target){
 				$pk->protocol = $target->getProtocol();
-				foreach($packets as $p){
+				foreach($packets as $pt){
+					$p = clone $pt;
 					$p->protocol = $target->getProtocol();
 					$pk->addPacket($p);
 				}

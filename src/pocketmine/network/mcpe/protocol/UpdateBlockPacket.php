@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\block\Block;
 use pocketmine\network\mcpe\NetworkSession;
 
 class UpdateBlockPacket extends DataPacket{
@@ -48,12 +49,13 @@ class UpdateBlockPacket extends DataPacket{
 	public $z;
 	/** @var int */
 	public $y;
-	/** @var int */
-	public $blockRuntimeId;
+	/** @var int|null */
+	public ?int $blockRuntimeId = null;
 	/** @var int */
 	public $flags;
 	/** @var int */
 	public $dataLayerId = self::DATA_LAYER_NORMAL;
+	public Block $block;
 
 	protected function decodePayload(){
 		$this->getBlockPosition($this->x, $this->y, $this->z);
@@ -64,7 +66,7 @@ class UpdateBlockPacket extends DataPacket{
 
 	protected function encodePayload(){
 		$this->putBlockPosition($this->x, $this->y, $this->z);
-		$this->putUnsignedVarInt($this->blockRuntimeId);
+		$this->putUnsignedVarInt($this->blockRuntimeId === null ? $this->block->getRuntimeId($this->protocol) : $this->blockRuntimeId);
 		$this->putUnsignedVarInt($this->flags);
 		$this->putUnsignedVarInt($this->dataLayerId);
 	}

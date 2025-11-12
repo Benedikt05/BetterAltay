@@ -1057,7 +1057,6 @@ class Level implements ChunkManager, Metadatable{
 	 * @return void
 	 */
 	public function sendBlocks(array $target, array $blocks, int $flags = UpdateBlockPacket::FLAG_NONE, bool $optimizeRebuilds = false) : void{
-		foreach($target as $player){
 			$packets = [];
 			if($optimizeRebuilds){
 				$chunks = [];
@@ -1065,7 +1064,6 @@ class Level implements ChunkManager, Metadatable{
 					if(!($b instanceof Vector3)){
 						throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
 					}
-					$pk = new UpdateBlockPacket();
 
 					$first = false;
 					if(!isset($chunks[$index = Level::chunkHash($b->x >> 4, $b->z >> 4)])){
@@ -1073,16 +1071,16 @@ class Level implements ChunkManager, Metadatable{
 						$first = true;
 					}
 
-					$pk->x = $b->x;
-					$pk->y = $b->y;
-					$pk->z = $b->z;
-
+					$pk = new UpdateBlockPacket();
 					if($b instanceof Block){
-						$pk->blockRuntimeId = $b->getRuntimeId($player->getProtocol());
+						$pk->block = $b;
 					}else{
 						$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 						$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf, $pk->protocol);
 					}
+					$pk->x = $b->x;
+					$pk->y = $b->y;
+					$pk->z = $b->z;
 
 					$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
 
@@ -1099,8 +1097,8 @@ class Level implements ChunkManager, Metadatable{
 					$pk->y = $b->y;
 					$pk->z = $b->z;
 
-					if($b instanceof Block){
-						$pk->blockRuntimeId = $b->getRuntimeId($player->getProtocol());
+					if($isB = $b instanceof Block){
+						$pk->block = $b;
 					}else{
 						$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 						$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf, $pk->protocol);
@@ -1112,7 +1110,6 @@ class Level implements ChunkManager, Metadatable{
 				}
 			}
 			$this->server->batchPackets($target, $packets, false, false);
-		}
 	}
 
 	/**
@@ -2118,7 +2115,7 @@ class Level implements ChunkManager, Metadatable{
 			return false;
 		}
 
-		if(false){
+		if($playSound){
 			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId($player->getProtocol()), -1);
 			var_dump($player->getProtocol());
 		}

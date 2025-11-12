@@ -70,7 +70,6 @@ class NetworkBinaryStream extends BinaryStream{
 	private const PM_META_TAG = "___Meta___";
 
 	public int $protocol = -2;
-	private array $protocolPlayer;
 	public function setProtocol($protocol): void{
 		$this->protocol = $protocol;
 	}
