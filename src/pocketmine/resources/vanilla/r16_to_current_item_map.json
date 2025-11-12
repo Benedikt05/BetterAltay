@@ -696,6 +696,7 @@
     "simple": {
         "minecraft:appleenchanted": "minecraft:enchanted_golden_apple",
         "minecraft:carrotonastick": "minecraft:carrot_on_a_stick",
+        "minecraft:chain": "minecraft:iron_chain",
         "minecraft:chorus_fruit_popped": "minecraft:popped_chorus_fruit",
         "minecraft:clownfish": "minecraft:tropical_fish",
         "minecraft:concretepowder": "minecraft:concrete_powder",

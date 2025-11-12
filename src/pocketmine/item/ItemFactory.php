@@ -95,6 +95,10 @@ class ItemFactory{
 		self::registerItem(new Shovel(Item::GOLDEN_SHOVEL, 0, "Gold Shovel", TieredTool::TIER_GOLD));
 		self::registerItem(new Pickaxe(Item::GOLDEN_PICKAXE, 0, "Gold Pickaxe", TieredTool::TIER_GOLD));
 		self::registerItem(new Axe(Item::GOLDEN_AXE, 0, "Gold Axe", TieredTool::TIER_GOLD));
+		self::registerItem(new Sword(Item::COPPER_SWORD, 0, "Copper Sword", TieredTool::TIER_COPPER));
+		self::registerItem(new Axe(Item::COPPER_AXE, 0, "Copper Axe", TieredTool::TIER_COPPER));
+		self::registerItem(new Pickaxe(Item::COPPER_PICKAXE, 0, "Copper Pickaxe", TieredTool::TIER_COPPER));
+		self::registerItem(new Shovel(Item::COPPER_SHOVEL, 0, "Copper Shovel", TieredTool::TIER_COPPER));
 		self::registerItem(new StringItem());
 		self::registerItem(new Item(Item::FEATHER, 0, "Feather"));
 		self::registerItem(new Item(Item::GUNPOWDER, 0, "Gunpowder"));
@@ -104,6 +108,7 @@ class ItemFactory{
 		self::registerItem(new Hoe(Item::DIAMOND_HOE, 0, "Diamond Hoe", TieredTool::TIER_DIAMOND));
 		self::registerItem(new Hoe(Item::NETHERITE_HOE, 0, "Netherite Hoe", TieredTool::TIER_NETHERITE));
 		self::registerItem(new Hoe(Item::GOLDEN_HOE, 0, "Golden Hoe", TieredTool::TIER_GOLD));
+		self::registerItem(new Hoe(Item::COPPER_HOE, 0, "Copper Hoe", TieredTool::TIER_COPPER));
 		self::registerItem(new WheatSeeds());
 		self::registerItem(new Item(Item::WHEAT, 0, "Wheat"));
 		self::registerItem(new Bread());
@@ -320,6 +325,13 @@ class ItemFactory{
 		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
 		self::registerItem(new HoneyBottle());
 		self::registerItem(new Spyglass());
+		self::registerItem(new CopperHorseArmor());
+		self::registerItem(new CopperHelmet());
+		self::registerItem(new CopperChestplate());
+		self::registerItem(new CopperLeggings());
+		self::registerItem(new CopperBoots());
+		self::registerItem(new Item(Item::COPPER_INGOT, 0, "Copper Ingot"));
+		self::registerItem(new Item(Item::COPPER_NUGGET, 0, "Copper Nugget"));
 	}
 
 	/**

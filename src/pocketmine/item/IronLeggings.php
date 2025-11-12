@@ -39,4 +39,8 @@ class IronLeggings extends Armor{
 	public function getArmorSlot() : int{
 		return 2;
 	}
+
+	public function getTier() : int{
+		return self::TIER_IRON;
+	}
 }

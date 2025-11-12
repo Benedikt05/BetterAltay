@@ -56,16 +56,21 @@ class BiomeDefinitionListPacket extends DataPacket{
 			}
 			$this->putLShort($index);
 			if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_100){
-				$this->putLShort(-1); //TODO: BiomeId
+				$this->putLShort((int) ($def["id"] ?? -1)); //TODO: BiomeId
 			}else{
 				$this->putBool(false); //optional Id
 			}
 			$this->putLFloat((float) $def["temperature"]);
 			$this->putLFloat((float) $def["downfall"]);
-			$this->putLFloat((float) $def["redSporeDensity"]);
-			$this->putLFloat((float) $def["blueSporeDensity"]);
-			$this->putLFloat((float) $def["ashDensity"]);
-			$this->putLFloat((float) $def["whiteAshDensity"]);
+			if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_111){
+				$this->putLFloat((float) $def["foliageSnow"]);
+			}else{
+				$this->putLFloat((float) $def["redSporeDensity"]);
+				$this->putLFloat((float) $def["blueSporeDensity"]);
+				$this->putLFloat((float) $def["ashDensity"]);
+				$this->putLFloat((float) $def["whiteAshDensity"]);
+			}
+
 			$this->putLFloat((float) $def["depth"]);
 			$this->putLFloat((float) $def["scale"]);
 			$this->putLInt($def["mapWaterColor"] instanceof Color ? $def["mapWaterColor"]->toARGB() : 0);

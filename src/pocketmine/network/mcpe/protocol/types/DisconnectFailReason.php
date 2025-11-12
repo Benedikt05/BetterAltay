@@ -134,4 +134,7 @@ final class DisconnectFailReason{
 	public const GUEST_WITHOUT_HOST = 120;
 	public const FAILED_TO_JOIN_EXPERIENCE = 121;
 	public const NETHER_NET_DATA_CHANNEL_CLOSED = 122;
+	public const DISCOVERY_ENVIRONMENT_MISMATCH = 123;
+	public const HOST_WITHOUT_KEYS = 124;
+
 }
