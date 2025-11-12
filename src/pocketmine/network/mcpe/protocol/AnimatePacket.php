@@ -46,7 +46,9 @@ class AnimatePacket extends DataPacket{
 	protected function decodePayload() : void{
 		$this->action = $this->getVarInt();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
-		$this->data = $this->getLFloat();
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_120){
+			$this->data = $this->getLFloat();
+		}
 		if(($this->action & 0x80) !== 0){
 			$this->rowingTime = $this->getLFloat();
 		}
@@ -55,7 +57,9 @@ class AnimatePacket extends DataPacket{
 	protected function encodePayload() : void{
 		$this->putVarInt($this->action);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
-		$this->putLFloat($this->data);
+		if($this->protocol >= ProtocolInfo::PROTOCOL_1_21_120){
+			$this->putLFloat($this->data);
+		}
 		if(($this->action & 0x80) !== 0){
 			$this->putLFloat($this->rowingTime);
 		}

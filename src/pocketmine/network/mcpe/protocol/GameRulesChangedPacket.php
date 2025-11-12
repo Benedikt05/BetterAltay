@@ -41,7 +41,7 @@ class GameRulesChangedPacket extends DataPacket{
 	}
 
 	protected function encodePayload() : void{
-		$this->putGameRules($this->gameRules);
+		$this->putGameRules($this->gameRules, $this->protocol >= ProtocolInfo::PROTOCOL_1_21_111);
 	}
 
 	public function handle(NetworkSession $session) : bool{
