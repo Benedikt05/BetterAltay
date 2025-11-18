@@ -25,13 +25,14 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use pocketmine\block\Block;
+use pocketmine\block\material\WoodType;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class Boat extends Item{
-	public function __construct(){
-		parent::__construct(self::BOAT, 0, "Boat");
+	public function __construct(WoodType $material){
+		parent::__construct("minecraft:" . $material->getType() . "_boat", 0, "Boat");
 	}
 
 	public function getFuelTime() : int{
@@ -44,7 +45,20 @@ class Boat extends Item{
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5), null, (int) round($player->getYaw() + 90) % 360, 0);
-		$nbt->setInt("Variant", $this->getDamage());
+		$type = match ($this->id) {
+			ItemNames::SPRUCE_BOAT => 1,
+			ItemNames::BIRCH_BOAT => 2,
+			ItemNames::JUNGLE_BOAT => 3,
+			ItemNames::ACACIA_BOAT => 4,
+			ItemNames::DARK_OAK_BOAT => 5,
+			ItemNames::MANGROVE_BOAT => 6,
+			ItemNames::BAMBOO_RAFT => 7,
+			ItemNames::CHERRY_BOAT => 8,
+			ItemNames::PALE_OAK_BOAT => 9,
+			default => 0,
+		};
+
+		$nbt->setInt("Variant", $type);
 		$entity = Entity::createEntity("Boat", $player->level, $nbt);
 		$entity->spawnToAll();
 

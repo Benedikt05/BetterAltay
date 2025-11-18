@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\populator;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
@@ -47,7 +47,7 @@ class Cactus extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
-		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::CACTUS);
+		$rid = RuntimeBlockMapping::toRuntimeId(BlockNames::CACTUS);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -69,10 +69,10 @@ class Cactus extends Populator{
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y > 0; --$y){
-			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
-			if($b === Block::SAND){
+			$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z));
+			if($id === BlockNames::SAND){
 				break;
-			}elseif($b !== Block::AIR){
+			}elseif($id !== BlockNames::AIR){
 				return -1;
 			}
 		}

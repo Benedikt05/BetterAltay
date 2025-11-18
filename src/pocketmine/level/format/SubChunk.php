@@ -86,11 +86,11 @@ class SubChunk implements SubChunkInterface{
 		return count($this->layers) === 0;
 	}
 
-	public function getBlockId(int $x, int $y, int $z, int $layer) : int{
+	public function getBlockId(int $x, int $y, int $z, int $layer = 0) : int{
 		return $this->getLayer($layer)->get($x, $y, $z);
 	}
 
-	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool{
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer = 0) : bool{
 		$this->getLayer($layer)->set($x, $y, $z, $id);
 		return true;
 	}

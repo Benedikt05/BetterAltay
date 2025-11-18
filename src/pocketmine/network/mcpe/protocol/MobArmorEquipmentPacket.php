@@ -25,7 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
-use pocketmine\item\Item;
+use pocketmine\block\BlockNames;
 use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
@@ -59,7 +59,7 @@ class MobArmorEquipmentPacket extends DataPacket{
 		$this->legs->write($this);
 		$this->feet->write($this);
 		if($this->body === null){
-			$this->body = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
+			$this->body = ItemStackWrapper::legacy(ItemFactory::get(BlockNames::AIR));
 		}
 		$this->body->write($this);
 	}

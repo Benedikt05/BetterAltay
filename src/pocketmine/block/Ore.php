@@ -23,17 +23,18 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\OreType;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\TieredTool;
-use function mt_rand;
 
-class LapisOre extends Solid{
+class Ore extends Solid{
 
-	protected $id = self::LAPIS_ORE;
+	public function __construct(protected OreType $material, protected int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_ore";
+	}
 
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
+	public function getName() : string{
+		return $this->material->getName() . " Ore";
 	}
 
 	public function getHardness() : float{
@@ -45,20 +46,20 @@ class LapisOre extends Solid{
 	}
 
 	public function getToolHarvestLevel() : int{
-		return TieredTool::TIER_STONE;
-	}
-
-	public function getName() : string{
-		return "Lapis Lazuli Ore";
+		return $this->material->getToolHarvestLevel();
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::DYE, 4, mt_rand(4, 8))
+			ItemFactory::get($this->getItemId(), $this->getVariant(), $this->material->getDropCount())
 		];
 	}
 
 	protected function getXpDropAmount() : int{
-		return mt_rand(2, 5);
+		return $this->material->getXp();
+	}
+
+	public function getMaterial() : OreType{
+		return $this->material;
 	}
 }

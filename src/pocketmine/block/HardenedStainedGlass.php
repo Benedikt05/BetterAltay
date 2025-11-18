@@ -19,46 +19,18 @@
  *
 */
 
-declare(strict_types=1);
-
 namespace pocketmine\block;
 
-use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\TieredTool;
-use function mt_rand;
+use pocketmine\block\material\ColorType;
 
-class DiamondOre extends Solid{
+class HardenedStainedGlass extends StainedGlass{
 
-	protected $id = self::DIAMOND_ORE;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
-
-	public function getHardness() : float{
-		return 3;
+	public function __construct(ColorType $material, int $meta = 0){
+		parent::__construct($material, $meta);
+		$this->id = "minecraft:hard_" . $material->getType() . "_stained_glass";
 	}
 
 	public function getName() : string{
-		return "Diamond Ore";
-	}
-
-	public function getToolType() : int{
-		return BlockToolType::TYPE_PICKAXE;
-	}
-
-	public function getToolHarvestLevel() : int{
-		return TieredTool::TIER_IRON;
-	}
-
-	public function getDropsForCompatibleTool(Item $item) : array{
-		return [
-			ItemFactory::get(Item::DIAMOND)
-		];
-	}
-
-	protected function getXpDropAmount() : int{
-		return mt_rand(3, 7);
+		return "Hard " . $this->material->getName() . " Stained Glass";
 	}
 }

@@ -30,19 +30,24 @@ use pocketmine\block\BlockFactory;
  * Class used for Items that can be Blocks
  */
 class ItemBlock extends Item{
-	/** @var int */
+	/** @var string */
 	protected $blockId;
 
 	/**
 	 * @param int $meta usually 0-15 (placed blocks may only have meta values 0-15)
 	 */
-	public function __construct(int $blockId, int $meta = 0, int $itemId = null){
+	public function __construct(string $blockId, int $meta = 0, string $itemId = null){
 		$this->blockId = $blockId;
-		parent::__construct($itemId ?? $blockId, $meta, $this->getBlock()->getName());
+		parent::__construct($itemId ?? $blockId, $meta);
+		$this->name = $this->getBlock()->getName();
 	}
 
 	public function getBlock() : Block{
 		return BlockFactory::get($this->blockId, $this->meta === -1 ? 0 : $this->meta & 0xf);
+	}
+
+	public function getBlockId() : string {
+		return $this->blockId;
 	}
 
 	public function getVanillaName() : string{

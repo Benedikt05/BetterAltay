@@ -83,8 +83,6 @@ abstract class Liquid extends Transparent{
 		return [];
 	}
 
-	abstract public function getStillForm() : Block;
-
 	abstract public function getFlowingForm() : Block;
 
 	abstract public function getBucketFillSound() : int;
@@ -265,7 +263,7 @@ abstract class Liquid extends Transparent{
 			if($newDecay !== $decay){
 				$decay = $newDecay;
 				if($decay < 0){
-					$this->level->setBlock($this, BlockFactory::get(Block::AIR), true);
+					$this->level->setBlock($this, BlockFactory::get(BlockNames::AIR), true);
 				}else{
 					$this->level->setBlock($this, BlockFactory::get($this->id, $decay), true);
 					$this->level->scheduleDelayedBlockUpdate($this, $this->tickRate());

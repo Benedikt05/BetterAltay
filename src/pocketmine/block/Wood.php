@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\block\utils\PillarRotationHelper;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
@@ -34,9 +35,8 @@ class Wood extends Solid{
 	public const BIRCH = 2;
 	public const JUNGLE = 3;
 
-	protected $id = self::WOOD;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_wood";
 		$this->meta = $meta;
 	}
 
@@ -45,18 +45,12 @@ class Wood extends Solid{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::OAK => "Oak Wood",
-			self::SPRUCE => "Spruce Wood",
-			self::BIRCH => "Birch Wood",
-			self::JUNGLE => "Jungle Wood"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		return $this->material->getName() . " Wood";
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$this->meta = PillarRotationHelper::getMetaFromFace($this->meta, $face);
-		return $this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		return $this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 	}
 
 	public function getVariantBitmask() : int{
@@ -77,5 +71,9 @@ class Wood extends Solid{
 
 	public function getFlammability() : int{
 		return 5;
+	}
+
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

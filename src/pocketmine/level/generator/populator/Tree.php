@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\populator;
 
-use pocketmine\block\Block;
-use pocketmine\block\Sapling;
+use pocketmine\block\BlockNames;
+use pocketmine\block\material\WoodType;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\Tree as ObjectTree;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -38,14 +38,11 @@ class Tree extends Populator{
 	/** @var int */
 	private $baseAmount = 0;
 
-	/** @var int */
-	private $type;
 
 	/**
-	 * @param int $type
+	 * @param WoodType $type
 	 */
-	public function __construct($type = Sapling::OAK){
-		$this->type = $type;
+	public function __construct(private WoodType $type){
 	}
 
 	/**
@@ -81,11 +78,11 @@ class Tree extends Populator{
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
-		for($y = 127; $y >= 0; --$y){
-			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
-			if($b === Block::DIRT or $b === Block::GRASS){
+		for($y = 250; $y >= 0; --$y){
+			$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z));
+			if($id === BlockNames::DIRT or $id === BlockNames::GRASS_BLOCK){
 				return $y + 1;
-			}elseif($b !== Block::AIR and $b !== Block::SNOW_LAYER){
+			}elseif($id !== BlockNames::AIR and $id !== BlockNames::SNOW_LAYER){
 				return -1;
 			}
 		}

@@ -192,7 +192,7 @@ abstract class LightUpdate{
 	 */
 	protected function computeSpreadLight(int $x, int $y, int $z, int $newAdjacentLevel){
 		$current = $this->getLight($x, $y, $z);
-		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($x & Chunk::COORD_MASK, $y & Chunk::COORD_MASK, $z & Chunk::COORD_MASK, 0));
+		$id = RuntimeBlockMapping::getIdFromRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($x & Chunk::COORD_MASK, $y & Chunk::COORD_MASK, $z & Chunk::COORD_MASK));
 		$potentialLight = $newAdjacentLevel - (BlockFactory::$lightFilter[$id] ?? 15);
 
 		if($current < $potentialLight){

@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\particle;
 
-use pocketmine\block\BlockIds;
+use pocketmine\block\BlockNames;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
@@ -99,7 +99,7 @@ class FloatingTextParticle extends Particle{
 				Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT, 0.0],
 				Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT, 0.0],
 				Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $name],
-				Entity::DATA_VARIANT =>[Entity::DATA_TYPE_INT, RuntimeBlockMapping::toStaticRuntimeId(BlockIds::AIR)],
+				Entity::DATA_VARIANT =>[Entity::DATA_TYPE_INT, RuntimeBlockMapping::toRuntimeId(BlockNames::AIR)],
 				Entity::DATA_ALWAYS_SHOW_NAMETAG => [Entity::DATA_TYPE_BYTE, 1],
 			];
 

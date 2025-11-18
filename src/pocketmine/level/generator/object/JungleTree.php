@@ -23,15 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\Block;
-use pocketmine\block\Wood;
+use pocketmine\block\BlockNames;
 
 class JungleTree extends Tree{
-
-	public function __construct(){
-		$this->trunkBlock = Block::LOG;
-		$this->leafBlock = Block::LEAVES;
-		$this->type = Wood::JUNGLE;
-		$this->treeHeight = 8;
-	}
+	public $trunkBlock = BlockNames::JUNGLE_LOG;
+	/** @var string */
+	public $leafBlock = BlockNames::JUNGLE_LEAVES;
+	public $treeHeight = 8;
 }

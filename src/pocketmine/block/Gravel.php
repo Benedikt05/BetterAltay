@@ -29,7 +29,7 @@ use function mt_rand;
 
 class Gravel extends Fallable{
 
-	protected $id = self::GRAVEL;
+	protected string $id = BlockNames::GRAVEL;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

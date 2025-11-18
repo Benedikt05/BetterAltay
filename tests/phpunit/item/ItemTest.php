@@ -25,6 +25,7 @@ namespace pocketmine\item;
 
 use PHPUnit\Framework\TestCase;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 
@@ -40,7 +41,7 @@ class ItemTest extends TestCase{
 	 * Test for issue #1145 (items aren't considered equal after NBT serializing and deserializing
 	 */
 	public function testItemEquals() : void{
-		$item = ItemFactory::get(Item::STONE)->setCustomName("HI");
+		$item = ItemFactory::get(BlockNames::STONE)->setCustomName("HI");
 		$item2 = Item::nbtDeserialize($item->nbtSerialize());
 		self::assertTrue($item2->equals($item));
 		self::assertTrue($item->equals($item2));
@@ -50,7 +51,7 @@ class ItemTest extends TestCase{
 	 * Test that same items without NBT are considered equal
 	 */
 	public function testItemEqualsNoNbt() : void{
-		$item1 = ItemFactory::get(Item::DIAMOND_SWORD);
+		$item1 = ItemFactory::get(ItemNames::DIAMOND_SWORD);
 		$item2 = clone $item1;
 		self::assertTrue($item1->equals($item2));
 	}

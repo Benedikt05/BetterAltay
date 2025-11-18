@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\end;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\end\populator\EndPillar;
@@ -108,13 +109,13 @@ class End extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
-		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::END_STONE);
+		$rid = RuntimeBlockMapping::toRuntimeId(BlockNames::END_STONE);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 
 				$biome = Biome::getBiome(Biome::END);
 				$biome->setGroundCover([
-					Block::get(Block::OBSIDIAN, 0)
+					Block::get(BlockNames::OBSIDIAN, 0)
 				]);
 
 				for ($y = 0; $y < 255; $y++){
@@ -136,7 +137,7 @@ class End extends Generator{
 					$distance = $distance->distance(new Vector3($chunkX * 16 + $x, ($y / 1.3), $chunkZ * 16 + $z));
 
 					if($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400){
-						$chunk->setBlockId($x, $y, $z, $rid, 0);
+						$chunk->setBlockId($x, $y, $z, $rid);
 					}
 				}
 			}

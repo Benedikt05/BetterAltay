@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\inventory;
 
 use InvalidArgumentException;
+use pocketmine\block\BlockNames;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use function array_map;
@@ -166,7 +167,7 @@ class ShapedRecipe implements CraftingRecipe{
 
 	public function getIngredient(int $x, int $y) : Item{
 		$exists = $this->ingredientList[$this->shape[$y][$x]] ?? null;
-		return $exists !== null ? clone $exists : ItemFactory::get(Item::AIR, 0, 0);
+		return $exists !== null ? clone $exists : ItemFactory::get(BlockNames::AIR, 0, 0);
 	}
 
 	/**

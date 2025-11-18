@@ -1620,13 +1620,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$diffY = $y - $floorY;
 		$diffZ = $z - $floorZ;
 
-		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ));
-		[$wastId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX - 1, $floorY, $floorZ));
-		[$eastId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX + 1, $floorY, $floorZ));
-		[$downId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY - 1, $floorZ));
-		[$upId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY + 1, $floorZ));
-		[$northId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ - 1));
-		[$southId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ + 1));
+		$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ));
+		$wastId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX - 1, $floorY, $floorZ));
+		$eastId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX + 1, $floorY, $floorZ));
+		$downId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX, $floorY - 1, $floorZ));
+		$upId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX, $floorY + 1, $floorZ));
+		$northId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ - 1));
+		$southId = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($floorX, $floorY, $floorZ + 1));
 		if(BlockFactory::$solid[$id] ?? false){
 			$westNonSolid = !(BlockFactory::$solid[$wastId] ?? true);
 			$eastNonSolid = !(BlockFactory::$solid[$eastId] ?? true);

@@ -23,7 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
+
 class WoodenDoor extends Door{
+
+	public function __construct(protected WoodType $material, int $meta = 0) {
+		parent::__construct("minecraft:" . $this->material->getType() . "_door", $meta, $this->material->getName() . " Door");
+		$this->itemId = $this->id;
+	}
 
 	public function getHardness() : float{
 		return 3;

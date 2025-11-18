@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\ColorType;
 use pocketmine\block\utils\ColorBlockMetaHelper;
 use pocketmine\item\Item;
 
 class Wool extends Solid{
 
-	protected $id = self::WOOL;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected ColorType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_wool";
 		$this->meta = $meta;
 	}
 
@@ -43,7 +43,7 @@ class Wool extends Solid{
 	}
 
 	public function getName() : string{
-		return ColorBlockMetaHelper::getColorFromMeta($this->getVariant()) . " Wool";
+		return $this->material->getName() . " Wool";
 	}
 
 	public function getBreakTime(Item $item) : float{

@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\item\Item;
+use pocketmine\item\ItemNames;
 use pocketmine\level\generator\object\Tree;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -39,27 +41,19 @@ class Sapling extends Flowable{
 	public const ACACIA = 4;
 	public const DARK_OAK = 5;
 
-	protected $id = self::SAPLING;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_sapling";
+		$this->itemId = $this->id;
 		$this->meta = $meta;
 	}
 
 	public function getName() : string{
-		static $names = [
-			0 => "Oak Sapling",
-			1 => "Spruce Sapling",
-			2 => "Birch Sapling",
-			3 => "Jungle Sapling",
-			4 => "Acacia Sapling",
-			5 => "Dark Oak Sapling"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		return $this->material->getName() . " Sapling";
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
-		if($down->getId() === self::GRASS or $down->getId() === self::DIRT or $down->getId() === self::FARMLAND){
+		if($down->getId() === BlockNames::GRASS_BLOCK or $down->getId() === BlockNames::DIRT or $down->getId() === BlockNames::FARMLAND){
 			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
 
 			return true;
@@ -69,14 +63,14 @@ class Sapling extends Flowable{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($item->getId() === Item::DYE and $item->getDamage() === 0x0F){ //Bonemeal
+		if($item->getId() === ItemNames::BONE_MEAL){
 			//TODO: change log type
 			#add BlockGrowEvent
 			$block = clone $this;
 			$ev = new BlockGrowEvent($this, $block);
 			$ev->call();
 			if(!$ev->isCancelled()){
-			    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+			    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->material);
 			}
 
 			$item->pop();
@@ -104,7 +98,7 @@ class Sapling extends Flowable{
 				$ev = new BlockGrowEvent($this, $block);
 			        $ev->call();
 			        if(!$ev->isCancelled()){
-				    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+				    Tree::growTree($this->getLevelNonNull(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->material);
 			        }
 			}else{
 				$this->meta |= 0x08;
@@ -119,5 +113,9 @@ class Sapling extends Flowable{
 
 	public function getFuelTime() : int{
 		return 100;
+	}
+
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

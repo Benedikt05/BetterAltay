@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Lapis extends Solid{
 
-	protected $id = self::LAPIS_BLOCK;
+	protected string $id = BlockNames::LAPIS_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

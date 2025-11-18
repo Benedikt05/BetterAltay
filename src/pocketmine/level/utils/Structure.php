@@ -26,9 +26,8 @@ namespace pocketmine\level\utils;
 
 use Exception;
 use InvalidStateException;
+use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
-use pocketmine\item\ItemBlock;
-use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\BigEndianNBTStream;
@@ -155,21 +154,17 @@ class Structure{
 						$type = $palette[$state];
 						if($type instanceof CompoundTag and $type->hasTag(self::TAG_BLOCK_NAME, StringTag::class)){
 							try{
-								$item = ItemFactory::fromString($type->getString(self::TAG_BLOCK_NAME));
+								$block = BlockFactory::get($type->getString(self::TAG_BLOCK_NAME));
 							}catch(Exception $e){
 								continue; // unexpected block id given, continue
 							}
 
-							if($item instanceof ItemBlock){
-								$block = $item->getBlock();
-
-								if($type->hasTag(self::TAG_BLOCK_PROPERTIES, CompoundTag::class)){
-									// TODO
-									// this may just when api is 4.0 because we need block state implementation to do this
-								}
-
-								$level->setBlock($baseVector->add($tempVector->setComponents(...$pos)), $block, true, true);
+							if($type->hasTag(self::TAG_BLOCK_PROPERTIES, CompoundTag::class)){
+								// TODO
+								// this may just when api is 4.0 because we need block state implementation to do this
 							}
+
+							$level->setBlock($baseVector->add($tempVector->setComponents(...$pos)), $block, true, true);
 						}
 					}
 				}

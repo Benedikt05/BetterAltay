@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\end\populator;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -59,13 +59,13 @@ class EndPillar extends Populator{
 		if(mt_rand(0, 99) < 10){
 			$this->level = $level;
 			$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
-			$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::OBSIDIAN);
+			$rid = RuntimeBlockMapping::toRuntimeId(BlockNames::OBSIDIAN);
 			for($i = 0; $i < $amount; ++$i){
 				$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 				$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
 				$y = $this->getHighestWorkableBlock($x, $z);
-				[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
-				if($id == Block::END_STONE){
+				$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z));
+				if($id == BlockNames::END_STONE){
 					$height = mt_rand(28, 50);
 					for($ny = $y; $ny < $y + $height; $ny++){
 						for($r = 0.5; $r < 5; $r += 0.5){
@@ -83,8 +83,8 @@ class EndPillar extends Populator{
 
 	private function getHighestWorkableBlock($x, $z){
 		for($y = 127; $y >= 0; --$y){
-			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y, $z));
-			if($b == Block::END_STONE){
+			$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z));
+			if($id == BlockNames::END_STONE){
 				break;
 			}
 		}

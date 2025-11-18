@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\mapper;
 
 use InvalidArgumentException;
+use pocketmine\block\BlockNames;
+use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
@@ -47,9 +49,9 @@ class CreativeItemMapper {
 			$icon = $group["icon"];
 
 			try{
-				$iconValue = ItemFactory::fromStringSingle($icon["id"]);
+				$iconValue = ItemFactory::get($icon["id"]);
 			}catch(InvalidArgumentException $ignore){
-				$iconValue = ItemFactory::fromStringSingle("minecraft:air");
+				$iconValue = ItemFactory::get("minecraft:air");
 			}
 
 			$this->groups[] = new CreativeGroupEntry($categoryId, $name, $iconValue);
@@ -60,8 +62,12 @@ class CreativeItemMapper {
 			throw new AssumptionFailedError("Missing required items");
 
 		foreach($items as $item){
-			[$id, $meta] = ItemTranslator::getInstance()->fromStringId($item["id"]);
-			$itemValue = ItemFactory::get($id, $meta);
+			$itemValue = ItemFactory::get($item["id"]);
+			if ($itemValue instanceof ItemBlock){
+				if ($itemValue->getBlock()->getId() === BlockNames::UNKNOWN) {
+					continue;
+				}
+			}
 
 			if(isset($item["damage"])){
 				$itemValue->setDamage($item["damage"]);

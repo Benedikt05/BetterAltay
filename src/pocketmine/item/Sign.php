@@ -25,17 +25,37 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
+use pocketmine\block\material\WoodType;
 
 class Sign extends Item{
-	public function __construct(int $meta = 0){
-		parent::__construct(self::SIGN, $meta, "Sign");
+	public function __construct(protected WoodType $material, $meta = 0){
+		parent::__construct("minecraft:" . $material->getType() . "_sign", $meta, "Sign");
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(Block::SIGN_POST);
+		return BlockFactory::get("minecraft:" . self::resolveWoodPrefix($this->material) . "standing_sign");
 	}
 
 	public function getMaxStackSize() : int{
 		return 16;
+	}
+
+	/**
+	 * @return WoodType
+	 */
+	public function getMaterial() : WoodType{
+		return $this->material;
+	}
+
+	public static function resolveWoodPrefix(WoodType $material) : string{
+		if ($material->equals(WoodType::OAK())) {
+			return "";
+		}
+		if ($material->equals(WoodType::DARK_OAK())) {
+			return "darkoak_";
+		}
+
+		return $material->getType() . "_";
 	}
 }

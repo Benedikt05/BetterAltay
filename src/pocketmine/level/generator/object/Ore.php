@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\level\ChunkManager;
 use pocketmine\math\VectorMath;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -47,8 +47,7 @@ class Ore{
 	}
 
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z) : bool{
-		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($x, $y, $z));
- 		return $id === Block::STONE;
+ 		return RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x, $y, $z)) === BlockNames::STONE;
 	}
 
 	/**
@@ -64,7 +63,7 @@ class Ore{
 		$z2 = $z + 8 - $offset->y;
 		$y1 = $y + $this->random->nextBoundedInt(3) + 2;
 		$y2 = $y + $this->random->nextBoundedInt(3) + 2;
-		$rid = RuntimeBlockMapping::toStaticRuntimeId($this->type->material->getId(), $this->type->material->getDamage());
+		$rid = RuntimeBlockMapping::toRuntimeId($this->type->material->getId(), $this->type->material->getDamage());
 		for($count = 0; $count <= $clusterSize; ++$count){
 			$seedX = $x1 + ($x2 - $x1) * $count / $clusterSize;
 			$seedY = $y1 + ($y2 - $y1) * $count / $clusterSize;
@@ -92,8 +91,8 @@ class Ore{
 								$sizeZ = ($zz + 0.5 - $seedZ) / $size;
 								$sizeZ *= $sizeZ;
 
-								[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($xx, $yy, $zz));
-								if(($sizeX + $sizeY + $sizeZ) < 1 and $id === Block::STONE){
+								$id = RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($xx, $yy, $zz));
+								if(($sizeX + $sizeY + $sizeZ) < 1 and $id === BlockNames::STONE){
 									$level->setBlockIdAt($xx, $yy, $zz, $rid);
 								}
 							}

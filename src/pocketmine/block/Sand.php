@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+
 class Sand extends Fallable{
 
-	protected $id = self::SAND;
-
-	public function __construct(int $meta = 0){
+	public function __construct(string $id = BlockNames::SAND, int $meta = 0){
+		$this->id = $id;
 		$this->meta = $meta;
 	}
 
@@ -40,7 +40,7 @@ class Sand extends Fallable{
 	}
 
 	public function getName() : string{
-		if($this->getVariant() === 0x01){
+		if($this->id = BlockNames::RED_SAND) {
 			return "Red Sand";
 		}
 

@@ -23,16 +23,25 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
+use pocketmine\item\Sign;
+
 class WallSign extends SignPost{
 
-	protected $id = self::WALL_SIGN;
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$type = Sign::resolveWoodPrefix($this->material);
+		$this->id = "minecraft:" . $type . "wall_sign";
+		$this->itemId = "minecraft:" . $type . "sign";
+		$this->meta = $meta;
+	}
 
 	public function getName() : string{
-		return "Wall Sign";
+		return $this->material->getName() . " Wall Sign";
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide($this->meta ^ 0x01)->getId() === self::AIR){
+		$side = ($this->meta % 2 === 0) ? $this->meta + 1 : $this->meta - 1;
+		if($this->getSide($side)->getId() === BlockNames::AIR){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}

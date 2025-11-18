@@ -23,22 +23,20 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\Wood;
+use pocketmine\block\BlockNames;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
 use function abs;
 
 class SpruceTree extends Tree{
-
-	public function __construct(){
-		$this->trunkBlock = Block::LOG;
-		$this->leafBlock = Block::LEAVES;
-		$this->type = Wood::SPRUCE;
-		$this->treeHeight = 10;
-	}
+	/** @var string */
+	public $trunkBlock = BlockNames::SPRUCE_LOG;
+	/** @var string */
+	public $leafBlock = BlockNames::SPRUCE_LEAVES;
+	/** @var int */
+	public $treeHeight = 10;
 
 	/**
 	 * @return void
@@ -55,7 +53,7 @@ class SpruceTree extends Tree{
 		$maxR = 1;
 		$minR = 0;
 
-		$rid = RuntimeBlockMapping::toStaticRuntimeId($this->leafBlock, $this->type);
+		$rid = RuntimeBlockMapping::toRuntimeId($this->leafBlock);
 		for($yy = 0; $yy <= $topSize; ++$yy){
 			$yyy = $y + $this->treeHeight - $yy;
 
@@ -67,7 +65,7 @@ class SpruceTree extends Tree{
 						continue;
 					}
 
-					if(!BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($xx, $yyy, $zz)))->isSolid()){
+					if(!BlockFactory::get(...RuntimeBlockMapping::fromRuntimeId($level->getBlockIdAt($xx, $yyy, $zz)))->isSolid()){
 						$level->setBlockIdAt($xx, $yyy, $zz, $rid);
 					}
 				}

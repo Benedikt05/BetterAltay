@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\populator;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
+use pocketmine\block\Leaves;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
@@ -57,7 +59,7 @@ class TallGrass extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount) + $this->baseAmount;
-		$rid = RuntimeBlockMapping::toStaticRuntimeId(Block::TALL_GRASS, 1);
+		$rid = RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS, 1);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
@@ -70,16 +72,17 @@ class TallGrass extends Populator{
 	}
 
 	private function canTallGrassStay(int $x, int $y, int $z) : bool{
-		[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId( $this->level->getBlockIdAt($x, $y, $z));
-		[$up, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->level->getBlockIdAt($x, $y - 1, $z));
-		return ($b === Block::AIR or $b === Block::SNOW_LAYER) and $up === Block::GRASS;
+		$id = RuntimeBlockMapping::getIdFromRuntimeId( $this->level->getBlockIdAt($x, $y, $z));
+		$down = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y - 1, $z));
+		return ($id === BlockNames::AIR or $id === BlockNames::SNOW_LAYER) and $down === BlockNames::GRASS_BLOCK;
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
 		for($y = 127; $y >= 0; --$y){
 			$rid = $this->level->getBlockIdAt($x, $y, $z);
-			[$b, ] = RuntimeBlockMapping::fromStaticRuntimeId($rid);
-			if($rid === RuntimeBlockMapping::AIR() and $b !== Block::LEAVES and $b !== Block::LEAVES2 and $b !== Block::SNOW_LAYER){
+			[$id, $meta] = RuntimeBlockMapping::fromRuntimeId($rid);
+			$block = BlockFactory::get($id, $meta);
+			if($rid === RuntimeBlockMapping::AIR() && !$block instanceof Leaves && $id !== BlockNames::SNOW_LAYER){
 				return $y + 1;
 			}
 		}

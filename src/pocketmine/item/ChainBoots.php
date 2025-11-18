@@ -25,7 +25,7 @@ namespace pocketmine\item;
 
 class ChainBoots extends Armor{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::CHAIN_BOOTS, $meta, "Chainmail Boots");
+		parent::__construct(ItemNames::CHAINMAIL_BOOTS, $meta, "Chainmail Boots");
 	}
 
 	public function getDefensePoints() : int{

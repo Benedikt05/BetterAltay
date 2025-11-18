@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Dirt extends Solid{
 
-	protected $id = self::DIRT;
+	protected string $id = BlockNames::DIRT;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -54,9 +54,9 @@ class Dirt extends Solid{
 		if($item instanceof Hoe){
 			$item->applyDamage(1);
 			if($this->meta === 1){
-				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::DIRT), true);
+				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::DIRT), true);
 			}else{
-				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::FARMLAND), true);
+				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::FARMLAND), true);
 			}
 
 			return true;

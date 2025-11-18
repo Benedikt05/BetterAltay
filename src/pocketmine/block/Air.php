@@ -32,7 +32,7 @@ use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
  */
 class Air extends Transparent{
 
-	protected $id = self::AIR;
+	protected string $id = BlockNames::AIR;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

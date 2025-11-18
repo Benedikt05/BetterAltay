@@ -32,7 +32,7 @@ use pocketmine\Player;
 class FishingRod extends Tool{
 
 	public function __construct(){
-		parent::__construct(self::FISHING_ROD, 0, "Fishing Rod");
+		parent::__construct(ItemNames::FISHING_ROD, 0, "Fishing Rod");
 	}
 
 	public function getEnchantability() : int{

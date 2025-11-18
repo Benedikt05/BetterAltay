@@ -30,8 +30,8 @@ class PillarRotationHelper{
 	public static function getMetaFromFace(int $meta, int $face) : int{
 		$faces = [
 			Vector3::SIDE_DOWN => 0,
-			Vector3::SIDE_NORTH => 0x08,
-			Vector3::SIDE_WEST => 0x04
+			Vector3::SIDE_NORTH => 0x02,
+			Vector3::SIDE_WEST => 0x01
 		];
 
 		return ($meta & 0x03) | $faces[$face & ~0x01];

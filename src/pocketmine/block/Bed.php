@@ -25,6 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemNames;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
@@ -38,10 +39,7 @@ class Bed extends Transparent{
 	public const BITFLAG_OCCUPIED = 0x04;
 	public const BITFLAG_HEAD = 0x08;
 
-	protected $id = self::BED_BLOCK;
-
-	protected $itemId = Item::BED;
-
+	protected string $id = BlockNames::BED;
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
 	}
@@ -196,10 +194,10 @@ class Bed extends Transparent{
 	private function getItem() : Item{
 		$tile = $this->getLevelNonNull()->getTile($this);
 		if($tile instanceof TileBed){
-			return ItemFactory::get($this->getItemId(), $tile->getColor());
+			return ItemFactory::get(ItemNames::BED, $tile->getColor());
 		}
 
-		return ItemFactory::get($this->getItemId(), 14); //Red
+		return ItemFactory::get(ItemNames::BED, 14); //Red
 	}
 
 	public function isAffectedBySilkTouch() : bool{

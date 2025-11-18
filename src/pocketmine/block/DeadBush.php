@@ -31,7 +31,7 @@ use function mt_rand;
 
 class DeadBush extends Flowable{
 
-	protected $id = self::DEAD_BUSH;
+	protected string $id = BlockNames::DEADBUSH;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

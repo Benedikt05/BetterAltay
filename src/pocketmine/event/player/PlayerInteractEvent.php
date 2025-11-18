@@ -25,6 +25,7 @@ namespace pocketmine\event\player;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\event\Cancellable;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
@@ -61,7 +62,7 @@ class PlayerInteractEvent extends PlayerEvent implements Cancellable{
 		assert($block !== null or $touchVector !== null);
 		$this->player = $player;
 		$this->item = $item;
-		$this->blockTouched = $block ?? BlockFactory::get(0, 0, new Position(0, 0, 0, $player->level));
+		$this->blockTouched = $block ?? BlockFactory::get(BlockNames::AIR, 0, new Position(0, 0, 0, $player->level));
 		$this->touchVector = $touchVector ?? new Vector3(0, 0, 0);
 		$this->blockFace = $face;
 		$this->action = $action;

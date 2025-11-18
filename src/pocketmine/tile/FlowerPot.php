@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
+use pocketmine\block\BlockNames;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
@@ -35,11 +36,11 @@ class FlowerPot extends Spawnable{
 	private $item;
 
 	protected function readSaveData(CompoundTag $nbt) : void{
-		$this->item = ItemFactory::get($nbt->getShort(self::TAG_ITEM, 0, true), $nbt->getInt(self::TAG_ITEM_DATA, 0, true), 1);
+		$this->item = ItemFactory::get($nbt->getString(self::TAG_ITEM, BlockNames::AIR, true), $nbt->getInt(self::TAG_ITEM_DATA, 0, true), 1);
 	}
 
 	protected function writeSaveData(CompoundTag $nbt) : void{
-		$nbt->setShort(self::TAG_ITEM, $this->item->getId());
+		$nbt->setString(self::TAG_ITEM, $this->item->getId());
 		$nbt->setInt(self::TAG_ITEM_DATA, $this->item->getDamage());
 	}
 
@@ -82,7 +83,7 @@ class FlowerPot extends Spawnable{
 	 * @return void
 	 */
 	public function removeItem(){
-		$this->setItem(ItemFactory::get(Item::AIR, 0, 0));
+		$this->setItem(ItemFactory::get(BlockNames::AIR, 0, 0));
 	}
 
 	public function isEmpty() : bool{
@@ -90,7 +91,7 @@ class FlowerPot extends Spawnable{
 	}
 
 	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
-		$nbt->setShort(self::TAG_ITEM, $this->item->getId());
+		$nbt->setString(self::TAG_ITEM, $this->item->getId());
 		$nbt->setInt(self::TAG_ITEM_DATA, $this->item->getDamage());
 	}
 }

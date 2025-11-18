@@ -28,6 +28,13 @@ use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 class UnknownBlock extends Transparent{
 
+	protected string $id = BlockNames::UNKNOWN;
+
+	public function __construct(){
+		parent::__construct($this->id, 0, "Unknown Block");
+		$this->itemId = BlockNames::AIR;
+	}
+
 	public function getHardness() : float{
 		return 0;
 	}
@@ -38,5 +45,9 @@ class UnknownBlock extends Transparent{
 
 	public function getDrops(Item $item) : array{
 		return [];
+	}
+
+	public function getRuntimeId() : int{
+		return RuntimeBlockMapping::UNKNOWN();
 	}
 }

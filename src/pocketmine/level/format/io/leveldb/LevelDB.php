@@ -201,6 +201,7 @@ class LevelDB extends BaseLevelProvider{
 			//TODO: add support for limited worlds
 		}
 
+		$spawn = (new $generator)->getSpawn()->floor();
 		$levelData = new CompoundTag("", [
 			//Vanilla fields
 			new IntTag("DayCycleStopTime", -1),
@@ -213,9 +214,9 @@ class LevelDB extends BaseLevelProvider{
 			new IntTag("NetworkVersion", ProtocolInfo::CURRENT_PROTOCOL),
 			//new IntTag("Platform", 2), //TODO: find out what the possible values are for
 			new LongTag("RandomSeed", $seed),
-			new IntTag("SpawnX", 0),
-			new IntTag("SpawnY", 32767),
-			new IntTag("SpawnZ", 0),
+			new IntTag("SpawnX", $spawn->x),
+			new IntTag("SpawnY", $spawn->y),
+			new IntTag("SpawnZ", $spawn->z),
 			new IntTag("StorageVersion", self::CURRENT_STORAGE_VERSION),
 			new LongTag("Time", 0),
 			new ByteTag("eduLevel", 0),

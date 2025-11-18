@@ -36,30 +36,40 @@ abstract class Door extends Transparent{
 	}
 
 	public function isPassable() : bool{
-		return ($this->getFullDamage() & 0x04) > 0;
+		return (($this->meta >> 2) & 1) === 1;
 	}
 
-	private function getFullDamage() : int{
-		$damage = $this->getDamage();
-		$isUp = ($damage & 0x08) > 0;
+	public function getDirection() : int{
+		return $this->meta & 0b11;
+	}
 
-		if($isUp){
-			$down = $this->getSide(Vector3::SIDE_DOWN)->getDamage();
-			$up = $damage;
-		}else{
-			$down = $damage;
-			$up = $this->getSide(Vector3::SIDE_UP)->getDamage();
-		}
+	public function isOpen() : bool{
+		return (($this->meta >> 2) & 1) === 1;
+	}
 
-		$isRight = ($up & 0x01) > 0;
+	public function isUpper() : bool{
+		return (($this->meta >> 3) & 1) === 1;
+	}
 
-		return $down & 0x07 | ($isUp ? 8 : 0) | ($isRight ? 0x10 : 0);
+	public function isHingeRight() : bool{
+		return (($this->meta >> 4) & 1) === 1;
+	}
+
+	public function buildMeta(int $direction, int $open, int $upper, int $hinge) : int{
+		return
+			($direction & 0b11) |
+			(($open & 1) << 2) |
+			(($upper & 1) << 3) |
+			(($hinge & 1) << 4);
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
 
 		$f = 0.1875;
-		$damage = $this->getFullDamage();
+
+		$j = $this->getDirection();
+		$isOpen = $this->isOpen();
+		$isRight = $this->isHingeRight();
 
 		$bb = new AxisAlignedBB(
 			$this->x,
@@ -70,204 +80,119 @@ abstract class Door extends Transparent{
 			$this->z + 1
 		);
 
-		$j = $damage & 0x03;
-		$isOpen = (($damage & 0x04) > 0);
-		$isRight = (($damage & 0x10) > 0);
+		switch($j){
+			case 0:
+				if($isOpen){
+					if(!$isRight){
+						$bb->setBounds($this->x, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + $f);
+					}else{
+						$bb->setBounds($this->x, $this->y, $this->z + 1 - $f, $this->x + 1, $this->y + 1, $this->z + 1);
+					}
+				}else{
+					$bb->setBounds($this->x, $this->y, $this->z, $this->x + $f, $this->y + 1, $this->z + 1);
+				}
+				break;
 
-		if($j === 0){
-			if($isOpen){
-				if(!$isRight){
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + $f
-					);
+			case 1:
+				if($isOpen){
+					if(!$isRight){
+						$bb->setBounds($this->x + 1 - $f, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + 1);
+					}else{
+						$bb->setBounds($this->x, $this->y, $this->z, $this->x + $f, $this->y + 1, $this->z + 1);
+					}
 				}else{
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z + 1 - $f,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + 1
-					);
+					$bb->setBounds($this->x, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + $f);
 				}
-			}else{
-				$bb->setBounds(
-					$this->x,
-					$this->y,
-					$this->z,
-					$this->x + $f,
-					$this->y + 1,
-					$this->z + 1
-				);
-			}
-		}elseif($j === 1){
-			if($isOpen){
-				if(!$isRight){
-					$bb->setBounds(
-						$this->x + 1 - $f,
-						$this->y,
-						$this->z,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + 1
-					);
+				break;
+
+			case 2:
+				if($isOpen){
+					if(!$isRight){
+						$bb->setBounds($this->x, $this->y, $this->z + 1 - $f, $this->x + 1, $this->y + 1, $this->z + 1);
+					}else{
+						$bb->setBounds($this->x, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + $f);
+					}
 				}else{
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z,
-						$this->x + $f,
-						$this->y + 1,
-						$this->z + 1
-					);
+					$bb->setBounds($this->x + 1 - $f, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + 1);
 				}
-			}else{
-				$bb->setBounds(
-					$this->x,
-					$this->y,
-					$this->z,
-					$this->x + 1,
-					$this->y + 1,
-					$this->z + $f
-				);
-			}
-		}elseif($j === 2){
-			if($isOpen){
-				if(!$isRight){
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z + 1 - $f,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + 1
-					);
+				break;
+
+			case 3:
+				if($isOpen){
+					if(!$isRight){
+						$bb->setBounds($this->x, $this->y, $this->z, $this->x + $f, $this->y + 1, $this->z + 1);
+					}else{
+						$bb->setBounds($this->x + 1 - $f, $this->y, $this->z, $this->x + 1, $this->y + 1, $this->z + 1);
+					}
 				}else{
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + $f
-					);
+					$bb->setBounds($this->x, $this->y, $this->z + 1 - $f, $this->x + 1, $this->y + 1, $this->z + 1);
 				}
-			}else{
-				$bb->setBounds(
-					$this->x + 1 - $f,
-					$this->y,
-					$this->z,
-					$this->x + 1,
-					$this->y + 1,
-					$this->z + 1
-				);
-			}
-		}elseif($j === 3){
-			if($isOpen){
-				if(!$isRight){
-					$bb->setBounds(
-						$this->x,
-						$this->y,
-						$this->z,
-						$this->x + $f,
-						$this->y + 1,
-						$this->z + 1
-					);
-				}else{
-					$bb->setBounds(
-						$this->x + 1 - $f,
-						$this->y,
-						$this->z,
-						$this->x + 1,
-						$this->y + 1,
-						$this->z + 1
-					);
-				}
-			}else{
-				$bb->setBounds(
-					$this->x,
-					$this->y,
-					$this->z + 1 - $f,
-					$this->x + 1,
-					$this->y + 1,
-					$this->z + 1
-				);
-			}
+				break;
 		}
 
 		return $bb;
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() === self::AIR){ //Replace with common break method
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), false);
-			if($this->getSide(Vector3::SIDE_UP) instanceof Door){
-				$this->getLevelNonNull()->setBlock($this->getSide(Vector3::SIDE_UP), BlockFactory::get(Block::AIR), false);
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() === BlockNames::AIR){ //Replace with common break method
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::AIR));
+
+			$up = $this->getSide(Vector3::SIDE_UP);
+			if($up instanceof Door){
+				$this->getLevelNonNull()->setBlock($up, BlockFactory::get(BlockNames::AIR));
 			}
 		}
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if($face === Vector3::SIDE_UP){
-			$blockUp = $this->getSide(Vector3::SIDE_UP);
-			$blockDown = $this->getSide(Vector3::SIDE_DOWN);
-			if(!$blockUp->canBeReplaced() or $blockDown->isTransparent()){
-				return false;
-			}
-			$direction = $player instanceof Player ? $player->getDirection() : 0;
-			$faces = [
-				0 => 3,
-				1 => 4,
-				2 => 2,
-				3 => 5
-			];
-			$next = $this->getSide($faces[($direction + 2) % 4]);
-			$next2 = $this->getSide($faces[$direction]);
-			$metaUp = 0x08;
-			if($next->getId() === $this->getId() or (!$next2->isTransparent() and $next->isTransparent())){ //Door hinge
-				$metaUp |= 0x01;
-			}
-
-			$this->setDamage($player->getDirection() & 0x03);
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true); //Bottom
-			$this->getLevelNonNull()->setBlock($blockUp, BlockFactory::get($this->getId(), $metaUp), true); //Top
-			return true;
-		}
-
-		return false;
-	}
-
-	public function onActivate(Item $item, Player $player = null) : bool{
-		if(($this->getDamage() & 0x08) === 0x08){ //Top
-			$down = $this->getSide(Vector3::SIDE_DOWN);
-			if($down->getId() === $this->getId()){
-				$meta = $down->getDamage() ^ 0x04;
-				$this->level->setBlock($down, BlockFactory::get($this->getId(), $meta), true);
-				$this->level->addSound(new DoorSound($this));
-				return true;
-			}
-
+		if($face !== Vector3::SIDE_UP){
 			return false;
-		}else{
-			$this->meta ^= 0x04;
-			$this->level->setBlock($this, $this, true);
-			$this->level->addSound(new DoorSound($this));
 		}
+
+		$blockUp = $this->getSide(Vector3::SIDE_UP);
+		$blockDown = $this->getSide(Vector3::SIDE_DOWN);
+
+		if(!$blockUp->canBeReplaced() || $blockDown->isTransparent()){
+			return false;
+		}
+
+		$direction = $player instanceof Player ? ($player->getDirection() & 0x03) : 0;
+
+		$faces = [0 => 3, 1 => 4, 2 => 2, 3 => 5];
+		$next = $this->getSide($faces[($direction + 2) % 4]);
+		$next2 = $this->getSide($faces[$direction]);
+
+		$hinge = ($next->getId() === $this->getId() || (!$next2->isTransparent() && $next->isTransparent())) ? 1 : 0;
+
+		$bottomMeta = $this->buildMeta($direction, 0, 0, $hinge);
+		$this->getLevelNonNull()->setBlock($blockReplace, BlockFactory::get($this->getId(), $bottomMeta), true);
+
+		$topMeta = $this->buildMeta($direction, 0, 1, $hinge);
+		$this->getLevelNonNull()->setBlock($blockUp, BlockFactory::get($this->getId(), $topMeta), true);
 
 		return true;
 	}
 
-	public function getVariantBitmask() : int{
-		return 0;
+	public function onActivate(Item $item, Player $player = null) : bool{
+		if($this->isUpper()){ //Top
+			$down = $this->getSide(Vector3::SIDE_DOWN);
+			if($down->getId() === $this->getId()){
+				$downMeta = $down->getDamage() ^ (1 << 2);
+				$this->level->setBlock($down, BlockFactory::get($this->getId(), $downMeta), true);
+				$this->level->addSound(new DoorSound($this));
+				return true;
+			}
+			return false;
+		}
+
+		$this->meta ^= (1 << 2);
+		$this->level->setBlock($this, $this, true);
+		$this->level->addSound(new DoorSound($this));
+		return true;
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
-		if(($this->meta & 0x08) === 0){ //bottom half only
+		if(!$this->isUpper()){ //bottom half only
 			return parent::getDropsForCompatibleTool($item);
 		}
 
@@ -279,7 +204,7 @@ abstract class Door extends Transparent{
 	}
 
 	public function getAffectedBlocks() : array{
-		if(($this->getDamage() & 0x08) === 0x08){
+		if($this->isUpper()){
 			$down = $this->getSide(Vector3::SIDE_DOWN);
 			if($down->getId() === $this->getId()){
 				return [$this, $down];

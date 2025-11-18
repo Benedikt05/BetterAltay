@@ -25,6 +25,6 @@ namespace pocketmine\item;
 
 class Arrow extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::ARROW, $meta, "Arrow");
+		parent::__construct(ItemNames::ARROW, $meta, "Arrow");
 	}
 }

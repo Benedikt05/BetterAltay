@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\biome;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\level\generator\populator\TallGrass;
 use pocketmine\level\generator\populator\Tree;
 
@@ -31,7 +32,7 @@ class MountainsBiome extends GrassyBiome{
 	public function __construct(){
 		parent::__construct();
 
-		$trees = new Tree();
+		$trees = new Tree(WoodType::OAK());
 		$trees->setBaseAmount(1);
 		$this->addPopulator($trees);
 

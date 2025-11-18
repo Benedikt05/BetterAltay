@@ -26,7 +26,7 @@ namespace pocketmine\network\mcpe;
 #include <rules/DataPacket.h>
 
 use Closure;
-use pocketmine\block\BlockIds;
+use pocketmine\block\BlockNames;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
 use pocketmine\item\Durable;
@@ -226,7 +226,7 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getItemStack(Closure $readExtraCrapInTheMiddle) : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
-			return ItemFactory::get(0, 0, 0);
+			return ItemFactory::get(BlockNames::AIR, 0, 0);
 		}
 
 		$cnt = $this->getLShort();
@@ -306,7 +306,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
 	 */
 	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle) : void{
-		if($item->getId() === 0){
+		if($item->getId() === BlockNames::AIR){
 			$this->putVarInt(0);
 
 			return;
@@ -322,12 +322,9 @@ class NetworkBinaryStream extends BinaryStream{
 		$writeExtraCrapInTheMiddle($this);
 
 		$blockRuntimeId = 0;
-		$isBlockItem = $item->getId() < 256;
-		if($isBlockItem){
-			$block = $item->getBlock();
-			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
-			}
+		$blockId = ItemTranslator::getInstance()->toBlockId($item->getId());
+		if($blockId !== null && $blockId !== BlockNames::AIR){
+			$blockRuntimeId = $item->getBlock()->getRuntimeId();
 		}
 		$this->putVarInt($blockRuntimeId);
 
@@ -346,7 +343,7 @@ class NetworkBinaryStream extends BinaryStream{
 				$nbt = new CompoundTag();
 			}
 			$nbt->setInt(self::DAMAGE_TAG, $coreData);
-		}elseif($isBlockItem && $coreData !== 0){
+		}elseif($blockId !== null && $coreData !== 0){
 			//TODO HACK: This foul-smelling code ensures that we can correctly deserialize an item when the
 			//client sends it back to us, because as of 1.16.220, blockitems quietly discard their metadata
 			//client-side. Aside from being very annoying, this also breaks various server-side behaviours.
@@ -381,7 +378,7 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getRecipeIngredient() : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
-			return ItemFactory::get(ItemIds::AIR, 0, 0);
+			return ItemFactory::get(BlockNames::AIR, 0, 0);
 		}
 		$netData = $this->getVarInt();
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($netId, $netData);

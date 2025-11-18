@@ -34,6 +34,7 @@ use InvalidStateException;
 use pocketmine\block\Air;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\block\Liquid;
 use pocketmine\block\UnknownBlock;
 use pocketmine\entity\CreatureType;
@@ -279,8 +280,7 @@ class Level implements ChunkManager, Metadatable{
 	private $temporalVector;
 
 	/**
-	 * @var SplFixedArray
-	 * @phpstan-var SplFixedArray<Block>
+	 * @var []Block
 	 */
 	private $blockStates;
 
@@ -297,8 +297,8 @@ class Level implements ChunkManager, Metadatable{
 	private $tickedBlocksPerSubchunkPerTick = self::DEFAULT_TICKED_BLOCKS_PER_SUBCHUNK_PER_TICK;
 	/** @var bool */
 	private $clearChunksOnTick;
-	/** @var SplFixedArray<Block|null> */
-	private $randomTickBlocks;
+	/** @var Block[] */
+	private $randomTickBlocks = [];
 
 	/** @var LevelTimings */
 	public $timings;
@@ -464,11 +464,9 @@ class Level implements ChunkManager, Metadatable{
 
 		$dontTickBlocks = array_fill_keys($this->server->getProperty("chunk-ticking.disable-block-ticking", []), true);
 
-		$this->randomTickBlocks = new SplFixedArray(256);
-		foreach($this->randomTickBlocks as $id => $null){
-			$block = BlockFactory::get($id); //Make sure it's a copy
+		foreach($this->blockStates as $id => $block){
 			if(!isset($dontTickBlocks[$id]) and $block->ticksRandomly()){
-				$this->randomTickBlocks[$id] = $block;
+				$this->randomTickBlocks[$id] = clone $block;
 			}
 		}
 
@@ -1076,20 +1074,17 @@ class Level implements ChunkManager, Metadatable{
 				throw new TypeError("Expected Vector3 in blocks array, got " . (is_object($b) ? get_class($b) : gettype($b)));
 			}
 
-			if(!$b instanceof Block) {
-				$rid = $this->getBlockIdAt($b->x, $b->y, $b->z);
-				[$id, $meta] = RuntimeBlockMapping::fromStaticRuntimeId($rid);
-				$b = BlockFactory::get($id, $meta)->getRuntimeId();
-			}
-
 			$pk = new UpdateBlockPacket();
-
 			$pk->x = $b->x;
 			$pk->y = $b->y;
 			$pk->z = $b->z;
-
-			$pk->blockRuntimeId = $b->getRuntimeId();
 			$pk->dataLayerId = $layer;
+
+			if($b instanceof Block) {
+				$pk->blockRuntimeId = $b->getRuntimeId();
+			} else {
+				$pk->blockRuntimeId = $this->getBlockIdAt($b->x, $b->y, $b->z);
+			}
 
 			$pk->flags = $flags;
 
@@ -1135,14 +1130,14 @@ class Level implements ChunkManager, Metadatable{
 	/**
 	 * @return void
 	 */
-	public function addRandomTickedBlock(int $id){
+	public function addRandomTickedBlock(string $id){
 		$this->randomTickBlocks[$id] = BlockFactory::get($id);
 	}
 
 	/**
 	 * @return void
 	 */
-	public function removeRandomTickedBlock(int $id){
+	public function removeRandomTickedBlock(string $id){
 		$this->randomTickBlocks[$id] = null;
 	}
 
@@ -1215,7 +1210,7 @@ class Level implements ChunkManager, Metadatable{
 						$z = ($k >> 8) & Chunk::COORD_MASK;
 						$k >>= 12;
 
-						[$blockId, $meta] = RuntimeBlockMapping::fromStaticRuntimeId($subChunk->getBlockId($x, $y, $z, 0));
+						[$blockId, $meta] = RuntimeBlockMapping::fromRuntimeId($subChunk->getBlockId($x, $y, $z));
 						if(isset($this->randomTickBlocks[$blockId]) && $this->randomTickBlocks[$blockId] !== null){
 							/** @var Block $block */
 							$block = clone $this->randomTickBlocks[$blockId];
@@ -1584,7 +1579,8 @@ class Level implements ChunkManager, Metadatable{
 	 * @param bool $addToCache Whether to cache the block object created by this method call.
 	 */
 	public function getBlockAt(int $x, int $y, int $z, bool $cached = true, bool $addToCache = true, int $layer = 0) : Block{
-		$fullState = 0;
+		$id = BlockNames::UNKNOWN;
+		$meta = 0;
 		$relativeBlockHash = null;
 		$chunkHash = Level::chunkHash($x >> 4, $z >> 4);
 
@@ -1598,17 +1594,18 @@ class Level implements ChunkManager, Metadatable{
 			$chunk = $this->chunks[$chunkHash] ?? null;
 			if($chunk !== null){
 				$rid = $chunk->getBlockId($x & Chunk::COORD_MASK, $y, $z & Chunk::COORD_MASK, $layer);
-				[$id, $meta] = RuntimeBlockMapping::fromStaticRuntimeId($rid);
-				$fullState = ($id << 4 ) | $meta;
+				[$id, $meta] = RuntimeBlockMapping::fromRuntimeId($rid);
 			}else{
 				$addToCache = false;
 			}
 		}
 
-		if (isset($this->blockStates[$fullState & 0xfff])) {
-			$block = clone $this->blockStates[$fullState & 0xfff];
+
+		if (isset($this->blockStates[$id])) {
+			$block = clone $this->blockStates[$id];
+			$block->setDamage($meta);
 		} else {
-			$block = new UnknownBlock($fullState >> 4, $fullState & 0xf);
+			$block = new UnknownBlock();
 		}
 
 		$block->x = $x;
@@ -1652,7 +1649,7 @@ class Level implements ChunkManager, Metadatable{
 		$this->timings->doBlockSkyLightUpdates->startTiming();
 
 		$oldHeightMap = $this->getHeightMap($x, $z);
-		[$sourceId, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->getBlockIdAt($x, $y, $z));
+		$sourceId = RuntimeBlockMapping::getIdFromRuntimeId($this->getBlockIdAt($x, $y, $z));
 
 		$yPlusOne = $y + 1;
 
@@ -1682,7 +1679,7 @@ class Level implements ChunkManager, Metadatable{
 				$this->skyLightUpdate->setAndUpdateLight($x, $i, $z, 15);
 			}
 		}else{ //No heightmap change, block changed "underground"
-			$this->skyLightUpdate->setAndUpdateLight($x, $y, $z, max(0, $this->getHighestAdjacentBlockSkyLight($x, $y, $z) - BlockFactory::$lightFilter[$sourceId]));
+			$this->skyLightUpdate->setAndUpdateLight($x, $y, $z, max(0, $this->getHighestAdjacentBlockSkyLight($x, $y, $z) - (BlockFactory::$lightFilter[$sourceId] ?? 15)));
 		}
 
 		$this->timings->doBlockSkyLightUpdates->stopTiming();
@@ -1708,8 +1705,8 @@ class Level implements ChunkManager, Metadatable{
 	public function updateBlockLight(int $x, int $y, int $z){
 		$this->timings->doBlockLightUpdates->startTiming();
 
-		[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->getBlockIdAt($x, $y, $z));
-		$newLevel = max(BlockFactory::$light[$id], $this->getHighestAdjacentBlockLight($x, $y, $z) - BlockFactory::$lightFilter[$id]);
+		$id = RuntimeBlockMapping::getIdFromRuntimeId($this->getBlockIdAt($x, $y, $z));
+		$newLevel = max(BlockFactory::$light[$id], $this->getHighestAdjacentBlockLight($x, $y, $z) - (BlockFactory::$lightFilter[$id] ?? 15));
 
 		if($this->blockLightUpdate === null){
 			$this->blockLightUpdate = new BlockLightUpdate($this);
@@ -1776,14 +1773,14 @@ class Level implements ChunkManager, Metadatable{
 			$secondLayerBlock = $this->getBlock($pos, false, false, 1);
 			$secondLayerBlock->position($pos);
 			$secondLayerBlock->clearCaches();
-			$air = BlockFactory::get(Block::AIR);
+			$air = BlockFactory::get(BlockNames::AIR);
 			$air->position($pos);
 			$air->clearCaches();
 
 			if ($block instanceof Air) {
 				if ($secondLayerBlock instanceof Liquid){
 					$this->getChunkAtPosition($pos, true)->setBlockId($pos->x & Chunk::COORD_MASK, $pos->y, $pos->z & Chunk::COORD_MASK, $air->getRuntimeId(), 1);
-					$this->getChunkAtPosition($pos, true)->setBlockId($pos->x & Chunk::COORD_MASK, $pos->y, $pos->z & Chunk::COORD_MASK, $secondLayerBlock->getRuntimeId(), 0);
+					$this->getChunkAtPosition($pos, true)->setBlockId($pos->x & Chunk::COORD_MASK, $pos->y, $pos->z & Chunk::COORD_MASK, $secondLayerBlock->getRuntimeId());
 					$block = $secondLayerBlock;
 
 					if($direct){
@@ -1931,7 +1928,7 @@ class Level implements ChunkManager, Metadatable{
 		$affectedBlocks = $target->getAffectedBlocks();
 
 		if($item === null){
-			$item = ItemFactory::get(Item::AIR, 0, 0);
+			$item = ItemFactory::get(BlockNames::AIR, 0, 0);
 		}
 
 		$drops = [];
@@ -1959,7 +1956,7 @@ class Level implements ChunkManager, Metadatable{
 				if($tag instanceof ListTag){
 					foreach($tag as $v){
 						if($v instanceof StringTag){
-							$entry = ItemFactory::fromStringSingle($v->getValue());
+							$entry = ItemFactory::get($v->getValue());
 							if($entry->getId() > 0 and $entry->getBlock()->getId() === $target->getId()){
 								$canBreak = true;
 								break;
@@ -2045,7 +2042,7 @@ class Level implements ChunkManager, Metadatable{
 			return false;
 		}
 
-		if($blockClicked->getId() === Block::AIR){
+		if($blockClicked->getId() === BlockNames::AIR){
 			return false;
 		}
 
@@ -2111,7 +2108,7 @@ class Level implements ChunkManager, Metadatable{
 				if($tag instanceof ListTag){
 					foreach($tag as $v){
 						if($v instanceof StringTag){
-							$entry = ItemFactory::fromStringSingle($v->getValue());
+							$entry = ItemFactory::get($v->getValue());
 							if($entry->getId() > 0 and $entry->getBlock()->getId() === $blockClicked->getId()){
 								$canPlace = true;
 								break;
@@ -2127,10 +2124,6 @@ class Level implements ChunkManager, Metadatable{
 			if($ev->isCancelled()){
 				return false;
 			}
-		}
-
-		if ($this->getBlock($blockReplace->asVector3(), true, true, 1) instanceof Liquid) {
-			$this->setBlock($blockReplace->asVector3(), BlockFactory::get(Block::AIR), false, false, 1);
 		}
 
 		if(!$hand->place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
@@ -2347,8 +2340,8 @@ class Level implements ChunkManager, Metadatable{
 	}
 
 	/**
-	 * Gets the runtime ID of the block.
-	 *
+	 * Sets the runtime ID of the block.
+	 * @internal Use {@see getBlockAt()} instead.
 	 * @return int
 	 */
 	public function getBlockIdAt(int $x, int $y, int $z, int $layer = 0) : int{
@@ -2357,7 +2350,7 @@ class Level implements ChunkManager, Metadatable{
 
 	/**
 	 * Sets the runtime ID of the block.
-	 *
+	 * @internal Use {@see setBlock()} instead.
 	 * @return void
 	 */
 	public function setBlockIdAt(int $x, int $y, int $z, int $id, int $layer = 0) : void{
@@ -3008,7 +3001,7 @@ class Level implements ChunkManager, Metadatable{
 		$z = (int) $v->z;
 		if($chunk !== null and $chunk->isGenerated()){
 			$y = (int) min($max - 2, $v->y);
-			$wasAir = ($chunk->getBlockId($x & Chunk::COORD_MASK, $y - 1, $z & Chunk::COORD_MASK, 0) === RuntimeBlockMapping::AIR());
+			$wasAir = ($chunk->getBlockId($x & Chunk::COORD_MASK, $y - 1, $z & Chunk::COORD_MASK) === RuntimeBlockMapping::AIR());
 			for(; $y > 0; --$y){
 				if($this->isFullBlock($this->getBlockAt($x, $y, $z))){
 					if($wasAir){

@@ -24,9 +24,8 @@ declare(strict_types=1);
 namespace pocketmine\level\generator;
 
 use InvalidArgumentException;
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\item\ItemFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\format\Chunk;
 use pocketmine\level\generator\object\OreType;
@@ -34,59 +33,56 @@ use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
-use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\utils\Random;
 use function array_map;
 use function count;
 use function explode;
 use function preg_match;
 use function preg_match_all;
+use function trim;
 
 class Flat extends Generator{
-	/** @var Chunk */
-	private $chunk;
+
 	/** @var Populator[] */
 	private $populators = [];
-	/**
-	 * @var int[][]
-	 * @phpstan-var array<int, array{0: int, 1: int}>
-	 */
-	private $structure;
+
+	/** @var array<int, string}> */
+	private $structure = [];
+
 	/** @var int */
-	private $floorLevel;
+	private $floorLevel = 0;
+
 	/** @var int */
-	private $biome;
-	/**
-	 * @var mixed[]
-	 * @phpstan-var array<string, mixed>
-	 */
-	private $options;
+	private $biome = 1; // plains
+
+	/** @var mixed[] */
+	private $options = [];
+
 	/** @var string */
-	private $preset;
+	private $preset = "";
 
-	public function getSettings() : array{
-		return $this->options;
-	}
+	/** @var ChunkManager */
+	protected $level;
 
-	public function getName() : string{
-		return "flat";
-	}
+	/** @var Random */
+	protected $random;
 
-	/**
-	 * @param mixed[]                      $options
-	 *
-	 * @phpstan-param array<string, mixed> $options
-	 *
-	 * @throws InvalidGeneratorOptionsException
-	 */
 	public function __construct(array $options = []){
 		$this->options = $options;
-		if(isset($this->options["preset"]) and $this->options["preset"] != ""){
-			$this->preset = $this->options["preset"];
+		$this->random = new Random();
+
+		if(isset($this->options["preset"]) && $this->options["preset"] !== ""){
+			$this->preset = (string) $this->options["preset"];
 		}else{
-			$this->preset = "2;7,2x3,2;1;";
-			//$this->preset = "2;7,59x1,3x3,2;1;spawn(radius=10 block=89),decoration(treecount=80 grasscount=45)";
+			$this->preset = implode(";", [
+				implode(",", [
+					BlockNames::BEDROCK,
+					"2x" . BlockNames::DIRT,
+					BlockNames::GRASS_BLOCK,
+				]),
+				"1",
+				""
+			]);
 		}
 
 		$this->parsePreset();
@@ -94,69 +90,55 @@ class Flat extends Generator{
 		if(isset($this->options["decoration"])){
 			$ores = new Ore();
 			$ores->setOreTypes([
-				new OreType(BlockFactory::get(Block::COAL_ORE), 20, 16, 0, 128),
-				new OreType(BlockFactory::get(Block::IRON_ORE), 20, 8, 0, 64),
-				new OreType(BlockFactory::get(Block::REDSTONE_ORE), 8, 7, 0, 16),
-				new OreType(BlockFactory::get(Block::LAPIS_ORE), 1, 6, 0, 32),
-				new OreType(BlockFactory::get(Block::GOLD_ORE), 2, 8, 0, 32),
-				new OreType(BlockFactory::get(Block::DIAMOND_ORE), 1, 7, 0, 16),
-				new OreType(BlockFactory::get(Block::DIRT), 20, 32, 0, 128),
-				new OreType(BlockFactory::get(Block::GRAVEL), 10, 16, 0, 128)
+				new OreType(BlockFactory::get(BlockNames::COAL_ORE), 20, 16, 0, 128),
+				new OreType(BlockFactory::get(BlockNames::IRON_ORE), 20, 8, 0, 64),
+				new OreType(BlockFactory::get(BlockNames::REDSTONE_ORE), 8, 7, 0, 16),
+				new OreType(BlockFactory::get(BlockNames::LAPIS_ORE), 1, 6, 0, 32),
+				new OreType(BlockFactory::get(BlockNames::GOLD_ORE), 2, 8, 0, 32),
+				new OreType(BlockFactory::get(BlockNames::DIAMOND_ORE), 1, 7, 0, 16),
+				new OreType(BlockFactory::get(BlockNames::DIRT), 20, 32, 0, 128),
+				new OreType(BlockFactory::get(BlockNames::GRAVEL), 10, 16, 0, 128),
 			]);
 			$this->populators[] = $ores;
 		}
 	}
 
-	/**
-	 * @return int[][]
-	 * @phpstan-return array<int, array{0: int, 1: int}>
-	 *
-	 * @throws InvalidGeneratorOptionsException
-	 */
-	public static function parseLayers(string $layers) : array{
-		$result = [];
-		$split = array_map('\trim', explode(',', $layers, Level::Y_MAX - Level::Y_MIN));
-		$y = 0;
-		foreach($split as $line){
-			preg_match('#^(?:(\d+)[x|*])?(.+)$#', $line, $matches);
-			if(count($matches) !== 3){
-				throw new InvalidGeneratorOptionsException("Invalid preset layer \"$line\"");
-			}
-
-			$cnt = $matches[1] !== "" ? (int) $matches[1] : 1;
-			try{
-				$b = ItemFactory::fromStringSingle($matches[2])->getBlock();
-			}catch(InvalidArgumentException $e){
-				throw new InvalidGeneratorOptionsException("Invalid preset layer \"$line\": " . $e->getMessage(), 0, $e);
-			}
-			for($cY = $y, $y += $cnt; $cY < $y; ++$cY){
-				$result[$cY] = [$b->getId(), $b->getDamage()];
-			}
-		}
-
-		return $result;
+	public function getName() : string{
+		return "flat";
 	}
 
-	protected function parsePreset() : void{
-		$preset = explode(";", $this->preset);
-		$blocks = $preset[1] ?? "";
-		$this->biome = (int) ($preset[2] ?? 1);
-		$options = $preset[3] ?? "";
-		$this->structure = self::parseLayers($blocks);
+	public function getSettings() : array{
+		return $this->options;
+	}
 
-		$this->floorLevel = count($this->structure);
+	public function init(ChunkManager $level, Random $random) : void{
+		$this->level = $level;
+		$this->random = $random;
+	}
+
+	/**
+	 * @throws InvalidGeneratorOptionsException
+	 */
+	protected function parsePreset() : void{
+		$parts = explode(";", $this->preset);
+		$layers = $parts[0] ?? "";
+		$this->biome = (int) ($parts[1] ?? 1);
+		$options = $parts[2] ?? "";
+
+		$this->structure = self::parseLayers($layers);
+		$this->floorLevel = max(0, count($this->structure) - 1);
 
 		//TODO: more error checking
-		preg_match_all('#(([0-9a-z_]{1,})\(?([0-9a-z_ =:]{0,})\)?),?#', $options, $matches);
+		preg_match_all('#(([0-9a-z_]{1,})\(?([0-9a-z_ =:.\-]{0,})\)?),?#i', $options, $matches);
 		foreach($matches[2] as $i => $option){
 			$params = true;
-			if($matches[3][$i] !== ""){
+			if(($matches[3][$i] ?? "") !== ""){
 				$params = [];
 				$p = explode(" ", $matches[3][$i]);
-				foreach($p as $k){
-					$k = explode("=", $k);
-					if(isset($k[1])){
-						$params[$k[0]] = $k[1];
+				foreach($p as $kv){
+					$kv = explode("=", $kv, 2);
+					if(isset($kv[1])){
+						$params[$kv[0]] = $kv[1];
 					}
 				}
 			}
@@ -164,47 +146,87 @@ class Flat extends Generator{
 		}
 	}
 
-	protected function generateBaseChunk() : void{
-		$this->chunk = new Chunk(0, 0, DimensionIds::OVERWORLD);
-		$this->chunk->setGenerated();
+	public static function parseLayers(string $layers) : array{
+		$result = [];
+		$tokens = array_map('\trim', explode(',', $layers, Level::Y_MAX - Level::Y_MIN));
+		$y = -64;
+		foreach($tokens as $token){
+			if($token === ""){
+				continue;
+			}
 
-		$count = count($this->structure);
-		$min = Chunk::getMinSubChunk(DimensionIds::OVERWORLD);
-		for($sy = 0; $sy < $count; $sy += 16){
-			$subchunk = $this->chunk->getSubChunk($min + ($sy >> 4), true);
-			for($y = 0; $y < 16 and isset($this->structure[$y | $sy]); ++$y){
-				$rid = RuntimeBlockMapping::toStaticRuntimeId(...$this->structure[$y | $sy]);
+			$count = 1;
+			$blockStr = $token;
 
-				for($Z = 0; $Z < 16; ++$Z){
-					for($X = 0; $X < 16; ++$X){
-						$subchunk->setBlockId($X, $y, $Z, $rid, 0);
-					}
-				}
+			if(preg_match('#^(\d+)[x\*](.+)$#i', $token, $m)){
+				$count = (int) $m[1];
+				$blockStr = trim($m[2]);
+			}else if(preg_match('#^(.+)[x\*](\d+)$#i', $token, $m)){
+				$blockStr = trim($m[1]);
+				$count = (int) $m[2];
+			}
+
+			try{
+				$block = BlockFactory::get($blockStr);
+			}catch(InvalidArgumentException $e){
+				throw new InvalidGeneratorOptionsException("Invalid preset layer \"$token\": " . $e->getMessage(), 0, $e);
+			}
+
+			for($cY = $y, $y += $count; $cY < $y; ++$cY){
+				$result[$cY] = $block->getId();
 			}
 		}
-	}
 
-	public function init(ChunkManager $level, Random $random) : void{
-		parent::init($level, $random);
-		$this->generateBaseChunk();
+
+		return $result;
 	}
 
 	public function generateChunk(int $chunkX, int $chunkZ) : void{
-		$chunk = clone $this->chunk;
-		$chunk->setX($chunkX);
-		$chunk->setZ($chunkZ);
+		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
+
+		/** @var Chunk $chunk */
+		$chunk = $this->level->getChunk($chunkX, $chunkZ);
+
+		foreach($this->structure as $y => $id){
+			$rid = BlockFactory::get($id)->getRuntimeId();
+			for($x = 0; $x < 16; ++$x){
+				for($z = 0; $z < 16; ++$z){
+					$chunk->setBlockId($x, $y, $z, $rid);
+				}
+			}
+		}
+
+		for($x = 0; $x < 16; ++$x){
+			for($z = 0; $z < 16; ++$z){
+				$chunk->setBiomeId($x, 7, $z, $this->biome);
+				if(method_exists($chunk, 'setHeightMap')){
+					$chunk->setHeightMap($x, $z, $this->floorLevel);
+				}
+			}
+		}
+
+		if(method_exists($chunk, 'recalculateHeightMap')){
+			$chunk->recalculateHeightMap();
+		}
+		if(method_exists($chunk, 'initLighting')){
+			$chunk->initLighting();
+		}
+
 		$this->level->setChunk($chunkX, $chunkZ, $chunk);
 	}
 
 	public function populateChunk(int $chunkX, int $chunkZ) : void{
-		$this->random->setSeed(0xdeadbeef ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
+		if(empty($this->populators)){
+			return;
+		}
+		$this->random->setSeed($this->level->getSeed());
+		$this->random->setSeed($this->random->nextInt() ^ ($chunkX << 8) ^ $chunkZ ^ $this->level->getSeed());
 		foreach($this->populators as $populator){
 			$populator->populate($this->level, $chunkX, $chunkZ, $this->random);
 		}
-
 	}
 
 	public function getSpawn() : Vector3{
-		return new Vector3(128, $this->floorLevel, 128);
+		return new Vector3(0.5, -64 + $this->floorLevel + 1, 0.5);
 	}
 }

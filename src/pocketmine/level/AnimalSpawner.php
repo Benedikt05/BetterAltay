@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\level;
 
 use Exception;
-use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\block\Leaves;
 use pocketmine\block\Liquid;
 use pocketmine\block\Water;
@@ -55,10 +55,10 @@ class AnimalSpawner{
 	public static $creatureTypes = [];
 
 	public function __construct(){
-		self::$creatureTypes[Monster::class] = new CreatureType(Monster::class, 70, Block::AIR, false);
-		self::$creatureTypes[Animal::class] = new CreatureType(Animal::class, 10, Block::AIR, true);
-		self::$creatureTypes[Creature::class] = new CreatureType(Creature::class, 15, Block::AIR, false);
-		self::$creatureTypes[WaterAnimal::class] = new CreatureType(WaterAnimal::class, 5, Block::STILL_WATER, false);
+		self::$creatureTypes[Monster::class] = new CreatureType(Monster::class, 70, BlockNames::AIR, false);
+		self::$creatureTypes[Animal::class] = new CreatureType(Animal::class, 10, BlockNames::AIR, true);
+		self::$creatureTypes[Creature::class] = new CreatureType(Creature::class, 15, BlockNames::AIR, false);
+		self::$creatureTypes[WaterAnimal::class] = new CreatureType(WaterAnimal::class, 5, BlockNames::WATER, false);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class AnimalSpawner{
 			if(!$block1->isSolid()){
 				return false;
 			}else{
-				$flag = $block1->getId() !== Block::BEDROCK;
+				$flag = $block1->getId() !== BlockNames::BEDROCK;
 				return $flag and !$block->isSolid() and !($block instanceof Liquid) and !$level->getBlock($pos->up())->isSolid();
 			}
 		}

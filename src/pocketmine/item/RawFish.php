@@ -24,15 +24,21 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 class RawFish extends Food{
-	public function __construct(int $meta = 0){
-		parent::__construct(self::RAW_FISH, $meta, "Raw Fish");
+
+	protected int $foodRestore;
+	protected float $saturationRestore;
+
+	public function __construct(string $id = ItemNames::COD, string $name = "Raw Cod", int $foodRestore = 2, float $saturationRestore = 0.4){
+		parent::__construct($id, 0, $name);
+		$this->foodRestore = $foodRestore;
+		$this->saturationRestore = $saturationRestore;
 	}
 
 	public function getFoodRestore() : int{
-		return 2;
+		return $this->foodRestore;
 	}
 
 	public function getSaturationRestore() : float{
-		return 0.4;
+		return $this->saturationRestore;
 	}
 }

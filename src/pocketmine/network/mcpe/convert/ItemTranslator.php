@@ -76,6 +76,11 @@ final class ItemTranslator{
 	 */
 	private array $complexMappings = [];
 
+	/** @var ItemTypeDictionary */
+	private ItemTypeDictionary $dictionary;
+	private array $itemToBlockMappings;
+
+
 	private static function make() : self{
 		$data = file_get_contents(RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
 		if($data === false) throw new AssumptionFailedError("Missing required resource file");
@@ -126,7 +131,15 @@ final class ItemTranslator{
 			}
 		}
 
-		return new self(ItemTypeDictionary::getInstance(), $simpleMappings, $complexMappings);
+		$itemIdToBlockIdData = file_get_contents(RESOURCE_PATH . '/vanilla/block_id_to_item_id_map.json');
+		if($itemIdToBlockIdData === false) throw new AssumptionFailedError("Missing required resource file");
+
+		$itemIdToBlockIdMappings = json_decode($itemIdToBlockIdData, true);
+		if(!is_array($itemIdToBlockIdMappings)){
+			throw new AssumptionFailedError("Invalid item table format");
+		}
+
+		return new self(ItemTypeDictionary::getInstance(), $simpleMappings, $complexMappings, array_flip($itemIdToBlockIdMappings));
 	}
 
 	/**
@@ -136,7 +149,9 @@ final class ItemTranslator{
 	 * @phpstan-param array<string, int>             $simpleMappings
 	 * @phpstan-param array<string, array<int, int>> $complexMappings
 	 */
-	public function __construct(ItemTypeDictionary $dictionary, array $simpleMappings, array $complexMappings){
+	public function __construct(ItemTypeDictionary $dictionary, array $simpleMappings, array $complexMappings, array $itemIdToBlockIdMappings){
+		$this->dictionary = $dictionary;
+		$this->itemToBlockMappings = $itemIdToBlockIdMappings;
 		foreach($dictionary->getEntries() as $entry){
 			$stringId = $entry->getStringId();
 			$netId = $entry->getNumericId();
@@ -159,8 +174,9 @@ final class ItemTranslator{
 	/**
 	 * @return int[]
 	 * @phpstan-return array{int, int}
+	 * @deprecated
 	 */
-	public function toNetworkId(int $internalId, int $internalMeta) : array{
+	public function legacyToNetworkId(int $internalId, int $internalMeta) : array{
 		if($internalMeta === -1){
 			$internalMeta = 0x7fff;
 		}
@@ -174,11 +190,19 @@ final class ItemTranslator{
 		throw new InvalidArgumentException("Unmapped ID/metadata combination $internalId:$internalMeta");
 	}
 
+	public function toNetworkId(string $internalId, int $internalMeta) : array {
+		if($internalMeta === -1){
+			$internalMeta = 0x7fff;
+		}
+
+		return [$this->dictionary->fromStringId($internalId), $internalMeta];
+	}
+
 	/**
 	 * @return int[]
 	 * @phpstan-return array{int, int}
 	 */
-	public function fromNetworkId(int $networkId, int $networkMeta, ?bool &$isComplexMapping = null) : array{
+	public function legacyFromNetworkId(int $networkId, int $networkMeta, ?bool &$isComplexMapping = null) : array{
 		if(isset($this->complexNetToCoreMapping[$networkId])){
 			if($networkMeta !== 0){
 				throw new UnexpectedValueException("Unexpected non-zero network meta on complex item mapping");
@@ -193,31 +217,33 @@ final class ItemTranslator{
 		throw new UnexpectedValueException("Unmapped network ID/metadata combination $networkId:$networkMeta");
 	}
 
+	public function fromNetworkId(int $networkId, int $meta): array {
+		return [$this->dictionary->fromIntId($networkId), $meta];
+	}
+
 	/**
 	 * @return int[]
 	 * @phpstan-return array{int, int}
+	 * @deprecated
 	 */
-	public function fromNetworkIdWithWildcardHandling(int $networkId, int $networkMeta) : array{
+	public function legacyFromNetworkIdWithWildcardHandling(int $networkId, int $networkMeta) : array{
 		$isComplexMapping = false;
 		if($networkMeta !== 0x7fff){
-			return $this->fromNetworkId($networkId, $networkMeta);
+			return $this->legacyFromNetworkId($networkId, $networkMeta);
 		}
-		[$id, $meta] = $this->fromNetworkId($networkId, 0, $isComplexMapping);
+		[$id, $meta] = $this->legacyFromNetworkId($networkId, 0, $isComplexMapping);
 		return [$id, $isComplexMapping ? $meta : -1];
 	}
 
-
-	/**
-	 * @return int[]
-	 * @phpstan-return array{int, int}
-	 */
-	public function fromStringId(string $stringId): array {
-		if(isset($this->complexMappings[$stringId])){
-			return $this->complexMappings[$stringId];
-		}elseif(isset($this->simpleMappings[$stringId])){
-			return [$this->simpleMappings[$stringId], 0];
-		}else{
-			return [$this->simpleMappings["minecraft:air"], 0];
+	public function fromNetworkIdWithWildcardHandling(int $networkId, int $networkMeta) : array{
+		if($networkMeta !== 0x7fff){
+			return $this->fromNetworkId($networkId, $networkMeta);
+		} else {
+			return $this->fromNetworkId($networkId, -1);
 		}
+	}
+
+	public function toBlockId(string $itemId) : ?string {
+		return $this->itemToBlockMappings[$itemId] ?? null;
 	}
 }

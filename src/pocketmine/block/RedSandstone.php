@@ -23,15 +23,24 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\SandstoneType;
+
 class RedSandstone extends Sandstone{
-	protected $id = self::RED_SANDSTONE;
+
+	public function __construct(SandstoneType $material, int $meta = 0){
+		parent::__construct($material, $meta);
+		if($this->material->equals(SandstoneType::NORMAL())) {
+			$this->id = BlockNames::RED_SANDSTONE;
+		} else {
+			$this->id = "minecraft:" . $this->material->getType() . "_red_sandstone";
+		}
+	}
 
 	public function getName() : string{
-		static $names = [
-			self::NORMAL => "Red Sandstone",
-			self::CHISELED => "Chiseled Red Sandstone",
-			self::SMOOTH => "Smooth Red Sandstone"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		if($this->material->equals(SandstoneType::NORMAL())){
+			return "Red Sandstone";
+		}else{
+			return $this->material->getName() . " Red Sandstone";
+		}
 	}
 }

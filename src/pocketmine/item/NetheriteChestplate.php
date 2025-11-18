@@ -25,7 +25,7 @@ namespace pocketmine\item;
 
 class NetheriteChestplate extends Armor{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::NETHERITE_CHESTPLATE, $meta, "Netherite Chestplate");
+		parent::__construct(ItemNames::NETHERITE_CHESTPLATE, $meta, "Netherite Chestplate");
 	}
 
 	public function getDefensePoints() : int{

@@ -40,6 +40,7 @@ use pocketmine\math\VoxelRayTrace;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\timings\Timings;
 use function assert;
 use function atan2;
@@ -55,7 +56,7 @@ abstract class Projectile extends Entity{
 
 	/** @var Vector3|null */
 	protected $blockHit;
-	/** @var int|null */
+	/** @var string|null */
 	protected $blockHitId;
 	/** @var int|null */
 	protected $blockHitData;
@@ -87,8 +88,8 @@ abstract class Projectile extends Entity{
 				return;
 			}
 
-			if($this->namedtag->hasTag("blockId", IntTag::class)){
-				$blockId = $this->namedtag->getInt("blockId");
+			if($this->namedtag->hasTag("blockId", StringTag::class)){
+				$blockId = $this->namedtag->getString("blockId");
 			}else{
 				return;
 			}
@@ -146,7 +147,7 @@ abstract class Projectile extends Entity{
 			$this->namedtag->setInt("tileZ", $this->blockHit->z);
 
 			//we intentionally use different ones to PC because we don't have stringy IDs
-			$this->namedtag->setInt("blockId", $this->blockHitId);
+			$this->namedtag->setString("blockId", $this->blockHitId);
 			$this->namedtag->setByte("blockData", $this->blockHitData);
 		}
 	}

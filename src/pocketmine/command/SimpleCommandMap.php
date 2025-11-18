@@ -142,7 +142,7 @@ class SimpleCommandMap implements CommandMap{
 			new TransferServerCommand("transferserver"),
 			new VersionCommand("version"),
 			new WhitelistCommand("whitelist"),
-			new ClearCommand("clear"),
+			//new ClearCommand("clear"),
 			new SetBlockCommand("setblock"),
 			new WorldCommand("world"),
 			new GameRuleCommand("gamerule"),

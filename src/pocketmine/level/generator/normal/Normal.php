@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\normal;
 
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\biome\BiomeSelector;
@@ -66,7 +66,7 @@ class Normal extends Generator{
 
 	public function __construct(array $settings = [])
 	{
-		parent::__construct($settings);
+
 	}
 
 	public function getName() : string{
@@ -138,14 +138,14 @@ class Normal extends Generator{
 
 		$ores = new Ore();
 		$ores->setOreTypes([
-			new OreType(BlockFactory::get(Block::COAL_ORE), 20, 16, 0, 128),
-			new OreType(BlockFactory::get(Block::IRON_ORE), 20, 8, 0, 64),
-			new OreType(BlockFactory::get(Block::REDSTONE_ORE), 8, 7, 0, 16),
-			new OreType(BlockFactory::get(Block::LAPIS_ORE), 1, 6, 0, 32),
-			new OreType(BlockFactory::get(Block::GOLD_ORE), 2, 8, 0, 32),
-			new OreType(BlockFactory::get(Block::DIAMOND_ORE), 1, 7, 0, 16),
-			new OreType(BlockFactory::get(Block::DIRT), 20, 32, 0, 128),
-			new OreType(BlockFactory::get(Block::GRAVEL), 10, 16, 0, 128)
+			new OreType(BlockFactory::get(BlockNames::COAL_ORE), 20, 16, 0, 128),
+			new OreType(BlockFactory::get(BlockNames::IRON_ORE), 20, 8, 0, 64),
+			new OreType(BlockFactory::get(BlockNames::REDSTONE_ORE), 8, 7, 0, 16),
+			new OreType(BlockFactory::get(BlockNames::LAPIS_ORE), 1, 6, 0, 32),
+			new OreType(BlockFactory::get(BlockNames::GOLD_ORE), 2, 8, 0, 32),
+			new OreType(BlockFactory::get(BlockNames::DIAMOND_ORE), 1, 7, 0, 16),
+			new OreType(BlockFactory::get(BlockNames::DIRT), 20, 32, 0, 128),
+			new OreType(BlockFactory::get(BlockNames::GRAVEL), 10, 16, 0, 128)
 		]);
 		$this->populators[] = $ores;
 	}
@@ -159,9 +159,9 @@ class Normal extends Generator{
 
 		$biomeCache = [];
 
-		$bedrockRid = RuntimeBlockMapping::toStaticRuntimeId(Block::BEDROCK);
-		$stoneRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STONE);
-		$stillWaterRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STILL_WATER);
+		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockNames::BEDROCK);
+		$stoneRid = RuntimeBlockMapping::toRuntimeId(BlockNames::STONE);
+		$stillWaterRid = RuntimeBlockMapping::toRuntimeId(BlockNames::WATER);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 				$minSum = 0;
@@ -202,15 +202,15 @@ class Normal extends Generator{
 
 				for($y = 0; $y < 128; ++$y){
 					if($y === 0){
-						$chunk->setBlockId($x, $y, $z, $bedrockRid, 0);
+						$chunk->setBlockId($x, $y, $z, $bedrockRid);
 						continue;
 					}
 					$noiseValue = $noise[$x][$z][$y] - 1 / $smoothHeight * ($y - $smoothHeight - $minSum);
 
 					if($noiseValue > 0){
-						$chunk->setBlockId($x, $y, $z, $stoneRid, 0);
+						$chunk->setBlockId($x, $y, $z, $stoneRid);
 					}elseif($y <= $this->waterHeight){
-						$chunk->setBlockId($x, $y, $z, $stillWaterRid, 0);
+						$chunk->setBlockId($x, $y, $z, $stillWaterRid);
 					}
 				}
 			}
@@ -233,6 +233,6 @@ class Normal extends Generator{
 	}
 
 	public function getSpawn() : Vector3{
-		return new Vector3(127.5, 128, 127.5);
+		return new Vector3(0.5, 259, 0.5);
 	}
 }

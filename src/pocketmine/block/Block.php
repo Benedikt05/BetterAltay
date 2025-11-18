@@ -46,25 +46,25 @@ use function count;
 use function get_class;
 use const PHP_INT_MAX;
 
-class Block extends Position implements BlockIds, Metadatable{
+class Block extends Position implements Metadatable{
 
 	/**
 	 * Returns a new Block instance with the specified ID, meta and position.
 	 *
 	 * This function redirects to {@link BlockFactory#get}.
 	 */
-	public static function get(int $id, int $meta = 0, Position $pos = null) : Block{
+	public static function get(string $id, int $meta = 0, Position $pos = null) : Block{
 		return BlockFactory::get($id, $meta, $pos);
 	}
 
+	/** @var string */
+	protected string $id;
 	/** @var int */
-	protected $id;
-	/** @var int */
-	protected $meta = 0;
+	protected int $meta = 0;
 	/** @var string|null */
 	protected $fallbackName;
-	/** @var int|null */
-	protected $itemId;
+	/** @var string */
+	protected string $itemId = "";
 
 	/** @var AxisAlignedBB|null */
 	protected $boundingBox = null;
@@ -76,9 +76,9 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * @param int         $id The block type's ID, 0-255
 	 * @param int         $meta Meta value of the block type
 	 * @param string|null $name English name of the block type (TODO: implement translations)
-	 * @param int         $itemId The item ID of the block type, used for block picking and dropping items.
+	 * @param string         $itemId The item ID of the block type, used for block picking and dropping items.
 	 */
-	public function __construct(int $id, int $meta = 0, string $name = null, int $itemId = null){
+	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = BlockNames::AIR){
 		$this->id = $id;
 		$this->meta = $meta;
 		$this->fallbackName = $name;
@@ -89,7 +89,7 @@ class Block extends Position implements BlockIds, Metadatable{
 		return $this->fallbackName ?? "Unknown";
 	}
 
-	final public function getId() : int{
+	final public function getId() : string{
 		return $this->id;
 	}
 
@@ -97,15 +97,15 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * Returns the ID of the item form of the block.
 	 * Used for drops for blocks (some blocks such as doors have a different item ID).
 	 */
-	public function getItemId() : int{
-		return $this->itemId ?? $this->getId();
+	public function getItemId() : string{
+		return $this->itemId !== "" ? $this->itemId : $this->id;
 	}
 
 	/**
 	 * @internal
 	 */
 	public function getRuntimeId() : int{
-		return RuntimeBlockMapping::toStaticRuntimeId($this->getId(), $this->getDamage());
+		return RuntimeBlockMapping::toRuntimeId($this->getId(), $this->getDamage());
 	}
 
 	final public function getDamage() : int{
@@ -113,8 +113,8 @@ class Block extends Position implements BlockIds, Metadatable{
 	}
 
 	final public function setDamage(int $meta) : void{
-		if($meta < 0 or $meta > 0xf){
-			throw new InvalidArgumentException("Block damage values must be 0-15, not $meta");
+		if($meta < 0 or $meta > 0x40){
+			throw new InvalidArgumentException("Block damage values must be 0-64, not $meta");
 		}
 		$this->meta = $meta;
 	}
@@ -210,7 +210,7 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * Do the actions needed so the block is broken with the Item
 	 */
 	public function onBreak(Item $item, Player $player = null) : bool{
-		return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), true, true);
+		return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::AIR), true);
 	}
 
 	/**
@@ -498,7 +498,7 @@ class Block extends Position implements BlockIds, Metadatable{
 			return $this->getLevelNonNull()->getBlock(Vector3::getSide($side, $step), true, true, $layer);
 		}
 
-		return BlockFactory::get(Block::AIR, 0, Position::fromObject(Vector3::getSide($side, $step)));
+		return BlockFactory::get(BlockNames::AIR, 0, Position::fromObject(Vector3::getSide($side, $step)));
 	}
 
 	/**

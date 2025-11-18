@@ -30,12 +30,6 @@ use pocketmine\utils\Random;
 
 class OakTree extends Tree{
 
-	public function __construct(){
-		$this->trunkBlock = Block::LOG;
-		$this->leafBlock = Block::LEAVES;
-		$this->type = Wood::OAK;
-	}
-
 	/**
 	 * @return void
 	 */

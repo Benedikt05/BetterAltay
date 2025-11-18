@@ -49,8 +49,8 @@ class GroundCover extends Populator{
 
 					$startY = 127;
 					for(; $startY > 0; --$startY){
-						$rid = $chunk->getBlockId($x, $startY, $z, 0);
-						if(!BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($rid))->isTransparent()){
+						$rid = $chunk->getBlockId($x, $startY, $z);
+						if(!BlockFactory::get(...RuntimeBlockMapping::fromRuntimeId($rid))->isTransparent()){
 							break;
 						}
 					}
@@ -58,15 +58,15 @@ class GroundCover extends Populator{
 					$endY = $startY - count($cover);
 					for($y = $startY; $y > $endY and $y >= 0; --$y){
 						$b = $cover[$startY - $y];
-						$cRid = $chunk->getBlockId($x, $y, $z, 0);
+						$cRid = $chunk->getBlockId($x, $y, $z);
 						if($cRid === RuntimeBlockMapping::AIR() and $b->isSolid()){
 							break;
 						}
-						if($b->canBeFlowedInto() and BlockFactory::get(...RuntimeBlockMapping::fromStaticRuntimeId($cRid)) instanceof Liquid){
+						if($b->canBeFlowedInto() and BlockFactory::get(...RuntimeBlockMapping::fromRuntimeId($cRid)) instanceof Liquid){
 							continue;
 						}
 
-						$chunk->setBlockId($x, $y, $z, $b->getRuntimeId(), 0);
+						$chunk->setBlockId($x, $y, $z, $b->getRuntimeId());
 					}
 				}
 			}

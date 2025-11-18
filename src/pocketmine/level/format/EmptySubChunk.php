@@ -44,11 +44,11 @@ class EmptySubChunk implements SubChunkInterface{
 		return true;
 	}
 
-	public function getBlockId(int $x, int $y, int $z, int $layer) : int{
+	public function getBlockId(int $x, int $y, int $z, int $layer = 0) : int{
 		return RuntimeBlockMapping::AIR();
 	}
 
-	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool{
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer = 0) : bool{
 		return false;
 	}
 

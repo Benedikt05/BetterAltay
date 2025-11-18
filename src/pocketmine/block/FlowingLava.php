@@ -23,29 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\TieredTool;
+class FlowingLava extends Lava{
 
-class IronOre extends Solid{
-
-	protected $id = self::IRON_ORE;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
+	protected string $id = BlockNames::FLOWING_LAVA;
 
 	public function getName() : string{
-		return "Iron Ore";
-	}
-
-	public function getToolType() : int{
-		return BlockToolType::TYPE_PICKAXE;
-	}
-
-	public function getToolHarvestLevel() : int{
-		return TieredTool::TIER_STONE;
-	}
-
-	public function getHardness() : float{
-		return 3;
+		return "Flowing Lava";
 	}
 }

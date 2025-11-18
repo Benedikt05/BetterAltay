@@ -23,13 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\block\utils\ColorBlockMetaHelper;
+use pocketmine\block\material\ColorType;
 
 class StainedGlass extends Glass{
 
-	protected $id = self::STAINED_GLASS;
+	public function __construct(protected ColorType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_stained_glass";
+		parent::__construct($meta);
+	}
+
 
 	public function getName() : string{
-		return ColorBlockMetaHelper::getColorFromMeta($this->getVariant()) . " Stained Glass";
+		return $this->material->getName() . " Stained Glass";
 	}
 }

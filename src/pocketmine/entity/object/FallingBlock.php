@@ -25,6 +25,7 @@ namespace pocketmine\entity\object;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\block\Fallable;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityBlockChangeEvent;
@@ -32,7 +33,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\StringTag;
 use UnexpectedValueException;
 use function abs;
 use function get_class;
@@ -56,11 +57,11 @@ class FallingBlock extends Entity{
 	protected function initEntity() : void{
 		parent::initEntity();
 
-		$blockId = 0;
+		$blockId = BlockNames::AIR;
 
 		//TODO: 1.8+ save format
-		if($this->namedtag->hasTag("TileID", IntTag::class)){
-			$blockId = $this->namedtag->getInt("TileID");
+		if($this->namedtag->hasTag("TileID", StringTag::class)){
+			$blockId = $this->namedtag->getString("TileID");
 		}elseif($this->namedtag->hasTag("Tile", ByteTag::class)){
 			$blockId = $this->namedtag->getByte("Tile");
 			$this->namedtag->removeTag("Tile");
@@ -135,7 +136,7 @@ class FallingBlock extends Entity{
 		}
 	}
 
-	public function getBlock() : int{
+	public function getBlock() : string{
 		return $this->block->getId();
 	}
 
@@ -145,7 +146,7 @@ class FallingBlock extends Entity{
 
 	public function saveNBT() : void{
 		parent::saveNBT();
-		$this->namedtag->setInt("TileID", $this->block->getId(), true);
+		$this->namedtag->setString("TileID", $this->block->getId(), true);
 		$this->namedtag->setByte("Data", $this->block->getDamage());
 	}
 }

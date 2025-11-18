@@ -31,7 +31,7 @@ use pocketmine\Player;
 
 class Saddle extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::SADDLE, $meta, "Saddle");
+		parent::__construct(ItemNames::SADDLE, $meta, "Saddle");
 	}
 
 	public function getMaxStackSize() : int{

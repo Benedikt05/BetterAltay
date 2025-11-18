@@ -23,26 +23,20 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemNames;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function mt_rand;
 
 class Leaves extends Transparent{
-	public const OAK = 0;
-	public const SPRUCE = 1;
-	public const BIRCH = 2;
-	public const JUNGLE = 3;
-	public const ACACIA = 0;
-	public const DARK_OAK = 1;
 
-	protected $id = self::LEAVES;
-	/** @var int */
-	protected $woodType = self::WOOD;
 
-	public function __construct(int $meta = 0){
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_leaves";
 		$this->meta = $meta;
 	}
 
@@ -55,13 +49,7 @@ class Leaves extends Transparent{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::OAK => "Oak Leaves",
-			self::SPRUCE => "Spruce Leaves",
-			self::BIRCH => "Birch Leaves",
-			self::JUNGLE => "Jungle Leaves"
-		];
-		return $names[$this->getVariant()];
+		return $this->material->getName() . " Leaves";
 	}
 
 	public function diffusesSkyLight() : bool{
@@ -78,12 +66,12 @@ class Leaves extends Transparent{
 		if(isset($visited[$index])){
 			return false;
 		}
-		if($pos->getId() === $this->woodType){
+		if($pos instanceof Wood || $pos instanceof Log){
 			return true;
 		}elseif($pos->getId() === $this->id and $distance < 3){
 			$visited[$index] = true;
-			$down = $pos->getSide(Vector3::SIDE_DOWN)->getId();
-			if($down === $this->woodType){
+			$down = $pos->getSide(Vector3::SIDE_DOWN);
+			if($down instanceof Wood){
 				return true;
 			}
 			if($fromSide === null){
@@ -138,8 +126,8 @@ class Leaves extends Transparent{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if(($this->meta & 0b00001100) === 0){
-			$this->meta |= 0x08;
+		if (($this->meta & (0x01 | 0x02)) === 0x00) {
+			$this->meta |= 0x02;
 			$this->getLevelNonNull()->setBlock($this, $this, true, false);
 		}
 	}
@@ -149,13 +137,13 @@ class Leaves extends Transparent{
 	}
 
 	public function onRandomTick() : void{
-		if(($this->meta & 0b00001100) === 0x08){
-			$this->meta &= 0x03;
+		if((($this->meta & 0x01) === 0x00) && (($this->meta & 0x02) !== 0x00)){
 			$visited = [];
 
 			$ev = new LeavesDecayEvent($this);
 			$ev->call();
 			if($ev->isCancelled() or $this->findLog($this, $visited, 0)){
+				$this->meta &= ~0x02;
 				$this->getLevelNonNull()->setBlock($this, $this, false, false);
 			}else{
 				$this->getLevelNonNull()->useBreakOn($this);
@@ -164,7 +152,7 @@ class Leaves extends Transparent{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->meta |= 0x04;
+		$this->meta |= 0x01;
 		return $this->getLevelNonNull()->setBlock($this, $this, true);
 	}
 
@@ -182,18 +170,18 @@ class Leaves extends Transparent{
 			$drops[] = $this->getSaplingItem();
 		}
 		if($this->canDropApples() and mt_rand(1, 200) === 1){ //Apples
-			$drops[] = ItemFactory::get(Item::APPLE);
+			$drops[] = ItemFactory::get(ItemNames::APPLE);
 		}
 
 		return $drops;
 	}
 
 	public function getSaplingItem() : Item{
-		return ItemFactory::get(Item::SAPLING, $this->getVariant());
+	return ItemFactory::get("minecraft:" . $this->material->getType() . "_sapling", $this->getVariant());
 	}
 
 	public function canDropApples() : bool{
-		return $this->getVariant() === self::OAK;
+		return $this->material->equals(WoodType::OAK());
 	}
 
 	public function getFlameEncouragement() : int{
@@ -202,5 +190,9 @@ class Leaves extends Transparent{
 
 	public function getFlammability() : int{
 		return 60;
+	}
+
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

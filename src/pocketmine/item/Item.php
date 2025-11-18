@@ -31,6 +31,7 @@ use InvalidArgumentException;
 use JsonSerializable;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\block\BlockToolType;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
@@ -46,6 +47,8 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\ItemTranslator;
+use pocketmine\network\mcpe\convert\ItemTypeDictionary;
 use pocketmine\network\mcpe\mapper\CreativeItemMapper;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
 use pocketmine\Player;
@@ -103,7 +106,7 @@ class Item implements ItemIds, JsonSerializable{
 	 *
 	 * @param CompoundTag|string $tags
 	 */
-	public static function get(int $id, int $meta = 0, int $count = 1, $tags = "") : Item{
+	public static function get(string $id, int $meta = 0, int $count = 1, $tags = "") : Item{
 		return ItemFactory::get($id, $meta, $count, $tags);
 	}
 
@@ -113,6 +116,7 @@ class Item implements ItemIds, JsonSerializable{
 	 * This function redirects to {@link ItemFactory#fromString}.
 	 *
 	 * @return Item[]|Item
+	 * @deprecated use ItemFactory::get()
 	 */
 	public static function fromString(string $str, bool $multiple = false){
 		return ItemFactory::fromString($str, $multiple);
@@ -178,10 +182,10 @@ class Item implements ItemIds, JsonSerializable{
 		return -1;
 	}
 
+	/** @var string */
+	protected string $id;
 	/** @var int */
-	protected $id;
-	/** @var int */
-	protected $meta;
+	protected int $meta;
 	/** @var CompoundTag|null */
 	private $nbt = null;
 	/** @var int */
@@ -198,10 +202,7 @@ class Item implements ItemIds, JsonSerializable{
 	 * NOTE: This should NOT BE USED for creating items to set into an inventory. Use {@link ItemFactory#get} for that
 	 * purpose.
 	 */
-	public function __construct(int $id, int $meta = 0, string $name = "Unknown"){
-		if($id < -0x8000 or $id > 0x7fff){ //signed short range
-			throw new InvalidArgumentException("ID must be in range " . -0x8000 . " - " . 0x7fff);
-		}
+	public function __construct(string $id, int $meta = 0, string $name = "Unknown"){
 		$this->id = $id;
 		$this->setDamage($meta);
 		$this->name = $name;
@@ -586,7 +587,7 @@ class Item implements ItemIds, JsonSerializable{
 	}
 
 	public function isNull() : bool{
-		return $this->count <= 0 or $this->id === Item::AIR;
+		return $this->count <= 0 or $this->id === BlockNames::AIR;
 	}
 
 	/**
@@ -611,10 +612,15 @@ class Item implements ItemIds, JsonSerializable{
 	 * Returns the block corresponding to this Item.
 	 */
 	public function getBlock() : Block{
-		return BlockFactory::get(self::AIR);
+		$blockId = ItemTranslator::getInstance()->toBlockId($this->id);
+		if ($blockId !== null) {
+			return BlockFactory::get($blockId);
+		}
+
+		return BlockFactory::get(BlockNames::AIR);
 	}
 
-	final public function getId() : int{
+	final public function getId() : string{
 		return $this->id;
 	}
 
@@ -834,9 +840,16 @@ class Item implements ItemIds, JsonSerializable{
 		}elseif(isset($data["nbt_b64"])){
 			$nbt = base64_decode($data["nbt_b64"], true);
 		}
+
+		$id = $data["id"];
+		if (is_int($id)) {
+			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($id, $data["count"] ?? 1);
+			$id = ItemTypeDictionary::getInstance()->fromIntId($rid);
+		}
+
 		return ItemFactory::get(
-			(int) $data["id"],
-			(int) ($data["damage"] ?? 0),
+			 $id,
+			$data["count"] ?? 1,
 			(int) ($data["count"] ?? 1),
 			(string) $nbt
 		);
@@ -850,7 +863,7 @@ class Item implements ItemIds, JsonSerializable{
 	 */
 	public function nbtSerialize(int $slot = -1, string $tagName = "") : CompoundTag{
 		$result = new CompoundTag($tagName, [
-			new ShortTag("id", $this->id),
+			new StringTag("id", $this->id),
 			new ByteTag("Count", Binary::signByte($this->count)),
 			new ShortTag("Damage", $this->meta)
 		]);
@@ -873,25 +886,19 @@ class Item implements ItemIds, JsonSerializable{
 	 */
 	public static function nbtDeserialize(CompoundTag $tag) : Item{
 		if(!$tag->hasTag("id") or !$tag->hasTag("Count")){
-			return ItemFactory::get(0);
+			return ItemFactory::get(BlockNames::AIR);
 		}
 
 		$count = Binary::unsignByte($tag->getByte("Count"));
 		$meta = $tag->getShort("Damage", 0);
 
 		$idTag = $tag->getTag("id");
-		if($idTag instanceof ShortTag){
+		if($idTag instanceof StringTag){
 			$item = ItemFactory::get($idTag->getValue(), $meta, $count);
-		}elseif($idTag instanceof StringTag){ //PC item save format
-			try{
-				$item = ItemFactory::fromStringSingle($idTag->getValue());
-			}catch(InvalidArgumentException $e){
-				//TODO: improve error handling
-				return ItemFactory::get(Item::AIR, 0, 0);
-			}
-			$item->setDamage($meta);
-			$item->setCount($count);
-		}else{
+		} else if ($idTag instanceof ShortTag) {
+			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($idTag->getValue(), $meta);
+			$item = ItemFactory::get(ItemTypeDictionary::getInstance()->fromIntId($rid), $meta, $count);
+		} else{
 			throw new InvalidArgumentException("Item CompoundTag ID must be an instance of StringTag or ShortTag, " . get_class($idTag) . " given");
 		}
 

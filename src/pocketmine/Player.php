@@ -29,6 +29,7 @@ use InvalidStateException;
 use pocketmine\block\Bed;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\block\UnknownBlock;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -101,6 +102,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\MeleeWeaponEnchantment;
 use pocketmine\item\FoodSource;
 use pocketmine\item\Item;
+use pocketmine\item\ItemNames;
 use pocketmine\item\MaybeConsumable;
 use pocketmine\item\WritableBook;
 use pocketmine\item\WrittenBook;
@@ -2856,8 +2858,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				}
 
 				$block = $target->getSide($face);
-				if($block->getId() === Block::FIRE){
-					$this->level->setBlock($block, BlockFactory::get(Block::AIR));
+				if($block->getId() === BlockNames::FIRE){
+					$this->level->setBlock($block, BlockFactory::get(BlockNames::AIR));
 					break;
 				}
 
@@ -3731,7 +3733,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$author = self::checkBookText($packet->author, "author", 256, 0x7fff, $cancel);
 
 				/** @var WrittenBook $newBook */
-				$newBook = Item::get(Item::WRITTEN_BOOK, 0, 1, $newBook->getNamedTag());
+				$newBook = Item::get(ItemNames::WRITTEN_BOOK, 0, 1, $newBook->getNamedTag());
 				$newBook->setAuthor($author);
 				$newBook->setTitle($title);
 				$newBook->setGeneration(WrittenBook::GENERATION_ORIGINAL);

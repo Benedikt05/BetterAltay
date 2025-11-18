@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-class StillWater extends Water{
+class FlowinglWater extends Water{
 
-	protected $id = self::STILL_WATER;
+	protected string $id = BlockNames::FLOWING_WATER;
 
 	public function getName() : string{
-		return "Still Water";
+		return "Flowing Water";
 	}
 }

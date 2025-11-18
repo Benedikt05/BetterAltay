@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\hell;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockNames;
 use pocketmine\block\Gravel;
 use pocketmine\block\Lava;
-use pocketmine\block\NetherQuartzOre;
+use pocketmine\block\material\OreType as OreTypeAlias;
 use pocketmine\block\SoulSand;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
@@ -77,7 +77,7 @@ class Nether extends Generator{
 
 		$ores = new Ore();
 		$ores->setOreTypes([
-			new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
+			new OreType(new \pocketmine\block\Ore(OreTypeAlias::QUARTZ()), 20, 16, 0, 128),
 			new OreType(new SoulSand(), 5, 64, 0, 128),
 			new OreType(new Gravel(), 5, 64, 0, 128),
 			new OreType(new Lava(), 1, 16, 0, $this->lavaHeight)
@@ -100,9 +100,9 @@ class Nether extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
-		$bedrockRid = RuntimeBlockMapping::toStaticRuntimeId(Block::BEDROCK);
-		$netherrackRid = RuntimeBlockMapping::toStaticRuntimeId(Block::NETHERRACK);
-		$stillLavaRid = RuntimeBlockMapping::toStaticRuntimeId(Block::STILL_LAVA);
+		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockNames::BEDROCK);
+		$netherrackRid = RuntimeBlockMapping::toRuntimeId(BlockNames::NETHERRACK);
+		$stillLavaRid = RuntimeBlockMapping::toRuntimeId(BlockNames::LAVA);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 
@@ -113,16 +113,16 @@ class Nether extends Generator{
 
 				for($y = 0; $y < 128; ++$y){
 					if($y === 0 or $y === 127){
-						$chunk->setBlockId($x, $y, $z, $bedrockRid, 0);
+						$chunk->setBlockId($x, $y, $z, $bedrockRid);
 						continue;
 					}
 					$noiseValue = (abs($this->emptyHeight - $y) / $this->emptyHeight) * $this->emptyAmplitude - $noise[$x][$z][$y];
 					$noiseValue -= 1 - $this->density;
 
 					if($noiseValue > 0){
-						$chunk->setBlockId($x, $y, $z, $netherrackRid, 0);
+						$chunk->setBlockId($x, $y, $z, $netherrackRid);
 					}elseif($y <= $this->lavaHeight){
-						$chunk->setBlockId($x, $y, $z, $stillLavaRid, 0);
+						$chunk->setBlockId($x, $y, $z, $stillLavaRid);
 					}
 				}
 			}

@@ -38,6 +38,7 @@ use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
+use pocketmine\item\ItemNames;
 use pocketmine\item\MaybeConsumable;
 use pocketmine\math\Vector3;
 use pocketmine\math\VoxelRayTrace;
@@ -1072,7 +1073,7 @@ abstract class Living extends Entity implements Damageable{
 			$this->leashedToEntityId = null;
 
 			if($dropLead){
-				$this->level->dropItem($this, Item::get(Item::LEAD));
+				$this->level->dropItem($this, Item::get(ItemNames::LEAD));
 			}
 
 			if($send){

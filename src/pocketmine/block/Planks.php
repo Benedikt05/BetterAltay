@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
+
 class Planks extends Solid{
 	public const OAK = 0;
 	public const SPRUCE = 1;
@@ -31,10 +33,10 @@ class Planks extends Solid{
 	public const ACACIA = 4;
 	public const DARK_OAK = 5;
 
-	protected $id = self::WOODEN_PLANKS;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_planks";
 		$this->meta = $meta;
+		$this->itemId = $this->id;
 	}
 
 	public function getHardness() : float{
@@ -46,15 +48,7 @@ class Planks extends Solid{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::OAK => "Oak Wood Planks",
-			self::SPRUCE => "Spruce Wood Planks",
-			self::BIRCH => "Birch Wood Planks",
-			self::JUNGLE => "Jungle Wood Planks",
-			self::ACACIA => "Acacia Wood Planks",
-			self::DARK_OAK => "Dark Oak Wood Planks"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		return $this->material->getName() . " Planks";
 	}
 
 	public function getFuelTime() : int{
@@ -67,5 +61,9 @@ class Planks extends Solid{
 
 	public function getFlammability() : int{
 		return 20;
+	}
+
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

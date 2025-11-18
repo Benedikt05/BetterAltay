@@ -31,11 +31,11 @@ abstract class Fallable extends Solid{
 
 	public function onNearbyBlockChange() : void{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
-		if($down->getId() === self::AIR or $down instanceof Liquid or $down instanceof Fire){
-			$this->level->setBlock($this, BlockFactory::get(Block::AIR), true);
+		if($down->getId() === BlockNames::AIR or $down instanceof Liquid or $down instanceof Fire){
+			$this->level->setBlock($this, BlockFactory::get(BlockNames::AIR), true);
 
 			$nbt = Entity::createBaseNBT($this->add(0.5, 0, 0.5));
-			$nbt->setInt("TileID", $this->getId());
+			$nbt->setString("TileID", $this->getId());
 			$nbt->setByte("Data", $this->getDamage());
 
 			$fall = Entity::createEntity("FallingSand", $this->getLevelNonNull(), $nbt);

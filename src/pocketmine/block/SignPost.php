@@ -23,11 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\event\block\SignOpenEditEvent;
 use pocketmine\event\block\SignTextColorChangeEvent;
 use pocketmine\item\Dye;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemNames;
+use pocketmine\item\Sign;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
@@ -39,11 +41,10 @@ use function floor;
 
 class SignPost extends Waterloggable{
 
-	protected $id = self::SIGN_POST;
-
-	protected $itemId = Item::SIGN;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$type = Sign::resolveWoodPrefix($this->material);
+		$this->id = "minecraft:" . $type . "standing_sign";
+		$this->itemId = "minecraft:" . $type . "sign";
 		$this->meta = $meta;
 	}
 
@@ -56,7 +57,7 @@ class SignPost extends Waterloggable{
 	}
 
 	public function getName() : string{
-		return "Sign Post";
+		return $this->material->getName() . " Standing Sign";
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
@@ -89,7 +90,7 @@ class SignPost extends Waterloggable{
 				$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 			}else{
 				$this->meta = $face;
-				$this->getLevelNonNull()->setBlock($blockReplace, BlockFactory::get(Block::WALL_SIGN, $this->meta), true);
+				$this->getLevelNonNull()->setBlock($blockReplace, new WallSign($this->material, $this->meta), true);
 			}
 
 			$sign = Tile::createTile(Tile::SIGN, $this->getLevelNonNull(), TileSign::createNBT($this, $face, $item, $player));
@@ -111,9 +112,9 @@ class SignPost extends Waterloggable{
 		$tile = $this->getLevelNonNull()->getTile($this);
 		if($tile instanceof TileSign){
 			$color = $item instanceof Dye ? $item->getColorFromMeta() : match ($item->getId()){
-				ItemIds::BONE => new Color(0xf0, 0xf0, 0xf0),
-				BlockIds::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
-				BlockIds::COCOA => new Color(0x83, 0x54, 0x32),
+				ItemNames::BONE => new Color(0xf0, 0xf0, 0xf0),
+				BlockNames::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
+				BlockNames::COCOA => new Color(0x83, 0x54, 0x32),
 				default => null
 			};
 
@@ -128,7 +129,7 @@ class SignPost extends Waterloggable{
 				$tile->setTextColor($ev->getColor());
 				$this->level->setBlock($this, $this, true);
 				return true;
-			}else if($item->getId() == ItemIds::GLOWSTONE_DUST){
+			}else if($item->getId() == ItemNames::GLOWSTONE_DUST){
 				$tile->setGlowing(true);
 				$this->level->setBlock($this, $this, true);
 				return true;
@@ -146,7 +147,7 @@ class SignPost extends Waterloggable{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() === self::AIR){
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() === BlockNames::AIR){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}
@@ -157,5 +158,12 @@ class SignPost extends Waterloggable{
 
 	public function getVariantBitmask() : int{
 		return 0;
+	}
+
+	/**
+	 * @return WoodType
+	 */
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

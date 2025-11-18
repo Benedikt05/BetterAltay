@@ -36,6 +36,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Bucket;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemNames;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function rand;
@@ -51,7 +52,7 @@ class Cow extends Animal{
 		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
 		$this->behaviorPool->setBehavior(1, new PanicBehavior($this, 2.0));
 		$this->behaviorPool->setBehavior(2, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [Item::WHEAT], 1.25));
+		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [ItemNames::WHEAT], 1.25));
 		$this->behaviorPool->setBehavior(4, new FollowParentBehavior($this, 1.25));
 		$this->behaviorPool->setBehavior(5, new RandomStrollBehavior($this, 1.0));
 		$this->behaviorPool->setBehavior(6, new LookAtPlayerBehavior($this, 6.0));
@@ -74,7 +75,7 @@ class Cow extends Animal{
 		if(!$this->isImmobile()){
 			if($item instanceof Bucket and $item->getDamage() === 0){
 				$item->pop();
-				$player->getInventory()->addItem(ItemFactory::get(Item::BUCKET, 1));
+				$player->getInventory()->addItem(ItemFactory::get(ItemNames::BUCKET, 1));
 				return true;
 			}
 		}
@@ -88,8 +89,8 @@ class Cow extends Animal{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::LEATHER, 0, rand(0, 2)),
-			($this->isOnFire() ? ItemFactory::get(Item::STEAK, 0, rand(1, 3)) : ItemFactory::get(Item::RAW_BEEF, 0, rand(1, 3)))
+			ItemFactory::get(ItemNames::LEATHER, 0, rand(0, 2)),
+			($this->isOnFire() ? ItemFactory::get(ItemNames::COOKED_BEEF, 0, rand(1, 3)) : ItemFactory::get(ItemNames::BEEF, 0, rand(1, 3)))
 		];
 	}
 }

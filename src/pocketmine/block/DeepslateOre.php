@@ -19,32 +19,13 @@
  *
 */
 
-declare(strict_types=1);
-
 namespace pocketmine\block;
 
-use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
+use pocketmine\block\material\OreType;
 
-class Leaves2 extends Leaves{
+class DeepslateOre extends Ore{
 
-	protected $id = self::LEAVES2;
-	/** @var int */
-	protected $woodType = self::WOOD2;
-
-	public function getName() : string{
-		static $names = [
-			self::ACACIA => "Acacia Leaves",
-			self::DARK_OAK => "Dark Oak Leaves"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
-	}
-
-	public function getSaplingItem() : Item{
-		return ItemFactory::get(Item::SAPLING, $this->getVariant() + 4);
-	}
-
-	public function canDropApples() : bool{
-		return $this->getVariant() === self::DARK_OAK;
+	public function __construct(protected OreType $material, protected int $meta = 0){
+		$this->id = "minecraft:deepslate_" . $this->material->getType() . "_ore";
 	}
 }

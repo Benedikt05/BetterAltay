@@ -212,7 +212,7 @@ class Chunk{
 	 *
 	 * @return int
 	 */
-	public function getBlockId(int $x, int $y, int $z, int $layer) : int{
+	public function getBlockId(int $x, int $y, int $z, int $layer = 0) : int{
 		return $this->getSubChunk($y >> 4)->getBlockId($x, $y & self::COORD_MASK, $z, $layer);
 	}
 
@@ -227,7 +227,7 @@ class Chunk{
 	 *
 	 * @return bool
 	 */
-	public function setBlockId(int $x, int $y, int $z, int $id, int $layer) : bool{
+	public function setBlockId(int $x, int $y, int $z, int $id, int $layer = 0) : bool{
 		if($this->getSubChunk($y >> 4, true)->setBlockId($x, $y & self::COORD_MASK, $z, $id, $layer)){
 			$this->hasChanged = true;
 			return true;
@@ -391,7 +391,7 @@ class Chunk{
 			return Level::Y_MIN;
 		}
 		for(; $y >= 0; --$y){
-			[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($id = $this->getBlockId($x, $y, $z, 0));
+			$id = RuntimeBlockMapping::getIdFromRuntimeId($this->getBlockId($x, $y, $z));
 			if(BlockFactory::$lightFilter[$id] ?? 15 > 1 or BlockFactory::$diffusesSkyLight[$id] ?? false){
 				break;
 			}
@@ -425,7 +425,7 @@ class Chunk{
 
 				$light = 15;
 				for(; $y >= 0; --$y){
-					[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($this->getBlockId($x, $y, $z, 0));
+					$id = RuntimeBlockMapping::getIdFromRuntimeId($this->getBlockId($x, $y, $z));
 					$light -= BlockFactory::$lightFilter[$id] ?? 15;
 					if($light <= 0){
 						break;

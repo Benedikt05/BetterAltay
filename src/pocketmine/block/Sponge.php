@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class Sponge extends Solid{
 
-	protected $id = self::SPONGE;
+	protected string $id = BlockNames::SPONGE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

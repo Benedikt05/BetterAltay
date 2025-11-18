@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\Sapling;
+use pocketmine\block\BlockNames;
+use pocketmine\block\material\WoodType;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
@@ -34,42 +34,57 @@ use function abs;
 abstract class Tree{
 	/** @var bool[] */
 	public $overridable = [
-		Block::AIR => true,
-		Block::SAPLING => true,
-		Block::LEAVES => true,
-		Block::SNOW_LAYER => true,
-		Block::LEAVES2 => true
+		BlockNames::AIR => true,
+		BlockNames::OAK_SAPLING => true,
+		BlockNames::SPRUCE_SAPLING => true,
+		BlockNames::ACACIA_SAPLING => true,
+		BlockNames::BAMBOO_SAPLING => true,
+		BlockNames::BIRCH_SAPLING => true,
+		BlockNames::CHERRY_SAPLING => true,
+		BlockNames::DARK_OAK_SAPLING => true,
+		BlockNames::JUNGLE_SAPLING => true,
+		BlockNames::PALE_OAK_SAPLING => true,
+		BlockNames::OAK_LEAVES => true,
+		BlockNames::SPRUCE_LEAVES => true,
+		BlockNames::ACACIA_LEAVES => true,
+		BlockNames::BIRCH_LEAVES => true,
+		BlockNames::CHERRY_LEAVES => true,
+		BlockNames::DARK_OAK_LEAVES => true,
+		BlockNames::JUNGLE_LEAVES => true,
+		BlockNames::PALE_OAK_LEAVES => true,
+		BlockNames::SNOW_LAYER => true,
 	];
 
-	/** @var int */
-	public $type = 0;
-	/** @var int */
-	public $trunkBlock = Block::LOG;
-	/** @var int */
-	public $leafBlock = Block::LEAVES;
+	/** @var string */
+	public $trunkBlock = BlockNames::OAK_LOG;
+	/** @var string */
+	public $leafBlock = BlockNames::OAK_LEAVES;
 	/** @var int */
 	public $treeHeight = 7;
 
 	/**
 	 * @return void
 	 */
-	public static function growTree(ChunkManager $level, int $x, int $y, int $z, Random $random, int $type = 0){
-		switch($type){
-			case Sapling::SPRUCE:
+	public static function growTree(ChunkManager $level, int $x, int $y, int $z, Random $random, WoodType $type){
+		switch(true){
+			case $type->equals(WoodType::SPRUCE()):
 				$tree = new SpruceTree();
 				break;
-			case Sapling::BIRCH:
+			case $type->equals(WoodType::BIRCH()):
 				if($random->nextBoundedInt(39) === 0){
 					$tree = new BirchTree(true);
 				}else{
 					$tree = new BirchTree();
 				}
 				break;
-			case Sapling::JUNGLE:
+			case $type->equals(WoodType::JUNGLE()):
 				$tree = new JungleTree();
 				break;
-			case Sapling::ACACIA:
-			case Sapling::DARK_OAK:
+			case $type->equals(WoodType::ACACIA()):
+			case $type->equals(WoodType::CHERRY()):
+			case $type->equals(WoodType::MANGROVE()):
+			case $type->equals(WoodType::PALE_OAK()):
+			case $type->equals(WoodType::DARK_OAK()):
 				return; //TODO
 			default:
 				$tree = new OakTree();
@@ -93,7 +108,7 @@ abstract class Tree{
 			}
 			for($xx = -$radiusToCheck; $xx < ($radiusToCheck + 1); ++$xx){
 				for($zz = -$radiusToCheck; $zz < ($radiusToCheck + 1); ++$zz){
-					[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($x + $xx, $y + $yy, $z + $zz));
+					$id = RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x + $xx, $y + $yy, $z + $zz));
 					if(!isset($this->overridable[$id])){
 						return false;
 					}
@@ -111,7 +126,7 @@ abstract class Tree{
 
 		$this->placeTrunk($level, $x, $y, $z, $random, $this->treeHeight - 1);
 
-		$rid = RuntimeBlockMapping::toStaticRuntimeId($this->leafBlock, $this->type);
+		$rid = RuntimeBlockMapping::toRuntimeId($this->leafBlock);
 		for($yy = $y - 3 + $this->treeHeight; $yy <= $y + $this->treeHeight; ++$yy){
 			$yOff = $yy - ($y + $this->treeHeight);
 			$mid = (int) (1 - $yOff / 2);
@@ -122,8 +137,8 @@ abstract class Tree{
 					if($xOff === $mid and $zOff === $mid and ($yOff === 0 or $random->nextBoundedInt(2) === 0)){
 						continue;
 					}
-					[$id, ] = RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($xx, $yy, $zz));
-					if(!BlockFactory::$solid[$id]){
+					$id = RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($xx, $yy, $zz));
+					if(!(BlockFactory::$solid[$id] ?? true)){
 						$level->setBlockIdAt($xx, $yy, $zz, $rid);
 					}
 				}
@@ -136,11 +151,11 @@ abstract class Tree{
 	 */
 	protected function placeTrunk(ChunkManager $level, int $x, int $y, int $z, Random $random, int $trunkHeight){
 		// The base dirt block
-		$level->setBlockIdAt($x, $y - 1, $z, RuntimeBlockMapping::toStaticRuntimeId(Block::DIRT));
+		$level->setBlockIdAt($x, $y - 1, $z, RuntimeBlockMapping::toRuntimeId(BlockNames::DIRT));
 
-		$rid = RuntimeBlockMapping::toStaticRuntimeId($this->trunkBlock, $this->type);
+		$rid = RuntimeBlockMapping::toRuntimeId($this->trunkBlock);
 		for($yy = 0; $yy < $trunkHeight; ++$yy){
-			[$id, ] =  RuntimeBlockMapping::fromStaticRuntimeId($level->getBlockIdAt($x, $y + $yy, $z));
+			$id =  RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x, $y + $yy, $z));
 			if(isset($this->overridable[$id])){
 				$level->setBlockIdAt($x, $y + $yy, $z, $rid);
 			}

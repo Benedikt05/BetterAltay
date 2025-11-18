@@ -35,7 +35,7 @@ class CreatureType{
 	/** @var bool */
 	protected $peacefulCreature = false;
 
-	public function __construct(string $creatureClass, int $maxSpawn, int $materialIn, bool $peacefulCreature){
+	public function __construct(string $creatureClass, int $maxSpawn, string $materialIn, bool $peacefulCreature){
 		$this->creatureClass = $creatureClass;
 		$this->maxSpawn = $maxSpawn;
 		$this->materialIn = $materialIn;

@@ -26,6 +26,7 @@ namespace pocketmine\level;
 use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockNames;
 use pocketmine\block\TNT;
 use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockUpdateEvent;
@@ -130,7 +131,7 @@ class Explosion{
 								continue;
 							}
 
-							[$blockId, $meta] = RuntimeBlockMapping::fromStaticRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($vBlock->x & Chunk::COORD_MASK, $vBlock->y & Chunk::COORD_MASK, $vBlock->z & Chunk::COORD_MASK, 0));
+							[$blockId, $meta] = RuntimeBlockMapping::fromRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($vBlock->x & Chunk::COORD_MASK, $vBlock->y & Chunk::COORD_MASK, $vBlock->z & Chunk::COORD_MASK, 0));
 
 							if($blockId !== 0){
 								$blastForce -= (BlockFactory::$blastResistance[$blockId] / 5 + 0.3) * $this->stepLen;
@@ -207,7 +208,7 @@ class Explosion{
 			}
 		}
 
-		$air = ItemFactory::get(Item::AIR);
+		$air = ItemFactory::get(BlockNames::AIR);
 
 		foreach($this->affectedBlocks as $block){
 			$yieldDrops = false;

@@ -25,6 +25,6 @@ namespace pocketmine\item;
 
 class Clock extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::CLOCK, $meta, "Clock");
+		parent::__construct(ItemNames::CLOCK, $meta, "Clock");
 	}
 }
