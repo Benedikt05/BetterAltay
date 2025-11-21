@@ -44,14 +44,14 @@ use const STDERR;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-function trapErrors(callable $fn) {
-	set_error_handler(function($severity, $message, $file, $line) {
+function trapErrors(callable $fn){
+	set_error_handler(function($severity, $message, $file, $line){
 		throw new \ErrorException($message, 0, $severity, $file, $line);
 	});
 
-	try {
+	try{
 		$result = $fn();
-	} finally {
+	}finally{
 		restore_error_handler();
 	}
 
@@ -147,8 +147,6 @@ if(count($argv) !== 2){
 	fwrite(STDERR, "Required argument: path to item type dictionary file\n");
 	exit(1);
 }
-
-var_dump($argv);
 
 $raw = file_get_contents($argv[1]);
 if($raw === false){
