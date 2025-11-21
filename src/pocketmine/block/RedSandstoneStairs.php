@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class RedSandstoneStairs extends SandstoneStairs{
 
-	protected $id = self::RED_SANDSTONE_STAIRS;
+	protected string $id = self::RED_SANDSTONE_STAIRS;
 
 	public function getName() : string{
 		return "Red " . parent::getName();

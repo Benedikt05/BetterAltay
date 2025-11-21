@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Ice extends Transparent{
 
-	protected $id = self::ICE;
+	protected string $id = self::ICE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -57,7 +57,7 @@ class Ice extends Transparent{
 
 	public function onBreak(Item $item, Player $player = null) : bool{
 		if(($player === null or $player->isSurvival()) and !$item->hasEnchantment(Enchantment::SILK_TOUCH)){
-			return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::WATER), true);
+			return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(self::WATER), true);
 		}
 		return parent::onBreak($item, $player);
 	}

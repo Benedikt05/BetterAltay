@@ -26,13 +26,14 @@ namespace pocketmine\block;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\item\TieredTool;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class SnowLayer extends Flowable{
 
-	protected $id = self::SNOW_LAYER;
+	protected string $id = self::SNOW_LAYER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -78,9 +79,9 @@ class SnowLayer extends Flowable{
 	public function onNearbyBlockChange() : void{
         $vec3 = $this->asVector3();
         if(!$this->canBeSupportedBy($this->getSide(Vector3::SIDE_DOWN))){
-            $this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), false, false);
+            $this->getLevelNonNull()->setBlock($this, BlockFactory::get(self::AIR), false, false);
             $nbt = Entity::createBaseNBT($vec3->add(0.5, 0, 0.5));
-            $nbt->setInt("TileID", $this->getId());
+            $nbt->setString("TileID", $this->getId());
             $nbt->setByte("Data", $this->getDamage());
 
             $fall = Entity::createEntity("FallingSand", $this->getLevelNonNull(), $nbt);
@@ -97,13 +98,19 @@ class SnowLayer extends Flowable{
 
 	public function onRandomTick() : void{
 		if($this->level->getBlockLightAt($this->x, $this->y, $this->z) >= 12){
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), false, false);
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(self::AIR), false, false);
 		}
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
+		$count = match (true) {
+			$this->meta < 3 => 1,
+			$this->meta < 5 => 2,
+			$this->meta === 7 => 4,
+			default => 3,
+		};
 		return [
-			ItemFactory::get(Item::SNOWBALL) //TODO: check layer count
+			ItemFactory::get(ItemIds::SNOWBALL, 0, $count)
 		];
 	}
 

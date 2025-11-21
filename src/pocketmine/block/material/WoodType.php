@@ -34,6 +34,7 @@ class WoodType extends Material{
 	private static ?self $MANGROVE = null;
 	private static ?self $CHERRY = null;
 	private static ?self $PALE_OAK = null;
+	private static ?self $WARPED = null;
 
 	public static function OAK() : self{
 		return self::$OAK ??= new self("oak", "Oak");
@@ -71,6 +72,10 @@ class WoodType extends Material{
 		return self::$PALE_OAK ??= new self("pale_oak", "Pale Oak");
 	}
 
+	public static function WARPED() : self{
+		return self::$WARPED ??= new self("warped", "Warped");
+	}
+
 	/**
 	 * @return WoodType[]
 	 */
@@ -85,6 +90,7 @@ class WoodType extends Material{
 			self::MANGROVE(),
 			self::CHERRY(),
 			self::PALE_OAK(),
+			self::WARPED(),
 		];
 	}
 }

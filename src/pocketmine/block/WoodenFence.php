@@ -23,15 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-class WoodenFence extends Fence{
-	public const FENCE_OAK = 0;
-	public const FENCE_SPRUCE = 1;
-	public const FENCE_BIRCH = 2;
-	public const FENCE_JUNGLE = 3;
-	public const FENCE_ACACIA = 4;
-	public const FENCE_DARKOAK = 5;
+use pocketmine\block\material\WoodType;
 
-	protected $id = self::FENCE;
+class WoodenFence extends Fence{
+
+	public function __construct(protected WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_fence";
+		parent::__construct($meta);
+	}
 
 	public function getHardness() : float{
 		return 2;
@@ -42,15 +41,7 @@ class WoodenFence extends Fence{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::FENCE_OAK => "Oak Fence",
-			self::FENCE_SPRUCE => "Spruce Fence",
-			self::FENCE_BIRCH => "Birch Fence",
-			self::FENCE_JUNGLE => "Jungle Fence",
-			self::FENCE_ACACIA => "Acacia Fence",
-			self::FENCE_DARKOAK => "Dark Oak Fence"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		return $this->material->getName() . " Fence";
 	}
 
 	public function getFuelTime() : int{
@@ -63,5 +54,12 @@ class WoodenFence extends Fence{
 
 	public function getFlammability() : int{
 		return 20;
+	}
+
+	/**
+	 * @return WoodType
+	 */
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

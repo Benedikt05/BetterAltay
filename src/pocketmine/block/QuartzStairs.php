@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class QuartzStairs extends Stair{
 
-	protected $id = self::QUARTZ_STAIRS;
+	protected string $id = self::QUARTZ_STAIRS;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

@@ -65,6 +65,7 @@ class Water extends Liquid{
 		$entity->resetFallDistance();
 		if($entity->isOnFire()){
 			$entity->extinguish();
+			$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_EXTINGUISH_FIRE);
 		}
 	}
 

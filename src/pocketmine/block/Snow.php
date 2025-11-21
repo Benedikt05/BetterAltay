@@ -25,11 +25,12 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\item\TieredTool;
 
 class Snow extends Solid{
 
-	protected $id = self::SNOW_BLOCK;
+	protected string $id = self::SNOW;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -53,7 +54,7 @@ class Snow extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::SNOWBALL, 0, 4)
+			ItemFactory::get(ItemIds::SNOWBALL, 0, 4)
 		];
 	}
 }

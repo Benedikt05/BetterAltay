@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Torch extends Flowable{
 
-	protected $id = self::TORCH;
+	protected string $id = self::TORCH;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -56,7 +56,7 @@ class Torch extends Flowable{
 		];
 		$face = $faces[$meta] ?? Vector3::SIDE_DOWN;
 
-		if($this->getSide($face)->isTransparent() and !($face === Vector3::SIDE_DOWN and ($below->getId() === self::FENCE or $below->getId() === self::COBBLESTONE_WALL))){
+		if($this->getSide($face)->isTransparent() and !($face === Vector3::SIDE_DOWN and ($below instanceof Fence or $below instanceof CobblestoneWall))){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}
@@ -73,12 +73,12 @@ class Torch extends Flowable{
 				Vector3::SIDE_EAST => 1
 			];
 			$this->meta = $faces[$face];
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+			$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 			return true;
-		}elseif(!$below->isTransparent() or $below->getId() === self::FENCE or $below->getId() === self::COBBLESTONE_WALL){
+		}elseif(!$below->isTransparent() or $below instanceof Fence or $below instanceof CobblestoneWall){
 			$this->meta = 0;
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+			$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 			return true;
 		}

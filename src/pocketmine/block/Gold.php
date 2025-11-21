@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Gold extends Solid{
 
-	protected $id = self::GOLD_BLOCK;
+	protected string $id = self::GOLD_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

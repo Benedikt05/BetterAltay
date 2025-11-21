@@ -32,7 +32,7 @@ use pocketmine\Player;
 
 class DragonEgg extends Fallable{
 
-	protected $id = self::DRAGON_EGG;
+	protected string $id = self::DRAGON_EGG;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -64,12 +64,12 @@ class DragonEgg extends Fallable{
 			$x = $this->x + mt_rand(-15, 15);
 			$y = $this->y + mt_rand(-7, 7);
 			$z = $this->z + mt_rand(-15, 15);
-			if($level->getBlockAt($x, $y, $z)->getId() === Block::AIR and $y < Level::Y_MAX and $y > 0){
+			if($level->getBlockAt($x, $y, $z)->getId() === self::AIR and $y < Level::Y_MAX and $y > 0){
 				$source = $this->asVector3();
 				$target = new Vector3($x, $y, $z);
 
-				$level->setBlock($source, BlockFactory::get(Block::AIR));
-				$level->setBlock($target, BlockFactory::get(Block::DRAGON_EGG));
+				$level->setBlock($source, BlockFactory::get(self::AIR));
+				$level->setBlock($target, BlockFactory::get(self::DRAGON_EGG));
 
 				$dir = $target->subtract($source)->normalize();
 				$max = min(128, $source->distance($target));

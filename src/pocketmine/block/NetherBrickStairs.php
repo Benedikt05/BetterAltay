@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class NetherBrickStairs extends Stair{
 
-	protected $id = self::NETHER_BRICK_STAIRS;
+	protected string $id = self::NETHER_BRICK_STAIRS;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

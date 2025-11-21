@@ -34,7 +34,7 @@ use pocketmine\Player;
 
 class Cactus extends Transparent{
 
-	protected $id = self::CACTUS;
+	protected string $id = self::CACTUS;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -100,7 +100,7 @@ class Cactus extends Transparent{
 				for($y = 1; $y < 3; ++$y){
 					$b = $this->getLevelNonNull()->getBlockAt($this->x, $this->y + $y, $this->z);
 					if($b->getId() === self::AIR){
-						$ev = new BlockGrowEvent($b, BlockFactory::get(Block::CACTUS));
+						$ev = new BlockGrowEvent($b, BlockFactory::get(self::CACTUS));
 						$ev->call();
 						if($ev->isCancelled()){
 							break;

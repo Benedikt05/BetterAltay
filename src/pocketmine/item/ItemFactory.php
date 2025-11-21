@@ -151,7 +151,6 @@ class ItemFactory{
 
 		self::registerItem(new Minecart());
 		self::registerItem(new Saddle());
-		self::registerItem(new ItemBlock(BlockIds::IRON_DOOR, 0, ItemIds::IRON_DOOR));
 		self::registerItem(new Redstone());
 		self::registerItem(new Snowball());
 		self::registerBoatItems();
@@ -458,6 +457,7 @@ class ItemFactory{
 		foreach(WoodType::values() as $type){
 			self::registerItem(new Sign($type));
 		}
+		self::registerItem(new Sign(new WoodType("bamboo", "Bamboo")));
 	}
 
 	private static function registerBoatItems() : void{
@@ -468,7 +468,8 @@ class ItemFactory{
 
 	private static function registerDoorItems() : void {
 		self::registerItem(new ItemBlock(BlockIds::WOODEN_DOOR, 0, ItemIds::WOODEN_DOOR));
-
+		self::registerItem(new ItemBlock(BlockIds::IRON_DOOR, 0, ItemIds::IRON_DOOR));
+		self::registerItem(new ItemBlock(BlockIds::BAMBOO_DOOR, 0, ItemIds::BAMBOO_DOOR));
 		foreach (WoodType::values() as $type) {
 			if ($type->equals(WoodType::OAK())) {
 				continue;

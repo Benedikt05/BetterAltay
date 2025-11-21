@@ -28,9 +28,7 @@ use pocketmine\item\TieredTool;
 
 class IronDoor extends Door{
 
-	protected $id = self::IRON_DOOR_BLOCK;
-
-	protected $itemId = Item::IRON_DOOR;
+	protected string $id = self::IRON_DOOR;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

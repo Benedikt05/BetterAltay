@@ -95,15 +95,17 @@ class BlockFactory{
 		//TODO: PISTONARMCOLLISION
 		self::registerWoolBlocks();
 		self::registerSignBlocks();
-		self::registerDoorBlocks();
+		self::registerWoodenDoors();
+		self::registerBlock(new IronDoor());
 		self::registerWoodenStairs();
+		self::registerWoodenFences();
 //
 //		self::registerBlock(new Dandelion());
 //		self::registerBlock(new Flower());
 //		self::registerBlock(new BrownMushroom());
 //		self::registerBlock(new RedMushroom());
-//		self::registerBlock(new Gold());
-//		self::registerBlock(new Iron());
+		self::registerBlock(new Gold());
+		self::registerBlock(new Iron());
 //		self::registerBlock(new DoubleStoneSlab());
 //		self::registerBlock(new StoneSlab());
 //		self::registerBlock(new Bricks());
@@ -111,7 +113,7 @@ class BlockFactory{
 		self::registerBlock(new Bookshelf());
 //		self::registerBlock(new MossyCobblestone());
 		self::registerBlock(new Obsidian());
-//		self::registerBlock(new Torch());
+		self::registerBlock(new Torch());
 		self::registerBlock(new Fire());
 //		self::registerBlock(new MonsterSpawner());
 //		self::registerBlock(new Chest());
@@ -124,21 +126,20 @@ class BlockFactory{
 //		self::registerBlock(new BurningFurnace());
 		self::registerBlock(new Ladder());
 		self::registerBlock(new Rail());
-//		self::registerBlock(new CobblestoneStairs());
+		self::registerBlock(new CobblestoneStairs());
 //		self::registerBlock(new Lever());
 //		self::registerBlock(new StonePressurePlate());
 //		self::registerBlock(new WoodenPressurePlate());
 //		self::registerBlock(new RedstoneTorchUnlit());
 //		self::registerBlock(new RedstoneTorch());
 //		self::registerBlock(new StoneButton());
-//		self::registerBlock(new SnowLayer());
-//		self::registerBlock(new Ice());
-//		self::registerBlock(new Snow());
-//		self::registerBlock(new Cactus());
+		self::registerBlock(new SnowLayer());
+		self::registerBlock(new Ice());
+		self::registerBlock(new Snow());
+		self::registerBlock(new Cactus());
 //		self::registerBlock(new Clay());
 //		self::registerBlock(new Sugarcane());
 		self::registerBlock(new Jukebox());
-//		self::registerBlock(new WoodenFence());
 //		self::registerBlock(new Pumpkin());
 //		self::registerBlock(new Netherrack());
 //		self::registerBlock(new SoulSand());
@@ -161,13 +162,13 @@ class BlockFactory{
 //		self::registerBlock(new MelonStem());
 //		self::registerBlock(new Vine());
 //		self::registerBlock(new FenceGate(BlockIds::OAK_FENCE_GATE, 0, "Oak Fence Gate"));
-//		self::registerBlock(new BrickStairs());
-//		self::registerBlock(new StoneBrickStairs());
+		self::registerBlock(new BrickStairs());
+		self::registerBlock(new StoneBrickStairs());
 //		self::registerBlock(new Mycelium());
 //		self::registerBlock(new WaterLily());
 //		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK_BLOCK, 0, "Nether Bricks"));
-//		self::registerBlock(new NetherBrickFence());
-//		self::registerBlock(new NetherBrickStairs());
+		self::registerBlock(new NetherBrickFence());
+		self::registerBlock(new NetherBrickStairs());
 //		self::registerBlock(new NetherWartPlant());
 //		self::registerBlock(new EnchantingTable());
 //		self::registerBlock(new BrewingStand());
@@ -175,20 +176,17 @@ class BlockFactory{
 //		self::registerBlock(new EndPortal());
 //		self::registerBlock(new EndPortalFrame());
 //		self::registerBlock(new EndStone());
-//		self::registerBlock(new DragonEgg());
+		self::registerBlock(new DragonEgg());
 //		self::registerBlock(new RedstoneLamp());
 //		self::registerBlock(new LitRedstoneLamp());
 		//TODO: DROPPER
 //		self::registerBlock(new ActivatorRail());
 //		self::registerBlock(new CocoaBlock());
-//		self::registerBlock(new SandstoneStairs());
+		self::registerBlock(new SandstoneStairs());
 //		self::registerBlock(new EnderChest());
 //		self::registerBlock(new TripwireHook());
 //		self::registerBlock(new Tripwire());
-//		self::registerBlock(new Emerald());
-//		self::registerBlock(new WoodenStairs(BlockIds::SPRUCE_STAIRS, 0, "Spruce Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockIds::BIRCH_STAIRS, 0, "Birch Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockIds::JUNGLE_STAIRS, 0, "Jungle Stairs"));
+		self::registerBlock(new Emerald());
 		//TODO: COMMAND_BLOCK
 //		self::registerBlock(new Beacon());
 //		self::registerBlock(new CobblestoneWall());
@@ -207,13 +205,11 @@ class BlockFactory{
 //		self::registerBlock(new Redstone());
 //		self::registerBlock(new Hopper());
 //		self::registerBlock(new Quartz());
-//		self::registerBlock(new QuartzStairs());
+		self::registerBlock(new QuartzStairs());
 //		self::registerBlock(new DoubleWoodenSlab());
 //		self::registerBlock(new WoodenSlab());
 //		self::registerBlock(new StainedClay());
 //		self::registerBlock(new StainedGlassPane());
-//		self::registerBlock(new WoodenStairs(BlockIds::ACACIA_STAIRS, 0, "Acacia Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockIds::DARK_OAK_STAIRS, 0, "Dark Oak Stairs"));
 //		self::registerBlock(new Slime());
 //
 //		self::registerBlock(new IronTrapdoor());
@@ -229,7 +225,7 @@ class BlockFactory{
 //		self::registerBlock(new WallBanner());
 		//TODO: DAYLIGHT_DETECTOR_INVERTED
 //		self::registerBlock(new RedSandstone());
-//		self::registerBlock(new RedSandstoneStairs());
+		self::registerBlock(new RedSandstoneStairs());
 //		self::registerBlock(new DoubleStoneSlab2());
 //		self::registerBlock(new StoneSlab2());
 //		self::registerBlock(new FenceGate(BlockIds::SPRUCE_FENCE_GATE, 0, "Spruce Fence Gate"));
@@ -250,7 +246,7 @@ class BlockFactory{
 		//TODO: CHORUS_FLOWER
 //		self::registerBlock(new Purpur());
 //
-//		self::registerBlock(new PurpurStairs());
+		self::registerBlock(new PurpurStairs());
 //
 //		self::registerBlock(new UndyedShulkerBox());
 //		self::registerBlock(new EndStoneBricks());
@@ -402,6 +398,7 @@ class BlockFactory{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new Planks($type));
 		}
+		self::registerBlock(new Planks(new WoodType("bamboo", "Bamboo")));
 	}
 
 	private static function registerSaplingBlocks() : void{
@@ -474,17 +471,29 @@ class BlockFactory{
 			self::registerBlock(new SignPost($type));
 			self::registerBlock(new WallSign($type));
 		}
+		$bamboo = new WoodType("bamboo", "Bamboo");
+		self::registerBlock(new SignPost($bamboo));
+		self::registerBlock(new WallSign($bamboo));
 	}
 
-	private static function registerDoorBlocks() : void{
+	private static function registerWoodenDoors() : void{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenDoor($type));
 		}
+		self::registerBlock(new WoodenDoor(new WoodType("bamboo", "Bamboo")));
 	}
 
 	private static function registerWoodenStairs() : void{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenStairs("minecraft:" . $type->getType() . "_stairs", 0, $type->getName() . " Stairs"));
 		}
+		self::registerBlock(new WoodenStairs(BlockIds::BAMBOO_STAIRS));
+	}
+
+	public static function registerWoodenFences() : void {
+		foreach(WoodType::values() as $type){
+			self::registerBlock(new WoodenFence($type));
+		}
+		self::registerBlock(new WoodenFence(new WoodType("bamboo", "Bamboo")));
 	}
 }

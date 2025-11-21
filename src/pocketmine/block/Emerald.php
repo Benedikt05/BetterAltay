@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Emerald extends Solid{
 
-	protected $id = self::EMERALD_BLOCK;
+	protected string $id = self::EMERALD_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
