@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\convert;
 
-use exussum12\xxhash\V32;
 use pocketmine\block\BlockIds;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
@@ -50,8 +49,6 @@ final class RuntimeBlockMapping{
 
 	private static $runtimeToId = [];
 	private static $idToRuntime = [];
-
-	private static $hasher = null;
 
 	/** @var int */
 	private static $airRid = -1;
@@ -144,10 +141,6 @@ final class RuntimeBlockMapping{
 		return self::$unknownRid;
 	}
 
-	private static function getHasher() : V32{
-		return self::$hasher ??= new V32();
-	}
-
 	/**
 	 * @param CompoundTag $blockState
 	 *
@@ -156,6 +149,6 @@ final class RuntimeBlockMapping{
 	private static function hashBlockStateNBT(CompoundTag $blockState) : string{
 		$writer = new NetworkLittleEndianNBTStream();
 		$bytes = $writer->write($blockState);
-		return self::getHasher()->hash($bytes);
+		return hash('adler32', $bytes);
 	}
 }

@@ -843,13 +843,13 @@ class Item implements ItemIds, JsonSerializable{
 
 		$id = $data["id"];
 		if (is_int($id)) {
-			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($id, $data["count"] ?? 1);
+			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($id, (int) ($data["damage"] ?? 0));
 			$id = ItemTypeDictionary::getInstance()->fromIntId($rid);
 		}
 
 		return ItemFactory::get(
 			 $id,
-			$data["count"] ?? 1,
+			(int) ($data["damage"] ?? 0),
 			(int) ($data["count"] ?? 1),
 			(string) $nbt
 		);

@@ -34,7 +34,6 @@
       "composer-runtime-api": "^2.0",
       "adhocore/json-comment": "^1.1",
       "benedikt05/nbt": "3.0.1",
-      "exussum12/xxhash": "^1.3",
       "fgrosse/phpasn1": "^2.3",
       "pocketmine/binaryutils": "^0.1.9",
       "pocketmine/callback-validator": "^1.0.2",
