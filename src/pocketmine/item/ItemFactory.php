@@ -176,12 +176,12 @@ class ItemFactory{
 		self::registerItem(new CookedFish());
 		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
 //		self::registerItem(new Dye());
-//		self::registerItem(new Item(Item::BONE, 0, "Bone"));
-//		self::registerItem(new Item(Item::SUGAR, 0, "Sugar"));
-		//self::registerItem(new ItemBlock(Block::CAKE_BLOCK, 0, Item::CAKE));
+		self::registerItem(new Item(ItemIds::BONE, 0, "Bone"));
+		self::registerItem(new Item(ItemIds::SUGAR, 0, "Sugar"));
+//		self::registerItem(new ItemBlock(Block::CAKE_BLOCK, 0, Item::CAKE));
 //		self::registerItem(new Bed());
 		//self::registerItem(new ItemBlock(Block::REPEATER_BLOCK, 0, Item::REPEATER));
-//		self::registerItem(new Cookie());
+		self::registerItem(new Cookie());
 //		self::registerItem(new Map());
 //		self::registerItem(new Shears());
 //		self::registerItem(new Melon());
@@ -294,44 +294,45 @@ class ItemFactory{
 //		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
 //		self::registerItem(new TurtleHelmet());
 
-//		$records = [
-//			Item::RECORD_13 => LevelSoundEventPacket::SOUND_RECORD_13,
-//			Item::RECORD_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
-//			Item::RECORD_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
-//			Item::RECORD_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
-//			Item::RECORD_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
-//			Item::RECORD_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
-//			Item::RECORD_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
-//			Item::RECORD_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
-//			Item::RECORD_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
-//			Item::RECORD_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
-//			Item::RECORD_11 => LevelSoundEventPacket::SOUND_RECORD_11,
-//			Item::RECORD_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
-//			Item::RECORD_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
-//			Item::RECORD_5 => LevelSoundEventPacket::SOUND_RECORD_5,
-//			Item::RECORD_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
-//			Item::RECORD_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
-//			Item::RECORD_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
-//			Item::RECORD_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
-//			Item::RECORD_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
-//			Item::RECORD_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
-//			Item::RECORD_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
-//		];
+		$records = [
+			Item::MUSIC_DISC_13 => LevelSoundEventPacket::SOUND_RECORD_13,
+			Item::MUSIC_DISC_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
+			Item::MUSIC_DISC_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
+			Item::MUSIC_DISC_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
+			Item::MUSIC_DISC_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
+			Item::MUSIC_DISC_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
+			Item::MUSIC_DISC_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
+			Item::MUSIC_DISC_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
+			Item::MUSIC_DISC_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
+			Item::MUSIC_DISC_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
+			Item::MUSIC_DISC_11 => LevelSoundEventPacket::SOUND_RECORD_11,
+			Item::MUSIC_DISC_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
+			Item::MUSIC_DISC_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
+			Item::MUSIC_DISC_5 => LevelSoundEventPacket::SOUND_RECORD_5,
+			Item::MUSIC_DISC_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
+			Item::MUSIC_DISC_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
+			Item::MUSIC_DISC_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
+			Item::MUSIC_DISC_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
+			Item::MUSIC_DISC_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
+			Item::MUSIC_DISC_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
+			Item::MUSIC_DISC_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
+		];
+
+
+		foreach($records as $itemId => $soundId){
+			self::registerItem(new Record($itemId, $soundId));
+		}
+
 //
-//		foreach($records as $itemId => $soundId){
-//			self::registerItem(new Record($itemId, $soundId));
-//		}
-//
-//
-//		self::registerItem(new Item(Item::DISC_FRAGMENT_5, 0, "Disc Fragment"));
+		self::registerItem(new Item(ItemIds::DISC_FRAGMENT_5, 0, "Disc Fragment"));
 //
 //		self::registerItem(new Shield());
 //
-//		self::registerItem(new Item(Item::NETHERITE_INGOT, 0, "Netherite Ingot"));
-//		self::registerItem(new Item(Item::NETHERITE_SCRAP, 0, "Netherite Scrap"));
-//		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
-//		self::registerItem(new HoneyBottle());
-//		self::registerItem(new Spyglass());
+		self::registerItem(new Item(ItemIds::NETHERITE_INGOT, 0, "Netherite Ingot"));
+		self::registerItem(new Item(ItemIds::NETHERITE_SCRAP, 0, "Netherite Scrap"));
+		self::registerItem(new Item(ItemIds::HONEYCOMB, 0, "Honeycomb"));
+		self::registerItem(new HoneyBottle());
+		self::registerItem(new Spyglass());
 		self::registerItem(new CopperHorseArmor());
 		self::registerItem(new CopperHelmet());
 		self::registerItem(new CopperChestplate());

@@ -101,9 +101,6 @@ class Explosion{
 		$vector = new Vector3(0, 0, 0);
 		$vBlock = new Position(0, 0, 0, $this->level);
 
-		$currentChunk = null;
-		$currentSubChunk = null;
-
 		$mRays = $this->rays - 1;
 		for($i = 0; $i < $this->rays; ++$i){
 			for($j = 0; $j < $this->rays; ++$j){
@@ -134,7 +131,7 @@ class Explosion{
 							[$blockId, $meta] = RuntimeBlockMapping::fromRuntimeId($this->subChunkHandler->currentSubChunk->getBlockId($vBlock->x & Chunk::COORD_MASK, $vBlock->y & Chunk::COORD_MASK, $vBlock->z & Chunk::COORD_MASK, 0));
 
 							if($blockId !== 0){
-								$blastForce -= (BlockFactory::$blastResistance[$blockId] / 5 + 0.3) * $this->stepLen;
+								$blastForce -= ((BlockFactory::$blastResistance[$blockId] ?? 50) / 5 + 0.3) * $this->stepLen;
 								if($blastForce > 0){
 									if(!isset($this->affectedBlocks[Level::blockHash($vBlock->x, $vBlock->y, $vBlock->z)])){
 										$_block = BlockFactory::get($blockId, $meta, $vBlock);

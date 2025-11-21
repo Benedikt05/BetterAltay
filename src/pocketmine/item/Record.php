@@ -26,10 +26,9 @@ namespace pocketmine\item;
 
 class Record extends Item{
 
-	/** @var int */
-	protected $soundId;
+	protected int $soundId;
 
-	public function __construct(int $id, int $soundId){
+	public function __construct(string $id, int $soundId){
 		parent::__construct($id, 0, "Music Disc");
 
 		$this->soundId = $soundId;

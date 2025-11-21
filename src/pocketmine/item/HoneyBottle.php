@@ -40,7 +40,7 @@ class HoneyBottle extends Food{
 	}
 
 	public function getResidue() : Item{
-		return ItemFactory::get(Item::GLASS_BOTTLE);
+		return ItemFactory::get(ItemIds::GLASS_BOTTLE);
 	}
 
 	public function onConsume(Living $consumer) : void{
