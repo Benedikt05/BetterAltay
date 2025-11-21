@@ -17,17 +17,16 @@
  * @link http://www.pocketmine.net/
  *
  *
-*/
+ */
 
 declare(strict_types=1);
 
 namespace pocketmine\item;
 
-
 /**
  * This class is generated automatically from the item type dictionary for the current version. Do not edit it manually.
  */
-interface ItemIds{
+final class ItemIds{
 	public const ACACIA_BOAT = "minecraft:acacia_boat";
 	public const ACACIA_CHEST_BOAT = "minecraft:acacia_chest_boat";
 	public const ACACIA_DOOR = "minecraft:acacia_door";
@@ -188,7 +187,6 @@ interface ItemIds{
 	public const DARK_OAK_DOOR = "minecraft:dark_oak_door";
 	public const DARK_OAK_HANGING_SIGN = "minecraft:dark_oak_hanging_sign";
 	public const DARK_OAK_SIGN = "minecraft:dark_oak_sign";
-	public const DEBUG_STICK = "minecraft:debug_stick";
 	public const DIAMOND = "minecraft:diamond";
 	public const DIAMOND_AXE = "minecraft:diamond_axe";
 	public const DIAMOND_BOOTS = "minecraft:diamond_boots";
@@ -619,4 +617,91 @@ interface ItemIds{
 	public const ZOMBIE_PIGMAN_SPAWN_EGG = "minecraft:zombie_pigman_spawn_egg";
 	public const ZOMBIE_SPAWN_EGG = "minecraft:zombie_spawn_egg";
 	public const ZOMBIE_VILLAGER_SPAWN_EGG = "minecraft:zombie_villager_spawn_egg";
+	public const APPLEENCHANTED = "minecraft:enchanted_golden_apple";
+	public const CARROTONASTICK = "minecraft:carrot_on_a_stick";
+	public const CHAIN = "minecraft:iron_chain";
+	public const CHORUS_FRUIT_POPPED = "minecraft:popped_chorus_fruit";
+	public const CLOWNFISH = "minecraft:tropical_fish";
+	public const CONCRETEPOWDER = "minecraft:concrete_powder";
+	public const COOKED_FISH = "minecraft:cooked_cod";
+	public const DARKOAK_SIGN = "minecraft:dark_oak_sign";
+	public const DOUBLE_STONE_SLAB = "minecraft:stone_block_slab";
+	public const DOUBLE_STONE_SLAB2 = "minecraft:stone_block_slab2";
+	public const DOUBLE_STONE_SLAB3 = "minecraft:stone_block_slab3";
+	public const DOUBLE_STONE_SLAB4 = "minecraft:stone_block_slab4";
+	public const EMPTYMAP = "minecraft:empty_map";
+	public const FIREBALL = "minecraft:fire_charge";
+	public const FIREWORKS = "minecraft:firework_rocket";
+	public const FIREWORKSCHARGE = "minecraft:firework_star";
+	public const FISH = "minecraft:cod";
+	public const GLAZEDTERRACOTTA_BLACK = "minecraft:black_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_BLUE = "minecraft:blue_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_BROWN = "minecraft:brown_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_CYAN = "minecraft:cyan_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_GRAY = "minecraft:gray_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_GREEN = "minecraft:green_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_LIGHT_BLUE = "minecraft:light_blue_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_LIME = "minecraft:lime_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_MAGENTA = "minecraft:magenta_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_ORANGE = "minecraft:orange_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_PINK = "minecraft:pink_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_PURPLE = "minecraft:purple_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_RED = "minecraft:red_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_SILVER = "minecraft:silver_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_WHITE = "minecraft:white_glazed_terracotta";
+	public const GLAZEDTERRACOTTA_YELLOW = "minecraft:yellow_glazed_terracotta";
+	public const GRASS = "minecraft:grass_block";
+	public const HORSEARMORDIAMOND = "minecraft:diamond_horse_armor";
+	public const HORSEARMORGOLD = "minecraft:golden_horse_armor";
+	public const HORSEARMORIRON = "minecraft:iron_horse_armor";
+	public const HORSEARMORLEATHER = "minecraft:leather_horse_armor";
+	public const INVISIBLEBEDROCK = "minecraft:invisible_bedrock";
+	public const LODESTONECOMPASS = "minecraft:lodestone_compass";
+	public const MAP = "minecraft:filled_map";
+	public const MELON = "minecraft:melon_slice";
+	public const MOVINGBLOCK = "minecraft:moving_block";
+	public const MUTTONCOOKED = "minecraft:cooked_mutton";
+	public const MUTTONRAW = "minecraft:mutton";
+	public const NAMETAG = "minecraft:name_tag";
+	public const NETHERSTAR = "minecraft:nether_star";
+	public const PISTONARMCOLLISION = "minecraft:piston_arm_collision";
+	public const PRISMARINESHARD = "minecraft:prismarine_shard";
+	public const REAL_DOUBLE_STONE_SLAB = "minecraft:double_stone_block_slab";
+	public const REAL_DOUBLE_STONE_SLAB2 = "minecraft:double_stone_block_slab2";
+	public const REAL_DOUBLE_STONE_SLAB3 = "minecraft:double_stone_block_slab3";
+	public const REAL_DOUBLE_STONE_SLAB4 = "minecraft:double_stone_block_slab4";
+	public const RECORD_11 = "minecraft:music_disc_11";
+	public const RECORD_13 = "minecraft:music_disc_13";
+	public const RECORD_5 = "minecraft:music_disc_5";
+	public const RECORD_BLOCKS = "minecraft:music_disc_blocks";
+	public const RECORD_CAT = "minecraft:music_disc_cat";
+	public const RECORD_CHIRP = "minecraft:music_disc_chirp";
+	public const RECORD_CREATOR = "minecraft:music_disc_creator";
+	public const RECORD_CREATOR_MUSIC_BOX = "minecraft:music_disc_creator_music_box";
+	public const RECORD_FAR = "minecraft:music_disc_far";
+	public const RECORD_LAVA_CHICKEN = "minecraft:music_disc_lava_chicken";
+	public const RECORD_MALL = "minecraft:music_disc_mall";
+	public const RECORD_MELLOHI = "minecraft:music_disc_mellohi";
+	public const RECORD_OTHERSIDE = "minecraft:music_disc_otherside";
+	public const RECORD_PIGSTEP = "minecraft:music_disc_pigstep";
+	public const RECORD_PRECIPICE = "minecraft:music_disc_precipice";
+	public const RECORD_RELIC = "minecraft:music_disc_relic";
+	public const RECORD_STAL = "minecraft:music_disc_stal";
+	public const RECORD_STRAD = "minecraft:music_disc_strad";
+	public const RECORD_TEARS = "minecraft:music_disc_tears";
+	public const RECORD_WAIT = "minecraft:music_disc_wait";
+	public const RECORD_WARD = "minecraft:music_disc_ward";
+	public const REEDS = "minecraft:sugar_cane";
+	public const SCUTE = "minecraft:turtle_scute";
+	public const SEALANTERN = "minecraft:sea_lantern";
+	public const SIGN = "minecraft:oak_sign";
+	public const SPECKLED_MELON = "minecraft:glistering_melon_slice";
+	public const STICKYPISTONARMCOLLISION = "minecraft:sticky_piston_arm_collision";
+	public const STONE_SLAB = "minecraft:stone_block_slab";
+	public const STONE_SLAB2 = "minecraft:stone_block_slab2";
+	public const STONE_SLAB3 = "minecraft:stone_block_slab3";
+	public const STONE_SLAB4 = "minecraft:stone_block_slab4";
+	public const TOTEM = "minecraft:totem_of_undying";
+	public const TURTLE_SHELL_PIECE = "minecraft:turtle_scute";
+	public const YELLOW_FLOWER = "minecraft:dandelion";
 }

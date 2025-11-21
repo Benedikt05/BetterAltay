@@ -77,6 +77,9 @@
       "make-server": [
          "@composer install --no-dev --classmap-authoritative --ignore-platform-reqs",
          "@php -dphar.readonly=0 build/server-phar.php"
+      ],
+      "update-codegen": [
+         "@php build/generate-item-type-names.php src/pocketmine/resources/vanilla/runtime_item_states.json"
       ]
    }
 }
