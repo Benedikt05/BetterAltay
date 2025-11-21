@@ -34,7 +34,7 @@ use pocketmine\Player;
 
 class Lava extends Liquid{
 
-	protected string $id = BlockNames::LAVA;
+	protected string $id = self::LAVA;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -48,7 +48,7 @@ class Lava extends Liquid{
 		return "Lava";
 	}
 	public function getFlowingForm() : Block{
-		return BlockFactory::get(BlockNames::FLOWING_LAVA, $this->meta);
+		return BlockFactory::get(self::FLOWING_LAVA, $this->meta);
 	}
 
 	public function getBucketFillSound() : int{
@@ -70,7 +70,7 @@ class Lava extends Liquid{
 	protected function checkForHarden(){
 		$colliding = null;
 		for($side = 1; $side <= 5; ++$side){ //don't check downwards side
-			$blockSide = $this->getSide($side, 1, 1);
+			$blockSide = $this->getSide($side);
 			if($blockSide instanceof Water){
 				$colliding = $blockSide;
 				break;
@@ -79,16 +79,16 @@ class Lava extends Liquid{
 
 		if($colliding !== null){
 			if($this->getDamage() === 0){
-				$this->liquidCollide($colliding, BlockFactory::get(BlockNames::OBSIDIAN));
+				$this->liquidCollide($colliding, BlockFactory::get(self::OBSIDIAN));
 			}elseif($this->getDamage() <= 4){
-				$this->liquidCollide($colliding, BlockFactory::get(BlockNames::COBBLESTONE));
+				$this->liquidCollide($colliding, BlockFactory::get(self::COBBLESTONE));
 			}
 		}
 	}
 
 	protected function flowIntoBlock(Block $block, int $newFlowDecay) : void{
 		if($block instanceof Water){
-			$block->liquidCollide($this, BlockFactory::get(BlockNames::STONE));
+			$block->liquidCollide($this, BlockFactory::get(self::STONE));
 		}else{
 			parent::flowIntoBlock($block, $newFlowDecay);
 		}

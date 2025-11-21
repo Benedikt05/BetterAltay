@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\populator;
 
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Leaves;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -59,7 +59,7 @@ class TallGrass extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount) + $this->baseAmount;
-		$rid = RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS, 1);
+		$rid = RuntimeBlockMapping::toRuntimeId(BlockIds::TALL_GRASS, 1);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
@@ -74,7 +74,7 @@ class TallGrass extends Populator{
 	private function canTallGrassStay(int $x, int $y, int $z) : bool{
 		$id = RuntimeBlockMapping::getIdFromRuntimeId( $this->level->getBlockIdAt($x, $y, $z));
 		$down = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y - 1, $z));
-		return ($id === BlockNames::AIR or $id === BlockNames::SNOW_LAYER) and $down === BlockNames::GRASS_BLOCK;
+		return ($id === BlockIds::AIR or $id === BlockIds::SNOW_LAYER) and $down === BlockIds::GRASS_BLOCK;
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
@@ -82,7 +82,7 @@ class TallGrass extends Populator{
 			$rid = $this->level->getBlockIdAt($x, $y, $z);
 			[$id, $meta] = RuntimeBlockMapping::fromRuntimeId($rid);
 			$block = BlockFactory::get($id, $meta);
-			if($rid === RuntimeBlockMapping::AIR() && !$block instanceof Leaves && $id !== BlockNames::SNOW_LAYER){
+			if($rid === RuntimeBlockMapping::AIR() && !$block instanceof Leaves && $id !== BlockIds::SNOW_LAYER){
 				return $y + 1;
 			}
 		}

@@ -25,6 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function mt_rand;
@@ -32,8 +33,8 @@ use function mt_rand;
 abstract class Crops extends Flowable{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if($blockReplace->getSide(Vector3::SIDE_DOWN)->getId() === Block::FARMLAND){
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		if($blockReplace->getSide(Vector3::SIDE_DOWN)->getId() === self::FARMLAND){
+			$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 			return true;
 		}
@@ -42,7 +43,7 @@ abstract class Crops extends Flowable{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($this->meta < 7 and $item->getId() === Item::DYE and $item->getDamage() === 0x0F){ //Bonemeal
+		if($this->meta < 7 and $item->getId() === ItemIds::DYE and $item->getDamage() === 0x0F){ //Bonemeal
 			$block = clone $this;
 			$block->meta += mt_rand(2, 5);
 			if($block->meta > 7){
@@ -52,7 +53,7 @@ abstract class Crops extends Flowable{
 			$ev = new BlockGrowEvent($this, $block);
 			$ev->call();
 			if(!$ev->isCancelled()){
-				$this->getLevelNonNull()->setBlock($this, $ev->getNewState(), true, true);
+				$this->getLevelNonNull()->setBlock($this, $ev->getNewState(), true);
 			}
 
 			$item->pop();
@@ -64,7 +65,7 @@ abstract class Crops extends Flowable{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() !== Block::FARMLAND){
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::FARMLAND){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}
@@ -81,7 +82,7 @@ abstract class Crops extends Flowable{
 				$ev = new BlockGrowEvent($this, $block);
 				$ev->call();
 				if(!$ev->isCancelled()){
-					$this->getLevelNonNull()->setBlock($this, $ev->getNewState(), true, true);
+					$this->getLevelNonNull()->setBlock($this, $ev->getNewState(), true);
 				}
 			}
 		}

@@ -26,7 +26,7 @@ namespace pocketmine\item;
 use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\material\WoodType;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
@@ -62,52 +62,57 @@ class ItemFactory{
 	 */
 	public static function init(){
 
-		self::registerItem(new Shovel(ItemNames::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
-		self::registerItem(new Pickaxe(ItemNames::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
-		self::registerItem(new Axe(ItemNames::IRON_AXE, 0, "Iron Axe", TieredTool::TIER_IRON));
+		self::registerItem(new Shovel(ItemIds::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
+		self::registerItem(new Pickaxe(ItemIds::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
+		self::registerItem(new Axe(ItemIds::IRON_AXE, 0, "Iron Axe", TieredTool::TIER_IRON));
 		self::registerItem(new FlintSteel());
 		self::registerItem(new Apple());
 		self::registerItem(new Bow());
 		self::registerItem(new Arrow());
 		self::registerItem(new Coal());
-		self::registerItem(new Item(ItemNames::DIAMOND, 0, "Diamond"));
-		self::registerItem(new Item(ItemNames::IRON_INGOT, 0, "Iron Ingot"));
-		self::registerItem(new Item(ItemNames::GOLD_INGOT, 0, "Gold Ingot"));
-		self::registerItem(new Sword(ItemNames::IRON_SWORD, 0, "Iron Sword", TieredTool::TIER_IRON));
-		self::registerItem(new Sword(ItemNames::WOODEN_SWORD, 0, "Wooden Sword", TieredTool::TIER_WOODEN));
-		self::registerItem(new Shovel(ItemNames::WOODEN_SHOVEL, 0, "Wooden Shovel", TieredTool::TIER_WOODEN));
-		self::registerItem(new Pickaxe(ItemNames::WOODEN_PICKAXE, 0, "Wooden Pickaxe", TieredTool::TIER_WOODEN));
-		self::registerItem(new Axe(ItemNames::WOODEN_AXE, 0, "Wooden Axe", TieredTool::TIER_WOODEN));
-		self::registerItem(new Sword(ItemNames::STONE_SWORD, 0, "Stone Sword", TieredTool::TIER_STONE));
-		self::registerItem(new Shovel(ItemNames::STONE_SHOVEL, 0, "Stone Shovel", TieredTool::TIER_STONE));
-		self::registerItem(new Pickaxe(ItemNames::STONE_PICKAXE, 0, "Stone Pickaxe", TieredTool::TIER_STONE));
-		self::registerItem(new Axe(ItemNames::STONE_AXE, 0, "Stone Axe", TieredTool::TIER_STONE));
-		self::registerItem(new Sword(ItemNames::DIAMOND_SWORD, 0, "Diamond Sword", TieredTool::TIER_DIAMOND));
-		self::registerItem(new Shovel(ItemNames::DIAMOND_SHOVEL, 0, "Diamond Shovel", TieredTool::TIER_DIAMOND));
-		self::registerItem(new Pickaxe(ItemNames::DIAMOND_PICKAXE, 0, "Diamond Pickaxe", TieredTool::TIER_DIAMOND));
-		self::registerItem(new Axe(ItemNames::DIAMOND_AXE, 0, "Diamond Axe", TieredTool::TIER_DIAMOND));
-		self::registerItem(new Sword(ItemNames::NETHERITE_SWORD, 0, "Netherite Sword", TieredTool::TIER_NETHERITE));
-		self::registerItem(new Shovel(ItemNames::NETHERITE_SHOVEL, 0, "Netherite Shovel", TieredTool::TIER_NETHERITE));
-		self::registerItem(new Pickaxe(ItemNames::NETHERITE_PICKAXE, 0, "Netherite Pickaxe", TieredTool::TIER_NETHERITE));
-		self::registerItem(new Axe(ItemNames::NETHERITE_AXE, 0, "Netherite Axe", TieredTool::TIER_NETHERITE));
+		self::registerItem(new Item(ItemIds::DIAMOND, 0, "Diamond"));
+		self::registerItem(new Item(ItemIds::IRON_INGOT, 0, "Iron Ingot"));
+		self::registerItem(new Item(ItemIds::GOLD_INGOT, 0, "Gold Ingot"));
+		self::registerItem(new Sword(ItemIds::IRON_SWORD, 0, "Iron Sword", TieredTool::TIER_IRON));
+		self::registerItem(new Sword(ItemIds::WOODEN_SWORD, 0, "Wooden Sword", TieredTool::TIER_WOODEN));
+		self::registerItem(new Shovel(ItemIds::WOODEN_SHOVEL, 0, "Wooden Shovel", TieredTool::TIER_WOODEN));
+		self::registerItem(new Pickaxe(ItemIds::WOODEN_PICKAXE, 0, "Wooden Pickaxe", TieredTool::TIER_WOODEN));
+		self::registerItem(new Axe(ItemIds::WOODEN_AXE, 0, "Wooden Axe", TieredTool::TIER_WOODEN));
+		self::registerItem(new Sword(ItemIds::STONE_SWORD, 0, "Stone Sword", TieredTool::TIER_STONE));
+		self::registerItem(new Shovel(ItemIds::STONE_SHOVEL, 0, "Stone Shovel", TieredTool::TIER_STONE));
+		self::registerItem(new Pickaxe(ItemIds::STONE_PICKAXE, 0, "Stone Pickaxe", TieredTool::TIER_STONE));
+		self::registerItem(new Axe(ItemIds::STONE_AXE, 0, "Stone Axe", TieredTool::TIER_STONE));
+		self::registerItem(new Sword(ItemIds::DIAMOND_SWORD, 0, "Diamond Sword", TieredTool::TIER_DIAMOND));
+		self::registerItem(new Shovel(ItemIds::DIAMOND_SHOVEL, 0, "Diamond Shovel", TieredTool::TIER_DIAMOND));
+		self::registerItem(new Pickaxe(ItemIds::DIAMOND_PICKAXE, 0, "Diamond Pickaxe", TieredTool::TIER_DIAMOND));
+		self::registerItem(new Axe(ItemIds::DIAMOND_AXE, 0, "Diamond Axe", TieredTool::TIER_DIAMOND));
+		self::registerItem(new Sword(ItemIds::NETHERITE_SWORD, 0, "Netherite Sword", TieredTool::TIER_NETHERITE));
+		self::registerItem(new Shovel(ItemIds::NETHERITE_SHOVEL, 0, "Netherite Shovel", TieredTool::TIER_NETHERITE));
+		self::registerItem(new Pickaxe(ItemIds::NETHERITE_PICKAXE, 0, "Netherite Pickaxe", TieredTool::TIER_NETHERITE));
+		self::registerItem(new Axe(ItemIds::NETHERITE_AXE, 0, "Netherite Axe", TieredTool::TIER_NETHERITE));
 		self::registerItem(new Stick());
 		self::registerItem(new Bowl());
 		self::registerItem(new MushroomStew());
-		self::registerItem(new Sword(ItemNames::GOLDEN_SWORD, 0, "Gold Sword", TieredTool::TIER_GOLD));
-		self::registerItem(new Shovel(ItemNames::GOLDEN_SHOVEL, 0, "Gold Shovel", TieredTool::TIER_GOLD));
-		self::registerItem(new Pickaxe(ItemNames::GOLDEN_PICKAXE, 0, "Gold Pickaxe", TieredTool::TIER_GOLD));
-		self::registerItem(new Axe(ItemNames::GOLDEN_AXE, 0, "Gold Axe", TieredTool::TIER_GOLD));
+		self::registerItem(new Sword(ItemIds::GOLDEN_SWORD, 0, "Gold Sword", TieredTool::TIER_GOLD));
+		self::registerItem(new Shovel(ItemIds::GOLDEN_SHOVEL, 0, "Gold Shovel", TieredTool::TIER_GOLD));
+		self::registerItem(new Pickaxe(ItemIds::GOLDEN_PICKAXE, 0, "Gold Pickaxe", TieredTool::TIER_GOLD));
+		self::registerItem(new Axe(ItemIds::GOLDEN_AXE, 0, "Gold Axe", TieredTool::TIER_GOLD));
+		self::registerItem(new Sword(ItemIds::COPPER_SWORD, 0, "Copper Sword", TieredTool::TIER_COPPER));
+		self::registerItem(new Axe(ItemIds::COPPER_AXE, 0, "Copper Axe", TieredTool::TIER_COPPER));
+		self::registerItem(new Pickaxe(ItemIds::COPPER_PICKAXE, 0, "Copper Pickaxe", TieredTool::TIER_COPPER));
+		self::registerItem(new Shovel(ItemIds::COPPER_SHOVEL, 0, "Copper Shovel", TieredTool::TIER_COPPER));
 		self::registerItem(new StringItem());
-		self::registerItem(new Item(ItemNames::FEATHER, 0, "Feather"));
-		self::registerItem(new Item(ItemNames::GUNPOWDER, 0, "Gunpowder"));
-		self::registerItem(new Hoe(ItemNames::WOODEN_HOE, 0, "Wooden Hoe", TieredTool::TIER_WOODEN));
-		self::registerItem(new Hoe(ItemNames::STONE_HOE, 0, "Stone Hoe", TieredTool::TIER_STONE));
-		self::registerItem(new Hoe(ItemNames::IRON_HOE, 0, "Iron Hoe", TieredTool::TIER_IRON));
-		self::registerItem(new Hoe(ItemNames::DIAMOND_HOE, 0, "Diamond Hoe", TieredTool::TIER_DIAMOND));
-		self::registerItem(new Hoe(ItemNames::NETHERITE_HOE, 0, "Netherite Hoe", TieredTool::TIER_NETHERITE));
-		self::registerItem(new Hoe(ItemNames::GOLDEN_HOE, 0, "Golden Hoe", TieredTool::TIER_GOLD));
+		self::registerItem(new Item(ItemIds::FEATHER, 0, "Feather"));
+		self::registerItem(new Item(ItemIds::GUNPOWDER, 0, "Gunpowder"));
+		self::registerItem(new Hoe(ItemIds::WOODEN_HOE, 0, "Wooden Hoe", TieredTool::TIER_WOODEN));
+		self::registerItem(new Hoe(ItemIds::STONE_HOE, 0, "Stone Hoe", TieredTool::TIER_STONE));
+		self::registerItem(new Hoe(ItemIds::IRON_HOE, 0, "Iron Hoe", TieredTool::TIER_IRON));
+		self::registerItem(new Hoe(ItemIds::DIAMOND_HOE, 0, "Diamond Hoe", TieredTool::TIER_DIAMOND));
+		self::registerItem(new Hoe(ItemIds::NETHERITE_HOE, 0, "Netherite Hoe", TieredTool::TIER_NETHERITE));
+		self::registerItem(new Hoe(ItemIds::GOLDEN_HOE, 0, "Golden Hoe", TieredTool::TIER_GOLD));
+		self::registerItem(new Hoe(ItemIds::COPPER_HOE, 0, "Copper Hoe", TieredTool::TIER_COPPER));
 		self::registerItem(new WheatSeeds());
-		self::registerItem(new Item(ItemNames::WHEAT, 0, "Wheat"));
+		self::registerItem(new Item(ItemIds::WHEAT, 0, "Wheat"));
 		self::registerItem(new Bread());
 		self::registerItem(new LeatherCap());
 		self::registerItem(new LeatherTunic());
@@ -133,7 +138,7 @@ class ItemFactory{
 		self::registerItem(new GoldChestplate());
 		self::registerItem(new GoldLeggings());
 		self::registerItem(new GoldBoots());
-		self::registerItem(new Item(ItemNames::FLINT, 0, "Flint"));
+		self::registerItem(new Item(ItemIds::FLINT, 0, "Flint"));
 		self::registerItem(new RawPorkchop());
 		self::registerItem(new CookedPorkchop());
 		self::registerItem(new PaintingItem());
@@ -146,30 +151,30 @@ class ItemFactory{
 
 		self::registerItem(new Minecart());
 		self::registerItem(new Saddle());
-		self::registerItem(new ItemBlock(BlockNames::IRON_DOOR, 0, ItemNames::IRON_DOOR));
+		self::registerItem(new ItemBlock(BlockIds::IRON_DOOR, 0, ItemIds::IRON_DOOR));
 		self::registerItem(new Redstone());
 		self::registerItem(new Snowball());
 		self::registerBoatItems();
 		self::registerItem(new BambooRaft());
-		self::registerItem(new Item(ItemNames::LEATHER, 0, "Leather"));
+		self::registerItem(new Item(ItemIds::LEATHER, 0, "Leather"));
 		//TODO: KELP
-		self::registerItem(new Item(ItemNames::BRICK, 0, "Brick"));
-		self::registerItem(new Item(ItemNames::CLAY_BALL, 0, "Clay"));
-		self::registerItem(new ItemBlock(BlockNames::REEDS, 0, ItemNames::SUGAR_CANE));
-		self::registerItem(new Item(ItemNames::PAPER, 0, "Paper"));
+		self::registerItem(new Item(ItemIds::BRICK, 0, "Brick"));
+		self::registerItem(new Item(ItemIds::CLAY_BALL, 0, "Clay"));
+		self::registerItem(new ItemBlock(BlockIds::REEDS, 0, ItemIds::SUGAR_CANE));
+		self::registerItem(new Item(ItemIds::PAPER, 0, "Paper"));
 		self::registerItem(new Book());
-		self::registerItem(new Item(ItemNames::SLIME_BALL, 0, "Slimeball"));
+		self::registerItem(new Item(ItemIds::SLIME_BALL, 0, "Slimeball"));
 		//TODO: CHEST_MINECART
 
 		self::registerItem(new Egg());
 		self::registerItem(new Compass());
 		self::registerItem(new FishingRod());
 		self::registerItem(new Clock());
-		self::registerItem(new Item(ItemNames::GLOWSTONE_DUST, 0, "Glowstone Dust"));
+		self::registerItem(new Item(ItemIds::GLOWSTONE_DUST, 0, "Glowstone Dust"));
 		self::registerItem(new RawFish());
-		self::registerItem(new RawFish(ItemNames::SALMON, "Raw Salmon", 2, 0.2));
+		self::registerItem(new RawFish(ItemIds::SALMON, "Raw Salmon", 2, 0.2));
 		self::registerItem(new CookedFish());
-		self::registerItem(new CookedFish(ItemNames::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
+		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
 //		self::registerItem(new Dye());
 //		self::registerItem(new Item(Item::BONE, 0, "Bone"));
 //		self::registerItem(new Item(Item::SUGAR, 0, "Sugar"));
@@ -327,6 +332,13 @@ class ItemFactory{
 //		self::registerItem(new Item(Item::HONEYCOMB, 0, "Honeycomb"));
 //		self::registerItem(new HoneyBottle());
 //		self::registerItem(new Spyglass());
+		self::registerItem(new CopperHorseArmor());
+		self::registerItem(new CopperHelmet());
+		self::registerItem(new CopperChestplate());
+		self::registerItem(new CopperLeggings());
+		self::registerItem(new CopperBoots());
+		self::registerItem(new Item(ItemIds::COPPER_INGOT, 0, "Copper Ingot"));
+		self::registerItem(new Item(ItemIds::COPPER_NUGGET, 0, "Copper Nugget"));
 	}
 
 	/**
@@ -371,7 +383,7 @@ class ItemFactory{
 				 * crafting ingredients with any-damage. */
 				$item = new ItemBlock($blockId, $meta, $id);
 			}else{
-				$item = new ItemBlock(BlockNames::UNKNOWN, $meta, $id);
+				$item = new ItemBlock(BlockIds::UNKNOWN, $meta, $id);
 			}
 		}catch(RuntimeException $e){
 			throw new InvalidArgumentException("Item ID $id is invalid or out of bounds");
@@ -425,8 +437,8 @@ class ItemFactory{
 			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId((int) $b[0], $meta);
 			[$id, ] = ItemTranslator::getInstance()->fromNetworkId($rid, $meta);
 			$item = self::get($id, $meta);
-		}elseif(defined(ItemNames::class . "::" . mb_strtoupper($b[0]))){
-			$item = self::get(constant(ItemNames::class . "::" . mb_strtoupper($b[0])), $meta);
+		}elseif(defined(ItemIds::class . "::" . mb_strtoupper($b[0]))){
+			$item = self::get(constant(ItemIds::class . "::" . mb_strtoupper($b[0])), $meta);
 		}else{
 			throw new InvalidArgumentException("Unable to resolve \"" . $str . "\" to a valid item");
 		}
@@ -454,7 +466,7 @@ class ItemFactory{
 	}
 
 	private static function registerDoorItems() : void {
-		self::registerItem(new ItemBlock(BlockNames::WOODEN_DOOR, 0, ItemNames::WOODEN_DOOR));
+		self::registerItem(new ItemBlock(BlockIds::WOODEN_DOOR, 0, ItemIds::WOODEN_DOOR));
 
 		foreach (WoodType::values() as $type) {
 			if ($type->equals(WoodType::OAK())) {

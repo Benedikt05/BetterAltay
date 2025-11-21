@@ -25,7 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\FullContainerName;
@@ -63,7 +63,7 @@ class InventoryContentPacket extends DataPacket{
 		$this->containerName->write($this);
 
 		if($this->storageItem === null){
-			$this->storageItem = ItemStackWrapper::legacy(ItemFactory::get(BlockNames::AIR));
+			$this->storageItem = ItemStackWrapper::legacy(ItemFactory::get(BlockIds::AIR));
 		}
 		$this->storageItem->write($this);
 

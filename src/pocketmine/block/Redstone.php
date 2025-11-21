@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Redstone extends Solid{
 
-	protected $id = self::REDSTONE_BLOCK;
+	protected string $id = self::REDSTONE_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

@@ -36,7 +36,7 @@ use function mt_rand;
 
 class Fire extends Flowable{
 
-	protected $id = self::FIRE;
+	protected string $id = self::FIRE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -82,7 +82,7 @@ class Fire extends Flowable{
 
 	public function onNearbyBlockChange() : void{
 		if(!$this->getSide(Vector3::SIDE_DOWN)->isSolid() and !$this->hasAdjacentFlammableBlocks()){
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), true);
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::AIR), true);
 		}else{
 			$this->level->scheduleDelayedBlockUpdate($this, mt_rand(30, 40));
 		}
@@ -107,12 +107,12 @@ class Fire extends Flowable{
 			if($this->meta === 15){
 				if(!$down->isFlammable() and mt_rand(0, 3) === 3){ //1/4 chance to extinguish
 					$canSpread = false;
-					$result = BlockFactory::get(Block::AIR);
+					$result = BlockFactory::get(BlockIds::AIR);
 				}
 			}elseif(!$this->hasAdjacentFlammableBlocks()){
 				$canSpread = false;
 				if(!$down->isSolid() or $this->meta > 3){ //fire older than 3, or without a solid block below
-					$result = BlockFactory::get(Block::AIR);
+					$result = BlockFactory::get(BlockIds::AIR);
 				}
 			}
 		}
@@ -160,9 +160,9 @@ class Fire extends Flowable{
 				$block->onIncinerate();
 
 				if(mt_rand(0, $this->meta + 9) < 5){ //TODO: check rain
-					$this->level->setBlock($block, BlockFactory::get(Block::FIRE, min(15, $this->meta + (mt_rand(0, 4) >> 2))));
+					$this->level->setBlock($block, BlockFactory::get(BlockIds::FIRE, min(15, $this->meta + (mt_rand(0, 4) >> 2))));
 				}else{
-					$this->level->setBlock($block, BlockFactory::get(Block::AIR));
+					$this->level->setBlock($block, BlockFactory::get(BlockIds::AIR));
 				}
 			}
 		}

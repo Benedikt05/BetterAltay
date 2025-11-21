@@ -31,7 +31,7 @@ use InvalidArgumentException;
 use JsonSerializable;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\BlockToolType;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
@@ -587,7 +587,7 @@ class Item implements ItemIds, JsonSerializable{
 	}
 
 	public function isNull() : bool{
-		return $this->count <= 0 or $this->id === BlockNames::AIR;
+		return $this->count <= 0 or $this->id === BlockIds::AIR;
 	}
 
 	/**
@@ -617,7 +617,7 @@ class Item implements ItemIds, JsonSerializable{
 			return BlockFactory::get($blockId);
 		}
 
-		return BlockFactory::get(BlockNames::AIR);
+		return BlockFactory::get(BlockIds::AIR);
 	}
 
 	final public function getId() : string{
@@ -886,7 +886,7 @@ class Item implements ItemIds, JsonSerializable{
 	 */
 	public static function nbtDeserialize(CompoundTag $tag) : Item{
 		if(!$tag->hasTag("id") or !$tag->hasTag("Count")){
-			return ItemFactory::get(BlockNames::AIR);
+			return ItemFactory::get(BlockIds::AIR);
 		}
 
 		$count = Binary::unsignByte($tag->getByte("Count"));

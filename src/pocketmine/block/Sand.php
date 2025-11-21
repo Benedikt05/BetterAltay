@@ -26,7 +26,7 @@ namespace pocketmine\block;
 
 class Sand extends Fallable{
 
-	public function __construct(string $id = BlockNames::SAND, int $meta = 0){
+	public function __construct(string $id = self::SAND, int $meta = 0){
 		$this->id = $id;
 		$this->meta = $meta;
 	}
@@ -40,7 +40,7 @@ class Sand extends Fallable{
 	}
 
 	public function getName() : string{
-		if($this->id = BlockNames::RED_SAND) {
+		if($this->id = self::RED_SAND) {
 			return "Red Sand";
 		}
 

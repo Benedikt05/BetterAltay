@@ -34,7 +34,7 @@ class NoteBlock extends Solid{
 
 	// TODO: Redstone power
 
-	protected string $id = BlockNames::NOTEBLOCK;
+	protected string $id = self::NOTEBLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

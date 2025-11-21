@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\event\inventory\InventoryOpenEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -111,7 +111,7 @@ abstract class BaseInventory implements Inventory{
 	}
 
 	public function getItem(int $index) : Item{
-		return $this->slots[$index] !== null ? clone $this->slots[$index] : ItemFactory::get(BlockNames::AIR, 0, 0);
+		return $this->slots[$index] !== null ? clone $this->slots[$index] : ItemFactory::get(BlockIds::AIR, 0, 0);
 	}
 
 	/**
@@ -125,7 +125,7 @@ abstract class BaseInventory implements Inventory{
 			if($slot !== null){
 				$contents[$i] = clone $slot;
 			}elseif($includeEmpty){
-				$contents[$i] = $air ?? ($air = ItemFactory::get(BlockNames::AIR, 0, 0));
+				$contents[$i] = $air ?? ($air = ItemFactory::get(BlockIds::AIR, 0, 0));
 			}
 		}
 
@@ -173,7 +173,7 @@ abstract class BaseInventory implements Inventory{
 		if(!$this->canStoreItem($item)) return false;
 
 		if($item->isNull()){
-			$item = ItemFactory::get(BlockNames::AIR, 0, 0);
+			$item = ItemFactory::get(BlockIds::AIR, 0, 0);
 		}else{
 			$item = clone $item;
 		}
@@ -378,7 +378,7 @@ abstract class BaseInventory implements Inventory{
 	}
 
 	public function clear(int $index, bool $send = true) : bool{
-		return $this->setItem($index, ItemFactory::get(BlockNames::AIR, 0, 0), $send);
+		return $this->setItem($index, ItemFactory::get(BlockIds::AIR, 0, 0), $send);
 	}
 
 	public function clearAll(bool $send = true) : void{

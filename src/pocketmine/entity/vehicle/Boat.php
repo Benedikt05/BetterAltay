@@ -31,7 +31,7 @@ use pocketmine\entity\Vehicle;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\level\GameRules;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
@@ -156,16 +156,16 @@ class Boat extends Vehicle implements PlayerInventoryMount{
 
 				if(!$flag and $this->level->getGameRules()->getBool(GameRules::RULE_DO_ENTITY_DROPS)){
 					$id = match ($this->getBoatType()) {
-						1 => ItemNames::SPRUCE_BOAT,
-						2 => ItemNames::BIRCH_BOAT,
-						3 => ItemNames::JUNGLE_BOAT,
-						4 => ItemNames::ACACIA_BOAT,
-						5 => ItemNames::DARK_OAK_BOAT,
-						6 => ItemNames::MANGROVE_BOAT,
-						8 => ItemNames::CHERRY_BOAT,
-						7 => ItemNames::BAMBOO_RAFT,
-						9 => ItemNames::PALE_OAK_BOAT,
-						default => ItemNames::OAK_BOAT,
+						1 => ItemIds::SPRUCE_BOAT,
+						2 => ItemIds::BIRCH_BOAT,
+						3 => ItemIds::JUNGLE_BOAT,
+						4 => ItemIds::ACACIA_BOAT,
+						5 => ItemIds::DARK_OAK_BOAT,
+						6 => ItemIds::MANGROVE_BOAT,
+						8 => ItemIds::CHERRY_BOAT,
+						7 => ItemIds::BAMBOO_RAFT,
+						9 => ItemIds::PALE_OAK_BOAT,
+						default => ItemIds::OAK_BOAT,
 					};
 					$this->level->dropItem($this, ItemFactory::get($id));
 				}

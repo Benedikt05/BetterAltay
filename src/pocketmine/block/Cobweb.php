@@ -29,7 +29,7 @@ use pocketmine\item\ItemFactory;
 
 class Cobweb extends Flowable{
 
-	protected string $id = BlockNames::WEB;
+	protected string $id = self::WEB;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

@@ -25,14 +25,14 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 
 class StringItem extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::STRING, $meta, "String");
+		parent::__construct(self::STRING, $meta, "String");
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(BlockNames::TRIP_WIRE);
+		return BlockFactory::get(BlockIds::TRIP_WIRE);
 	}
 }

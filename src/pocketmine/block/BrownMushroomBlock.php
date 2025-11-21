@@ -24,12 +24,12 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\item\Item;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use function mt_rand;
 
 class BrownMushroomBlock extends RedMushroomBlock{
 
-	protected $id = BlockNames::BROWN_MUSHROOM_BLOCK;
+	protected $id = BlockIds::BROWN_MUSHROOM_BLOCK;
 
 	public function getName() : string{
 		return "Brown Mushroom Block";
@@ -37,7 +37,7 @@ class BrownMushroomBlock extends RedMushroomBlock{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			Item::get(BlockNames::BROWN_MUSHROOM, 0, mt_rand(0, 2))
+			Item::get(BlockIds::BROWN_MUSHROOM, 0, mt_rand(0, 2))
 		];
 	}
 }

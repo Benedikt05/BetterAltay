@@ -27,7 +27,7 @@ namespace pocketmine\item;
 class BambooRaft extends Boat{
 
 	public function __construct(){
-		$this->id = ItemNames::BAMBOO_RAFT;
+		$this->id = self::BAMBOO_RAFT;
 		$this->setDamage(0);
 		$this->name = "Bamboo Raft";
 	}

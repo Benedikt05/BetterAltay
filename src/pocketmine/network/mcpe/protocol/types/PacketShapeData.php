@@ -19,7 +19,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Color;
 
 /**
- * @see ServerScriptDebugDrawerPacket
+ * @see DebugDrawerPacket
  */
 final class PacketShapeData{
 

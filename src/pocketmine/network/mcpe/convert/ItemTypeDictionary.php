@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use InvalidArgumentException;
-use pocketmine\nbt\BigEndianNBTStream;
+use pocketmine\nbt\LittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\utils\AssumptionFailedError;
@@ -59,16 +59,10 @@ final class ItemTypeDictionary{
 
 	private static function make() : self{
 		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true)["items"];
-		$itemComponentsData = file_get_contents(RESOURCE_PATH . '/vanilla/item_components.nbt');
+		$itemComponents = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/item_components.json'), true);
 
-		if(!is_array($table) || !is_string($itemComponentsData)){
+		if(!is_array($table) || !is_array($itemComponents)){
 			throw new AssumptionFailedError("Invalid resource file format");
-		}
-
-		$stream = new BigEndianNBTStream();
-		$itemComponentsNbt = $stream->readCompressed($itemComponentsData);
-		if (!$itemComponentsNbt instanceof CompoundTag) {
-			throw new AssumptionFailedError("Invalid item components data");
 		}
 
 		$params = [];
@@ -77,11 +71,13 @@ final class ItemTypeDictionary{
 				throw new AssumptionFailedError("Invalid item list format");
 			}
 
-			if ($entry["component_based"]) {
-				$nbt = $itemComponentsNbt->getValue()[$entry["name"]] ?? new CompoundTag();
-			} else {
-				$nbt = new CompoundTag();
-			}
+			$nbt = (isset($itemComponents[$entry["name"]]))
+				? (
+				is_string($itemComponents[$entry["name"]])
+					? (new LittleEndianNBTStream())->read(base64_decode($itemComponents[$entry["name"]], true))
+					: throw new AssumptionFailedError("Expected base64-encoded NBT string for item: " . $entry["name"])
+				)
+				: new CompoundTag();
 
 			$params[] = new ItemTypeEntry(
 				$entry["name"],

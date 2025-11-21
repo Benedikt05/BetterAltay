@@ -26,7 +26,7 @@ namespace pocketmine\item;
 use pocketmine\block\Air;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Lava;
 use pocketmine\block\Liquid;
 use pocketmine\block\Water;
@@ -40,15 +40,15 @@ use pocketmine\Player;
 
 class Bucket extends Item implements MaybeConsumable{
 	public function __construct(){
-		parent::__construct(ItemNames::BUCKET, 0, "Bucket");
+		parent::__construct(self::BUCKET, 0, "Bucket");
 	}
 
 	public function getMaxStackSize() : int{
-		return $this->id === ItemNames::BUCKET ? 16 : 1; //empty buckets stack to 16
+		return $this->id === self::BUCKET ? 16 : 1; //empty buckets stack to 16
 	}
 
 	public function getFuelTime() : int{
-		if($this->id === ItemNames::LAVA_BUCKET){
+		if($this->id === self::LAVA_BUCKET){
 			return 20000;
 		}
 
@@ -56,8 +56,8 @@ class Bucket extends Item implements MaybeConsumable{
 	}
 
 	public function getFuelResidue() : Item{
-		if($this->id === BlockNames::LAVA){
-			return ItemFactory::get(ItemNames::BUCKET);
+		if($this->id === BlockIds::LAVA){
+			return ItemFactory::get(self::BUCKET);
 		}
 
 		return parent::getFuelResidue();
@@ -65,7 +65,7 @@ class Bucket extends Item implements MaybeConsumable{
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		if($this->meta === 11) return false; // Temporary fix to prevent powder snow bucket from placing lava
-		if($this->id === ItemNames::WATER_BUCKET && $player->getLevelNonNull()->getDimension() === DimensionIds::NETHER){
+		if($this->id === self::WATER_BUCKET && $player->getLevelNonNull()->getDimension() === DimensionIds::NETHER){
 			$player->getLevelNonNull()->broadcastLevelSoundEvent($blockClicked->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_EXTINGUISH_FIRE);
 			return false;
 		}
@@ -84,7 +84,7 @@ class Bucket extends Item implements MaybeConsumable{
 				$ev = new PlayerBucketFillEvent($player, $blockReplace, $face, $this, $resultItem);
 				$ev->call();
 				if(!$ev->isCancelled()){
-					$player->getLevelNonNull()->setBlock($blockClicked, BlockFactory::get(BlockNames::AIR), true);
+					$player->getLevelNonNull()->setBlock($blockClicked, BlockFactory::get(BlockIds::AIR), true);
 					$player->getLevelNonNull()->broadcastLevelSoundEvent($blockClicked->add(0.5, 0.5, 0.5), $blockClicked->getBucketFillSound());
 					if($player->isSurvival()){
 						if($stack->getCount() === 0){
@@ -103,7 +103,7 @@ class Bucket extends Item implements MaybeConsumable{
 				}
 			}
 		}elseif($resultBlock instanceof Liquid and $blockReplace->canBeReplaced()){
-			$ev = new PlayerBucketEmptyEvent($player, $blockReplace, $face, $this, ItemFactory::get(ItemNames::BUCKET));
+			$ev = new PlayerBucketEmptyEvent($player, $blockReplace, $face, $this, ItemFactory::get(self::BUCKET));
 			$ev->call();
 			if(!$ev->isCancelled()){
 				$player->getLevelNonNull()->setBlock($blockReplace, $resultBlock->getFlowingForm(), true);
@@ -122,7 +122,7 @@ class Bucket extends Item implements MaybeConsumable{
 	}
 
 	public function getResidue(){
-		return ItemFactory::get(ItemNames::BUCKET, 0, 1);
+		return ItemFactory::get(self::BUCKET, 0, 1);
 	}
 
 	public function getAdditionalEffects() : array{
@@ -138,14 +138,14 @@ class Bucket extends Item implements MaybeConsumable{
 	}
 
 	protected function getContentBlock(): Block{
-		return BlockFactory::get(BlockNames::AIR);
+		return BlockFactory::get(BlockIds::AIR);
 	}
 
 	protected function getContentItemFromBlock(Block $block) : ?Item {
 		if ($block instanceof Water){
-			return ItemFactory::get(ItemNames::WATER_BUCKET);
+			return ItemFactory::get(self::WATER_BUCKET);
 		} elseif ($block instanceof Lava){
-			return ItemFactory::get(ItemNames::LAVA_BUCKET);
+			return ItemFactory::get(self::LAVA_BUCKET);
 		}
 
 		return null;

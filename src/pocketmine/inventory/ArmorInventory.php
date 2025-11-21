@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Living;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -104,7 +104,7 @@ class ArmorInventory extends BaseInventory{
 		$pk->chest = ItemStackWrapper::legacy($this->getChestplate());
 		$pk->legs = ItemStackWrapper::legacy($this->getLeggings());
 		$pk->feet = ItemStackWrapper::legacy($this->getBoots());
-		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(BlockNames::AIR));
+		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(BlockIds::AIR));
 		$pk->encode();
 
 		foreach($target as $player){
@@ -133,7 +133,7 @@ class ArmorInventory extends BaseInventory{
 		$pk->chest = ItemStackWrapper::legacy($this->getChestplate());
 		$pk->legs = ItemStackWrapper::legacy($this->getLeggings());
 		$pk->feet = ItemStackWrapper::legacy($this->getBoots());
-		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(BlockNames::AIR));
+		$pk->body = ItemStackWrapper::legacy(ItemFactory::get(BlockIds::AIR));
 		$pk->encode();
 
 		foreach($target as $player){

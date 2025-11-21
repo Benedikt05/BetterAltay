@@ -46,15 +46,15 @@ class Boat extends Item{
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5), null, (int) round($player->getYaw() + 90) % 360, 0);
 		$type = match ($this->id) {
-			ItemNames::SPRUCE_BOAT => 1,
-			ItemNames::BIRCH_BOAT => 2,
-			ItemNames::JUNGLE_BOAT => 3,
-			ItemNames::ACACIA_BOAT => 4,
-			ItemNames::DARK_OAK_BOAT => 5,
-			ItemNames::MANGROVE_BOAT => 6,
-			ItemNames::BAMBOO_RAFT => 7,
-			ItemNames::CHERRY_BOAT => 8,
-			ItemNames::PALE_OAK_BOAT => 9,
+			ItemIds::SPRUCE_BOAT => 1,
+			ItemIds::BIRCH_BOAT => 2,
+			ItemIds::JUNGLE_BOAT => 3,
+			ItemIds::ACACIA_BOAT => 4,
+			ItemIds::DARK_OAK_BOAT => 5,
+			ItemIds::MANGROVE_BOAT => 6,
+			ItemIds::BAMBOO_RAFT => 7,
+			ItemIds::CHERRY_BOAT => 8,
+			ItemIds::PALE_OAK_BOAT => 9,
 			default => 0,
 		};
 

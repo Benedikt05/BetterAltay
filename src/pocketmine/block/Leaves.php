@@ -27,7 +27,7 @@ use pocketmine\block\material\WoodType;
 use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function mt_rand;
@@ -170,7 +170,7 @@ class Leaves extends Transparent{
 			$drops[] = $this->getSaplingItem();
 		}
 		if($this->canDropApples() and mt_rand(1, 200) === 1){ //Apples
-			$drops[] = ItemFactory::get(ItemNames::APPLE);
+			$drops[] = ItemFactory::get(ItemIds::APPLE);
 		}
 
 		return $drops;

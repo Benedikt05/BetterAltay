@@ -25,10 +25,12 @@ namespace pocketmine\entity\object;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Level;
 use pocketmine\level\particle\DestroyBlockParticle;
 use pocketmine\math\AxisAlignedBB;
@@ -103,9 +105,9 @@ class Painting extends Entity{
 
 		if($drops){
 			//non-living entities don't have a way to create drops generically yet
-			$this->level->dropItem($this, ItemFactory::get(Item::PAINTING));
+			$this->level->dropItem($this, ItemFactory::get(ItemIds::PAINTING));
 		}
-		$this->level->addParticle(new DestroyBlockParticle($this->add(0.5, 0.5, 0.5), BlockFactory::get(Block::PLANKS)));
+		$this->level->addParticle(new DestroyBlockParticle($this->add(0.5, 0.5, 0.5), BlockFactory::get(BlockIds::OAK_PLANKS)));
 	}
 
 	protected function recalculateBoundingBox() : void{

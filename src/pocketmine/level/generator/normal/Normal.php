@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\normal;
 
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\biome\BiomeSelector;
@@ -138,14 +138,14 @@ class Normal extends Generator{
 
 		$ores = new Ore();
 		$ores->setOreTypes([
-			new OreType(BlockFactory::get(BlockNames::COAL_ORE), 20, 16, 0, 128),
-			new OreType(BlockFactory::get(BlockNames::IRON_ORE), 20, 8, 0, 64),
-			new OreType(BlockFactory::get(BlockNames::REDSTONE_ORE), 8, 7, 0, 16),
-			new OreType(BlockFactory::get(BlockNames::LAPIS_ORE), 1, 6, 0, 32),
-			new OreType(BlockFactory::get(BlockNames::GOLD_ORE), 2, 8, 0, 32),
-			new OreType(BlockFactory::get(BlockNames::DIAMOND_ORE), 1, 7, 0, 16),
-			new OreType(BlockFactory::get(BlockNames::DIRT), 20, 32, 0, 128),
-			new OreType(BlockFactory::get(BlockNames::GRAVEL), 10, 16, 0, 128)
+			new OreType(BlockFactory::get(BlockIds::COAL_ORE), 20, 16, 0, 128),
+			new OreType(BlockFactory::get(BlockIds::IRON_ORE), 20, 8, 0, 64),
+			new OreType(BlockFactory::get(BlockIds::REDSTONE_ORE), 8, 7, 0, 16),
+			new OreType(BlockFactory::get(BlockIds::LAPIS_ORE), 1, 6, 0, 32),
+			new OreType(BlockFactory::get(BlockIds::GOLD_ORE), 2, 8, 0, 32),
+			new OreType(BlockFactory::get(BlockIds::DIAMOND_ORE), 1, 7, 0, 16),
+			new OreType(BlockFactory::get(BlockIds::DIRT), 20, 32, 0, 128),
+			new OreType(BlockFactory::get(BlockIds::GRAVEL), 10, 16, 0, 128)
 		]);
 		$this->populators[] = $ores;
 	}
@@ -159,9 +159,9 @@ class Normal extends Generator{
 
 		$biomeCache = [];
 
-		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockNames::BEDROCK);
-		$stoneRid = RuntimeBlockMapping::toRuntimeId(BlockNames::STONE);
-		$stillWaterRid = RuntimeBlockMapping::toRuntimeId(BlockNames::WATER);
+		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockIds::BEDROCK);
+		$stoneRid = RuntimeBlockMapping::toRuntimeId(BlockIds::STONE);
+		$stillWaterRid = RuntimeBlockMapping::toRuntimeId(BlockIds::WATER);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 				$minSum = 0;

@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
@@ -36,7 +36,7 @@ class FlowerPot extends Spawnable{
 	private $item;
 
 	protected function readSaveData(CompoundTag $nbt) : void{
-		$this->item = ItemFactory::get($nbt->getString(self::TAG_ITEM, BlockNames::AIR, true), $nbt->getInt(self::TAG_ITEM_DATA, 0, true), 1);
+		$this->item = ItemFactory::get($nbt->getString(self::TAG_ITEM, BlockIds::AIR, true), $nbt->getInt(self::TAG_ITEM_DATA, 0, true), 1);
 	}
 
 	protected function writeSaveData(CompoundTag $nbt) : void{
@@ -83,7 +83,7 @@ class FlowerPot extends Spawnable{
 	 * @return void
 	 */
 	public function removeItem(){
-		$this->setItem(ItemFactory::get(BlockNames::AIR, 0, 0));
+		$this->setItem(ItemFactory::get(BlockIds::AIR, 0, 0));
 	}
 
 	public function isEmpty() : bool{

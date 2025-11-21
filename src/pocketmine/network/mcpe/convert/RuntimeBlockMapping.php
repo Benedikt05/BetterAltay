@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use exussum12\xxhash\V32;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
@@ -112,7 +112,7 @@ final class RuntimeBlockMapping{
 
 	public static function fromRuntimeId(int $runtimeId) : array{
 		self::lazyInit();
-		return self::$runtimeToId[$runtimeId] ?? [BlockNames::UNKNOWN, 0];
+		return self::$runtimeToId[$runtimeId] ?? [BlockIds::UNKNOWN, 0];
 	}
 
 	public static function getIdFromRuntimeId(int $runtimeId) : string{

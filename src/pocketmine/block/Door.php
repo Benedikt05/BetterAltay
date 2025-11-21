@@ -134,12 +134,12 @@ abstract class Door extends Transparent{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() === BlockNames::AIR){ //Replace with common break method
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::AIR));
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() === BlockIds::AIR){ //Replace with common break method
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::AIR));
 
 			$up = $this->getSide(Vector3::SIDE_UP);
 			if($up instanceof Door){
-				$this->getLevelNonNull()->setBlock($up, BlockFactory::get(BlockNames::AIR));
+				$this->getLevelNonNull()->setBlock($up, BlockFactory::get(BlockIds::AIR));
 			}
 		}
 	}

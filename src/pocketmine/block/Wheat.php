@@ -25,11 +25,12 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use function mt_rand;
 
 class Wheat extends Crops{
 
-	protected $id = self::WHEAT_BLOCK;
+	protected string $id = self::WHEAT;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -42,17 +43,17 @@ class Wheat extends Crops{
 	public function getDropsForCompatibleTool(Item $item) : array{
 		if($this->meta >= 0x07){
 			return [
-				ItemFactory::get(Item::WHEAT),
-				ItemFactory::get(Item::WHEAT_SEEDS, 0, mt_rand(0, 3))
+				ItemFactory::get(ItemIds::WHEAT),
+				ItemFactory::get(ItemIds::WHEAT_SEEDS, 0, mt_rand(0, 3))
 			];
 		}else{
 			return [
-				ItemFactory::get(Item::WHEAT_SEEDS)
+				ItemFactory::get(ItemIds::WHEAT_SEEDS)
 			];
 		}
 	}
 
 	public function getPickedItem() : Item{
-		return ItemFactory::get(Item::WHEAT_SEEDS);
+		return ItemFactory::get(ItemIds::WHEAT_SEEDS);
 	}
 }

@@ -28,11 +28,11 @@ use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 class UnknownBlock extends Transparent{
 
-	protected string $id = BlockNames::UNKNOWN;
+	protected string $id = BlockIds::UNKNOWN;
 
 	public function __construct(){
 		parent::__construct($this->id, 0, "Unknown Block");
-		$this->itemId = BlockNames::AIR;
+		$this->itemId = BlockIds::AIR;
 	}
 
 	public function getHardness() : float{

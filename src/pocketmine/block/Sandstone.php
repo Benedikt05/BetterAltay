@@ -33,7 +33,7 @@ class Sandstone extends Solid{
 	public const SMOOTH = 2;
 	public function __construct(protected SandstoneType $material, int $meta = 0){
 		if($this->material->equals(SandstoneType::NORMAL())) {
-			$this->id = BlockNames::SANDSTONE;
+			$this->id = self::SANDSTONE;
 		} else {
 			$this->id = "minecraft:" . $this->material->getType() . "_sandstone";
 		}

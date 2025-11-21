@@ -25,7 +25,7 @@ namespace pocketmine\entity\object;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Fallable;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityBlockChangeEvent;
@@ -57,7 +57,7 @@ class FallingBlock extends Entity{
 	protected function initEntity() : void{
 		parent::initEntity();
 
-		$blockId = BlockNames::AIR;
+		$blockId = BlockIds::AIR;
 
 		//TODO: 1.8+ save format
 		if($this->namedtag->hasTag("TileID", StringTag::class)){

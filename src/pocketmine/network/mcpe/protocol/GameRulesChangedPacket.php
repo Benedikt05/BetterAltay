@@ -34,13 +34,13 @@ class GameRulesChangedPacket extends DataPacket{
 	 * @var mixed[][]
 	 * @phpstan-var array<string, array{0: int, 1: bool|int|float, 2: bool}>
 	 */
-	public $gameRules = [];
+	public array $gameRules = [];
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->gameRules = $this->getGameRules();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putGameRules($this->gameRules);
 	}
 

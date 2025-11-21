@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
@@ -44,7 +44,7 @@ class ItemFrame extends Spawnable{
 		if(($itemTag = $nbt->getCompoundTag(self::TAG_ITEM)) !== null){
 			$this->item = Item::nbtDeserialize($itemTag);
 		}else{
-			$this->item = ItemFactory::get(BlockNames::AIR, 0, 0);
+			$this->item = ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 		$this->itemRotation = $nbt->getByte(self::TAG_ITEM_ROTATION, 0, true);
 		$this->itemDropChance = $nbt->getFloat(self::TAG_ITEM_DROP_CHANCE, 1.0, true);
@@ -71,7 +71,7 @@ class ItemFrame extends Spawnable{
 		if($item !== null and !$item->isNull()){
 			$this->item = clone $item;
 		}else{
-			$this->item = ItemFactory::get(BlockNames::AIR, 0, 0);
+			$this->item = ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 		$this->onChanged();
 	}

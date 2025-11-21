@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\biome;
 
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 
 abstract class SnowyBiome extends Biome{
 
@@ -32,11 +32,11 @@ abstract class SnowyBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(BlockNames::SNOW_LAYER),
-			BlockFactory::get(BlockNames::GRASS_BLOCK),
-			BlockFactory::get(BlockNames::DIRT),
-			BlockFactory::get(BlockNames::DIRT),
-			BlockFactory::get(BlockNames::DIRT)
+			BlockFactory::get(BlockIds::SNOW_LAYER),
+			BlockFactory::get(BlockIds::GRASS_BLOCK),
+			BlockFactory::get(BlockIds::DIRT),
+			BlockFactory::get(BlockIds::DIRT),
+			BlockFactory::get(BlockIds::DIRT)
 		]);
 
 		$this->spawnableCreatureList = [];

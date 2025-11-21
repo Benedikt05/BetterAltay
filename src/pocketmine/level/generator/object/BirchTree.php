@@ -23,15 +23,15 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\ChunkManager;
 use pocketmine\utils\Random;
 
 class BirchTree extends Tree{
 
-	public $trunkBlock = BlockNames::BIRCH_LOG;
+	public $trunkBlock = BlockIds::BIRCH_LOG;
 	/** @var string */
-	public $leafBlock = BlockNames::BIRCH_LEAVES;
+	public $leafBlock = BlockIds::BIRCH_LEAVES;
 	/** @var bool */
 	protected $superBirch = false;
 

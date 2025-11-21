@@ -25,14 +25,14 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 
 class Redstone extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::REDSTONE, $meta, "Redstone");
+		parent::__construct(self::REDSTONE, $meta, "Redstone");
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(BlockNames::REDSTONE_WIRE);
+		return BlockFactory::get(BlockIds::REDSTONE_WIRE);
 	}
 }

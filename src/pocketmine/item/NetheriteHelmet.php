@@ -25,7 +25,7 @@ namespace pocketmine\item;
 
 class NetheriteHelmet extends Armor{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::NETHERITE_HELMET, $meta, "Netherite Helmet");
+		parent::__construct(self::NETHERITE_HELMET, $meta, "Netherite Helmet");
 	}
 
 	public function getDefensePoints() : int{
@@ -38,5 +38,9 @@ class NetheriteHelmet extends Armor{
 
 	public function getArmorSlot() : int{
 		return 0;
+	}
+
+	public function getTier() : int{
+		return self::TIER_NETHERITE;
 	}
 }

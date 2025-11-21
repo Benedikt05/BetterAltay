@@ -25,7 +25,7 @@ namespace pocketmine\level\generator;
 
 use InvalidArgumentException;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\format\Chunk;
 use pocketmine\level\generator\object\OreType;
@@ -76,9 +76,9 @@ class Flat extends Generator{
 		}else{
 			$this->preset = implode(";", [
 				implode(",", [
-					BlockNames::BEDROCK,
-					"2x" . BlockNames::DIRT,
-					BlockNames::GRASS_BLOCK,
+					BlockIds::BEDROCK,
+					"2x" . BlockIds::DIRT,
+					BlockIds::GRASS_BLOCK,
 				]),
 				"1",
 				""
@@ -90,14 +90,14 @@ class Flat extends Generator{
 		if(isset($this->options["decoration"])){
 			$ores = new Ore();
 			$ores->setOreTypes([
-				new OreType(BlockFactory::get(BlockNames::COAL_ORE), 20, 16, 0, 128),
-				new OreType(BlockFactory::get(BlockNames::IRON_ORE), 20, 8, 0, 64),
-				new OreType(BlockFactory::get(BlockNames::REDSTONE_ORE), 8, 7, 0, 16),
-				new OreType(BlockFactory::get(BlockNames::LAPIS_ORE), 1, 6, 0, 32),
-				new OreType(BlockFactory::get(BlockNames::GOLD_ORE), 2, 8, 0, 32),
-				new OreType(BlockFactory::get(BlockNames::DIAMOND_ORE), 1, 7, 0, 16),
-				new OreType(BlockFactory::get(BlockNames::DIRT), 20, 32, 0, 128),
-				new OreType(BlockFactory::get(BlockNames::GRAVEL), 10, 16, 0, 128),
+				new OreType(BlockFactory::get(BlockIds::COAL_ORE), 20, 16, 0, 128),
+				new OreType(BlockFactory::get(BlockIds::IRON_ORE), 20, 8, 0, 64),
+				new OreType(BlockFactory::get(BlockIds::REDSTONE_ORE), 8, 7, 0, 16),
+				new OreType(BlockFactory::get(BlockIds::LAPIS_ORE), 1, 6, 0, 32),
+				new OreType(BlockFactory::get(BlockIds::GOLD_ORE), 2, 8, 0, 32),
+				new OreType(BlockFactory::get(BlockIds::DIAMOND_ORE), 1, 7, 0, 16),
+				new OreType(BlockFactory::get(BlockIds::DIRT), 20, 32, 0, 128),
+				new OreType(BlockFactory::get(BlockIds::GRAVEL), 10, 16, 0, 128),
 			]);
 			$this->populators[] = $ores;
 		}

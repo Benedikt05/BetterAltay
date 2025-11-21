@@ -25,14 +25,14 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use pocketmine\block\Block;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class Minecart extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::MINECART, $meta, "Minecart");
+		parent::__construct(self::MINECART, $meta, "Minecart");
 	}
 
 	public function getMaxStackSize() : int{
@@ -40,7 +40,7 @@ class Minecart extends Item{
 	}
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
-		if($blockClicked->getId() !== BlockNames::RAIL){
+		if($blockClicked->getId() !== BlockIds::RAIL){
 			return false;
 		}
 

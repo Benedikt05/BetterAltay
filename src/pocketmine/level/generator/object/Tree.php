@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\object;
 
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\material\WoodType;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -34,31 +34,31 @@ use function abs;
 abstract class Tree{
 	/** @var bool[] */
 	public $overridable = [
-		BlockNames::AIR => true,
-		BlockNames::OAK_SAPLING => true,
-		BlockNames::SPRUCE_SAPLING => true,
-		BlockNames::ACACIA_SAPLING => true,
-		BlockNames::BAMBOO_SAPLING => true,
-		BlockNames::BIRCH_SAPLING => true,
-		BlockNames::CHERRY_SAPLING => true,
-		BlockNames::DARK_OAK_SAPLING => true,
-		BlockNames::JUNGLE_SAPLING => true,
-		BlockNames::PALE_OAK_SAPLING => true,
-		BlockNames::OAK_LEAVES => true,
-		BlockNames::SPRUCE_LEAVES => true,
-		BlockNames::ACACIA_LEAVES => true,
-		BlockNames::BIRCH_LEAVES => true,
-		BlockNames::CHERRY_LEAVES => true,
-		BlockNames::DARK_OAK_LEAVES => true,
-		BlockNames::JUNGLE_LEAVES => true,
-		BlockNames::PALE_OAK_LEAVES => true,
-		BlockNames::SNOW_LAYER => true,
+		BlockIds::AIR => true,
+		BlockIds::OAK_SAPLING => true,
+		BlockIds::SPRUCE_SAPLING => true,
+		BlockIds::ACACIA_SAPLING => true,
+		BlockIds::BAMBOO_SAPLING => true,
+		BlockIds::BIRCH_SAPLING => true,
+		BlockIds::CHERRY_SAPLING => true,
+		BlockIds::DARK_OAK_SAPLING => true,
+		BlockIds::JUNGLE_SAPLING => true,
+		BlockIds::PALE_OAK_SAPLING => true,
+		BlockIds::OAK_LEAVES => true,
+		BlockIds::SPRUCE_LEAVES => true,
+		BlockIds::ACACIA_LEAVES => true,
+		BlockIds::BIRCH_LEAVES => true,
+		BlockIds::CHERRY_LEAVES => true,
+		BlockIds::DARK_OAK_LEAVES => true,
+		BlockIds::JUNGLE_LEAVES => true,
+		BlockIds::PALE_OAK_LEAVES => true,
+		BlockIds::SNOW_LAYER => true,
 	];
 
 	/** @var string */
-	public $trunkBlock = BlockNames::OAK_LOG;
+	public $trunkBlock = BlockIds::OAK_LOG;
 	/** @var string */
-	public $leafBlock = BlockNames::OAK_LEAVES;
+	public $leafBlock = BlockIds::OAK_LEAVES;
 	/** @var int */
 	public $treeHeight = 7;
 
@@ -151,7 +151,7 @@ abstract class Tree{
 	 */
 	protected function placeTrunk(ChunkManager $level, int $x, int $y, int $z, Random $random, int $trunkHeight){
 		// The base dirt block
-		$level->setBlockIdAt($x, $y - 1, $z, RuntimeBlockMapping::toRuntimeId(BlockNames::DIRT));
+		$level->setBlockIdAt($x, $y - 1, $z, RuntimeBlockMapping::toRuntimeId(BlockIds::DIRT));
 
 		$rid = RuntimeBlockMapping::toRuntimeId($this->trunkBlock);
 		for($yy = 0; $yy < $trunkHeight; ++$yy){

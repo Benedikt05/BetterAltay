@@ -46,7 +46,7 @@ use function count;
 use function get_class;
 use const PHP_INT_MAX;
 
-class Block extends Position implements Metadatable{
+class Block extends Position implements BlockIds, Metadatable{
 
 	/**
 	 * Returns a new Block instance with the specified ID, meta and position.
@@ -78,7 +78,7 @@ class Block extends Position implements Metadatable{
 	 * @param string|null $name English name of the block type (TODO: implement translations)
 	 * @param string         $itemId The item ID of the block type, used for block picking and dropping items.
 	 */
-	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = BlockNames::AIR){
+	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = BlockIds::AIR){
 		$this->id = $id;
 		$this->meta = $meta;
 		$this->fallbackName = $name;
@@ -210,7 +210,7 @@ class Block extends Position implements Metadatable{
 	 * Do the actions needed so the block is broken with the Item
 	 */
 	public function onBreak(Item $item, Player $player = null) : bool{
-		return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::AIR), true);
+		return $this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::AIR), true);
 	}
 
 	/**
@@ -498,7 +498,7 @@ class Block extends Position implements Metadatable{
 			return $this->getLevelNonNull()->getBlock(Vector3::getSide($side, $step), true, true, $layer);
 		}
 
-		return BlockFactory::get(BlockNames::AIR, 0, Position::fromObject(Vector3::getSide($side, $step)));
+		return BlockFactory::get(BlockIds::AIR, 0, Position::fromObject(Vector3::getSide($side, $step)));
 	}
 
 	/**

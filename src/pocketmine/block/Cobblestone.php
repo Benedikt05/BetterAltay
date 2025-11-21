@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Cobblestone extends Solid{
 
-	protected string $id = BlockNames::COBBLESTONE;
+	protected string $id = self::COBBLESTONE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

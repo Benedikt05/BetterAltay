@@ -30,7 +30,7 @@ class RedSandstone extends Sandstone{
 	public function __construct(SandstoneType $material, int $meta = 0){
 		parent::__construct($material, $meta);
 		if($this->material->equals(SandstoneType::NORMAL())) {
-			$this->id = BlockNames::RED_SANDSTONE;
+			$this->id = self::RED_SANDSTONE;
 		} else {
 			$this->id = "minecraft:" . $this->material->getType() . "_red_sandstone";
 		}

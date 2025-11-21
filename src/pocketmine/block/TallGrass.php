@@ -25,14 +25,14 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function mt_rand;
 
 class TallGrass extends Flowable{
 
-	protected string $id = BlockNames::FERN;
+	protected string $id = self::FERN;
 
 	public function __construct(int $meta = 1){
 		$this->meta = $meta;
@@ -48,7 +48,7 @@ class TallGrass extends Flowable{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN)->getId();
-		if($down === BlockNames::GRASS_BLOCK or $down === BlockNames::DIRT){
+		if($down === self::GRASS_BLOCK or $down === self::DIRT){
 			$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 			return true;
@@ -59,7 +59,7 @@ class TallGrass extends Flowable{
 
 	public function onNearbyBlockChange() : void{
 		if($this->getSide(Vector3::SIDE_DOWN)->isTransparent()){ //Replace with common break method
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockNames::AIR), true, true);
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(self::AIR), true, true);
 		}
 	}
 
@@ -78,7 +78,7 @@ class TallGrass extends Flowable{
 
 		if(mt_rand(0, 15) === 0){
 			return [
-				ItemFactory::get(ItemNames::WHEAT_SEEDS)
+				ItemFactory::get(ItemIds::WHEAT_SEEDS)
 			];
 		}
 

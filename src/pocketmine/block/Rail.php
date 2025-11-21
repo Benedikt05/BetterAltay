@@ -53,7 +53,7 @@ class Rail extends BaseRail{
 		]
 	];
 
-	protected $id = self::RAIL;
+	protected string $id = self::RAIL;
 
 	public function getName() : string{
 		return "Rail";

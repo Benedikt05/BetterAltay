@@ -25,7 +25,7 @@ namespace pocketmine\item;
 
 class LeatherPants extends Armor{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::LEATHER_LEGGINGS, $meta, "Leather Pants");
+		parent::__construct(self::LEATHER_LEGGINGS, $meta, "Leather Pants");
 	}
 
 	public function getDefensePoints() : int{
@@ -38,5 +38,9 @@ class LeatherPants extends Armor{
 
 	public function getArmorSlot() : int{
 		return 2;
+	}
+
+	public function getTier() : int{
+		return self::TIER_LEATHER;
 	}
 }

@@ -25,7 +25,7 @@ namespace pocketmine\item;
 
 class DiamondHelmet extends Armor{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::DIAMOND_HELMET, $meta, "Diamond Helmet");
+		parent::__construct(self::DIAMOND_HELMET, $meta, "Diamond Helmet");
 	}
 
 	public function getDefensePoints() : int{
@@ -38,5 +38,9 @@ class DiamondHelmet extends Armor{
 
 	public function getArmorSlot() : int{
 		return 0;
+	}
+
+	public function getTier() : int{
+		return self::TIER_DIAMOND;
 	}
 }

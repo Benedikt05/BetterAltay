@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\object;
 
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\ChunkManager;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\utils\Random;
@@ -32,9 +32,9 @@ use function abs;
 
 class SpruceTree extends Tree{
 	/** @var string */
-	public $trunkBlock = BlockNames::SPRUCE_LOG;
+	public $trunkBlock = BlockIds::SPRUCE_LOG;
 	/** @var string */
-	public $leafBlock = BlockNames::SPRUCE_LEAVES;
+	public $leafBlock = BlockIds::SPRUCE_LEAVES;
 	/** @var int */
 	public $treeHeight = 10;
 

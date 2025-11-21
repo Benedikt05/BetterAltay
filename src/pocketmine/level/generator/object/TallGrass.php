@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -37,19 +37,19 @@ class TallGrass{
 	 */
 	public static function growGrass(ChunkManager $level, Vector3 $pos, Random $random, int $count = 15, int $radius = 10){
 		$arr = [
-			RuntimeBlockMapping::toRuntimeId(BlockNames::DANDELION),
-			RuntimeBlockMapping::toRuntimeId(BlockNames::POPPY),
-			RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS),
-			RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS),
-			RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS),
-			RuntimeBlockMapping::toRuntimeId(BlockNames::TALL_GRASS)
+			RuntimeBlockMapping::toRuntimeId(BlockIds::DANDELION),
+			RuntimeBlockMapping::toRuntimeId(BlockIds::POPPY),
+			RuntimeBlockMapping::toRuntimeId(BlockIds::TALL_GRASS),
+			RuntimeBlockMapping::toRuntimeId(BlockIds::TALL_GRASS),
+			RuntimeBlockMapping::toRuntimeId(BlockIds::TALL_GRASS),
+			RuntimeBlockMapping::toRuntimeId(BlockIds::TALL_GRASS)
 		];
 		$arrC = count($arr) - 1;
 		for($c = 0; $c < $count; ++$c){
 			$x = $random->nextRange($pos->x - $radius, $pos->x + $radius);
 			$z = $random->nextRange($pos->z - $radius, $pos->z + $radius);
 			$id = RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x, $pos->y, $z));
-			if($level->getBlockIdAt($x, $pos->y + 1, $z) === RuntimeBlockMapping::AIR() and $id === BlockNames::GRASS_BLOCK){
+			if($level->getBlockIdAt($x, $pos->y + 1, $z) === RuntimeBlockMapping::AIR() and $id === BlockIds::GRASS_BLOCK){
 				$t = $arr[$random->nextRange(0, $arrC)];
 				$level->setBlockIdAt($x, $pos->y + 1, $z, $t);
 			}

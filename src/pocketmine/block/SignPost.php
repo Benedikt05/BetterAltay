@@ -28,7 +28,7 @@ use pocketmine\event\block\SignOpenEditEvent;
 use pocketmine\event\block\SignTextColorChangeEvent;
 use pocketmine\item\Dye;
 use pocketmine\item\Item;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\item\Sign;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
@@ -112,9 +112,9 @@ class SignPost extends Waterloggable{
 		$tile = $this->getLevelNonNull()->getTile($this);
 		if($tile instanceof TileSign){
 			$color = $item instanceof Dye ? $item->getColorFromMeta() : match ($item->getId()){
-				ItemNames::BONE => new Color(0xf0, 0xf0, 0xf0),
-				BlockNames::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
-				BlockNames::COCOA => new Color(0x83, 0x54, 0x32),
+				ItemIds::BONE => new Color(0xf0, 0xf0, 0xf0),
+				self::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
+				self::COCOA => new Color(0x83, 0x54, 0x32),
 				default => null
 			};
 
@@ -129,7 +129,7 @@ class SignPost extends Waterloggable{
 				$tile->setTextColor($ev->getColor());
 				$this->level->setBlock($this, $this, true);
 				return true;
-			}else if($item->getId() == ItemNames::GLOWSTONE_DUST){
+			}else if($item->getId() == ItemIds::GLOWSTONE_DUST){
 				$tile->setGlowing(true);
 				$this->level->setBlock($this, $this, true);
 				return true;
@@ -147,7 +147,7 @@ class SignPost extends Waterloggable{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() === BlockNames::AIR){
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() === self::AIR){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}

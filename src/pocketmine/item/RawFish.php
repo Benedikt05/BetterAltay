@@ -28,7 +28,7 @@ class RawFish extends Food{
 	protected int $foodRestore;
 	protected float $saturationRestore;
 
-	public function __construct(string $id = ItemNames::COD, string $name = "Raw Cod", int $foodRestore = 2, float $saturationRestore = 0.4){
+	public function __construct(string $id = self::COD, string $name = "Raw Cod", int $foodRestore = 2, float $saturationRestore = 0.4){
 		parent::__construct($id, 0, $name);
 		$this->foodRestore = $foodRestore;
 		$this->saturationRestore = $saturationRestore;

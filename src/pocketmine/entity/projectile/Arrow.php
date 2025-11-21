@@ -28,7 +28,7 @@ use pocketmine\entity\Entity;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\inventory\InventoryPickupArrowEvent;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Level;
 use pocketmine\math\RayTraceResult;
 use pocketmine\math\Vector3;
@@ -173,7 +173,7 @@ class Arrow extends Projectile{
 			return;
 		}
 
-		$item = ItemFactory::get(ItemNames::ARROW, 0, 1);
+		$item = ItemFactory::get(ItemIds::ARROW, 0, 1);
 
 		$pickupInventory = $player->getOffHandInventory();
 		if(!$pickupInventory->getItemInOffHand()->equals($item)){

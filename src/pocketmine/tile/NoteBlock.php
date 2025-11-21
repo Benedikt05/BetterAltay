@@ -24,7 +24,15 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
+use pocketmine\block\DoubleWoodenSlab;
+use pocketmine\block\GlazedTerracotta;
+use pocketmine\block\Log;
+use pocketmine\block\Planks;
+use pocketmine\block\SignPost;
+use pocketmine\block\WoodenDoor;
+use pocketmine\block\WoodenSlab;
+use pocketmine\block\WoodenStairs;
 use pocketmine\level\sound\NoteBlockSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
@@ -58,86 +66,83 @@ class NoteBlock extends Spawnable{
 
 	public function triggerNote() : bool{
 		$up = $this->level->getBlock($this->getSide(Vector3::SIDE_UP));
-		if($up->getId() === Block::AIR){
+		if($up->getId() === BlockIds::AIR){
 			$below = $this->level->getBlock($this->getSide(Vector3::SIDE_DOWN));
 			$instrument = NoteBlockSound::INSTRUMENT_PIANO;
 
+			if ($below instanceof Log ||
+				$below instanceof Planks ||
+				$below instanceof WoodenStairs ||
+				$below instanceof WoodenSlab ||
+				$below instanceof WoodenDoor ||
+				$below instanceof DoubleWoodenSlab ||
+				$below instanceof SignPost
+			){
+				$instrument = NoteBlockSound::INSTRUMENT_BASS;
+			}
+
+			if ($below instanceof GlazedTerracotta) {
+				$instrument = NoteBlockSound::INSTRUMENT_BASS_DRUM;
+			}
+
 			switch($below->getId()){ // TODO: implement block materials
-				case Block::WOOD:
-				case Block::WOOD2:
-				case Block::PLANKS:
-				case Block::WOODEN_SLAB:
-				case Block::DOUBLE_WOODEN_SLAB:
-				case Block::OAK_STAIRS:
-				case Block::SPRUCE_STAIRS:
-				case Block::BIRCH_STAIRS:
-				case Block::JUNGLE_STAIRS:
-				case Block::ACACIA_STAIRS:
-				case Block::DARK_OAK_STAIRS:
-				case Block::FENCE:
-				case Block::FENCE_GATE:
-				case Block::SPRUCE_FENCE_GATE:
-				case Block::BIRCH_FENCE_GATE:
-				case Block::JUNGLE_FENCE_GATE:
-				case Block::DARK_OAK_FENCE_GATE:
-				case Block::ACACIA_FENCE_GATE:
-				case Block::BOOKSHELF:
-				case Block::CHEST:
-				case Block::CRAFTING_TABLE:
-				case Block::SIGN_POST:
-				case Block::WALL_SIGN:
-				case Block::OAK_DOOR_BLOCK:
-				case Block::SPRUCE_DOOR_BLOCK:
-				case Block::BIRCH_DOOR_BLOCK:
-				case Block::JUNGLE_DOOR_BLOCK:
-				case Block::ACACIA_DOOR_BLOCK:
-				case Block::DARK_OAK_DOOR_BLOCK:
-				case Block::NOTEBLOCK:
+				//case Block::FENCE:
+				case BlockIds::FENCE_GATE:
+				case BlockIds::SPRUCE_FENCE_GATE:
+				case BlockIds::BIRCH_FENCE_GATE:
+				case BlockIds::JUNGLE_FENCE_GATE:
+				case BlockIds::DARK_OAK_FENCE_GATE:
+				case BlockIds::ACACIA_FENCE_GATE:
+				case BlockIds::BOOKSHELF:
+				case BlockIds::CHEST:
+				case BlockIds::CRAFTING_TABLE:
+				case BlockIds::NOTEBLOCK:
 					$instrument = NoteBlockSound::INSTRUMENT_BASS;
 					break;
-				case Block::SAND:
-				case Block::SOUL_SAND:
+				case BlockIds::SAND:
+				case BlockIds::SOUL_SAND:
 					$instrument = NoteBlockSound::INSTRUMENT_TABOUR;
 					break;
-				case Block::GLASS:
-				case Block::GLASS_PANE:
+				case BlockIds::GLASS:
+				case BlockIds::GLASS_PANE:
 					$instrument = NoteBlockSound::INSTRUMENT_CLICK;
 					break;
-				case Block::STONE:
-				case Block::COBBLESTONE:
-				case Block::SANDSTONE:
-				case Block::MOSS_STONE:
-				case Block::BRICK_BLOCK:
-				case Block::STONE_BRICK:
-				case Block::NETHER_BRICK_BLOCK:
-				case Block::QUARTZ_BLOCK:
-				case Block::STONE_SLAB:
-				case Block::COBBLESTONE_STAIRS:
-				case Block::BRICK_STAIRS:
-				case Block::STONE_BRICK_STAIRS:
-				case Block::NETHER_BRICK_STAIRS:
-				case Block::SANDSTONE_STAIRS:
-				case Block::QUARTZ_STAIRS:
-				case Block::COBBLESTONE_WALL:
-				case Block::NETHER_BRICK_FENCE:
-				case Block::BEDROCK:
-				case Block::GOLD_ORE:
-				case Block::IRON_ORE:
-				case Block::COAL_ORE:
-				case Block::LAPIS_ORE:
-				case Block::DIAMOND_ORE:
-				case Block::REDSTONE_ORE:
-				case Block::GLOWING_REDSTONE_ORE:
-				case Block::EMERALD_ORE:
-				case Block::FURNACE:
-				case Block::BURNING_FURNACE:
-				case Block::OBSIDIAN:
-				case Block::MONSTER_SPAWNER:
-				case Block::NETHERRACK:
-				case Block::ENCHANTING_TABLE:
-				case Block::END_STONE:
-				case Block::TERRACOTTA:
-				case Block::COAL_BLOCK:
+				case BlockIds::STONE:
+				case BlockIds::COBBLESTONE:
+				case BlockIds::SANDSTONE:
+				case BlockIds::MOSSY_STONE_BRICKS:
+				case BlockIds::BRICK_BLOCK:
+				case BlockIds::STONE_BRICKS:
+				case BlockIds::NETHER_BRICK:
+				case BlockIds::QUARTZ_BLOCK:
+				case BlockIds::STONE_BRICK_SLAB:
+				case BlockIds::STONE_STAIRS:
+				case BlockIds::BRICK_STAIRS:
+				case BlockIds::STONE_BRICK_STAIRS:
+				case BlockIds::NETHER_BRICK_STAIRS:
+				case BlockIds::SANDSTONE_STAIRS:
+				case BlockIds::QUARTZ_STAIRS:
+				case BlockIds::COBBLESTONE_WALL:
+				case BlockIds::NETHER_BRICK_FENCE:
+				case BlockIds::BEDROCK:
+				case BlockIds::GOLD_ORE:
+				case BlockIds::IRON_ORE:
+				case BlockIds::COAL_ORE:
+				case BlockIds::LAPIS_ORE:
+				case BlockIds::DIAMOND_ORE:
+				case BlockIds::REDSTONE_ORE:
+				case BlockIds::LIT_REDSTONE_ORE:
+				case BlockIds::EMERALD_ORE:
+				case BlockIds::FURNACE:
+				case BlockIds::LIT_FURNACE:
+				case BlockIds::BLAST_FURNACE:
+				case BlockIds::LIT_BLAST_FURNACE:
+				case BlockIds::OBSIDIAN:
+				case BlockIds::MOB_SPAWNER:
+				case BlockIds::NETHERRACK:
+				case BlockIds::ENCHANTING_TABLE:
+				case BlockIds::END_STONE:
+				case BlockIds::COAL_BLOCK:
 					$instrument = NoteBlockSound::INSTRUMENT_BASS_DRUM;
 					break;
 			}

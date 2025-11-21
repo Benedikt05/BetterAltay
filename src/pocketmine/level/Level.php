@@ -34,7 +34,7 @@ use InvalidStateException;
 use pocketmine\block\Air;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Liquid;
 use pocketmine\block\UnknownBlock;
 use pocketmine\entity\CreatureType;
@@ -1579,7 +1579,7 @@ class Level implements ChunkManager, Metadatable{
 	 * @param bool $addToCache Whether to cache the block object created by this method call.
 	 */
 	public function getBlockAt(int $x, int $y, int $z, bool $cached = true, bool $addToCache = true, int $layer = 0) : Block{
-		$id = BlockNames::UNKNOWN;
+		$id = BlockIds::UNKNOWN;
 		$meta = 0;
 		$relativeBlockHash = null;
 		$chunkHash = Level::chunkHash($x >> 4, $z >> 4);
@@ -1773,7 +1773,7 @@ class Level implements ChunkManager, Metadatable{
 			$secondLayerBlock = $this->getBlock($pos, false, false, 1);
 			$secondLayerBlock->position($pos);
 			$secondLayerBlock->clearCaches();
-			$air = BlockFactory::get(BlockNames::AIR);
+			$air = BlockFactory::get(BlockIds::AIR);
 			$air->position($pos);
 			$air->clearCaches();
 
@@ -1928,7 +1928,7 @@ class Level implements ChunkManager, Metadatable{
 		$affectedBlocks = $target->getAffectedBlocks();
 
 		if($item === null){
-			$item = ItemFactory::get(BlockNames::AIR, 0, 0);
+			$item = ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 
 		$drops = [];
@@ -2042,7 +2042,7 @@ class Level implements ChunkManager, Metadatable{
 			return false;
 		}
 
-		if($blockClicked->getId() === BlockNames::AIR){
+		if($blockClicked->getId() === BlockIds::AIR){
 			return false;
 		}
 

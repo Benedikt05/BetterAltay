@@ -22,7 +22,7 @@
 
 namespace pocketmine\inventory;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\EntityIds;
 use pocketmine\entity\passive\Horse;
 use pocketmine\item\Item;
@@ -92,7 +92,7 @@ class HorseInventory extends AbstractHorseInventory{
 	}
 
 	public function sendArmor(Player $player) : void{
-		$air = ItemStackWrapper::legacy(ItemFactory::get(BlockNames::AIR));
+		$air = ItemStackWrapper::legacy(ItemFactory::get(BlockIds::AIR));
 
 		$pk = new MobArmorEquipmentPacket();
 		$pk->entityRuntimeId = $this->getHolder()->getId();

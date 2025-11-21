@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\hell;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Gravel;
 use pocketmine\block\Lava;
 use pocketmine\block\material\OreType as OreTypeAlias;
@@ -100,9 +100,9 @@ class Nether extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
-		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockNames::BEDROCK);
-		$netherrackRid = RuntimeBlockMapping::toRuntimeId(BlockNames::NETHERRACK);
-		$stillLavaRid = RuntimeBlockMapping::toRuntimeId(BlockNames::LAVA);
+		$bedrockRid = RuntimeBlockMapping::toRuntimeId(BlockIds::BEDROCK);
+		$netherrackRid = RuntimeBlockMapping::toRuntimeId(BlockIds::NETHERRACK);
+		$stillLavaRid = RuntimeBlockMapping::toRuntimeId(BlockIds::LAVA);
 		for($x = 0; $x < 16; ++$x){
 			for($z = 0; $z < 16; ++$z){
 

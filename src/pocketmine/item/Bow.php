@@ -36,7 +36,7 @@ use function min;
 
 class Bow extends Tool{
 	public function __construct(int $meta = 0){
-		parent::__construct(ItemNames::BOW, $meta, "Bow");
+		parent::__construct(self::BOW, $meta, "Bow");
 	}
 
 	public function getFuelTime() : int{
@@ -48,7 +48,7 @@ class Bow extends Tool{
 	}
 
 	public function onReleaseUsing(Player $player) : bool{
-		if($player->isSurvival() and !$player->getInventory()->contains(ItemFactory::get(ItemNames::ARROW, 0, 1))){
+		if($player->isSurvival() and !$player->getInventory()->contains(ItemFactory::get(self::ARROW, 0, 1))){
 			$player->getInventory()->sendContents($player);
 			return false;
 		}
@@ -98,7 +98,7 @@ class Bow extends Tool{
 				$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
 				if($player->isSurvival()){
 					if(!$infinity){ //TODO: tipped arrows are still consumed when Infinity is applied
-						$player->getInventory()->removeItem(ItemFactory::get(ItemNames::ARROW, 0, 1));
+						$player->getInventory()->removeItem(ItemFactory::get(self::ARROW, 0, 1));
 					}
 					$this->applyDamage(1);
 				}

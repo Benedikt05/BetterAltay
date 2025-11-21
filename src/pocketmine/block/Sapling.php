@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\block\material\WoodType;
 use pocketmine\item\Item;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\level\generator\object\Tree;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -53,7 +53,7 @@ class Sapling extends Flowable{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
-		if($down->getId() === BlockNames::GRASS_BLOCK or $down->getId() === BlockNames::DIRT or $down->getId() === BlockNames::FARMLAND){
+		if($down->getId() === self::GRASS_BLOCK or $down->getId() === self::DIRT or $down->getId() === self::FARMLAND){
 			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
 
 			return true;
@@ -63,7 +63,7 @@ class Sapling extends Flowable{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($item->getId() === ItemNames::BONE_MEAL){
+		if($item->getId() === ItemIds::BONE_MEAL){
 			//TODO: change log type
 			#add BlockGrowEvent
 			$block = clone $this;

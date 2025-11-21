@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\populator;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\material\WoodType;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\Tree as ObjectTree;
@@ -49,8 +49,8 @@ class Mushroom extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
-		$redMushroom = RuntimeBlockMapping::toRuntimeId(BlockNames::RED_MUSHROOM);
-		$brownMushroom = RuntimeBlockMapping::toRuntimeId(BlockNames::BROWN_MUSHROOM);
+		$redMushroom = RuntimeBlockMapping::toRuntimeId(BlockIds::RED_MUSHROOM);
+		$brownMushroom = RuntimeBlockMapping::toRuntimeId(BlockIds::BROWN_MUSHROOM);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -74,9 +74,9 @@ class Mushroom extends Populator{
 		for($y = 127; $y > 0; --$y){
 			$rid = $this->level->getBlockIdAt($x, $y, $z);
 			$id = RuntimeBlockMapping::getIdFromRuntimeId($rid);
-			if($id === BlockNames::DIRT || $id === BlockNames::GRASS_BLOCK || $id === BlockNames::COARSE_DIRT or $id === BlockNames::DIRT_WITH_ROOTS || $id === BlockNames::MOSS_BLOCK){
+			if($id === BlockIds::DIRT || $id === BlockIds::GRASS_BLOCK || $id === BlockIds::COARSE_DIRT or $id === BlockIds::DIRT_WITH_ROOTS || $id === BlockIds::MOSS_BLOCK){
 				break;
-			}elseif($rid !== RuntimeBlockMapping::AIR() and $id !== BlockNames::SNOW_LAYER){
+			}elseif($rid !== RuntimeBlockMapping::AIR() and $id !== BlockIds::SNOW_LAYER){
 				return -1;
 			}
 		}

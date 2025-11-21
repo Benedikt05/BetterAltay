@@ -41,7 +41,7 @@ class WallSign extends SignPost{
 
 	public function onNearbyBlockChange() : void{
 		$side = ($this->meta % 2 === 0) ? $this->meta + 1 : $this->meta - 1;
-		if($this->getSide($side)->getId() === BlockNames::AIR){
+		if($this->getSide($side)->getId() === self::AIR){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}

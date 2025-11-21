@@ -35,7 +35,7 @@ use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 
 class Farmland extends Transparent{
 
-	protected string $id = BlockNames::FARMLAND;
+	protected string $id = self::FARMLAND;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -66,7 +66,7 @@ class Farmland extends Transparent{
 
 	public function onNearbyBlockChange() : void{
 		if($this->getSide(Vector3::SIDE_UP)->isSolid()){
-			$this->level->setBlock($this, BlockFactory::get(BlockNames::DIRT), true);
+			$this->level->setBlock($this, BlockFactory::get(self::DIRT), true);
 		}
 	}
 
@@ -80,7 +80,7 @@ class Farmland extends Transparent{
 				$this->meta--;
 				$this->level->setBlock($this, $this, false, false);
 			}else{
-				$this->level->setBlock($this, BlockFactory::get(BlockNames::DIRT), false, true);
+				$this->level->setBlock($this, BlockFactory::get(self::DIRT), false, true);
 			}
 		}elseif($this->meta < 7){
 			$this->meta = 7;
@@ -95,8 +95,8 @@ class Farmland extends Transparent{
 		for($y = $start->y; $y <= $end->y; ++$y){
 			for($z = $start->z; $z <= $end->z; ++$z){
 				for($x = $start->x; $x <= $end->x; ++$x){
-					$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z, 1));
-					if($id === BlockNames::WATER or $id === BlockNames::FLOWING_WATER){
+					$id = RuntimeBlockMapping::getIdFromRuntimeId($this->level->getBlockIdAt($x, $y, $z));
+					if($id === self::WATER or $id === self::FLOWING_WATER){
 						return true;
 					}
 				}
@@ -108,7 +108,7 @@ class Farmland extends Transparent{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(BlockNames::DIRT),
+			ItemFactory::get(self::DIRT),
 		];
 	}
 
@@ -117,13 +117,13 @@ class Farmland extends Transparent{
 	}
 
 	public function getPickedItem() : Item{
-		return ItemFactory::get(BlockNames::DIRT);
+		return ItemFactory::get(self::DIRT);
 	}
 
 	public function onEntityFallenUpon(Entity $entity, float $fallDistance) : void{
 		if($entity instanceof Living){
 			if($this->level->random->nextFloat() < ($fallDistance - 0.5)){
-				$ev = new BlockFormEvent($this, BlockFactory::get(BlockNames::DIRT));
+				$ev = new BlockFormEvent($this, BlockFactory::get(self::DIRT));
 
 				if(!$this->level->getGameRules()->getBool(GameRules::RULE_MOB_GRIEFING, true)){
 					$ev->setCancelled();

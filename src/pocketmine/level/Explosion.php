@@ -26,7 +26,7 @@ namespace pocketmine\level;
 use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\block\TNT;
 use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockUpdateEvent;
@@ -208,7 +208,7 @@ class Explosion{
 			}
 		}
 
-		$air = ItemFactory::get(BlockNames::AIR);
+		$air = ItemFactory::get(BlockIds::AIR);
 
 		foreach($this->affectedBlocks as $block){
 			$yieldDrops = false;

@@ -27,7 +27,7 @@ class CookedFish extends Food{
 	protected int $foodRestore;
 	protected float $saturationRestore;
 
-	public function __construct(string $id = ItemNames::COOKED_COD, string $name = "Cooked Cod", int $foodRestore = 5, float $saturationRestore = 6){
+	public function __construct(string $id = self::COOKED_COD, string $name = "Cooked Cod", int $foodRestore = 5, float $saturationRestore = 6){
 		parent::__construct($id, 0, $name);
 		$this->foodRestore = $foodRestore;
 		$this->saturationRestore = $saturationRestore;

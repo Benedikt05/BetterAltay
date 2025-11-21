@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\mapper;
 
 use InvalidArgumentException;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\LittleEndianNBTStream;
@@ -64,7 +64,7 @@ class CreativeItemMapper {
 		foreach($items as $item){
 			$itemValue = ItemFactory::get($item["id"]);
 			if ($itemValue instanceof ItemBlock){
-				if ($itemValue->getBlock()->getId() === BlockNames::UNKNOWN) {
+				if ($itemValue->getBlock()->getId() === BlockIds::UNKNOWN) {
 					continue;
 				}
 			}

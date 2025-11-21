@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class FlowinglWater extends Water{
 
-	protected string $id = BlockNames::FLOWING_WATER;
+	protected string $id = self::FLOWING_WATER;
 
 	public function getName() : string{
 		return "Flowing Water";

@@ -853,7 +853,7 @@ class Chunk{
 		/** @var string[]|null $biomeIdMap */
 		static $biomeIdMap = null;
 		if($biomeIdMap === null){
-			$biomeIdMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla/biome_id_map.json');
+			$biomeIdMapRaw = file_get_contents(RESOURCE_PATH . '/vanilla/biomes.json');
 			if($biomeIdMapRaw === false) throw new AssumptionFailedError();
 			$biomeIdMapDecoded = json_decode($biomeIdMapRaw, true);
 			if(!is_array($biomeIdMapDecoded)) throw new AssumptionFailedError();

@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Dandelion extends Flowable{
 
-	protected string $id = BlockNames::DANDELION;
+	protected string $id = BlockIds::DANDELION;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -41,7 +41,7 @@ class Dandelion extends Flowable{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
-		if($down->getId() === BlockNames::GRASS_BLOCK or $down->getId() === BlockNames::DIRT or $down->getId() === BlockNames::FARMLAND){
+		if($down->getId() === BlockIds::GRASS_BLOCK or $down->getId() === BlockIds::DIRT or $down->getId() === BlockIds::FARMLAND){
 			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
 
 			return true;

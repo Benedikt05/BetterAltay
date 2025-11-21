@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 
 class JungleTree extends Tree{
-	public $trunkBlock = BlockNames::JUNGLE_LOG;
+	public $trunkBlock = BlockIds::JUNGLE_LOG;
 	/** @var string */
-	public $leafBlock = BlockNames::JUNGLE_LEAVES;
+	public $leafBlock = BlockIds::JUNGLE_LEAVES;
 	public $treeHeight = 8;
 }

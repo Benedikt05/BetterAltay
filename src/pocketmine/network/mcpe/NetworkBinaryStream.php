@@ -26,7 +26,7 @@ namespace pocketmine\network\mcpe;
 #include <rules/DataPacket.h>
 
 use Closure;
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
 use pocketmine\item\Durable;
@@ -226,7 +226,7 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getItemStack(Closure $readExtraCrapInTheMiddle) : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
-			return ItemFactory::get(BlockNames::AIR, 0, 0);
+			return ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 
 		$cnt = $this->getLShort();
@@ -306,7 +306,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
 	 */
 	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle) : void{
-		if($item->getId() === BlockNames::AIR){
+		if($item->getId() === BlockIds::AIR){
 			$this->putVarInt(0);
 
 			return;
@@ -323,7 +323,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$blockRuntimeId = 0;
 		$blockId = ItemTranslator::getInstance()->toBlockId($item->getId());
-		if($blockId !== null && $blockId !== BlockNames::AIR){
+		if($blockId !== null && $blockId !== BlockIds::AIR){
 			$blockRuntimeId = $item->getBlock()->getRuntimeId();
 		}
 		$this->putVarInt($blockRuntimeId);
@@ -378,7 +378,7 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getRecipeIngredient() : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
-			return ItemFactory::get(BlockNames::AIR, 0, 0);
+			return ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 		$netData = $this->getVarInt();
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($netId, $netData);
@@ -705,7 +705,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @return mixed[][], members are in the structure [name => [type, value, isPlayerModifiable]]
 	 * @phpstan-return array<string, array{0: int, 1: bool|int|float, 2: bool}>
 	 */
-	public function getGameRules() : array{
+	public function getGameRules(bool $isLevelSettings = false) : array{
 		$count = $this->getUnsignedVarInt();
 		$rules = [];
 		for($i = 0; $i < $count; ++$i){
@@ -718,7 +718,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$value = $this->getBool();
 					break;
 				case GameRuleType::INT:
-					$value = $this->getUnsignedVarInt();
+					$value = $isLevelSettings ? $this->getUnsignedVarInt() : $this->getLInt();
 					break;
 				case GameRuleType::FLOAT:
 					$value = $this->getLFloat();
@@ -739,18 +739,18 @@ class NetworkBinaryStream extends BinaryStream{
 	 *
 	 * @phpstan-param array<string, array{0: int, 1: bool|int|float, 2: bool}> $rules
 	 */
-	public function putGameRules(array $rules) : void{
+	public function putGameRules(array $rules, bool $isLevelSettings = false) : void{
 		$this->putUnsignedVarInt(count($rules));
 		foreach($rules as $name => $rule){
 			$this->putString($name);
 			$this->putBool($rule[2] ?? false);
-			$this->putUnsignedVarInt($rule[0]);
-			switch($rule[0]){
+			$this->putUnsignedVarInt($type = $rule[0]);
+			switch($type){
 				case GameRuleType::BOOL:
 					$this->putBool($rule[1]);
 					break;
 				case GameRuleType::INT:
-					$this->putUnsignedVarInt($rule[1]);
+					$isLevelSettings ? $this->putUnsignedVarInt($rule[1]) : $this->putLInt($rule[1]);
 					break;
 				case GameRuleType::FLOAT:
 					$this->putLFloat($rule[1]);

@@ -26,20 +26,21 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\utils\UUID;
 
 class ShowStoreOfferPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SHOW_STORE_OFFER_PACKET;
 
-	public string $offerId;
+	public UUID $offerId;
 	public int $redirectType;
 
 	protected function decodePayload() : void{
-		$this->offerId = $this->getString();
+		$this->offerId = $this->getUUID();
 		$this->redirectType = $this->getByte();
 	}
 
 	protected function encodePayload() : void{
-		$this->putString($this->offerId);
+		$this->putUUID($this->offerId);
 		$this->putByte($this->redirectType);
 	}
 

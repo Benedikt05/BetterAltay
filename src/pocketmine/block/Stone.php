@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemNames;
+use pocketmine\item\ItemIds;
 use pocketmine\item\TieredTool;
 
 class Stone extends Solid{
@@ -37,7 +37,7 @@ class Stone extends Solid{
 	public const ANDESITE = 5;
 	public const POLISHED_ANDESITE = 6;
 
-	protected string $id = BlockNames::STONE;
+	protected string $id = self::STONE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -62,7 +62,7 @@ class Stone extends Solid{
 	public function getDropsForCompatibleTool(Item $item) : array{
 		if($this->getDamage() === self::NORMAL){
 			return [
-				ItemFactory::get(BlockNames::COBBLESTONE, $this->getDamage())
+				ItemFactory::get(self::COBBLESTONE, $this->getDamage())
 			];
 		}
 

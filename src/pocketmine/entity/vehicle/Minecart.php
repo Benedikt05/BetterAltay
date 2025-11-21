@@ -28,6 +28,7 @@ use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\entity\Vehicle;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 
 class Minecart extends Vehicle implements PlayerInventoryMount{
@@ -51,7 +52,7 @@ class Minecart extends Vehicle implements PlayerInventoryMount{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::MINECART)
+			ItemFactory::get(ItemIds::MINECART)
 		];
 	}
 }

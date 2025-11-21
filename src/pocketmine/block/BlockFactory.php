@@ -66,6 +66,7 @@ class BlockFactory{
 		self::registerBlock(new Stone());
 		self::registerBlock(new Grass());
 		self::registerBlock(new Dirt());
+		self::registerBlock(new CoarseDirt());
 		self::registerBlock(new Cobblestone());
 		self::registerPlankBlocks();
 		self::registerSaplingBlocks();
@@ -110,19 +111,19 @@ class BlockFactory{
 //		self::registerBlock(new MossyCobblestone());
 //		self::registerBlock(new Obsidian());
 //		self::registerBlock(new Torch());
-//		self::registerBlock(new Fire());
+		self::registerBlock(new Fire());
 //		self::registerBlock(new MonsterSpawner());
-//		self::registerBlock(new WoodenStairs(BlockNames::OAK_STAIRS, 0, "Oak Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::OAK_STAIRS, 0, "Oak Stairs"));
 //		self::registerBlock(new Chest());
 //		//TODO: REDSTONE_WIRE
 //		self::registerBlock(new Diamond());
 //		self::registerBlock(new CraftingTable());
-//		self::registerBlock(new Wheat());
-//		self::registerBlock(new Farmland());
+		self::registerBlock(new Wheat());
+		self::registerBlock(new Farmland());
 //		self::registerBlock(new Furnace());
 //		self::registerBlock(new BurningFurnace());
 //		self::registerBlock(new Ladder());
-//		self::registerBlock(new Rail());
+		self::registerBlock(new Rail());
 //		self::registerBlock(new CobblestoneStairs());
 //		self::registerBlock(new Lever());
 //		self::registerBlock(new StonePressurePlate());
@@ -159,12 +160,12 @@ class BlockFactory{
 //		self::registerBlock(new PumpkinStem());
 //		self::registerBlock(new MelonStem());
 //		self::registerBlock(new Vine());
-//		self::registerBlock(new FenceGate(BlockNames::OAK_FENCE_GATE, 0, "Oak Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::OAK_FENCE_GATE, 0, "Oak Fence Gate"));
 //		self::registerBlock(new BrickStairs());
 //		self::registerBlock(new StoneBrickStairs());
 //		self::registerBlock(new Mycelium());
 //		self::registerBlock(new WaterLily());
-//		self::registerBlock(new NetherBrick(BlockNames::NETHER_BRICK_BLOCK, 0, "Nether Bricks"));
+//		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK_BLOCK, 0, "Nether Bricks"));
 //		self::registerBlock(new NetherBrickFence());
 //		self::registerBlock(new NetherBrickStairs());
 //		self::registerBlock(new NetherWartPlant());
@@ -185,9 +186,9 @@ class BlockFactory{
 //		self::registerBlock(new TripwireHook());
 //		self::registerBlock(new Tripwire());
 //		self::registerBlock(new Emerald());
-//		self::registerBlock(new WoodenStairs(BlockNames::SPRUCE_STAIRS, 0, "Spruce Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockNames::BIRCH_STAIRS, 0, "Birch Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockNames::JUNGLE_STAIRS, 0, "Jungle Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::SPRUCE_STAIRS, 0, "Spruce Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::BIRCH_STAIRS, 0, "Birch Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::JUNGLE_STAIRS, 0, "Jungle Stairs"));
 		//TODO: COMMAND_BLOCK
 //		self::registerBlock(new Beacon());
 //		self::registerBlock(new CobblestoneWall());
@@ -211,8 +212,8 @@ class BlockFactory{
 //		self::registerBlock(new WoodenSlab());
 //		self::registerBlock(new StainedClay());
 //		self::registerBlock(new StainedGlassPane());
-//		self::registerBlock(new WoodenStairs(BlockNames::ACACIA_STAIRS, 0, "Acacia Stairs"));
-//		self::registerBlock(new WoodenStairs(BlockNames::DARK_OAK_STAIRS, 0, "Dark Oak Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::ACACIA_STAIRS, 0, "Acacia Stairs"));
+//		self::registerBlock(new WoodenStairs(BlockIds::DARK_OAK_STAIRS, 0, "Dark Oak Stairs"));
 //		self::registerBlock(new Slime());
 //
 //		self::registerBlock(new IronTrapdoor());
@@ -231,20 +232,20 @@ class BlockFactory{
 //		self::registerBlock(new RedSandstoneStairs());
 //		self::registerBlock(new DoubleStoneSlab2());
 //		self::registerBlock(new StoneSlab2());
-//		self::registerBlock(new FenceGate(BlockNames::SPRUCE_FENCE_GATE, 0, "Spruce Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockNames::BIRCH_FENCE_GATE, 0, "Birch Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockNames::JUNGLE_FENCE_GATE, 0, "Jungle Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockNames::DARK_OAK_FENCE_GATE, 0, "Dark Oak Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockNames::ACACIA_FENCE_GATE, 0, "Acacia Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::SPRUCE_FENCE_GATE, 0, "Spruce Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::BIRCH_FENCE_GATE, 0, "Birch Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::JUNGLE_FENCE_GATE, 0, "Jungle Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::DARK_OAK_FENCE_GATE, 0, "Dark Oak Fence Gate"));
+//		self::registerBlock(new FenceGate(BlockIds::ACACIA_FENCE_GATE, 0, "Acacia Fence Gate"));
 		//TODO: REPEATING_COMMAND_BLOCK
 		//TODO: CHAIN_COMMAND_BLOCK
 
-//		self::registerBlock(new WoodenDoor(BlockNames::SPRUCE_DOOR_BLOCK, 0, "Spruce Door", Item::SPRUCE_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockNames::BIRCH_DOOR_BLOCK, 0, "Birch Door", Item::BIRCH_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockNames::JUNGLE_DOOR_BLOCK, 0, "Jungle Door", Item::JUNGLE_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockNames::ACACIA_DOOR_BLOCK, 0, "Acacia Door", Item::ACACIA_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockNames::DARK_OAK_DOOR_BLOCK, 0, "Dark Oak Door", Item::DARK_OAK_DOOR));
-//		self::registerBlock(new GrassPath());
+//		self::registerBlock(new WoodenDoor(BlockIds::SPRUCE_DOOR_BLOCK, 0, "Spruce Door", Item::SPRUCE_DOOR));
+//		self::registerBlock(new WoodenDoor(BlockIds::BIRCH_DOOR_BLOCK, 0, "Birch Door", Item::BIRCH_DOOR));
+//		self::registerBlock(new WoodenDoor(BlockIds::JUNGLE_DOOR_BLOCK, 0, "Jungle Door", Item::JUNGLE_DOOR));
+//		self::registerBlock(new WoodenDoor(BlockIds::ACACIA_DOOR_BLOCK, 0, "Acacia Door", Item::ACACIA_DOOR));
+//		self::registerBlock(new WoodenDoor(BlockIds::DARK_OAK_DOOR_BLOCK, 0, "Dark Oak Door", Item::DARK_OAK_DOOR));
+		self::registerBlock(new GrassPath());
 //		self::registerBlock(new ItemFrame());
 		//TODO: CHORUS_FLOWER
 //		self::registerBlock(new Purpur());
@@ -259,27 +260,27 @@ class BlockFactory{
 
 //		self::registerBlock(new Magma());
 //		self::registerBlock(new NetherWartBlock());
-//		self::registerBlock(new NetherBrick(BlockNames::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
+//		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
 //		self::registerBlock(new BoneBlock());
 
 //		self::registerBlock(new ShulkerBox());
-//		self::registerBlock(new GlazedTerracotta(BlockNames::PURPLE_GLAZED_TERRACOTTA, 0, "Purple Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::WHITE_GLAZED_TERRACOTTA, 0, "White Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::ORANGE_GLAZED_TERRACOTTA, 0, "Orange Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::MAGENTA_GLAZED_TERRACOTTA, 0, "Magenta Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::LIGHT_BLUE_GLAZED_TERRACOTTA, 0, "Light Blue Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::YELLOW_GLAZED_TERRACOTTA, 0, "Yellow Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::LIME_GLAZED_TERRACOTTA, 0, "Lime Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::PINK_GLAZED_TERRACOTTA, 0, "Pink Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::GRAY_GLAZED_TERRACOTTA, 0, "Grey Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::SILVER_GLAZED_TERRACOTTA, 0, "Light Grey Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::CYAN_GLAZED_TERRACOTTA, 0, "Cyan Glazed Terracotta"));
-//
-//		self::registerBlock(new GlazedTerracotta(BlockNames::BLUE_GLAZED_TERRACOTTA, 0, "Blue Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::BROWN_GLAZED_TERRACOTTA, 0, "Brown Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::GREEN_GLAZED_TERRACOTTA, 0, "Green Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
-//		self::registerBlock(new GlazedTerracotta(BlockNames::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::PURPLE_GLAZED_TERRACOTTA, 0, "Purple Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::WHITE_GLAZED_TERRACOTTA, 0, "White Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::ORANGE_GLAZED_TERRACOTTA, 0, "Orange Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::MAGENTA_GLAZED_TERRACOTTA, 0, "Magenta Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::LIGHT_BLUE_GLAZED_TERRACOTTA, 0, "Light Blue Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::YELLOW_GLAZED_TERRACOTTA, 0, "Yellow Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::LIME_GLAZED_TERRACOTTA, 0, "Lime Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::PINK_GLAZED_TERRACOTTA, 0, "Pink Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::GRAY_GLAZED_TERRACOTTA, 0, "Grey Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::SILVER_GLAZED_TERRACOTTA, 0, "Light Grey Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::CYAN_GLAZED_TERRACOTTA, 0, "Cyan Glazed Terracotta"));
+
+		self::registerBlock(new GlazedTerracotta(BlockIds::BLUE_GLAZED_TERRACOTTA, 0, "Blue Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::BROWN_GLAZED_TERRACOTTA, 0, "Brown Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::GREEN_GLAZED_TERRACOTTA, 0, "Green Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
 //		self::registerBlock(new Concrete());
 //		self::registerBlock(new ConcretePowder());
 
@@ -290,13 +291,13 @@ class BlockFactory{
 //		self::registerBlock(new Stonecutter());
 //		self::registerBlock(new GlowingObsidian());
 //		self::registerBlock(new NetherReactor());
-//		self::registerBlock(new InfoUpdate(BlockNames::INFO_UPDATE, 0, "update!"));
-//		self::registerBlock(new InfoUpdate(BlockNames::INFO_UPDATE2, 0, "ate!upd"));
+//		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE, 0, "update!"));
+//		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE2, 0, "ate!upd"));
 		//TODO: MOVINGBLOCK
 		//TODO: OBSERVER
 		//TODO: STRUCTURE_BLOCK
 
-		self::registerBlock(new Reserved6(BlockNames::RESERVED6, 0, "reserved6"));
+		self::registerBlock(new Reserved6(BlockIds::RESERVED6, 0, "reserved6"));
 		self::registerBlock(new UnknownBlock());
 //		$ids = array_keys(self::$fullList);
 //		$f = array_filter($ids, function($k) {
@@ -348,7 +349,7 @@ class BlockFactory{
 		}
 
 		try{
-			$block = clone (self::$fullList[$id] ?? self::$fullList[BlockNames::UNKNOWN]);
+			$block = clone (self::$fullList[$id] ?? self::$fullList[BlockIds::UNKNOWN]);
 			$block->setDamage($meta);
 		}catch(RuntimeException $e){
 			throw new InvalidArgumentException("Block ID $id is out of bounds");
@@ -419,7 +420,7 @@ class BlockFactory{
 
 	private static function registerSandBlocks() : void{
 		self::registerBlock(new Sand());
-		self::registerBlock(new Sand(BlockNames::RED_SAND));
+		self::registerBlock(new Sand(BlockIds::RED_SAND));
 	}
 
 	private static function registerOreBlocks() : void{

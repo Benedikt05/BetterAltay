@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class FlowingLava extends Lava{
 
-	protected string $id = BlockNames::FLOWING_LAVA;
+	protected string $id = self::FLOWING_LAVA;
 
 	public function getName() : string{
 		return "Flowing Lava";

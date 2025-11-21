@@ -31,7 +31,7 @@ use pocketmine\Player;
 
 class Water extends Liquid{
 
-	protected string $id = BlockNames::WATER;
+	protected string $id = self::WATER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -46,7 +46,7 @@ class Water extends Liquid{
 	}
 
 	public function getFlowingForm() : Block{
-		return BlockFactory::get(BlockNames::FLOWING_WATER, $this->meta);
+		return BlockFactory::get(self::FLOWING_WATER, $this->meta);
 	}
 
 	public function getBucketFillSound() : int{

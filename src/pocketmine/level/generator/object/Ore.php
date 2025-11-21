@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\level\generator\object;
 
-use pocketmine\block\BlockNames;
+use pocketmine\block\BlockIds;
 use pocketmine\level\ChunkManager;
 use pocketmine\math\VectorMath;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -47,7 +47,7 @@ class Ore{
 	}
 
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z) : bool{
- 		return RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x, $y, $z)) === BlockNames::STONE;
+ 		return RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($x, $y, $z)) === BlockIds::STONE;
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Ore{
 								$sizeZ *= $sizeZ;
 
 								$id = RuntimeBlockMapping::getIdFromRuntimeId($level->getBlockIdAt($xx, $yy, $zz));
-								if(($sizeX + $sizeY + $sizeZ) < 1 and $id === BlockNames::STONE){
+								if(($sizeX + $sizeY + $sizeZ) < 1 and $id === BlockIds::STONE){
 									$level->setBlockIdAt($xx, $yy, $zz, $rid);
 								}
 							}

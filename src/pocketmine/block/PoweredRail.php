@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 class PoweredRail extends RedstoneRail{
-	protected string $id = BlockNames::GOLDEN_RAIL;
+	protected string $id = self::GOLDEN_RAIL;
 
 	public function getName() : string{
 		return "Powered Rail";
