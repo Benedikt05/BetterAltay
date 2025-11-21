@@ -23,9 +23,11 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory\transaction;
 
+use pocketmine\block\BlockIds;
 use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\inventory\CraftingRecipe;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
 use pocketmine\Player;
 use function array_pop;
@@ -171,34 +173,34 @@ class CraftingTransaction extends InventoryTransaction{
 		if(parent::execute()){
 			foreach($this->outputs as $item){
 				switch($item->getId()){
-					case Item::CRAFTING_TABLE:
+					case BlockIds::CRAFTING_TABLE:
 						$this->source->awardAchievement("buildWorkBench");
 						break;
-					case Item::WOODEN_PICKAXE:
+					case ItemIds::WOODEN_PICKAXE:
 						$this->source->awardAchievement("buildPickaxe");
 						break;
-					case Item::FURNACE:
+					case BlockIds::FURNACE:
 						$this->source->awardAchievement("buildFurnace");
 						break;
-					case Item::WOODEN_HOE:
+					case ItemIds::WOODEN_HOE:
 						$this->source->awardAchievement("buildHoe");
 						break;
-					case Item::BREAD:
+					case ItemIds::BREAD:
 						$this->source->awardAchievement("makeBread");
 						break;
-					case Item::CAKE:
+					case ItemIds::CAKE:
 						$this->source->awardAchievement("bakeCake");
 						break;
-					case Item::STONE_PICKAXE:
-					case Item::GOLDEN_PICKAXE:
-					case Item::IRON_PICKAXE:
-					case Item::DIAMOND_PICKAXE:
+					case ItemIds::STONE_PICKAXE:
+					case ItemIds::GOLDEN_PICKAXE:
+					case ItemIds::IRON_PICKAXE:
+					case ItemIds::DIAMOND_PICKAXE:
 						$this->source->awardAchievement("buildBetterPickaxe");
 						break;
-					case Item::WOODEN_SWORD:
+					case ItemIds::WOODEN_SWORD:
 						$this->source->awardAchievement("buildSword");
 						break;
-					case Item::DIAMOND:
+					case ItemIds::DIAMOND:
 						$this->source->awardAchievement("diamond");
 						break;
 				}
