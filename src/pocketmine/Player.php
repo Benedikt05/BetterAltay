@@ -2163,7 +2163,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	public function handleRequestNetworkSettings(RequestNetworkSettingsPacket $packet) : bool{
 		$protocolVersion = $packet->protocolVersion;
-		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL){
+		if($protocolVersion !== ProtocolInfo::CURRENT_PROTOCOL && $protocolVersion !== ProtocolInfo::PROTOCOL_1_21_120){
 			$this->sendPlayStatus($protocolVersion < ProtocolInfo::CURRENT_PROTOCOL ? PlayStatusPacket::LOGIN_FAILED_CLIENT : PlayStatusPacket::LOGIN_FAILED_SERVER, true);
 			//This pocketmine disconnect message will only be seen by the console (PlayStatusPacket causes the messages to be shown for the client)
 			$this->close("", $this->server->getLanguage()->translateString("pocketmine.disconnect.incompatibleProtocol", [$protocolVersion]), false);
