@@ -78,7 +78,7 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * @param string|null $name English name of the block type (TODO: implement translations)
 	 * @param string         $itemId The item ID of the block type, used for block picking and dropping items.
 	 */
-	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = BlockIds::AIR){
+	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = ""){
 		$this->id = $id;
 		$this->meta = $meta;
 		$this->fallbackName = $name;

@@ -96,6 +96,7 @@ class BlockFactory{
 		self::registerWoolBlocks();
 		self::registerSignBlocks();
 		self::registerDoorBlocks();
+		self::registerWoodenStairs();
 //
 //		self::registerBlock(new Dandelion());
 //		self::registerBlock(new Flower());
@@ -479,6 +480,12 @@ class BlockFactory{
 	private static function registerDoorBlocks() : void{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenDoor($type));
+		}
+	}
+
+	private static function registerWoodenStairs() : void{
+		foreach(WoodType::values() as $type){
+			self::registerBlock(new WoodenStairs("minecraft:" . $type->getType() . "_stairs", 0, $type->getName() . " Stairs"));
 		}
 	}
 }
