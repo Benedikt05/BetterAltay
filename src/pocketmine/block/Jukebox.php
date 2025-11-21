@@ -33,7 +33,7 @@ use pocketmine\tile\Tile;
 
 class Jukebox extends Solid{
 
-	protected $id = self::JUKEBOX;
+	protected string $id = self::JUKEBOX;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -52,7 +52,7 @@ class Jukebox extends Solid{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->getLevel()->setBlock($blockReplace, $this, true, true);
+		$this->getLevel()->setBlock($blockReplace, $this, true);
 
 		Tile::createTile(Tile::JUKEBOX, $this->getLevel(), TileJukebox::createNBT($this, $face, $item, $player));
 

@@ -25,10 +25,11 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 
 class Bookshelf extends Solid{
 
-	protected $id = self::BOOKSHELF;
+	protected string $id = self::BOOKSHELF;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -48,7 +49,7 @@ class Bookshelf extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::BOOK, 0, 3)
+			ItemFactory::get(ItemIds::BOOK, 0, 3)
 		];
 	}
 

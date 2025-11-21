@@ -107,23 +107,22 @@ class BlockFactory{
 //		self::registerBlock(new DoubleStoneSlab());
 //		self::registerBlock(new StoneSlab());
 //		self::registerBlock(new Bricks());
-//		self::registerBlock(new TNT());
-//		self::registerBlock(new Bookshelf());
+		self::registerBlock(new TNT());
+		self::registerBlock(new Bookshelf());
 //		self::registerBlock(new MossyCobblestone());
-//		self::registerBlock(new Obsidian());
+		self::registerBlock(new Obsidian());
 //		self::registerBlock(new Torch());
 		self::registerBlock(new Fire());
 //		self::registerBlock(new MonsterSpawner());
-//		self::registerBlock(new WoodenStairs(BlockIds::OAK_STAIRS, 0, "Oak Stairs"));
 //		self::registerBlock(new Chest());
 //		//TODO: REDSTONE_WIRE
-//		self::registerBlock(new Diamond());
+		self::registerBlock(new Diamond());
 //		self::registerBlock(new CraftingTable());
 		self::registerBlock(new Wheat());
 		self::registerBlock(new Farmland());
 //		self::registerBlock(new Furnace());
 //		self::registerBlock(new BurningFurnace());
-//		self::registerBlock(new Ladder());
+		self::registerBlock(new Ladder());
 		self::registerBlock(new Rail());
 //		self::registerBlock(new CobblestoneStairs());
 //		self::registerBlock(new Lever());
@@ -138,7 +137,7 @@ class BlockFactory{
 //		self::registerBlock(new Cactus());
 //		self::registerBlock(new Clay());
 //		self::registerBlock(new Sugarcane());
-//		self::registerBlock(new Jukebox());
+		self::registerBlock(new Jukebox());
 //		self::registerBlock(new WoodenFence());
 //		self::registerBlock(new Pumpkin());
 //		self::registerBlock(new Netherrack());

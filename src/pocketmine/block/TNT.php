@@ -38,7 +38,7 @@ use const M_PI;
 
 class TNT extends Solid{
 
-	protected $id = self::TNT;
+	protected string $id = self::TNT;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
