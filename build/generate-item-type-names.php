@@ -127,7 +127,7 @@ namespace pocketmine\item;
 /**
  * This class is generated automatically from the item type dictionary for the current version. Do not edit it manually.
  */
-final class ItemIds{
+interface ItemIds{
 
 HEADER
 	);
