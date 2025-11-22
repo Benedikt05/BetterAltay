@@ -1,10 +1,8 @@
 <?php
 
-namespace pocketmine\item;
+declare(strict_types=1);
 
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockIds;
+namespace pocketmine\item;
 
 class MilkBucket extends Bucket{
 
