@@ -148,6 +148,7 @@ class ItemFactory{
 		self::registerItem(new Bucket());
 		self::registerItem(new WaterBucket());
 		self::registerItem(new LavaBucket());
+		self::registerItem(new MilkBucket());
 
 		self::registerItem(new Minecart());
 		self::registerItem(new Saddle());

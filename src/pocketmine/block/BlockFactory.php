@@ -142,7 +142,7 @@ class BlockFactory{
 		self::registerBlock(new Jukebox());
 //		self::registerBlock(new Pumpkin());
 //		self::registerBlock(new Netherrack());
-//		self::registerBlock(new SoulSand());
+		self::registerBlock(new SoulSand());
 //		self::registerBlock(new Glowstone());
 //		self::registerBlock(new Portal());
 //		self::registerBlock(new LitPumpkin());
