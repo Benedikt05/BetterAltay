@@ -283,7 +283,7 @@ class BlockFactory{
 		//TODO: CHORUS_PLANT
 
 //		self::registerBlock(new Podzol());
-//		self::registerBlock(new Beetroot());
+		self::registerBlock(new Beetroot());
 //		self::registerBlock(new Stonecutter());
 //		self::registerBlock(new GlowingObsidian());
 //		self::registerBlock(new NetherReactor());

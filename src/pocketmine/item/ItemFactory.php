@@ -208,9 +208,9 @@ class ItemFactory{
 		self::registerItem(new ItemBlock(BlockIds::BREWING_STAND, 0, ItemIds::BREWING_STAND));
 		self::registerItem(new ItemBlock(BlockIds::CAULDRON, 0, ItemIds::CAULDRON));
 		//TODO: ENDER_EYE
-//		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
+		self::registerItem(new Item(ItemIds::GLISTERING_MELON_SLICE, 0, "Glistering Melon"));
 		self::registerSpawnEggs();
-//		self::registerItem(new ExperienceBottle());
+		self::registerItem(new ExperienceBottle());
 		//TODO: FIREBALL
 //		self::registerItem(new WritableBook());
 //		self::registerItem(new WrittenBook());
@@ -273,15 +273,15 @@ class ItemFactory{
 		//TODO: MEDICINE
 		//TODO: BALLOON
 		//TODO: RAPID_FERTILIZER
-//		self::registerItem(new Totem());
-//		self::registerItem(new Item(Item::BLEACH, 0, "Bleach")); //EDU
-//		self::registerItem(new Item(Item::IRON_NUGGET, 0, "Iron Nugget"));
+		self::registerItem(new Totem());
+		self::registerItem(new Item(ItemIds::BLEACH, 0, "Bleach")); //EDU
+		self::registerItem(new Item(ItemIds::IRON_NUGGET, 0, "Iron Nugget"));
 		//TODO: ICE_BOMB
 
 		//TODO: TRIDENT
 
 //		self::registerItem(new Beetroot());
-//		self::registerItem(new BeetrootSeeds());
+		self::registerItem(new BeetrootSeeds());
 //		self::registerItem(new BeetrootSoup());
 //		self::registerItem(new Clownfish());
 		self::registerItem(new Pufferfish());
