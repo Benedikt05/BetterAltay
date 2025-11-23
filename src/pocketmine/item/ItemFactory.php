@@ -223,7 +223,7 @@ class ItemFactory{
 //		self::registerItem(new PoisonousPotato());
 //		self::registerItem(new EmptyMap());
 		self::registerItem(new GoldenCarrot());
-		//self::registerItem(new ItemBlock(Block::SKULL_BLOCK, 0, Item::SKULL));
+		self::registerSkulls();
 		//TODO: CARROTONASTICK
 //		self::registerItem(new Item(Item::NETHER_STAR, 0, "Nether Star"));
 		self::registerItem(new PumpkinPie());
@@ -504,5 +504,14 @@ class ItemFactory{
 		self::registerItem(new SpawnEgg(ItemIds::VILLAGER_SPAWN_EGG, 0, "Villager Spawn Egg"));
 		self::registerItem(new SpawnEgg(ItemIds::WOLF_SPAWN_EGG, 0, "Wolf Spawn Egg"));
 		self::registerItem(new SpawnEgg(ItemIds::ZOMBIE_SPAWN_EGG, 0, "Zombie Spawn Egg"));
+	}
+
+	private static function registerSkulls() : void{
+		self::registerItem(new ItemBlock(BlockIds::SKELETON_SKULL, 0 , BlockIds::SKELETON_SKULL));
+		self::registerItem(new ItemBlock(BlockIds::WITHER_SKELETON_SKULL, 0 , BlockIds::WITHER_SKELETON_SKULL));
+		self::registerItem(new ItemBlock(BlockIds::ZOMBIE_HEAD, 0 , BlockIds::ZOMBIE_HEAD));
+		self::registerItem(new ItemBlock(BlockIds::PLAYER_HEAD, 0 , BlockIds::PLAYER_HEAD));
+		self::registerItem(new ItemBlock(BlockIds::CREEPER_HEAD, 0 , BlockIds::CREEPER_HEAD));
+		self::registerItem(new ItemBlock(BlockIds::DRAGON_HEAD, 0 , BlockIds::DRAGON_HEAD));
 	}
 }

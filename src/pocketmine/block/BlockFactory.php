@@ -197,7 +197,7 @@ class BlockFactory{
 //		self::registerBlock(new Carrot());
 //		self::registerBlock(new Potato());
 //		self::registerBlock(new WoodenButton());
-//		self::registerBlock(new Skull());
+		self::registerSkulls();
 //		self::registerBlock(new Anvil());
 //		self::registerBlock(new TrappedChest());
 //		self::registerBlock(new WeightedPressurePlateLight());
@@ -502,5 +502,14 @@ class BlockFactory{
 			self::registerBlock(new ShulkerBox($type));
 		}
 		self::registerBlock(new ShulkerBox(new ColorType("undyed", "")));
+	}
+
+	private static function registerSkulls() : void{
+		self::registerBlock(new Skull(BlockIds::SKELETON_SKULL, 0 , "Skeleton Skull"));
+		self::registerBlock(new Skull(BlockIds::WITHER_SKELETON_SKULL, 0 , "Wither Skeleton Skull"));
+		self::registerBlock(new Skull(BlockIds::ZOMBIE_HEAD, 0 , "Zombie Skull"));
+		self::registerBlock(new Skull(BlockIds::PLAYER_HEAD, 0 , "Skull"));
+		self::registerBlock(new Skull(BlockIds::CREEPER_HEAD, 0 , "Creeper Skull"));
+		self::registerBlock(new Skull(BlockIds::DRAGON_HEAD, 0 , "Dragon Skull"));
 	}
 }

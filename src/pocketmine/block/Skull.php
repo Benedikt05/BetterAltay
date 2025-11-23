@@ -25,6 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -32,12 +33,6 @@ use pocketmine\tile\Skull as TileSkull;
 use pocketmine\tile\Tile;
 
 class Skull extends Flowable{
-
-	protected $id = self::SKULL_BLOCK;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
 
 	public function getHardness() : float{
 		return 1;
@@ -73,7 +68,7 @@ class Skull extends Flowable{
 
 	private function getItem() : Item{
 		$tile = $this->level->getTile($this);
-		return ItemFactory::get(Item::SKULL, $tile instanceof TileSkull ? $tile->getType() : 0);
+		return ItemFactory::get(ItemIds::SKULL, $tile instanceof TileSkull ? $tile->getType() : 0);
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
