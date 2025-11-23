@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\ColorType;
 use pocketmine\block\utils\ColorBlockMetaHelper;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -35,9 +36,8 @@ use pocketmine\tile\Tile;
 
 class ShulkerBox extends Transparent{
 
-	protected $id = self::SHULKER_BOX;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected ColorType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_shulker_box";
 		$this->meta = $meta;
 	}
 
@@ -46,7 +46,7 @@ class ShulkerBox extends Transparent{
 	}
 
 	public function getName() : string{
-		return ColorBlockMetaHelper::getColorFromMeta($this->getVariant()) . " Shulker Box";
+		return $this->material->getName() . " Shulker Box";
 	}
 
 	public function getToolType() : int{
@@ -81,7 +81,7 @@ class ShulkerBox extends Transparent{
 	public function getDropsForCompatibleTool(Item $item) : array{
 		$t = $this->getLevel()->getTile($this);
 		if($t instanceof TileShulkerBox){
-			$item = ItemFactory::get(Item::SHULKER_BOX, $this->getVariant(), 1);
+			$item = ItemFactory::get($this->id);
 
 			$blockData = new CompoundTag();
 			$t->writeBlockData($blockData);

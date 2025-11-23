@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Pumpkin extends Solid{
 
-	protected $id = self::PUMPKIN;
+	protected string $id = self::PUMPKIN;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

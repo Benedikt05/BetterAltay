@@ -231,6 +231,6 @@ class Potion extends Item implements Consumable{
 	}
 
 	public function getResidue(){
-		return ItemFactory::get(Item::GLASS_BOTTLE);
+		return ItemFactory::get(self::GLASS_BOTTLE);
 	}
 }

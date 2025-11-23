@@ -26,6 +26,7 @@ namespace pocketmine\tile;
 
 use InvalidArgumentException;
 use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\ShulkerBoxInventory;
 use pocketmine\item\Item;
@@ -146,7 +147,7 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 		$nbt->setByte(self::TAG_FINDABLE, 0);
 		$nbt->setByte(self::TAG_MOVABLE, 1);
 		if($item !== null){
-			$nbt->setByte(self::TAG_UNDYED, $item->getId() == Block::UNDYED_SHULKER_BOX ? 1 : 0);
+			$nbt->setByte(self::TAG_UNDYED, $item->getId() == BlockIds::UNDYED_SHULKER_BOX ? 1 : 0);
 		}
 	}
 

@@ -25,6 +25,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 
 class Bed extends Item{
 	public function __construct(int $meta = 0){
@@ -32,7 +33,7 @@ class Bed extends Item{
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(Block::BED_BLOCK);
+		return BlockFactory::get(BlockIds::BED);
 	}
 
 	public function getMaxStackSize() : int{

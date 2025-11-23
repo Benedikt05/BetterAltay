@@ -25,14 +25,16 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
+use pocketmine\block\material\ColorType;
 
 class ShulkerBox extends Item{
-	public function __construct(int $meta = 0){
-		parent::__construct(self::SHULKER_BOX, $meta, "Shulker Box");
+	public function __construct(private ColorType $material, int $meta = 0){
+		parent::__construct("minecraft:" . $this->material->getType() . "_shulker_box", $meta, "Shulker Box");
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(Block::SHULKER_BOX, $this->getDamage());
+		return BlockFactory::get($this->id, $this->getDamage());
 	}
 
 	public function getMaxStackSize() : int{

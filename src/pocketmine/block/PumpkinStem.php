@@ -26,12 +26,13 @@ namespace pocketmine\block;
 use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use function mt_rand;
 
 class PumpkinStem extends Crops{
 
-	protected $id = self::PUMPKIN_STEM;
+	protected string $id = self::PUMPKIN_STEM;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -60,8 +61,8 @@ class PumpkinStem extends Crops{
 				}
 				$side = $this->getSide(mt_rand(2, 5));
 				$d = $side->getSide(Vector3::SIDE_DOWN);
-				if($side->getId() === self::AIR and ($d->getId() === self::FARMLAND or $d->getId() === self::GRASS or $d->getId() === self::DIRT)){
-					$ev = new BlockGrowEvent($side, BlockFactory::get(Block::PUMPKIN));
+				if($side->getId() === self::AIR and ($d->getId() === self::FARMLAND or $d->getId() === self::GRASS_BLOCK or $d->getId() === self::DIRT)){
+					$ev = new BlockGrowEvent($side, BlockFactory::get(BlockIds::PUMPKIN));
 					$ev->call();
 					if(!$ev->isCancelled()){
 						$this->getLevelNonNull()->setBlock($side, $ev->getNewState(), true);
@@ -73,11 +74,11 @@ class PumpkinStem extends Crops{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::PUMPKIN_SEEDS, 0, mt_rand(0, 2))
+			ItemFactory::get(ItemIds::PUMPKIN_SEEDS, 0, mt_rand(0, 2))
 		];
 	}
 
 	public function getPickedItem() : Item{
-		return ItemFactory::get(Item::PUMPKIN_SEEDS);
+		return ItemFactory::get(ItemIds::PUMPKIN_SEEDS);
 	}
 }

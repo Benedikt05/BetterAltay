@@ -32,9 +32,6 @@ use pocketmine\Server;
 use function lcg_value;
 
 class SpawnEgg extends Item{
-	public function __construct(int $meta = 0){
-		parent::__construct(self::SPAWN_EGG, $meta, "Spawn Egg");
-	}
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		$nbt = Entity::createBaseNBT($blockReplace->add(0.5, 0, 0.5), null, lcg_value() * 360, 0);
@@ -43,7 +40,7 @@ class SpawnEgg extends Item{
 			$nbt->setString("CustomName", $this->getCustomName());
 		}
 
-		$entity = Entity::createEntity($this->meta, $player->getLevelNonNull(), $nbt);
+		$entity = Entity::createEntity(str_replace("_spawn_egg", "", $this->id), $player->getLevelNonNull(), $nbt);
 
 		if($entity instanceof Entity){
 			if($entity instanceof Mob){

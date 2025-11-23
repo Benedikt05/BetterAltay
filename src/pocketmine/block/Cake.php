@@ -33,9 +33,7 @@ use pocketmine\Player;
 
 class Cake extends Transparent implements FoodSource{
 
-	protected $id = self::CAKE_BLOCK;
-
-	protected $itemId = Item::CAKE;
+	protected string $id = self::CAKE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -76,7 +74,7 @@ class Cake extends Transparent implements FoodSource{
 
 	public function onNearbyBlockChange() : void{
 		if($this->getSide(Vector3::SIDE_DOWN)->getId() === self::AIR){ //Replace with common break method
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::AIR), true);
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(self::AIR), true);
 		}
 	}
 
@@ -120,7 +118,7 @@ class Cake extends Transparent implements FoodSource{
 		$clone = clone $this;
 		$clone->meta++;
 		if($clone->meta > 0x06){
-			$clone = BlockFactory::get(Block::AIR);
+			$clone = BlockFactory::get(self::AIR);
 		}
 		return $clone;
 	}

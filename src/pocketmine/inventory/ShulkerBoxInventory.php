@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\inventory;
 
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ShulkerBox as ShulkerBoxItems;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\BlockEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
@@ -50,7 +50,7 @@ class ShulkerBoxInventory extends ContainerInventory{
 	}
 
 	public function canStoreItem(Item $item) : bool{
-		return $item->getId() !== ItemIds::SHULKER_BOX and $item->getId() !== ItemIds::UNDYED_SHULKER_BOX;
+		return !$item instanceof ShulkerBoxItems;
 	}
 
 	/**

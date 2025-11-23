@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\projectile;
 
+use pocketmine\block\BlockIds;
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;
 use pocketmine\entity\object\ItemEntity;
@@ -33,6 +34,7 @@ use pocketmine\event\player\PlayerFishEvent;
 use pocketmine\item\FishingRod;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Level;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\level\particle\Particle;
@@ -300,11 +302,11 @@ class FishingHook extends Projectile{
 				$rndCatch = mt_rand(0, 100);
 				if($rndCatch < 81){
 				    $items = [
-					    Item::RAW_FISH, Item::PUFFERFISH, Item::RAW_SALMON, Item::CLOWNFISH
+					    ItemIds::COD, ItemIds::PUFFERFISH, ItemIds::SALMON, ItemIds::TROPICAL_FISH
 				    ];
 				}elseif($rndCatch < 101){
 					$items = [
-					    Item::CLOCK, Item::COMPASS, Item::FLINT_STEEL, Item::GLASS_BOTTLE, Item::LEATHER_BOOTS, Item::ROTTEN_FLESH, Item::STICK, Item::FISHING_ROD, Item::RABBIT_FOOT, Item::EXPERIENCE_BOTTLE, Item::DEAD_BUSH, Item::BUCKET, Item::BONE, Item::FLOWER_POT
+					    ItemIds::CLOCK, ItemIds::COMPASS, ItemIds::FLINT_AND_STEEL, ItemIds::GLASS_BOTTLE, ItemIds::LEATHER_BOOTS, ItemIds::ROTTEN_FLESH, ItemIds::STICK, ItemIds::FISHING_ROD, ItemIds::RABBIT_FOOT, ItemIds::EXPERIENCE_BOTTLE, BlockIds::DEADBUSH, ItemIds::BUCKET, ItemIds::BONE, ItemIds::FLOWER_POT
 				    ];
 				}
 				$randomFish = $items[mt_rand(0, count($items) - 1)];

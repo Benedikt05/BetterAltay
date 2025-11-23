@@ -27,6 +27,7 @@ use InvalidArgumentException;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
+use pocketmine\block\material\ColorType;
 use pocketmine\block\material\WoodType;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
@@ -145,6 +146,7 @@ class ItemFactory{
 		self::registerItem(new GoldenApple());
 		self::registerSignItems();
 		self::registerDoorItems();
+		self::registerShulkerBoxes();
 		self::registerItem(new Bucket());
 		self::registerItem(new WaterBucket());
 		self::registerItem(new LavaBucket());
@@ -175,41 +177,39 @@ class ItemFactory{
 		self::registerItem(new RawFish(ItemIds::SALMON, "Raw Salmon", 2, 0.2));
 		self::registerItem(new CookedFish());
 		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
-//		self::registerItem(new Dye());
+		self::registerItem(new Dye());
 		self::registerItem(new Item(ItemIds::BONE, 0, "Bone"));
 		self::registerItem(new Item(ItemIds::SUGAR, 0, "Sugar"));
-//		self::registerItem(new ItemBlock(Block::CAKE_BLOCK, 0, Item::CAKE));
-//		self::registerItem(new Bed());
-		//self::registerItem(new ItemBlock(Block::REPEATER_BLOCK, 0, Item::REPEATER));
+		self::registerItem(new ItemBlock(BlockIds::CAKE, 0, ItemIds::CAKE));
+		self::registerItem(new Bed());
+//		self::registerItem(new ItemBlock(BlockIds::UNPOWERED_REPEATER, 0, ItemIds::REPEATER));
 		self::registerItem(new Cookie());
 //		self::registerItem(new Map());
-//		self::registerItem(new Shears());
-//		self::registerItem(new Melon());
-//		self::registerItem(new PumpkinSeeds());
-//		self::registerItem(new MelonSeeds());
-//		self::registerItem(new RawBeef());
-//		self::registerItem(new Steak());
-//		self::registerItem(new RawChicken());
-//		self::registerItem(new CookedChicken());
-//		self::registerItem(new RottenFlesh());
-//		self::registerItem(new EnderPearl());
-//		self::registerItem(new BlazeRod());
-//		self::registerItem(new Item(Item::GHAST_TEAR, 0, "Ghast Tear"));
-//		self::registerItem(new Item(Item::GOLD_NUGGET, 0, "Gold Nugget"));
-		//self::registerItem(new ItemBlock(Block::NETHER_WART_PLANT, 0, Item::NETHER_WART));
-//		self::registerItem(new Potion());
-//		self::registerItem(new GlassBottle());
-//		self::registerItem(new SpiderEye());
-//		self::registerItem(new Item(Item::FERMENTED_SPIDER_EYE, 0, "Fermented Spider Eye"));
-//		self::registerItem(new Item(Item::BLAZE_POWDER, 0, "Blaze Powder"));
-//		self::registerItem(new Item(Item::MAGMA_CREAM, 0, "Magma Cream"));
-		//self::registerItem(new ItemBlock(Block::BREWING_STAND_BLOCK, 0, Item::BREWING_STAND));
-		//self::registerItem(new ItemBlock(Block::CAULDRON_BLOCK, 0, Item::CAULDRON));
-//		self::registerItem(new ShulkerBox(), true);
-//		self::registerItem(new UndyedShulkerBox(), true);
+		self::registerItem(new Shears());
+		self::registerItem(new Melon());
+		self::registerItem(new PumpkinSeeds());
+		self::registerItem(new MelonSeeds());
+		self::registerItem(new RawBeef());
+		self::registerItem(new Steak());
+		self::registerItem(new RawChicken());
+		self::registerItem(new CookedChicken());
+		self::registerItem(new RottenFlesh());
+		self::registerItem(new EnderPearl());
+		self::registerItem(new BlazeRod());
+		self::registerItem(new Item(ItemIds::GHAST_TEAR, 0, "Ghast Tear"));
+		self::registerItem(new Item(ItemIds::GOLD_NUGGET, 0, "Gold Nugget"));
+		self::registerItem(new ItemBlock(BlockIds::NETHER_WART, 0, ItemIds::NETHER_WART));
+		self::registerItem(new Potion());
+		self::registerItem(new GlassBottle());
+		self::registerItem(new SpiderEye());
+		self::registerItem(new Item(ItemIds::FERMENTED_SPIDER_EYE, 0, "Fermented Spider Eye"));
+		self::registerItem(new Item(ItemIds::BLAZE_POWDER, 0, "Blaze Powder"));
+		self::registerItem(new Item(ItemIds::MAGMA_CREAM, 0, "Magma Cream"));
+		self::registerItem(new ItemBlock(BlockIds::BREWING_STAND, 0, ItemIds::BREWING_STAND));
+		self::registerItem(new ItemBlock(BlockIds::CAULDRON, 0, ItemIds::CAULDRON));
 		//TODO: ENDER_EYE
 //		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
-//		self::registerItem(new SpawnEgg());
+		self::registerSpawnEggs();
 //		self::registerItem(new ExperienceBottle());
 		//TODO: FIREBALL
 //		self::registerItem(new WritableBook());
@@ -222,13 +222,13 @@ class ItemFactory{
 //		self::registerItem(new BakedPotato());
 //		self::registerItem(new PoisonousPotato());
 //		self::registerItem(new EmptyMap());
-//		self::registerItem(new GoldenCarrot());
+		self::registerItem(new GoldenCarrot());
 		//self::registerItem(new ItemBlock(Block::SKULL_BLOCK, 0, Item::SKULL));
 		//TODO: CARROTONASTICK
 //		self::registerItem(new Item(Item::NETHER_STAR, 0, "Nether Star"));
-//		self::registerItem(new PumpkinPie());
-//		self::registerItem(new Fireworks());
-//		self::registerItem(new Item(Item::FIREWORKS_CHARGE, 0, "Fireworks Charge"));
+		self::registerItem(new PumpkinPie());
+		self::registerItem(new Fireworks());
+		self::registerItem(new Item(ItemIds::FIREWORKSCHARGE, 0, "Fireworks Charge"));
 //		self::registerItem(new EnchantedBook());
 		//self::registerItem(new ItemBlock(Block::COMPARATOR_BLOCK, 0, Item::COMPARATOR));
 //		self::registerItem(new Item(Item::NETHER_BRICK, 0, "Nether Brick"));
@@ -283,39 +283,37 @@ class ItemFactory{
 //		self::registerItem(new Beetroot());
 //		self::registerItem(new BeetrootSeeds());
 //		self::registerItem(new BeetrootSoup());
-//		self::registerItem(new RawSalmon());
 //		self::registerItem(new Clownfish());
-//		self::registerItem(new Pufferfish());
-//		self::registerItem(new CookedSalmon());
-//		self::registerItem(new DriedKelp());
-//		self::registerItem(new Item(Item::NAUTILUS_SHELL, 0, "Nautilus Shell"));
-//		self::registerItem(new GoldenAppleEnchanted());
-//		self::registerItem(new Item(Item::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
-//		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
-//		self::registerItem(new TurtleHelmet());
+		self::registerItem(new Pufferfish());
+		self::registerItem(new DriedKelp());
+		self::registerItem(new Item(ItemIds::NAUTILUS_SHELL, 0, "Nautilus Shell"));
+		self::registerItem(new GoldenAppleEnchanted());
+		self::registerItem(new Item(ItemIds::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
+		self::registerItem(new Item(ItemIds::TURTLE_SHELL_PIECE, 0, "Scute"));
+		self::registerItem(new TurtleHelmet());
 
 		$records = [
-			Item::MUSIC_DISC_13 => LevelSoundEventPacket::SOUND_RECORD_13,
-			Item::MUSIC_DISC_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
-			Item::MUSIC_DISC_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
-			Item::MUSIC_DISC_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
-			Item::MUSIC_DISC_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
-			Item::MUSIC_DISC_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
-			Item::MUSIC_DISC_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
-			Item::MUSIC_DISC_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
-			Item::MUSIC_DISC_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
-			Item::MUSIC_DISC_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
-			Item::MUSIC_DISC_11 => LevelSoundEventPacket::SOUND_RECORD_11,
-			Item::MUSIC_DISC_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
-			Item::MUSIC_DISC_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
-			Item::MUSIC_DISC_5 => LevelSoundEventPacket::SOUND_RECORD_5,
-			Item::MUSIC_DISC_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
-			Item::MUSIC_DISC_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
-			Item::MUSIC_DISC_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
-			Item::MUSIC_DISC_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
-			Item::MUSIC_DISC_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
-			Item::MUSIC_DISC_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
-			Item::MUSIC_DISC_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
+			ItemIds::MUSIC_DISC_13 => LevelSoundEventPacket::SOUND_RECORD_13,
+			ItemIds::MUSIC_DISC_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
+			ItemIds::MUSIC_DISC_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
+			ItemIds::MUSIC_DISC_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
+			ItemIds::MUSIC_DISC_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
+			ItemIds::MUSIC_DISC_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
+			ItemIds::MUSIC_DISC_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
+			ItemIds::MUSIC_DISC_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
+			ItemIds::MUSIC_DISC_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
+			ItemIds::MUSIC_DISC_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
+			ItemIds::MUSIC_DISC_11 => LevelSoundEventPacket::SOUND_RECORD_11,
+			ItemIds::MUSIC_DISC_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
+			ItemIds::MUSIC_DISC_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
+			ItemIds::MUSIC_DISC_5 => LevelSoundEventPacket::SOUND_RECORD_5,
+			ItemIds::MUSIC_DISC_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
+			ItemIds::MUSIC_DISC_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
+			ItemIds::MUSIC_DISC_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
+			ItemIds::MUSIC_DISC_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
+			ItemIds::MUSIC_DISC_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
+			ItemIds::MUSIC_DISC_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
+			ItemIds::MUSIC_DISC_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
 		];
 
 
@@ -323,11 +321,8 @@ class ItemFactory{
 			self::registerItem(new Record($itemId, $soundId));
 		}
 
-//
 		self::registerItem(new Item(ItemIds::DISC_FRAGMENT_5, 0, "Disc Fragment"));
-//
-//		self::registerItem(new Shield());
-//
+		self::registerItem(new Shield());
 		self::registerItem(new Item(ItemIds::NETHERITE_INGOT, 0, "Netherite Ingot"));
 		self::registerItem(new Item(ItemIds::NETHERITE_SCRAP, 0, "Netherite Scrap"));
 		self::registerItem(new Item(ItemIds::HONEYCOMB, 0, "Honeycomb"));
@@ -479,5 +474,35 @@ class ItemFactory{
 			$id = "minecraft:" . $type->getType() . "_door";
 			self::registerItem(new ItemBlock($id, 0, $id));
 		}
+	}
+
+	private static function registerShulkerBoxes() : void{
+		foreach(ColorType::values() as $type){
+			self::registerItem(new ShulkerBox($type));
+		}
+		self::registerItem(new ShulkerBox(new ColorType("undyed", "")));
+	}
+
+	private static function registerSpawnEggs() : void{
+		self::registerItem(new SpawnEgg(ItemIds::BLAZE_SPAWN_EGG, 0, "Blaze Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::CAT_SPAWN_EGG, 0, "Cat Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::CAVE_SPIDER_SPAWN_EGG, 0, "Cave Spider Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::CHICKEN_SPAWN_EGG, 0, "Chicken Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::COD_SPAWN_EGG, 0, "Cod Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::COW_SPAWN_EGG, 0, "Cow Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::CREEPER_SPAWN_EGG, 0, "Creeper Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::ENDER_DRAGON_SPAWN_EGG, 0, "Ender Dragon Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::ENDERMAN_SPAWN_EGG, 0, "Enderman Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::HORSE_SPAWN_EGG, 0, "Horse Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::HUSK_SPAWN_EGG, 0, "Husk Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::MAGMA_CUBE_SPAWN_EGG, 0, "Magma Cube Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::MOOSHROOM_SPAWN_EGG, 0, "Mooshroom Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::PIG_SPAWN_EGG, 0, "Pig Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::SHEEP_SPAWN_EGG, 0, "Sheep Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::SKELETON_SPAWN_EGG, 0, "Skeleton Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::SLIME_SPAWN_EGG, 0, "Slime Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::VILLAGER_SPAWN_EGG, 0, "Villager Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::WOLF_SPAWN_EGG, 0, "Wolf Spawn Egg"));
+		self::registerItem(new SpawnEgg(ItemIds::ZOMBIE_SPAWN_EGG, 0, "Zombie Spawn Egg"));
 	}
 }

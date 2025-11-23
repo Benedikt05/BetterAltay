@@ -34,6 +34,7 @@ use pocketmine\item\Dye;
 use pocketmine\item\GlassBottle;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\item\LeatherBoots;
 use pocketmine\item\LeatherCap;
 use pocketmine\item\LeatherPants;
@@ -54,9 +55,7 @@ use pocketmine\utils\Color;
 
 class Cauldron extends Solid{
 
-	protected $id = self::CAULDRON_BLOCK;
-
-	protected $itemId = Item::CAULDRON;
+	protected string $id = self::CAULDRON;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -101,7 +100,7 @@ class Cauldron extends Solid{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->getLevel()->setBlock($blockReplace, $this, true, true);
+		$this->getLevel()->setBlock($blockReplace, $this, true);
 
 		Tile::createTile(Tile::CAULDRON, $this->getLevel(), TileCauldron::createNBT($this, $face, $item, $player));
 
@@ -114,17 +113,17 @@ class Cauldron extends Solid{
 
 			if($tile instanceof TileCauldron){
 				if($item instanceof Bucket){
-					if($item->getDamage() === Block::AIR){
+					if($item->getDamage() === self::AIR){
 						if(!$tile->hasPotion() and $tile->getCustomColor() === null and $this->isFull()){
 							$stack = clone $item;
 
 							$stack->pop();
-							$resultItem = ItemFactory::get(Item::BUCKET, $this->getDamage() < 9 ? Block::FLOWING_WATER : Block::FLOWING_LAVA);
+							$resultItem = ItemFactory::get($this->getDamage() < 9 ? ItemIds::WATER_BUCKET : ItemIds::LAVA_BUCKET);
 							$ev = new PlayerBucketFillEvent($player, $this, 0, $item, $resultItem);
 							$ev->call();
 							if(!$ev->isCancelled()){
 								$this->setDamage(0);
-								$this->level->setBlock($this, $this, true, true);
+								$this->level->setBlock($this, $this, true);
 
 								$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_TAKE_WATER);
 								if($player->isSurvival()){
@@ -141,8 +140,8 @@ class Cauldron extends Solid{
 								$player->getInventory()->sendContents($player);
 							}
 						}
-					}elseif($item->getDamage() === Block::FLOWING_WATER){
-						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(Item::BUCKET));
+					}elseif($item->getDamage() === self::FLOWING_WATER){
+						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(ItemIds::BUCKET));
 						$ev->call();
 						if(!$ev->isCancelled()){
 							if($tile->hasPotion() or $tile->getCustomColor() !== null or $this->getDamage() >= 9){
@@ -161,8 +160,8 @@ class Cauldron extends Solid{
 						}else{
 							$player->getInventory()->sendContents($player);
 						}
-					}elseif($item->getDamage() === Block::FLOWING_LAVA){
-						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(Item::BUCKET));
+					}elseif($item->getDamage() === self::FLOWING_LAVA){
+						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(ItemIds::BUCKET));
 						$ev->call();
 						if(!$ev->isCancelled()){
 							if($tile->hasPotion() or $tile->getCustomColor() !== null or ($this->getDamage() > 0 and $this->getDamage() <= 6)){
@@ -205,8 +204,8 @@ class Cauldron extends Solid{
 					}
 				}elseif($item instanceof Potion or $item instanceof SplashPotion){
 					if((!$this->isEmpty() and (($tile->getPotionId() !== $item->getDamage() and $item->getDamage() !== Potion::WATER) or
-								($item->getId() === Item::POTION and $tile->isSplashPotion()) or
-								($item->getId() === Item::SPLASH_POTION and !$tile->isSplashPotion()) and $item->getDamage() !== 0 or
+								($item->getId() === ItemIds::POTION and $tile->isSplashPotion()) or
+								($item->getId() === ItemIds::SPLASH_POTION and !$tile->isSplashPotion()) and $item->getDamage() !== 0 or
 								($item->getDamage() === Potion::WATER and $tile->hasPotion()))
 						) or $this->getDamage() >= 9){
 						$this->explodeCauldron($tile);
@@ -214,15 +213,15 @@ class Cauldron extends Solid{
 						$this->level->setBlock($this, $this, true, true);
 
 						if($player->isSurvival()){
-							$player->getInventory()->setItemInHand(ItemFactory::get(Item::GLASS_BOTTLE));
+							$player->getInventory()->setItemInHand(ItemFactory::get(ItemIds::GLASS_BOTTLE));
 						}
 					}elseif($item->getDamage() === Potion::WATER){
 						$this->setDamage(min(6, $this->getDamage() + 2));
 
-						$this->level->setBlock($this, $this, true, true);
+						$this->level->setBlock($this, $this, true);
 
 						if($player->isSurvival()){
-							$player->getInventory()->setItemInHand(ItemFactory::get(Item::GLASS_BOTTLE));
+							$player->getInventory()->setItemInHand(ItemFactory::get(ItemIds::GLASS_BOTTLE));
 						}
 
 						$tile->setPotionId(-1);
@@ -237,10 +236,10 @@ class Cauldron extends Solid{
 						$tile->setSplashPotion($item instanceof SplashPotion);
 						$tile->setCustomColor(null);
 
-						$this->level->setBlock($this, $this, true, true);
+						$this->level->setBlock($this, $this, true);
 
 						if($player->isSurvival()){
-							$player->getInventory()->setItemInHand(ItemFactory::get(Item::GLASS_BOTTLE));
+							$player->getInventory()->setItemInHand(ItemFactory::get(ItemIds::GLASS_BOTTLE));
 						}
 
 						$this->updateLiquid();
@@ -253,9 +252,9 @@ class Cauldron extends Solid{
 							$this->setDamage($this->getDamage() - 2);
 
 							if($tile->isSplashPotion()){
-								$result = ItemFactory::get(Item::SPLASH_POTION, $tile->getPotionId());
+								$result = ItemFactory::get(ItemIds::SPLASH_POTION, $tile->getPotionId());
 							}else{
-								$result = ItemFactory::get(Item::POTION, $tile->getPotionId());
+								$result = ItemFactory::get(ItemIds::POTION, $tile->getPotionId());
 							}
 
 							if($this->isEmpty()){
@@ -287,7 +286,7 @@ class Cauldron extends Solid{
 								$player->getInventory()->setItemInHand($item);
 							}
 
-							$result = ItemFactory::get(Item::POTION, Potion::WATER);
+							$result = ItemFactory::get(ItemIds::POTION, Potion::WATER);
 
 							if($player->getInventory()->canAddItem($result)){
 								$player->getInventory()->addItem($result);

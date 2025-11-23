@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
@@ -37,6 +38,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\inventory\HorseInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
@@ -82,7 +84,7 @@ class Horse extends AbstractHorse implements InventoryHolder{
 		$this->behaviorPool->setBehavior(1, new FloatBehavior($this));
 		$this->behaviorPool->setBehavior(2, new PanicBehavior($this, 1.25));
 		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [Item::WHEAT, Item::APPLE, Item::WHEAT_BLOCK, Item::GOLDEN_APPLE, Item::ENCHANTED_GOLDEN_APPLE, Item::GOLDEN_CARROT, Item::SUGAR], 1.2));
+		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [ItemIds::WHEAT, ItemIds::APPLE, BlockIds::WHEAT, ItemIds::GOLDEN_APPLE, ItemIds::ENCHANTED_GOLDEN_APPLE, ItemIds::GOLDEN_CARROT, ItemIds::SUGAR], 1.2));
 		$this->behaviorPool->setBehavior(5, new FollowParentBehavior($this, 1.1));
 		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 1.0));
 		$this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 6.0));

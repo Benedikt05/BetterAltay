@@ -99,6 +99,7 @@ class BlockFactory{
 		self::registerBlock(new IronDoor());
 		self::registerWoodenStairs();
 		self::registerWoodenFences();
+		self::registerShulkerBoxes();
 //
 //		self::registerBlock(new Dandelion());
 //		self::registerBlock(new Flower());
@@ -141,13 +142,13 @@ class BlockFactory{
 //		self::registerBlock(new Clay());
 //		self::registerBlock(new Sugarcane());
 		self::registerBlock(new Jukebox());
-//		self::registerBlock(new Pumpkin());
+		self::registerBlock(new Pumpkin());
 //		self::registerBlock(new Netherrack());
 		self::registerBlock(new SoulSand());
 //		self::registerBlock(new Glowstone());
 //		self::registerBlock(new Portal());
-//		self::registerBlock(new LitPumpkin());
-//		self::registerBlock(new Cake());
+		self::registerBlock(new LitPumpkin());
+		self::registerBlock(new Cake());
 		//TODO: REPEATER_BLOCK
 		//TODO: POWERED_REPEATER
 //		self::registerBlock(new InvisibleBedrock());
@@ -158,9 +159,9 @@ class BlockFactory{
 //		self::registerBlock(new RedMushroomBlock());
 //		self::registerBlock(new IronBars());
 //		self::registerBlock(new GlassPane());
-//		self::registerBlock(new Melon());
-//		self::registerBlock(new PumpkinStem());
-//		self::registerBlock(new MelonStem());
+		self::registerBlock(new Melon());
+		self::registerBlock(new PumpkinStem());
+		self::registerBlock(new MelonStem());
 //		self::registerBlock(new Vine());
 //		self::registerBlock(new FenceGate(BlockIds::OAK_FENCE_GATE, 0, "Oak Fence Gate"));
 		self::registerBlock(new BrickStairs());
@@ -172,8 +173,8 @@ class BlockFactory{
 		self::registerBlock(new NetherBrickStairs());
 //		self::registerBlock(new NetherWartPlant());
 //		self::registerBlock(new EnchantingTable());
-//		self::registerBlock(new BrewingStand());
-//		self::registerBlock(new Cauldron());
+		self::registerBlock(new BrewingStand());
+		self::registerBlock(new Cauldron());
 //		self::registerBlock(new EndPortal());
 //		self::registerBlock(new EndPortalFrame());
 //		self::registerBlock(new EndStone());
@@ -249,7 +250,6 @@ class BlockFactory{
 //
 		self::registerBlock(new PurpurStairs());
 //
-//		self::registerBlock(new UndyedShulkerBox());
 //		self::registerBlock(new EndStoneBricks());
 		//TODO: FROSTED_ICE
 //		self::registerBlock(new EndRod());
@@ -259,8 +259,6 @@ class BlockFactory{
 //		self::registerBlock(new NetherWartBlock());
 //		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
 //		self::registerBlock(new BoneBlock());
-
-//		self::registerBlock(new ShulkerBox());
 		self::registerBlock(new GlazedTerracotta(BlockIds::PURPLE_GLAZED_TERRACOTTA, 0, "Purple Glazed Terracotta"));
 		self::registerBlock(new GlazedTerracotta(BlockIds::WHITE_GLAZED_TERRACOTTA, 0, "White Glazed Terracotta"));
 		self::registerBlock(new GlazedTerracotta(BlockIds::ORANGE_GLAZED_TERRACOTTA, 0, "Orange Glazed Terracotta"));
@@ -491,10 +489,17 @@ class BlockFactory{
 		self::registerBlock(new WoodenStairs(BlockIds::BAMBOO_STAIRS));
 	}
 
-	public static function registerWoodenFences() : void {
+	private static function registerWoodenFences() : void {
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenFence($type));
 		}
 		self::registerBlock(new WoodenFence(new WoodType("bamboo", "Bamboo")));
+	}
+
+	private static function registerShulkerBoxes() : void{
+		foreach(ColorType::values() as $type){
+			self::registerBlock(new ShulkerBox($type));
+		}
+		self::registerBlock(new ShulkerBox(new ColorType("undyed", "")));
 	}
 }
