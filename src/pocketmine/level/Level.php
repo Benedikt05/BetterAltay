@@ -37,6 +37,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
 use pocketmine\block\Liquid;
 use pocketmine\block\UnknownBlock;
+use pocketmine\block\Water;
 use pocketmine\entity\CreatureType;
 use pocketmine\entity\Entity;
 use pocketmine\entity\object\ExperienceOrb;
@@ -1754,7 +1755,7 @@ class Level implements ChunkManager, Metadatable{
 		}
 
 		$this->timings->setBlock->startTiming();
-		$beforeBlock = $this->getBlock($pos, false, false, 0);
+		$beforeBlock = $this->getBlock($pos, false, false);
 		if($this->getChunkAtPosition($pos, true)->setBlockId($pos->x & Chunk::COORD_MASK, $pos->y, $pos->z & Chunk::COORD_MASK, $block->getRuntimeId(), $layer)){
 			if(!($pos instanceof Position)){
 				$pos = $this->temporalPosition->setComponents($pos->x, $pos->y, $pos->z);
@@ -1788,7 +1789,7 @@ class Level implements ChunkManager, Metadatable{
 					}
 				}
 			} else {
-				if ($block->isWaterloggable() && $beforeBlock instanceof Liquid) {
+				if ($block->isWaterloggable() && $beforeBlock instanceof Water) {
 
 					$this->getChunkAtPosition($pos, true)->setBlockId($pos->x & Chunk::COORD_MASK, $pos->y, $pos->z & Chunk::COORD_MASK, $beforeBlock->getRuntimeId(), 1);
 					if($direct){
