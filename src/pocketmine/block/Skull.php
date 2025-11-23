@@ -67,8 +67,7 @@ class Skull extends Flowable{
 	}
 
 	private function getItem() : Item{
-		$tile = $this->level->getTile($this);
-		return ItemFactory::get(ItemIds::SKULL, $tile instanceof TileSkull ? $tile->getType() : 0);
+		return ItemFactory::get($this->id);
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
