@@ -12,7 +12,4 @@ class CopperTorch extends Torch{
 		return "Copper Torch";
 	}
 
-	public function getLightLevel() : int{
-		return 14;
-	}
 }
