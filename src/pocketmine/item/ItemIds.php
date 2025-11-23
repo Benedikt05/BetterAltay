@@ -617,91 +617,265 @@ interface ItemIds{
 	public const ZOMBIE_PIGMAN_SPAWN_EGG = "minecraft:zombie_pigman_spawn_egg";
 	public const ZOMBIE_SPAWN_EGG = "minecraft:zombie_spawn_egg";
 	public const ZOMBIE_VILLAGER_SPAWN_EGG = "minecraft:zombie_villager_spawn_egg";
+
+	/** @deprecated Use self::ENCHANTED_GOLDEN_APPLE instead. */
 	public const APPLEENCHANTED = "minecraft:enchanted_golden_apple";
+
+	/** @deprecated Use self::CARROT_ON_A_STICK instead. */
 	public const CARROTONASTICK = "minecraft:carrot_on_a_stick";
+
+	/** @deprecated Use self::IRON_CHAIN instead. */
 	public const CHAIN = "minecraft:iron_chain";
+
+	/** @deprecated Use self::POPPED_CHORUS_FRUIT instead. */
 	public const CHORUS_FRUIT_POPPED = "minecraft:popped_chorus_fruit";
+
+	/** @deprecated Use self::TROPICAL_FISH instead. */
 	public const CLOWNFISH = "minecraft:tropical_fish";
+
+	/** @deprecated Use self::CONCRETE_POWDER instead. */
 	public const CONCRETEPOWDER = "minecraft:concrete_powder";
+
+	/** @deprecated Use self::COOKED_COD instead. */
 	public const COOKED_FISH = "minecraft:cooked_cod";
+
+	/** @deprecated Use self::DARK_OAK_SIGN instead. */
 	public const DARKOAK_SIGN = "minecraft:dark_oak_sign";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB instead. */
 	public const DOUBLE_STONE_SLAB = "minecraft:stone_block_slab";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB2 instead. */
 	public const DOUBLE_STONE_SLAB2 = "minecraft:stone_block_slab2";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB3 instead. */
 	public const DOUBLE_STONE_SLAB3 = "minecraft:stone_block_slab3";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB4 instead. */
 	public const DOUBLE_STONE_SLAB4 = "minecraft:stone_block_slab4";
+
+	/** @deprecated Use self::EMPTY_MAP instead. */
 	public const EMPTYMAP = "minecraft:empty_map";
+
+	/** @deprecated Use self::FIRE_CHARGE instead. */
 	public const FIREBALL = "minecraft:fire_charge";
+
+	/** @deprecated Use self::FIREWORK_ROCKET instead. */
 	public const FIREWORKS = "minecraft:firework_rocket";
+
+	/** @deprecated Use self::FIREWORK_STAR instead. */
 	public const FIREWORKSCHARGE = "minecraft:firework_star";
+
+	/** @deprecated Use self::COD instead. */
 	public const FISH = "minecraft:cod";
+
+	/** @deprecated Use self::BLACK_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_BLACK = "minecraft:black_glazed_terracotta";
+
+	/** @deprecated Use self::BLUE_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_BLUE = "minecraft:blue_glazed_terracotta";
+
+	/** @deprecated Use self::BROWN_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_BROWN = "minecraft:brown_glazed_terracotta";
+
+	/** @deprecated Use self::CYAN_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_CYAN = "minecraft:cyan_glazed_terracotta";
+
+	/** @deprecated Use self::GRAY_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_GRAY = "minecraft:gray_glazed_terracotta";
+
+	/** @deprecated Use self::GREEN_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_GREEN = "minecraft:green_glazed_terracotta";
+
+	/** @deprecated Use self::LIGHT_BLUE_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_LIGHT_BLUE = "minecraft:light_blue_glazed_terracotta";
+
+	/** @deprecated Use self::LIME_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_LIME = "minecraft:lime_glazed_terracotta";
+
+	/** @deprecated Use self::MAGENTA_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_MAGENTA = "minecraft:magenta_glazed_terracotta";
+
+	/** @deprecated Use self::ORANGE_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_ORANGE = "minecraft:orange_glazed_terracotta";
+
+	/** @deprecated Use self::PINK_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_PINK = "minecraft:pink_glazed_terracotta";
+
+	/** @deprecated Use self::PURPLE_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_PURPLE = "minecraft:purple_glazed_terracotta";
+
+	/** @deprecated Use self::RED_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_RED = "minecraft:red_glazed_terracotta";
+
+	/** @deprecated Use self::SILVER_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_SILVER = "minecraft:silver_glazed_terracotta";
+
+	/** @deprecated Use self::WHITE_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_WHITE = "minecraft:white_glazed_terracotta";
+
+	/** @deprecated Use self::YELLOW_GLAZED_TERRACOTTA instead. */
 	public const GLAZEDTERRACOTTA_YELLOW = "minecraft:yellow_glazed_terracotta";
+
+	/** @deprecated Use self::GRASS_BLOCK instead. */
 	public const GRASS = "minecraft:grass_block";
+
+	/** @deprecated Use self::DIAMOND_HORSE_ARMOR instead. */
 	public const HORSEARMORDIAMOND = "minecraft:diamond_horse_armor";
+
+	/** @deprecated Use self::GOLDEN_HORSE_ARMOR instead. */
 	public const HORSEARMORGOLD = "minecraft:golden_horse_armor";
+
+	/** @deprecated Use self::IRON_HORSE_ARMOR instead. */
 	public const HORSEARMORIRON = "minecraft:iron_horse_armor";
+
+	/** @deprecated Use self::LEATHER_HORSE_ARMOR instead. */
 	public const HORSEARMORLEATHER = "minecraft:leather_horse_armor";
+
+	/** @deprecated Use self::INVISIBLE_BEDROCK instead. */
 	public const INVISIBLEBEDROCK = "minecraft:invisible_bedrock";
+
+	/** @deprecated Use self::LODESTONE_COMPASS instead. */
 	public const LODESTONECOMPASS = "minecraft:lodestone_compass";
+
+	/** @deprecated Use self::FILLED_MAP instead. */
 	public const MAP = "minecraft:filled_map";
+
+	/** @deprecated Use self::MELON_SLICE instead. */
 	public const MELON = "minecraft:melon_slice";
+
+	/** @deprecated Use self::MOVING_BLOCK instead. */
 	public const MOVINGBLOCK = "minecraft:moving_block";
+
+	/** @deprecated Use self::COOKED_MUTTON instead. */
 	public const MUTTONCOOKED = "minecraft:cooked_mutton";
+
+	/** @deprecated Use self::MUTTON instead. */
 	public const MUTTONRAW = "minecraft:mutton";
+
+	/** @deprecated Use self::NAME_TAG instead. */
 	public const NAMETAG = "minecraft:name_tag";
+
+	/** @deprecated Use self::NETHER_STAR instead. */
 	public const NETHERSTAR = "minecraft:nether_star";
+
+	/** @deprecated Use self::PISTON_ARM_COLLISION instead. */
 	public const PISTONARMCOLLISION = "minecraft:piston_arm_collision";
+
+	/** @deprecated Use self::PRISMARINE_SHARD instead. */
 	public const PRISMARINESHARD = "minecraft:prismarine_shard";
+
+	/** @deprecated Use self::DOUBLE_STONE_BLOCK_SLAB instead. */
 	public const REAL_DOUBLE_STONE_SLAB = "minecraft:double_stone_block_slab";
+
+	/** @deprecated Use self::DOUBLE_STONE_BLOCK_SLAB2 instead. */
 	public const REAL_DOUBLE_STONE_SLAB2 = "minecraft:double_stone_block_slab2";
+
+	/** @deprecated Use self::DOUBLE_STONE_BLOCK_SLAB3 instead. */
 	public const REAL_DOUBLE_STONE_SLAB3 = "minecraft:double_stone_block_slab3";
+
+	/** @deprecated Use self::DOUBLE_STONE_BLOCK_SLAB4 instead. */
 	public const REAL_DOUBLE_STONE_SLAB4 = "minecraft:double_stone_block_slab4";
+
+	/** @deprecated Use self::MUSIC_DISC_11 instead. */
 	public const RECORD_11 = "minecraft:music_disc_11";
+
+	/** @deprecated Use self::MUSIC_DISC_13 instead. */
 	public const RECORD_13 = "minecraft:music_disc_13";
+
+	/** @deprecated Use self::MUSIC_DISC_5 instead. */
 	public const RECORD_5 = "minecraft:music_disc_5";
+
+	/** @deprecated Use self::MUSIC_DISC_BLOCKS instead. */
 	public const RECORD_BLOCKS = "minecraft:music_disc_blocks";
+
+	/** @deprecated Use self::MUSIC_DISC_CAT instead. */
 	public const RECORD_CAT = "minecraft:music_disc_cat";
+
+	/** @deprecated Use self::MUSIC_DISC_CHIRP instead. */
 	public const RECORD_CHIRP = "minecraft:music_disc_chirp";
+
+	/** @deprecated Use self::MUSIC_DISC_CREATOR instead. */
 	public const RECORD_CREATOR = "minecraft:music_disc_creator";
+
+	/** @deprecated Use self::MUSIC_DISC_CREATOR_MUSIC_BOX instead. */
 	public const RECORD_CREATOR_MUSIC_BOX = "minecraft:music_disc_creator_music_box";
+
+	/** @deprecated Use self::MUSIC_DISC_FAR instead. */
 	public const RECORD_FAR = "minecraft:music_disc_far";
+
+	/** @deprecated Use self::MUSIC_DISC_LAVA_CHICKEN instead. */
 	public const RECORD_LAVA_CHICKEN = "minecraft:music_disc_lava_chicken";
+
+	/** @deprecated Use self::MUSIC_DISC_MALL instead. */
 	public const RECORD_MALL = "minecraft:music_disc_mall";
+
+	/** @deprecated Use self::MUSIC_DISC_MELLOHI instead. */
 	public const RECORD_MELLOHI = "minecraft:music_disc_mellohi";
+
+	/** @deprecated Use self::MUSIC_DISC_OTHERSIDE instead. */
 	public const RECORD_OTHERSIDE = "minecraft:music_disc_otherside";
+
+	/** @deprecated Use self::MUSIC_DISC_PIGSTEP instead. */
 	public const RECORD_PIGSTEP = "minecraft:music_disc_pigstep";
+
+	/** @deprecated Use self::MUSIC_DISC_PRECIPICE instead. */
 	public const RECORD_PRECIPICE = "minecraft:music_disc_precipice";
+
+	/** @deprecated Use self::MUSIC_DISC_RELIC instead. */
 	public const RECORD_RELIC = "minecraft:music_disc_relic";
+
+	/** @deprecated Use self::MUSIC_DISC_STAL instead. */
 	public const RECORD_STAL = "minecraft:music_disc_stal";
+
+	/** @deprecated Use self::MUSIC_DISC_STRAD instead. */
 	public const RECORD_STRAD = "minecraft:music_disc_strad";
+
+	/** @deprecated Use self::MUSIC_DISC_TEARS instead. */
 	public const RECORD_TEARS = "minecraft:music_disc_tears";
+
+	/** @deprecated Use self::MUSIC_DISC_WAIT instead. */
 	public const RECORD_WAIT = "minecraft:music_disc_wait";
+
+	/** @deprecated Use self::MUSIC_DISC_WARD instead. */
 	public const RECORD_WARD = "minecraft:music_disc_ward";
+
+	/** @deprecated Use self::SUGAR_CANE instead. */
 	public const REEDS = "minecraft:sugar_cane";
+
+	/** @deprecated Use self::TURTLE_SCUTE instead. */
 	public const SCUTE = "minecraft:turtle_scute";
+
+	/** @deprecated Use self::SEA_LANTERN instead. */
 	public const SEALANTERN = "minecraft:sea_lantern";
+
+	/** @deprecated Use self::OAK_SIGN instead. */
 	public const SIGN = "minecraft:oak_sign";
+
+	/** @deprecated Use self::GLISTERING_MELON_SLICE instead. */
 	public const SPECKLED_MELON = "minecraft:glistering_melon_slice";
+
+	/** @deprecated Use self::STICKY_PISTON_ARM_COLLISION instead. */
 	public const STICKYPISTONARMCOLLISION = "minecraft:sticky_piston_arm_collision";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB instead. */
 	public const STONE_SLAB = "minecraft:stone_block_slab";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB2 instead. */
 	public const STONE_SLAB2 = "minecraft:stone_block_slab2";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB3 instead. */
 	public const STONE_SLAB3 = "minecraft:stone_block_slab3";
+
+	/** @deprecated Use self::STONE_BLOCK_SLAB4 instead. */
 	public const STONE_SLAB4 = "minecraft:stone_block_slab4";
+
+	/** @deprecated Use self::TOTEM_OF_UNDYING instead. */
 	public const TOTEM = "minecraft:totem_of_undying";
+
+	/** @deprecated Use self::TURTLE_SCUTE instead. */
 	public const TURTLE_SHELL_PIECE = "minecraft:turtle_scute";
+
+	/** @deprecated Use self::DANDELION instead. */
 	public const YELLOW_FLOWER = "minecraft:dandelion";
 }

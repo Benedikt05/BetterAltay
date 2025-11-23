@@ -136,6 +136,7 @@ HEADER
 		fwrite($file, "\tpublic const " . constifyMcId($id) . " = \"" . $id . "\";\n");
 	}
 	foreach(Utils::stringifyKeys($oldIds) as $oldId => $newId){
+		fwrite($file, "\n\t/** @deprecated Use self::" . constifyMcId($newId) . " instead. */\n");
 		fwrite($file, "\tpublic const " . constifyMcId($oldId) . " = \"" . $newId . "\";\n");
 	}
 	fwrite($file, "}\n");
