@@ -84,7 +84,7 @@ class Cauldron extends Solid{
 	}
 
 	public function isFull() : bool{
-		return $this->getDamage() === 6 or $this->getDamage() === 15;
+		return $this->getDamage() === 6 or $this->getDamage() === 14;
 	}
 
 	public function isEmpty() : bool{
@@ -113,7 +113,7 @@ class Cauldron extends Solid{
 
 			if($tile instanceof TileCauldron){
 				if($item instanceof Bucket){
-					if($item->getDamage() === self::AIR){
+					if($item->getId() === ItemIds::BUCKET){
 						if(!$tile->hasPotion() and $tile->getCustomColor() === null and $this->isFull()){
 							$stack = clone $item;
 
@@ -125,7 +125,11 @@ class Cauldron extends Solid{
 								$this->setDamage(0);
 								$this->level->setBlock($this, $this, true);
 
-								$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_TAKE_WATER);
+								if ($ev->getItem()->getId() === ItemIds::WATER_BUCKET){
+									$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_TAKE_WATER);
+								} elseif ($ev->getItem()->getId() === ItemIds::LAVA_BUCKET) {
+									$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_TAKE_LAVA);
+								}
 								if($player->isSurvival()){
 									if($stack->getCount() === 0){
 										$player->getInventory()->setItemInHand($ev->getItem());
@@ -140,7 +144,7 @@ class Cauldron extends Solid{
 								$player->getInventory()->sendContents($player);
 							}
 						}
-					}elseif($item->getDamage() === self::FLOWING_WATER){
+					}elseif($item->getId() === ItemIds::WATER_BUCKET){
 						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(ItemIds::BUCKET));
 						$ev->call();
 						if(!$ev->isCancelled()){
@@ -152,7 +156,7 @@ class Cauldron extends Solid{
 								$this->level->broadcastLevelEvent($this, LevelEventPacket::EVENT_CAULDRON_FILL_WATER);
 							}
 
-							$player->getLevel()->setBlock($this, $this, true, true);
+							$player->getLevel()->setBlock($this, $this, true);
 
 							if($player->isSurvival()){
 								$player->getInventory()->setItemInHand($ev->getItem());
@@ -160,19 +164,19 @@ class Cauldron extends Solid{
 						}else{
 							$player->getInventory()->sendContents($player);
 						}
-					}elseif($item->getDamage() === self::FLOWING_LAVA){
+					}elseif($item->getId() === ItemIds::LAVA_BUCKET){
 						$ev = new PlayerBucketEmptyEvent($player, $this, 0, $item, ItemFactory::get(ItemIds::BUCKET));
 						$ev->call();
 						if(!$ev->isCancelled()){
 							if($tile->hasPotion() or $tile->getCustomColor() !== null or ($this->getDamage() > 0 and $this->getDamage() <= 6)){
 								$this->explodeCauldron($tile);
 							}else{
-								$this->setDamage(15);
+								$this->setDamage(14);
 								$tile->setCustomColor(null);
 								$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_BUCKET_FILL_LAVA);
 							}
 
-							$this->level->setBlock($this, $this, true, true);
+							$this->level->setBlock($this, $this, true);
 
 							if($player->isSurvival()){
 								$player->getInventory()->setItemInHand($ev->getItem());
@@ -210,7 +214,7 @@ class Cauldron extends Solid{
 						) or $this->getDamage() >= 9){
 						$this->explodeCauldron($tile);
 
-						$this->level->setBlock($this, $this, true, true);
+						$this->level->setBlock($this, $this, true);
 
 						if($player->isSurvival()){
 							$player->getInventory()->setItemInHand(ItemFactory::get(ItemIds::GLASS_BOTTLE));
