@@ -133,6 +133,7 @@ class BlockFactory{
 //		self::registerBlock(new WoodenPressurePlate());
 		self::registerBlock(new RedstoneTorchUnlit());
 		self::registerBlock(new RedstoneTorch());
+		self::registerBlock(new SoulTorch());
 		self::registerBlock(new CopperTorch());
 //		self::registerBlock(new StoneButton());
 		self::registerBlock(new SnowLayer());
