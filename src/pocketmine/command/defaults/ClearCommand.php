@@ -93,20 +93,17 @@ class ClearCommand extends VanillaCommand{
 
 		if(isset($args[1])){
 			$removedCount = 0;
-
-			try{
-				$item = ItemFactory::fromString($args[1]);
-			}catch(Exception $e){
-				$item = null;
+			$itemName = $args[1];
+			
+			if(!str_contains($itemName, ":")){
+				$itemName = "minecraft:" . $itemName;
 			}
+
+			$item = ItemFactory::get($itemName);
+
 			if(isset($args[2])){
 				$maxCount = (int) $args[2];
 				$removedCount = $maxCount;
-			}
-
-			if($item === null){
-				$sender->sendMessage("Unknown Item: " . $args[1]);
-				return true;
 			}
 
 			if($item->isNull() && isset($maxCount) && $maxCount <= 0){
