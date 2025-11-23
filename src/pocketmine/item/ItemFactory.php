@@ -487,6 +487,7 @@ class ItemFactory{
 	}
 
 	private static function registerMusicDiscs() : void{
+		/** @var array<string, array{0:int, 1:string}> $records */
 		$records = [
 			ItemIds::MUSIC_DISC_13 => [LevelSoundEventPacket::SOUND_RECORD_13, 'C418 - 13'],
 			ItemIds::MUSIC_DISC_CAT => [LevelSoundEventPacket::SOUND_RECORD_CAT, 'C418 - cat'],
@@ -512,7 +513,6 @@ class ItemFactory{
 		];
 
 		foreach($records as $itemId => [$sound, $name]){
-			/** @var string $itemId */
 			self::registerItem(new Record($itemId, $sound, $name));
 		}
 	}
