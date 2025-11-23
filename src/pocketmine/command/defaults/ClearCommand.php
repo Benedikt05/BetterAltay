@@ -62,7 +62,7 @@ class ClearCommand extends VanillaCommand{
 		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [
 			[// 3 parameter for Altay (normal 4)
 				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-				new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("clear_item_names", array_values($itemNames))),
+				new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("Item", array_values($itemNames))),
 				new CommandParameter("maxCount", AvailableCommandsPacket::ARG_TYPE_INT)
 			]
 		]);

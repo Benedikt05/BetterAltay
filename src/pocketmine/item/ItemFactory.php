@@ -291,36 +291,7 @@ class ItemFactory{
 		self::registerItem(new Item(ItemIds::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
 		self::registerItem(new Item(ItemIds::TURTLE_SHELL_PIECE, 0, "Scute"));
 		self::registerItem(new TurtleHelmet());
-
-		$records = [
-			ItemIds::MUSIC_DISC_13 => LevelSoundEventPacket::SOUND_RECORD_13,
-			ItemIds::MUSIC_DISC_CAT => LevelSoundEventPacket::SOUND_RECORD_CAT,
-			ItemIds::MUSIC_DISC_BLOCKS => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
-			ItemIds::MUSIC_DISC_CHIRP => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
-			ItemIds::MUSIC_DISC_FAR => LevelSoundEventPacket::SOUND_RECORD_FAR,
-			ItemIds::MUSIC_DISC_MALL => LevelSoundEventPacket::SOUND_RECORD_MALL,
-			ItemIds::MUSIC_DISC_MELLOHI => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
-			ItemIds::MUSIC_DISC_STAL => LevelSoundEventPacket::SOUND_RECORD_STAL,
-			ItemIds::MUSIC_DISC_STRAD => LevelSoundEventPacket::SOUND_RECORD_STRAD,
-			ItemIds::MUSIC_DISC_WARD => LevelSoundEventPacket::SOUND_RECORD_WARD,
-			ItemIds::MUSIC_DISC_11 => LevelSoundEventPacket::SOUND_RECORD_11,
-			ItemIds::MUSIC_DISC_WAIT => LevelSoundEventPacket::SOUND_RECORD_WAIT,
-			ItemIds::MUSIC_DISC_OTHERSIDE => LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
-			ItemIds::MUSIC_DISC_5 => LevelSoundEventPacket::SOUND_RECORD_5,
-			ItemIds::MUSIC_DISC_PIGSTEP => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
-			ItemIds::MUSIC_DISC_RELIC => LevelSoundEventPacket::SOUND_RECORD_RELIC,
-			ItemIds::MUSIC_DISC_CREATOR => LevelSoundEventPacket::SOUND_RECORD_CREATOR,
-			ItemIds::MUSIC_DISC_CREATOR_MUSIC_BOX => LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
-			ItemIds::MUSIC_DISC_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
-			ItemIds::MUSIC_DISC_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
-			ItemIds::MUSIC_DISC_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
-		];
-
-
-		foreach($records as $itemId => $soundId){
-			self::registerItem(new Record($itemId, $soundId));
-		}
-
+		self::registerMusicDiscs();
 		self::registerItem(new Item(ItemIds::DISC_FRAGMENT_5, 0, "Disc Fragment"));
 		self::registerItem(new Shield());
 		self::registerItem(new Item(ItemIds::NETHERITE_INGOT, 0, "Netherite Ingot"));
@@ -513,5 +484,99 @@ class ItemFactory{
 		self::registerItem(new ItemBlock(BlockIds::PLAYER_HEAD, 0 , BlockIds::PLAYER_HEAD));
 		self::registerItem(new ItemBlock(BlockIds::CREEPER_HEAD, 0 , BlockIds::CREEPER_HEAD));
 		self::registerItem(new ItemBlock(BlockIds::DRAGON_HEAD, 0 , BlockIds::DRAGON_HEAD));
+	}
+
+	private static function registerMusicDiscs() : void{
+		$records = [
+			ItemIds::MUSIC_DISC_13 => [
+				LevelSoundEventPacket::SOUND_RECORD_13,
+				'C418 - 13'
+			],
+			ItemIds::MUSIC_DISC_CAT => [
+				LevelSoundEventPacket::SOUND_RECORD_CAT,
+				'C418 - cat'
+			],
+			ItemIds::MUSIC_DISC_BLOCKS => [
+				LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
+				'C418 - blocks'
+			],
+			ItemIds::MUSIC_DISC_CHIRP => [
+				LevelSoundEventPacket::SOUND_RECORD_CHIRP,
+				'C418 - chirp'
+			],
+			ItemIds::MUSIC_DISC_FAR => [
+				LevelSoundEventPacket::SOUND_RECORD_FAR,
+				'C418 - far'
+			],
+			ItemIds::MUSIC_DISC_MALL => [
+				LevelSoundEventPacket::SOUND_RECORD_MALL,
+				'C418 - mall'
+			],
+			ItemIds::MUSIC_DISC_MELLOHI => [
+				LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
+				'C418 - mellohi'
+			],
+			ItemIds::MUSIC_DISC_STAL => [
+				LevelSoundEventPacket::SOUND_RECORD_STAL,
+				'C418 - stal'
+			],
+			ItemIds::MUSIC_DISC_STRAD => [
+				LevelSoundEventPacket::SOUND_RECORD_STRAD,
+				'C418 - strad'
+			],
+			ItemIds::MUSIC_DISC_WARD => [
+				LevelSoundEventPacket::SOUND_RECORD_WARD,
+				'C418 - ward'
+			],
+			ItemIds::MUSIC_DISC_11 => [
+				LevelSoundEventPacket::SOUND_RECORD_11,
+				'C418 - 11'
+			],
+			ItemIds::MUSIC_DISC_WAIT => [
+				LevelSoundEventPacket::SOUND_RECORD_WAIT,
+				'C418 - wait'
+			],
+			ItemIds::MUSIC_DISC_OTHERSIDE => [
+				LevelSoundEventPacket::SOUND_RECORD_OTHERSIDE,
+				'Lena Raine - otherside'
+			],
+			ItemIds::MUSIC_DISC_5 => [
+				LevelSoundEventPacket::SOUND_RECORD_5,
+				'Samuel Åberg - 5'
+			],
+			ItemIds::MUSIC_DISC_PIGSTEP => [
+				LevelSoundEventPacket::SOUND_RECORD_PIGSTEP,
+				'Lena Raine - Pigstep'
+			],
+			ItemIds::MUSIC_DISC_RELIC => [
+				LevelSoundEventPacket::SOUND_RECORD_RELIC,
+				'Aaron Cherof - relic'
+			],
+			ItemIds::MUSIC_DISC_CREATOR => [
+				LevelSoundEventPacket::SOUND_RECORD_CREATOR,
+				'Lena Raine - Creator'
+			],
+			ItemIds::MUSIC_DISC_CREATOR_MUSIC_BOX => [
+				LevelSoundEventPacket::SOUND_RECORD_CREATOR_MUSIC_BOX,
+				'Lena Raine - Creator (Music Box)'
+			],
+			ItemIds::MUSIC_DISC_PRECIPICE => [
+				LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
+				'Aaron Cherof - Precipice'
+			],
+			ItemIds::MUSIC_DISC_TEARS => [
+				LevelSoundEventPacket::SOUND_RECORD_TEARS,
+				'Amos Roddy - Tears'
+			],
+			ItemIds::MUSIC_DISC_LAVA_CHICKEN => [
+				LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
+				'Hyper Potions - Lava Chicken'
+			],
+		];
+
+		foreach($records as $itemId => [$sound, $name]){
+			/** @var string $itemId */
+			self::registerItem(new Record($itemId, $sound, $name));
+		}
 	}
 }
