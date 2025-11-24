@@ -36,6 +36,7 @@ use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\Monster;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\Player;
 use function rand;
 
@@ -51,8 +52,8 @@ class Spider extends Monster implements Ageable, Arthropod{
 		$this->setMovementSpeed(0.3);
 		$this->setFollowRange(35);
 		$this->setAttackDamage(2);
-		$this->setCanClimb(true);
-		$this->setCanClimbWalls(true);
+		$this->setCanClimb();
+		$this->setCanClimbWalls();
 
 		parent::initEntity();
 	}
@@ -90,9 +91,9 @@ class Spider extends Monster implements Ageable, Arthropod{
 	}
 
 	public function getDrops() : array{
-		$drops = [ItemFactory::get(Item::STRING, 0, rand(0, 2))];
+		$drops = [ItemFactory::get(ItemIds::STRING, 0, rand(0, 2))];
 		if($this->getRevengeTarget() instanceof Player and $this->level->random->nextBoundedInt(3) === 0){
-			$drops[] = ItemFactory::get(Item::SPIDER_EYE);
+			$drops[] = ItemFactory::get(ItemIds::SPIDER_EYE);
 		}
 		return $drops;
 	}

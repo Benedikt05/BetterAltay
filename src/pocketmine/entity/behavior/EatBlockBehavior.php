@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\entity\behavior;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Grass;
 use pocketmine\block\TallGrass;
 use pocketmine\entity\Animal;
@@ -66,8 +67,8 @@ class EatBlockBehavior extends Behavior{
 
 			if($this->mob->level->getBlock($pos) instanceof Grass){
 				if($this->mob->level->getGameRules()->getBool(GameRules::RULE_MOB_GRIEFING)){
-					$this->mob->level->addParticle(new DestroyBlockParticle($this->mob->floor(), Block::get(Block::GRASS)));
-					$this->mob->level->setBlock($pos, Block::get(Block::DIRT));
+					$this->mob->level->addParticle(new DestroyBlockParticle($this->mob->floor(), Block::get(BlockIds::GOLD_BLOCK)));
+					$this->mob->level->setBlock($pos, Block::get(BlockIds::DIRT));
 				}
 
 				if($this->mob instanceof Animal){
