@@ -21,23 +21,8 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\block;
+namespace pocketmine\tile;
 
-use pocketmine\block\material\ColorType;
+class GlowItemFrame extends ItemFrame{
 
-class StainedGlassPane extends GlassPane{
-
-	public function __construct(private ColorType $material, int $meta = 0){
-		$this->id = "minecraft:" . $this->material->getType() . "_stained_glass_pane";
-		parent::__construct($meta);
-	}
-
-
-	public function getName() : string{
-		return $this->material->getName() . " Stained Glass Pane";
-	}
-
-	public function getMaterial() : ColorType{
-		return $this->material;
-	}
 }

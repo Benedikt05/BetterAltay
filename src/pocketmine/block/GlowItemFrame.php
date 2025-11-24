@@ -26,26 +26,22 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\tile\ItemFrame as TileItemFrame;
+use pocketmine\tile\GlowItemFrame as TileGlowItemFrame;
 use pocketmine\tile\Tile;
-use function lcg_value;
 
-class ItemFrame extends Flowable{
-	protected string $id = self::FRAME;
+class GlowItemFrame extends ItemFrame{
 
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
+	protected string $id = self::GLOW_FRAME;
 
 	public function getName() : string{
-		return "Item Frame";
+		return "Glow Item Frame";
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
 		$tile = $this->level->getTile($this);
-		if(!($tile instanceof TileItemFrame)){
-			$tile = Tile::createTile(Tile::ITEM_FRAME, $this->getLevelNonNull(), TileItemFrame::createNBT($this));
-			if(!($tile instanceof TileItemFrame)){
+		if(!($tile instanceof TileGlowItemFrame)){
+			$tile = Tile::createTile(Tile::GLOW_ITEM_FRAME, $this->getLevelNonNull(), TileGlowItemFrame::createNBT($this));
+			if(!($tile instanceof TileGlowItemFrame)){
 				return true;
 			}
 		}
@@ -59,12 +55,6 @@ class ItemFrame extends Flowable{
 		return true;
 	}
 
-	public function onNearbyBlockChange() : void{
-		if(!$this->getSide($this->getFacing())->isSolid()){
-			$this->level->useBreakOn($this);
-		}
-	}
-
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if(!$blockClicked->isSolid()){
 			return false;
@@ -73,7 +63,7 @@ class ItemFrame extends Flowable{
 		$this->meta = $face;
 		$this->level->setBlock($blockReplace, $this, true);
 
-		Tile::createTile(Tile::ITEM_FRAME, $this->getLevelNonNull(), TileItemFrame::createNBT($this, $face, $item, $player));
+		Tile::createTile(Tile::GLOW_ITEM_FRAME, $this->getLevelNonNull(), TileGlowItemFrame::createNBT($this, $face, $item, $player));
 
 		return true;
 
@@ -87,7 +77,7 @@ class ItemFrame extends Flowable{
 		$drops = parent::getDropsForCompatibleTool($item);
 
 		$tile = $this->level->getTile($this);
-		if($tile instanceof TileItemFrame){
+		if($tile instanceof TileGlowItemFrame){
 			$tileItem = $tile->getItem();
 			if(lcg_value() <= $tile->getItemDropChance() and !$tileItem->isNull()){
 				$drops[] = $tileItem;
@@ -95,22 +85,5 @@ class ItemFrame extends Flowable{
 		}
 
 		return $drops;
-	}
-
-	public function isAffectedBySilkTouch() : bool{
-		return false;
-	}
-
-	public function getHardness() : float{
-		return 0.25;
-	}
-
-	public function getFacing() : int {
-		$face = $this->meta & 0x07;
-		if ($face > 5) {
-			return Vector3::SIDE_UP;
-		}
-
-		return $face ^ 1;
 	}
 }

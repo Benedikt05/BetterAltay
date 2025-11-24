@@ -36,4 +36,8 @@ class StainedGlass extends Glass{
 	public function getName() : string{
 		return $this->material->getName() . " Stained Glass";
 	}
+
+	public function getMaterial() : ColorType{
+		return $this->material;
+	}
 }
