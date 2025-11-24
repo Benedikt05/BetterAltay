@@ -28,6 +28,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use function atan2;
@@ -121,7 +122,7 @@ class Squid extends WaterAnimal{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::DYE, 0, mt_rand(1, 3))
+			ItemFactory::get(ItemIds::DYE, 0, mt_rand(1, 3))
 		];
 	}
 

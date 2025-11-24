@@ -32,6 +32,7 @@ use pocketmine\entity\Tamable;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
@@ -174,7 +175,7 @@ abstract class AbstractHorse extends Tamable{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::LEATHER, 0, mt_rand(0, 2))
+			ItemFactory::get(ItemIds::LEATHER, 0, mt_rand(0, 2))
 		];
 	}
 
@@ -222,7 +223,7 @@ abstract class AbstractHorse extends Tamable{
 		}
 	}
 
-	public function sendAttributes(bool $sendAll = false){
+	public function sendAttributes(bool $sendAll = false) : void{
 		$entries = $sendAll ? $this->attributeMap->getAll() : $this->attributeMap->needSend();
 		if(count($entries) > 0){
 			$pk = new UpdateAttributesPacket();
@@ -237,7 +238,7 @@ abstract class AbstractHorse extends Tamable{
 		}
 	}
 
-	public function moveWithHeading(float $strafe, float $forward){
+	public function moveWithHeading(float $strafe, float $forward) : void{
 		$riddenByEntity = $this->getRiddenByEntity();
 		if($riddenByEntity instanceof Living and $this->isSaddled()){
 			$this->yaw = $riddenByEntity->yaw;

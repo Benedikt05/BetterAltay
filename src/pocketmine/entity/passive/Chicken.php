@@ -35,6 +35,7 @@ use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use function boolval;
 use function intval;
@@ -96,8 +97,8 @@ class Chicken extends Animal{
 
 	public function getDrops() : array{
 		return [
-			($this->isOnFire() ? ItemFactory::get(Item::COOKED_CHICKEN, 0, 1) : ItemFactory::get(Item::RAW_CHICKEN, 0, 1)),
-			ItemFactory::get(Item::FEATHER, 0, rand(0, 2))
+			($this->isOnFire() ? ItemFactory::get(ItemIds::COOKED_CHICKEN, 0, 1) : ItemFactory::get(ItemIds::CHICKEN, 0, 1)),
+			ItemFactory::get(ItemIds::FEATHER, 0, rand(0, 2))
 		];
 	}
 
@@ -117,7 +118,7 @@ class Chicken extends Animal{
 		}
 
 		if(!$this->isImmobile() and !$this->isBaby() and !$this->isChickenJockey() and $this->timeUntilNextEgg-- <= 0){
-			$this->level->dropItem($this, ItemFactory::get(Item::EGG));
+			$this->level->dropItem($this, ItemFactory::get(ItemIds::EGG));
 			$this->timeUntilNextEgg = $this->level->random->nextBoundedInt(6000) + 6000;
 		}
 		return parent::entityBaseTick($diff);
@@ -125,5 +126,16 @@ class Chicken extends Animal{
 
 	public function fall(float $fallDistance) : void{
 		// chickens do not get damage when fall
+	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return in_array($item->getId(), [
+			ItemIds::WHEAT_SEEDS,
+			ItemIds::MELON_SEEDS,
+			ItemIds::PUMPKIN_SEEDS,
+			ItemIds::BEETROOT_SEEDS,
+			ItemIds::TORCHFLOWER_SEEDS,
+			ItemIds::PITCHER_POD,
+		], true);
 	}
 }

@@ -29,6 +29,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\AxisAlignedBB;
@@ -123,7 +124,7 @@ class LeashKnot extends Entity{
 	public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		$flag = false;
 
-		if($item->getId() === Item::LEAD){
+		if($item->getId() === ItemIds::LEAD){
 			$f = 7.0;
 
 			foreach($player->level->getCollidingEntities(new AxisAlignedBB($this->x - $f, $this->y - $f, $this->z - $f, $this->x + $f, $this->y + $f, $this->z + $f)) as $entity){

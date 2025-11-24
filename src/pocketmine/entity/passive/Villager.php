@@ -30,7 +30,6 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Mob;
 use pocketmine\entity\NPC;
-use pocketmine\inventory\TradeInventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
@@ -44,7 +43,7 @@ class Villager extends Mob implements NPC, Ageable{
 
 	public const NETWORK_ID = self::VILLAGER;
 
-	public static $names = [
+	public static array $names = [
 		Villager::PROFESSION_FARMER => [
 			Villager::CAREER_FARMER => "entity.villager.farmer",
 			Villager::CAREER_FISHERMAN => "entity.villager.fisherman",

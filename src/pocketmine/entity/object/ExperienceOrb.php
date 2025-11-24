@@ -148,7 +148,7 @@ class ExperienceOrb extends Entity{
 	}
 
 	public function setTargetPlayer(?Human $player) : void{
-		$this->targetPlayerRuntimeId = $player !== null ? $player->getId() : null;
+		$this->targetPlayerRuntimeId = $player?->getId();
 	}
 
 	public function entityBaseTick(int $tickDiff = 1) : bool{

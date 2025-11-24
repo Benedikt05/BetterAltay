@@ -73,9 +73,9 @@ class Cow extends Animal{
 
 	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
-			if($item instanceof Bucket and $item->getDamage() === 0){
+			if($item->getId() === ItemIds::BUCKET){
 				$item->pop();
-				$player->getInventory()->addItem(ItemFactory::get(ItemIds::BUCKET, 1));
+				$player->getInventory()->addItem(ItemFactory::get(ItemIds::MILK_BUCKET));
 				return true;
 			}
 		}

@@ -37,6 +37,7 @@ use pocketmine\entity\RangedAttackerMob;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\Player;
 use function rand;
 
@@ -75,7 +76,7 @@ class Blaze extends Monster implements RangedAttackerMob{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::BLAZE_ROD, 0, rand(0, 1)), ItemFactory::get(Item::GLOWSTONE_DUST, 0, rand(0, 2))
+			ItemFactory::get(ItemIds::BLAZE_ROD, 0, rand(0, 1)), ItemFactory::get(Item::GLOWSTONE_DUST, 0, rand(0, 2))
 		];
 	}
 

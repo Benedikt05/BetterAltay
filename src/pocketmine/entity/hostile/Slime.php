@@ -38,6 +38,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\level\particle\Particle;
@@ -251,7 +252,7 @@ class Slime extends Monster{
 	}
 
 	public function getDrops() : array{
-		return $this->getSlimeSize() === 1 ? [ItemFactory::get(Item::SLIME_BALL)] : [];
+		return $this->getSlimeSize() === 1 ? [ItemFactory::get(ItemIds::SLIME_BALL)] : [];
 	}
 
 	public function getXpDropAmount() : int{

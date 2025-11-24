@@ -173,7 +173,7 @@ class Arrow extends Projectile{
 			return;
 		}
 
-		$item = ItemFactory::get(ItemIds::ARROW, 0, 1);
+		$item = ItemFactory::get(ItemIds::ARROW);
 
 		$pickupInventory = $player->getOffHandInventory();
 		if(!$pickupInventory->getItemInOffHand()->equals($item)){

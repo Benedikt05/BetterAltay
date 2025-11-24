@@ -37,6 +37,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\item\Dye;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -57,7 +58,7 @@ class Sheep extends Animal{
 		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
 		$this->behaviorPool->setBehavior(1, new PanicBehavior($this, 1.25));
 		$this->behaviorPool->setBehavior(2, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [Item::WHEAT], 1.1));
+		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [ItemIds::WHEAT], 1.1));
 		$this->behaviorPool->setBehavior(4, new FollowParentBehavior($this, 1.1));
 		$this->behaviorPool->setBehavior(5, new EatBlockBehavior($this));
 		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 1.0));
@@ -115,8 +116,8 @@ class Sheep extends Animal{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::WOOL, intval($this->propertyManager->getByte(self::DATA_COLOR)), $this->isSheared() ? 0 : 1),
-			($this->isOnFire() ? ItemFactory::get(Item::COOKED_MUTTON, 0, rand(1, 3)) : ItemFactory::get(Item::RAW_MUTTON, 0, rand(1, 3)))
+			ItemFactory::get(ItemIds::WOOL, intval($this->propertyManager->getByte(self::DATA_COLOR)), $this->isSheared() ? 0 : 1),
+			($this->isOnFire() ? ItemFactory::get(ItemIds::COOKED_MUTTON, 0, rand(1, 3)) : ItemFactory::get(ItemIds::MUTTON, 0, rand(1, 3)))
 		];
 	}
 

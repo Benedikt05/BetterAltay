@@ -29,6 +29,7 @@ use pocketmine\event\entity\ItemDespawnEvent;
 use pocketmine\event\entity\ItemSpawnEvent;
 use pocketmine\event\inventory\InventoryPickupItemEvent;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AddItemActorPacket;
@@ -252,10 +253,10 @@ class ItemEntity extends Entity{
 		}
 
 		switch($item->getId()){
-			case Item::WOOD:
+			case ItemIds::WOOD:
 				$player->awardAchievement("mineWood");
 				break;
-			case Item::DIAMOND:
+			case ItemIds::DIAMOND:
 				$player->awardAchievement("diamond");
 				break;
 		}

@@ -36,6 +36,7 @@ use pocketmine\entity\passive\Villager;
 use pocketmine\entity\Smite;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\Player;
 use function mt_rand;
 
@@ -59,19 +60,19 @@ class Zombie extends Monster implements Ageable, Smite{
 
 	public function getDrops() : array{
 		$drops = [
-			ItemFactory::get(Item::ROTTEN_FLESH, 0, mt_rand(0, 2))
+			ItemFactory::get(ItemIds::ROTTEN_FLESH, 0, mt_rand(0, 2))
 		];
 
 		if(mt_rand(0, 199) < 5){
 			switch(mt_rand(0, 2)){
 				case 0:
-					$drops[] = ItemFactory::get(Item::IRON_INGOT, 0, 1);
+					$drops[] = ItemFactory::get(ItemIds::IRON_INGOT);
 					break;
 				case 1:
-					$drops[] = ItemFactory::get(Item::CARROT, 0, 1);
+					$drops[] = ItemFactory::get(ItemIds::CARROT);
 					break;
 				case 2:
-					$drops[] = ItemFactory::get(Item::POTATO, 0, 1);
+					$drops[] = ItemFactory::get(ItemIds::POTATO);
 					break;
 			}
 		}

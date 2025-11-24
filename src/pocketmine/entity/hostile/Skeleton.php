@@ -42,6 +42,7 @@ use pocketmine\entity\Smite;
 use pocketmine\inventory\AltayEntityEquipment;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use function rand;
@@ -65,7 +66,7 @@ class Skeleton extends Monster implements RangedAttackerMob, Smite{
 
 		$this->equipment = new AltayEntityEquipment($this);
 
-		$this->equipment->setItemInHand(ItemFactory::get(Item::BOW));
+		$this->equipment->setItemInHand(ItemFactory::get(ItemIds::BOW));
 
 		// TODO: Armors
 	}
@@ -76,7 +77,7 @@ class Skeleton extends Monster implements RangedAttackerMob, Smite{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::BONE, 0, rand(0, 2)), ItemFactory::get(Item::ARROW, 0, rand(0, 2))
+			ItemFactory::get(ItemIds::BONE, 0, rand(0, 2)), ItemFactory::get(ItemIds::ARROW, 0, rand(0, 2))
 		];
 	}
 

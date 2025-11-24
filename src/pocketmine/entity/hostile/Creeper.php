@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\entity\hostile;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
 use pocketmine\entity\Ageable;
 use pocketmine\entity\behavior\AvoidMobTypeBehavior;
 use pocketmine\entity\behavior\CreeperSwellBehavior;
@@ -40,6 +41,7 @@ use pocketmine\entity\passive\Cat;
 use pocketmine\item\FlintSteel;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Explosion;
 use pocketmine\level\GameRules;
 use pocketmine\math\Vector3;
@@ -112,13 +114,27 @@ class Creeper extends Monster implements Ageable{
 	public function getDrops() : array{
 		$drops = [];
 		if($this->timeSinceIgnited !== $this->fuseTime){
-			$drops[] = ItemFactory::get(Item::GUNPOWDER, 0, rand(0, 2));
+			$drops[] = ItemFactory::get(ItemIds::GUNPOWDER, 0, rand(0, 2));
 		}
 		$attacker = $this->getRevengeTarget();
 		if($attacker instanceof Skeleton){
-			$drops[] = ItemFactory::get(rand(Item::RECORD_13, Item::RECORD_WAIT));
+			$creeperDiscs = [
+				ItemIds::MUSIC_DISC_13,
+				ItemIds::MUSIC_DISC_CAT,
+				ItemIds::MUSIC_DISC_BLOCKS,
+				ItemIds::MUSIC_DISC_CHIRP,
+				ItemIds::MUSIC_DISC_FAR,
+				ItemIds::MUSIC_DISC_MALL,
+				ItemIds::MUSIC_DISC_MELLOHI,
+				ItemIds::MUSIC_DISC_STAL,
+				ItemIds::MUSIC_DISC_STRAD,
+				ItemIds::MUSIC_DISC_WARD,
+				ItemIds::MUSIC_DISC_11,
+				ItemIds::MUSIC_DISC_WAIT,
+			];
+			$drops[] = ItemFactory::get($creeperDiscs[array_rand($creeperDiscs)]);
 		}elseif($attacker instanceof Creeper and $attacker->isPowered()){
-			$drops[] = ItemFactory::get(Block::SKULL_BLOCK, Skull::TYPE_CREEPER);
+			$drops[] = ItemFactory::get(BlockIds::CREEPER_HEAD);
 		}
 		return $drops;
 	}

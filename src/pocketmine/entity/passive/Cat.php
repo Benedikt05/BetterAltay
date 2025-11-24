@@ -37,6 +37,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
@@ -56,8 +57,8 @@ class Cat extends Tamable{
 		$this->behaviorPool->setBehavior(2, $this->behaviorSitting = new StayWhileSittingBehavior($this));
 		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 2.0));
 		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [
-			Item::RAW_SALMON,
-			Item::RAW_FISH
+			ItemIds::SALMON,
+			ItemIds::COD
 		], 1.0));
 		$this->behaviorPool->setBehavior(5, new FollowOwnerBehavior($this, 1, 10, 2));
 		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 0.8));
@@ -84,7 +85,7 @@ class Cat extends Tamable{
 
 	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
-			if($item->getId() == Item::RAW_SALMON || $item->getId() == Item::RAW_FISH){
+			if($item->getId() == ItemIds::SALMON || $item->getId() == ItemIds::COD){
 				if($player->isSurvival()){
 					$item->pop();
 				}
@@ -122,7 +123,7 @@ class Cat extends Tamable{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::STRING, 0, rand(0, 2)),
+			ItemFactory::get(ItemIds::STRING, 0, rand(0, 2)),
 		];
 	}
 

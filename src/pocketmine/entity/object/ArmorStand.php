@@ -44,7 +44,7 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use function array_merge;
 use function min;
-
+//TODO: UPDATE
 class ArmorStand extends Living{
 
 	public const NETWORK_ID = EntityIds::ARMOR_STAND;

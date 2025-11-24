@@ -28,6 +28,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Level;
 use pocketmine\level\particle\Particle;
 use pocketmine\Player;
@@ -99,7 +100,7 @@ class MagmaCube extends Slime{
 			}
 
 			for($j = 0; $j < $i; $j++){
-				$drops[] = ItemFactory::get(Item::MAGMA_CREAM);
+				$drops[] = ItemFactory::get(ItemIds::MAGMA_CREAM);
 			}
 		}
 

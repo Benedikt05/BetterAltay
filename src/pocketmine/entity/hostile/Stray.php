@@ -30,6 +30,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 
 class Stray extends Skeleton{
 
@@ -41,7 +42,7 @@ class Stray extends Skeleton{
 
 	public function getDrops() : array{
 		$drops = parent::getDrops();
-		$drops[] = ItemFactory::get(Item::ARROW, 18);
+		$drops[] = ItemFactory::get(ItemIds::ARROW, 18);
 		return $drops;
 	}
 

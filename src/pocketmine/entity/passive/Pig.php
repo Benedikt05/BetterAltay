@@ -36,6 +36,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function boolval;
@@ -53,7 +54,7 @@ class Pig extends Animal implements PlayerInventoryMount{
 		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
 		$this->behaviorPool->setBehavior(1, new PanicBehavior($this, 1.25));
 		$this->behaviorPool->setBehavior(2, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [Item::WHEAT], 1.2));
+		$this->behaviorPool->setBehavior(3, new TemptBehavior($this, [ItemIds::WHEAT], 1.2));
 		// TODO: Add ControlledByPlayerBehavior
 		$this->behaviorPool->setBehavior(4, new FollowParentBehavior($this, 1.1));
 		$this->behaviorPool->setBehavior(5, new RandomStrollBehavior($this, 1.0));
@@ -94,11 +95,11 @@ class Pig extends Animal implements PlayerInventoryMount{
 
 	public function getDrops() : array{
 		$drops = [
-			($this->isOnFire() ? ItemFactory::get(Item::COOKED_PORKCHOP, 0, rand(1, 3)) : ItemFactory::get(Item::RAW_PORKCHOP, 0, rand(1, 3)))
+			($this->isOnFire() ? ItemFactory::get(ItemIds::COOKED_PORKCHOP, 0, rand(1, 3)) : ItemFactory::get(ItemIds::PORKCHOP, 0, rand(1, 3)))
 		];
 
 		if($this->isSaddled()){
-			$drops[] = ItemFactory::get(Item::SADDLE, 0, 1);
+			$drops[] = ItemFactory::get(ItemIds::SADDLE);
 		}
 
 		return $drops;

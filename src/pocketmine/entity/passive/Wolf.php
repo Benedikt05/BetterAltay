@@ -40,6 +40,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\hostile\Skeleton;
 use pocketmine\entity\Tamable;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
@@ -50,8 +51,7 @@ class Wolf extends Tamable{
 
 	public $width = 0.6;
 	public $height = 0.8;
-	/** @var StayWhileSittingBehavior */
-	protected $behaviorSitting;
+	protected StayWhileSittingBehavior $behaviorSitting;
 
 	protected function addBehaviors() : void{
 		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
@@ -91,7 +91,7 @@ class Wolf extends Tamable{
 					$this->setTargetEntity(null);
 				}
 			}else{
-				if($item->getId() == Item::BONE){
+				if($item->getId() == ItemIds::BONE){
 					if($player->isSurvival()){
 						$item->pop();
 					}

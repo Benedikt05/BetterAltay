@@ -26,6 +26,7 @@ namespace pocketmine\entity;
 use pocketmine\block\Block;
 use pocketmine\block\Grass;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
@@ -33,8 +34,8 @@ use function max;
 
 abstract class Animal extends Mob implements Ageable{
 
-	protected $inLove = 0;
-	protected $spawnableBlock = Block::GRASS;
+	protected int $inLove = 0;
+	protected string $spawnableBlock = Block::GRASS_BLOCK;
 
 	public function getBlockPathWeight(Vector3 $pos) : float{
 		return $this->level->getBlock($pos->down()) instanceof Grass ? 10 : max($this->level->getBlockSkyLightAt($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ()), $this->level->getBlockLightAt($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ())) - 0.5;
@@ -45,7 +46,7 @@ abstract class Animal extends Mob implements Ageable{
 	}
 
 	public function isBreedingItem(Item $item) : bool{ // TODO: Apply this to all animals
-		return $item->getId() === Item::WHEAT;
+		return $item->getId() === ItemIds::WHEAT;
 	}
 
 	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
@@ -81,10 +82,6 @@ abstract class Animal extends Mob implements Ageable{
 		if($value){
 			$this->inLove = 10;
 		}
-	}
-
-	public function eatItem(Item $item) : void{
-		$this->broadcastEntityEvent(ActorEventPacket::EATING_ITEM, $item->getId());
 	}
 
 	public function eatGrassBonus(Vector3 $pos) : void{
