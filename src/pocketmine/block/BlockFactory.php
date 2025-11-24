@@ -271,8 +271,7 @@ class BlockFactory{
 		self::registerBlock(new GlazedTerracotta(BlockIds::GREEN_GLAZED_TERRACOTTA, 0, "Green Glazed Terracotta"));
 		self::registerBlock(new GlazedTerracotta(BlockIds::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
 		self::registerBlock(new GlazedTerracotta(BlockIds::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
-//		self::registerBlock(new Concrete());
-//		self::registerBlock(new ConcretePowder());
+		self::registerConcreteBlocks();
 
 		//TODO: CHORUS_PLANT
 
@@ -512,5 +511,12 @@ class BlockFactory{
 			self::registerBlock(new FenceGate($type));
 		}
 		self::registerBlock(new FenceGate(new WoodType("bamboo", "Bamboo")));
+	}
+
+	private static function registerConcreteBlocks() : void{
+		foreach(ColorType::values() as $type){
+			self::registerBlock(new Concrete($type));
+			self::registerBlock(new ConcretePowder($type));
+		}
 	}
 }

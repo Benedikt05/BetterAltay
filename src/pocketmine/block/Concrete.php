@@ -23,19 +23,19 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\ColorType;
 use pocketmine\block\utils\ColorBlockMetaHelper;
 use pocketmine\item\TieredTool;
 
 class Concrete extends Solid{
 
-	protected $id = Block::CONCRETE;
-
-	public function __construct(int $meta = 0){
+	public function __construct(private ColorType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_concrete";
 		$this->meta = $meta;
 	}
 
 	public function getName() : string{
-		return ColorBlockMetaHelper::getColorFromMeta($this->getVariant()) . " Concrete";
+		return $this->material->getName() . " Concrete";
 	}
 
 	public function getHardness() : float{
