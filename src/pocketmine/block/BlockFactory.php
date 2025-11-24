@@ -511,5 +511,6 @@ class BlockFactory{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new FenceGate($type));
 		}
+		self::registerBlock(new FenceGate(new WoodType("bamboo", "Bamboo")));
 	}
 }

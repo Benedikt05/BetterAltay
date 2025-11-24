@@ -525,5 +525,6 @@ class ItemFactory{
 
 			self::registerItem(new ItemBlock("minecraft:" . $type->getType() . "_fence_gate", 0, "minecraft:" . $type->getType() . "_fence_gate"));
 		}
+		self::registerItem(new ItemBlock(BlockIds::BAMBOO_FENCE_GATE, 0, BlockIds::BAMBOO_FENCE_GATE));
 	}
 }
