@@ -224,8 +224,8 @@ class BlockFactory{
 //		self::registerBlock(new Coal());
 //		self::registerBlock(new PackedIce());
 //		self::registerBlock(new DoublePlant());
-//		self::registerBlock(new StandingBanner());
-//		self::registerBlock(new WallBanner());
+		self::registerBlock(new StandingBanner());
+		self::registerBlock(new WallBanner());
 		//TODO: DAYLIGHT_DETECTOR_INVERTED
 //		self::registerBlock(new RedSandstone());
 		self::registerBlock(new RedSandstoneStairs());

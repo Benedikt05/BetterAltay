@@ -25,18 +25,20 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\tile\Banner;
 use pocketmine\tile\Banner as TileBanner;
 use pocketmine\tile\Tile;
 use function floor;
 
 class StandingBanner extends Transparent{
 
-	protected $id = self::STANDING_BANNER;
+	protected string $id = self::STANDING_BANNER;
 
-	protected $itemId = Item::BANNER;
+	protected string $itemId = ItemIds::BANNER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -65,7 +67,7 @@ class StandingBanner extends Transparent{
 				$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 			}else{
 				$this->meta = $face;
-				$this->getLevelNonNull()->setBlock($blockReplace, BlockFactory::get(Block::WALL_BANNER, $this->meta), true);
+				$this->getLevelNonNull()->setBlock($blockReplace, BlockFactory::get(BlockIds::WALL_BANNER, $this->meta), true);
 			}
 
 			Tile::createTile(Tile::BANNER, $this->getLevelNonNull(), TileBanner::createNBT($this, $face, $item, $player));
@@ -90,14 +92,25 @@ class StandingBanner extends Transparent{
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{
+		return [$this->getItem()];
+	}
+
+	public function getItem(): Item {
 		$tile = $this->level->getTile($this);
 
-		$drop = ItemFactory::get(Item::BANNER, ($tile instanceof TileBanner ? $tile->getBaseColor() : 0));
-		if($tile instanceof TileBanner and !($patterns = $tile->getPatterns())->empty()){
-			$drop->setNamedTagEntry(clone $patterns);
+		$item = ItemFactory::get(ItemIds::BANNER, ($tile instanceof TileBanner ? $tile->getBaseColor() : 0));
+		if($tile instanceof TileBanner){
+			$item->getNamedTag()->setInt(Banner::TAG_TYPE, $tile->getType());
+			if(!($patterns = $tile->getPatterns())->empty()){
+				$item->setNamedTagEntry(clone $patterns);
+			}
 		}
 
-		return [$drop];
+		return $item;
+	}
+
+	public function getPickedItem() : Item{
+		return $this->getItem();
 	}
 
 	public function isAffectedBySilkTouch() : bool{

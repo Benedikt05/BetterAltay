@@ -25,6 +25,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
@@ -37,13 +38,14 @@ class Banner extends Item{
 	public const TAG_PATTERNS = TileBanner::TAG_PATTERNS;
 	public const TAG_PATTERN_COLOR = TileBanner::TAG_PATTERN_COLOR;
 	public const TAG_PATTERN_NAME = TileBanner::TAG_PATTERN_NAME;
+	public const TAG_TYPE = TileBanner::TAG_TYPE;
 
 	public function __construct(int $meta = 0){
 		parent::__construct(self::BANNER, $meta, "Banner");
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(Block::STANDING_BANNER);
+		return BlockFactory::get(BlockIds::STANDING_BANNER);
 	}
 
 	public function getMaxStackSize() : int{
@@ -187,6 +189,22 @@ class Banner extends Item{
 		return $this->getNamedTag()->getListTag(self::TAG_PATTERNS)->count();
 	}
 
+	public function getType() : int{
+		return $this->getNamedTag()->getInt(self::TAG_TYPE);
+	}
+
+	public function setType(int $type) : void{
+		$this->getNamedTag()->setInt(self::TAG_TYPE, $type);
+	}
+
+	public function isNormal() : bool{
+		return $this->getNamedTag()->getInt(self::TAG_TYPE) === 0;
+	}
+
+	public function isOminous() : bool{
+		return $this->getNamedTag()->getInt(self::TAG_TYPE) === 1;
+	}
+
 	public function correctNBT() : void{
 		$tag = $this->getNamedTag();
 		if(!$tag->hasTag(self::TAG_BASE, IntTag::class)){
@@ -196,6 +214,11 @@ class Banner extends Item{
 		if(!$tag->hasTag(self::TAG_PATTERNS, ListTag::class)){
 			$tag->setTag(new ListTag(self::TAG_PATTERNS));
 		}
+
+		if (!$tag->hasTag(self::TAG_TYPE, IntTag::class)){
+			$tag->setTag(new IntTag(self::TAG_TYPE, 0));
+		}
+
 		$this->setNamedTag($tag);
 	}
 

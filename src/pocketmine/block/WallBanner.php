@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class WallBanner extends StandingBanner{
 
-	protected $id = self::WALL_BANNER;
+	protected string $id = self::WALL_BANNER;
 
 	public function getName() : string{
 		return "Wall Banner";

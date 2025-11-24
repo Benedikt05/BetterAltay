@@ -26,7 +26,7 @@ namespace pocketmine\item;
 
 class Elytra extends Item{
 	public function __construct(int $meta = 0){
-		parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
+		parent::__construct(ItemIds::ELYTRA, $meta, "Elytra Wings");
 	}
 
 	public function getArmorSlot() : int{

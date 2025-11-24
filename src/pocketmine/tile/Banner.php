@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
+use pocketmine\item\Banner as BannerItem;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
@@ -42,6 +43,7 @@ class Banner extends Spawnable implements Nameable{
 	public const TAG_PATTERNS = "Patterns";
 	public const TAG_PATTERN_COLOR = "Color";
 	public const TAG_PATTERN_NAME = "Pattern";
+	public const TAG_TYPE = "Type";
 
 	public const PATTERN_BOTTOM_STRIPE = "bs";
 	public const PATTERN_TOP_STRIPE = "ts";
@@ -107,21 +109,26 @@ class Banner extends Spawnable implements Nameable{
 	 */
 	private $patterns;
 
+	private int $type = 0;
+
 	protected function readSaveData(CompoundTag $nbt) : void{
 		$this->baseColor = $nbt->getInt(self::TAG_BASE, self::COLOR_BLACK, true);
 		$this->patterns = $nbt->getListTag(self::TAG_PATTERNS) ?? new ListTag(self::TAG_PATTERNS);
+		$this->type = $nbt->getInt(self::TAG_TYPE, 0);
 		$this->loadName($nbt);
 	}
 
 	protected function writeSaveData(CompoundTag $nbt) : void{
 		$nbt->setInt(self::TAG_BASE, $this->baseColor);
 		$nbt->setTag($this->patterns);
+		$nbt->setInt(self::TAG_TYPE, $this->type);
 		$this->saveName($nbt);
 	}
 
 	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
 		$nbt->setInt(self::TAG_BASE, $this->baseColor);
 		$nbt->setTag($this->patterns);
+		$nbt->setInt(self::TAG_TYPE, $this->type);
 		$this->addNameSpawnData($nbt);
 	}
 
@@ -247,7 +254,8 @@ class Banner extends Spawnable implements Nameable{
 	}
 
 	protected static function createAdditionalNBT(CompoundTag $nbt, Vector3 $pos, ?int $face = null, ?Item $item = null, ?Player $player = null) : void{
-		$nbt->setInt(self::TAG_BASE, $item !== null ? $item->getDamage() & 0x0f : 0);
+		$nbt->setInt(self::TAG_BASE, $item instanceof BannerItem ? $item->getDamage() & 0x0f : 0);
+		$nbt->setInt(self::TAG_TYPE, $item instanceof BannerItem ? $item->getType() : 0);
 
 		if($item !== null){
 			if($item->getNamedTag()->hasTag(self::TAG_PATTERNS, ListTag::class)){
@@ -256,6 +264,22 @@ class Banner extends Spawnable implements Nameable{
 
 			self::createNameNBT($nbt, $pos, $face, $item, $player);
 		}
+	}
+
+	public function getType() : int{
+		return $this->type;
+	}
+
+	public function isNormal() : bool{
+		return $this->type === 0;
+	}
+
+	public function isOminous() : bool{
+		return $this->type === 1;
+	}
+
+	public function setType(int $type) : void{
+		$this->type = $type;
 	}
 
 	public function getDefaultName() : string{

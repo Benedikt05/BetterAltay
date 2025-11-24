@@ -267,9 +267,9 @@ class ItemFactory{
 		//TODO: LINGERING_POTION
 		//TODO: SPARKLER
 		//TODO: COMMAND_BLOCK_MINECART
-//		self::registerItem(new Elytra());
-//		self::registerItem(new Item(Item::SHULKER_SHELL, 0, "Shulker Shell"));
-//		self::registerItem(new Banner());
+		self::registerItem(new Elytra());
+		self::registerItem(new Item(ItemIds::SHULKER_SHELL, 0, "Shulker Shell"));
+		self::registerItem(new Banner());
 		//TODO: MEDICINE
 		//TODO: BALLOON
 		//TODO: RAPID_FERTILIZER
@@ -280,10 +280,10 @@ class ItemFactory{
 
 		//TODO: TRIDENT
 
-//		self::registerItem(new Beetroot());
+		self::registerItem(new Beetroot());
 		self::registerItem(new BeetrootSeeds());
-//		self::registerItem(new BeetrootSoup());
-//		self::registerItem(new Clownfish());
+		self::registerItem(new BeetrootSoup());
+		self::registerItem(new Clownfish());
 		self::registerItem(new Pufferfish());
 		self::registerItem(new DriedKelp());
 		self::registerItem(new Item(ItemIds::NAUTILUS_SHELL, 0, "Nautilus Shell"));
