@@ -65,4 +65,8 @@ class ConcretePowder extends Fallable{
 
 		return null;
 	}
+
+	public function getMaterial() : ColorType{
+		return $this->material;
+	}
 }

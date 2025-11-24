@@ -158,7 +158,6 @@ class BlockFactory{
 //		self::registerBlock(new BrownMushroomBlock());
 //		self::registerBlock(new RedMushroomBlock());
 //		self::registerBlock(new IronBars());
-//		self::registerBlock(new GlassPane());
 		self::registerBlock(new Melon());
 		self::registerBlock(new PumpkinStem());
 		self::registerBlock(new MelonStem());
@@ -210,7 +209,6 @@ class BlockFactory{
 //		self::registerBlock(new DoubleWoodenSlab());
 //		self::registerBlock(new WoodenSlab());
 //		self::registerBlock(new StainedClay());
-//		self::registerBlock(new StainedGlassPane());
 //		self::registerBlock(new Slime());
 //
 //		self::registerBlock(new IronTrapdoor());
@@ -425,8 +423,11 @@ class BlockFactory{
 	}
 
 	private static function registerGlassBlocks() : void{
+		self::registerBlock(new Glass());
+		self::registerBlock(new GlassPane());
 		foreach(ColorType::values() as $type){
 			self::registerBlock(new StainedGlass($type));
+			self::registerBlock(new StainedGlassPane($type));
 			self::registerBlock(new HardenedStainedGlass($type));
 		}
 	}

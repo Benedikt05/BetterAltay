@@ -48,4 +48,8 @@ class Terracotta extends Solid{
 	public function getToolHarvestLevel() : int{
 		return TieredTool::TIER_WOODEN;
 	}
+
+	public function getMaterial() : ColorType{
+		return $this->material;
+	}
 }
