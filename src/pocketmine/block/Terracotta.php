@@ -24,45 +24,28 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\block\material\ColorType;
+use pocketmine\item\TieredTool;
 
-class ConcretePowder extends Fallable{
+class Terracotta extends Solid{
 
 	public function __construct(private ColorType $material, int $meta = 0){
-		$this->id = "minecraft:" . $this->material->getType() . "_concrete_powder";
+		$this->id = "minecraft:" . $this->material->getType() . "_terracotta";
 		$this->meta = $meta;
 	}
 
 	public function getName() : string{
-		return $this->material->getName() . " Concrete Powder";
+		return $this->material->getName() . " Concrete";
 	}
 
 	public function getHardness() : float{
-		return 0.5;
+		return 1.8;
 	}
 
 	public function getToolType() : int{
-		return BlockToolType::TYPE_SHOVEL;
+		return BlockToolType::TYPE_PICKAXE;
 	}
 
-	public function onNearbyBlockChange() : void{
-		if(($block = $this->checkAdjacentWater()) !== null){
-			$this->level->setBlock($this, $block);
-		}else{
-			parent::onNearbyBlockChange();
-		}
-	}
-
-	public function tickFalling() : ?Block{
-		return $this->checkAdjacentWater();
-	}
-
-	private function checkAdjacentWater() : ?Block{
-		for($i = 1; $i < 6; ++$i){ //Do not check underneath
-			if($this->getSide($i) instanceof Water){
-				return BlockFactory::get($this->id);
-			}
-		}
-
-		return null;
+	public function getToolHarvestLevel() : int{
+		return TieredTool::TIER_WOODEN;
 	}
 }

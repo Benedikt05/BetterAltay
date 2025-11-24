@@ -254,24 +254,9 @@ class BlockFactory{
 //		self::registerBlock(new NetherWartBlock());
 //		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
 //		self::registerBlock(new BoneBlock());
-		self::registerBlock(new GlazedTerracotta(BlockIds::PURPLE_GLAZED_TERRACOTTA, 0, "Purple Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::WHITE_GLAZED_TERRACOTTA, 0, "White Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::ORANGE_GLAZED_TERRACOTTA, 0, "Orange Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::MAGENTA_GLAZED_TERRACOTTA, 0, "Magenta Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::LIGHT_BLUE_GLAZED_TERRACOTTA, 0, "Light Blue Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::YELLOW_GLAZED_TERRACOTTA, 0, "Yellow Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::LIME_GLAZED_TERRACOTTA, 0, "Lime Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::PINK_GLAZED_TERRACOTTA, 0, "Pink Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::GRAY_GLAZED_TERRACOTTA, 0, "Grey Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::SILVER_GLAZED_TERRACOTTA, 0, "Light Grey Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::CYAN_GLAZED_TERRACOTTA, 0, "Cyan Glazed Terracotta"));
-
-		self::registerBlock(new GlazedTerracotta(BlockIds::BLUE_GLAZED_TERRACOTTA, 0, "Blue Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::BROWN_GLAZED_TERRACOTTA, 0, "Brown Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::GREEN_GLAZED_TERRACOTTA, 0, "Green Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
-		self::registerBlock(new GlazedTerracotta(BlockIds::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
+		self::registerGlazedTerracotta();
 		self::registerConcreteBlocks();
+		self::registerTerracotta();
 
 		//TODO: CHORUS_PLANT
 
@@ -518,5 +503,31 @@ class BlockFactory{
 			self::registerBlock(new Concrete($type));
 			self::registerBlock(new ConcretePowder($type));
 		}
+	}
+
+	private static function registerTerracotta() : void{
+		foreach(ColorType::values() as $type){
+			self::registerBlock(new Terracotta($type));
+		}
+	}
+
+	private static function registerGlazedTerracotta() : void{
+		self::registerBlock(new GlazedTerracotta(BlockIds::PURPLE_GLAZED_TERRACOTTA, 0, "Purple Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::WHITE_GLAZED_TERRACOTTA, 0, "White Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::ORANGE_GLAZED_TERRACOTTA, 0, "Orange Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::MAGENTA_GLAZED_TERRACOTTA, 0, "Magenta Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::LIGHT_BLUE_GLAZED_TERRACOTTA, 0, "Light Blue Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::YELLOW_GLAZED_TERRACOTTA, 0, "Yellow Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::LIME_GLAZED_TERRACOTTA, 0, "Lime Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::PINK_GLAZED_TERRACOTTA, 0, "Pink Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::GRAY_GLAZED_TERRACOTTA, 0, "Grey Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::SILVER_GLAZED_TERRACOTTA, 0, "Light Grey Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::CYAN_GLAZED_TERRACOTTA, 0, "Cyan Glazed Terracotta"));
+
+		self::registerBlock(new GlazedTerracotta(BlockIds::BLUE_GLAZED_TERRACOTTA, 0, "Blue Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::BROWN_GLAZED_TERRACOTTA, 0, "Brown Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::GREEN_GLAZED_TERRACOTTA, 0, "Green Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
+		self::registerBlock(new GlazedTerracotta(BlockIds::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
 	}
 }
