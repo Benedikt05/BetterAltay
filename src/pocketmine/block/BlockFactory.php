@@ -28,7 +28,6 @@ use pocketmine\block\material\ColorType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
 use pocketmine\block\material\WoodType;
-use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use RuntimeException;
@@ -164,7 +163,6 @@ class BlockFactory{
 		self::registerBlock(new PumpkinStem());
 		self::registerBlock(new MelonStem());
 //		self::registerBlock(new Vine());
-//		self::registerBlock(new FenceGate(BlockIds::OAK_FENCE_GATE, 0, "Oak Fence Gate"));
 		self::registerBlock(new BrickStairs());
 		self::registerBlock(new StoneBrickStairs());
 //		self::registerBlock(new Mycelium());
@@ -231,11 +229,7 @@ class BlockFactory{
 		self::registerBlock(new RedSandstoneStairs());
 //		self::registerBlock(new DoubleStoneSlab2());
 //		self::registerBlock(new StoneSlab2());
-//		self::registerBlock(new FenceGate(BlockIds::SPRUCE_FENCE_GATE, 0, "Spruce Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockIds::BIRCH_FENCE_GATE, 0, "Birch Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockIds::JUNGLE_FENCE_GATE, 0, "Jungle Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockIds::DARK_OAK_FENCE_GATE, 0, "Dark Oak Fence Gate"));
-//		self::registerBlock(new FenceGate(BlockIds::ACACIA_FENCE_GATE, 0, "Acacia Fence Gate"));
+		self::registerFenceGate();
 		//TODO: REPEATING_COMMAND_BLOCK
 		//TODO: CHAIN_COMMAND_BLOCK
 
@@ -511,5 +505,11 @@ class BlockFactory{
 		self::registerBlock(new Skull(BlockIds::PLAYER_HEAD, 0 , "Skull"));
 		self::registerBlock(new Skull(BlockIds::CREEPER_HEAD, 0 , "Creeper Skull"));
 		self::registerBlock(new Skull(BlockIds::DRAGON_HEAD, 0 , "Dragon Skull"));
+	}
+
+	private static function registerFenceGate() : void{
+		foreach(WoodType::values() as $type){
+			self::registerBlock(new FenceGate($type));
+		}
 	}
 }

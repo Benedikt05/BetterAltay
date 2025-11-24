@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
 use pocketmine\item\Item;
 use pocketmine\level\sound\DoorSound;
 use pocketmine\math\AxisAlignedBB;
@@ -30,6 +31,15 @@ use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class FenceGate extends Transparent{
+
+	public function __construct(private WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_fence_gate";
+		if ($this->material->equals(WoodType::OAK())) {
+			$this->id = self::FENCE_GATE;
+		}
+
+		$this->meta = $meta;
+	}
 
 	public function getHardness() : float{
 		return 2;
@@ -71,6 +81,10 @@ class FenceGate extends Transparent{
 		}
 	}
 
+	public function getName() : string{
+		return $this->material->getName() . " Fence Gate";
+	}
+
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$this->meta = ($player instanceof Player ? ($player->getDirection() - 1) & 0x03 : 0);
 		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
@@ -104,5 +118,9 @@ class FenceGate extends Transparent{
 
 	public function getFlammability() : int{
 		return 20;
+	}
+
+	public function getMaterial() : WoodType{
+		return $this->material;
 	}
 }

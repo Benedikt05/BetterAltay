@@ -26,6 +26,8 @@ namespace pocketmine\tile;
 
 use pocketmine\block\BlockIds;
 use pocketmine\block\DoubleWoodenSlab;
+use pocketmine\block\Fence;
+use pocketmine\block\FenceGate;
 use pocketmine\block\GlazedTerracotta;
 use pocketmine\block\Log;
 use pocketmine\block\Planks;
@@ -76,7 +78,9 @@ class NoteBlock extends Spawnable{
 				$below instanceof WoodenSlab ||
 				$below instanceof WoodenDoor ||
 				$below instanceof DoubleWoodenSlab ||
-				$below instanceof SignPost
+				$below instanceof SignPost ||
+				$below instanceof Fence ||
+				$below instanceof FenceGate
 			){
 				$instrument = NoteBlockSound::INSTRUMENT_BASS;
 			}
@@ -86,13 +90,6 @@ class NoteBlock extends Spawnable{
 			}
 
 			switch($below->getId()){ // TODO: implement block materials
-				//case Block::FENCE:
-				case BlockIds::FENCE_GATE:
-				case BlockIds::SPRUCE_FENCE_GATE:
-				case BlockIds::BIRCH_FENCE_GATE:
-				case BlockIds::JUNGLE_FENCE_GATE:
-				case BlockIds::DARK_OAK_FENCE_GATE:
-				case BlockIds::ACACIA_FENCE_GATE:
 				case BlockIds::BOOKSHELF:
 				case BlockIds::CHEST:
 				case BlockIds::CRAFTING_TABLE:

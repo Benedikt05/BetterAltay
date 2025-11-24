@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use InvalidArgumentException;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
 use pocketmine\block\material\ColorType;
 use pocketmine\block\material\WoodType;
@@ -306,6 +304,7 @@ class ItemFactory{
 		self::registerItem(new CopperBoots());
 		self::registerItem(new Item(ItemIds::COPPER_INGOT, 0, "Copper Ingot"));
 		self::registerItem(new Item(ItemIds::COPPER_NUGGET, 0, "Copper Nugget"));
+		self::registerFenceGates();
 	}
 
 	/**
@@ -514,6 +513,17 @@ class ItemFactory{
 
 		foreach($records as $itemId => [$sound, $name]){
 			self::registerItem(new Record($itemId, $sound, $name));
+		}
+	}
+
+	private static function registerFenceGates() : void{
+		foreach(WoodType::values() as $type){
+			if ($type->equals(WoodType::OAK())) {
+				self::registerItem(new ItemBlock(BlockIds::FENCE_GATE, 0, BlockIds::FENCE_GATE));
+				continue;
+			}
+
+			self::registerItem(new ItemBlock("minecraft:" . $type->getType() . "_fence_gate", 0, "minecraft:" . $type->getType() . "_fence_gate"));
 		}
 	}
 }
