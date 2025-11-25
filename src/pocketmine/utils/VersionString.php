@@ -26,6 +26,7 @@ namespace pocketmine\utils;
 use InvalidArgumentException;
 use function count;
 use function preg_match;
+use const pocketmine\FORK_VERSION;
 
 /**
  * Manages PocketMine-MP version strings, and compares them
@@ -47,11 +48,13 @@ class VersionString{
 	private $build;
 	/** @var bool */
 	private $development = false;
+	private string $forkVersion;
 
 	public function __construct(string $baseVersion, bool $isDevBuild = false, int $buildNumber = 0){
 		$this->baseVersion = $baseVersion;
 		$this->development = $isDevBuild;
 		$this->build = $buildNumber;
+		$this->forkVersion = FORK_VERSION;
 
 		preg_match('/^(\d+)\.(\d+)\.(\d+)(?:-(.*))?$/', $this->baseVersion, $matches);
 		if(count($matches) < 4){
@@ -72,16 +75,21 @@ class VersionString{
 		return $this->baseVersion;
 	}
 
-	public function getFullVersion(bool $build = false) : string{
-		$retval = $this->baseVersion;
+	public function getForkVersion(bool $build = false) : string{
+		$retval = $this->forkVersion;
 		if($this->development){
 			$retval .= "+dev";
+
 			if($build and $this->build > 0){
 				$retval .= "." . $this->build;
 			}
 		}
 
 		return $retval;
+	}
+
+	public function getFullVersion() : string{
+		return $this->baseVersion;
 	}
 
 	public function getMajor() : int{

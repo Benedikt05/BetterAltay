@@ -355,7 +355,7 @@ class CrashDump{
 	}
 
 	private function generalData() : void{
-		$version = new VersionString(\pocketmine\BASE_VERSION, \pocketmine\IS_DEVELOPMENT_BUILD, \pocketmine\BUILD_NUMBER);
+		$version = new VersionString(BASE_VERSION, IS_DEVELOPMENT_BUILD, BUILD_NUMBER);
 		$composerLibraries = [];
 		foreach(InstalledVersions::getInstalledPackages() as $package){
 			$composerLibraries[$package] = sprintf(
@@ -367,9 +367,9 @@ class CrashDump{
 
 		$this->data["general"] = [];
 		$this->data["general"]["name"] = $this->server->getName();
-		$this->data["general"]["base_version"] = \pocketmine\BASE_VERSION;
-		$this->data["general"]["build"] = \pocketmine\BUILD_NUMBER;
-		$this->data["general"]["is_dev"] = \pocketmine\IS_DEVELOPMENT_BUILD;
+		$this->data["general"]["base_version"] = BASE_VERSION;
+		$this->data["general"]["build"] = BUILD_NUMBER;
+		$this->data["general"]["is_dev"] = IS_DEVELOPMENT_BUILD;
 		$this->data["general"]["protocol"] = ProtocolInfo::CURRENT_PROTOCOL;
 		$this->data["general"]["git"] = \pocketmine\GIT_COMMIT;
 		$this->data["general"]["uname"] = php_uname("a");
@@ -378,7 +378,7 @@ class CrashDump{
 		$this->data["general"]["php_os"] = PHP_OS;
 		$this->data["general"]["os"] = Utils::getOS();
 		$this->data["general"]["composer_libraries"] = $composerLibraries;
-		$this->addLine($this->server->getName() . " version: " . $version->getFullVersion(true) . " [Protocol " . ProtocolInfo::CURRENT_PROTOCOL . "]");
+		$this->addLine($this->server->getName() . " version: " . $version->getForkVersion(true) . " [Protocol " . ProtocolInfo::CURRENT_PROTOCOL . "]");
 		$this->addLine("Git commit: " . \pocketmine\GIT_COMMIT);
 		$this->addLine("uname -a: " . php_uname("a"));
 		$this->addLine("PHP Version: " . phpversion());
