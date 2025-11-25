@@ -23,11 +23,12 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use pocketmine\block\material\ColorType;
 use pocketmine\utils\Color;
 
 class Dye extends Item{
-	public function __construct(int $meta = 0){
-		parent::__construct(self::DYE, $meta, "Dye");
+	public function __construct(private ColorType $material, int $meta = 0){
+		parent::__construct("minecraft:" . $this->material->getType() . "_dye", $meta, "Dye");
 	}
 
 	public function getColorFromMeta() : Color{

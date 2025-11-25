@@ -175,7 +175,7 @@ class ItemFactory{
 		self::registerItem(new RawFish(ItemIds::SALMON, "Raw Salmon", 2, 0.2));
 		self::registerItem(new CookedFish());
 		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
-		self::registerItem(new Dye());
+		self::registerDye();
 		self::registerItem(new Item(ItemIds::BONE, 0, "Bone"));
 		self::registerItem(new Item(ItemIds::SUGAR, 0, "Sugar"));
 		self::registerItem(new ItemBlock(BlockIds::CAKE, 0, ItemIds::CAKE));
@@ -524,5 +524,12 @@ class ItemFactory{
 			self::registerItem(new ItemBlock("minecraft:" . $type->getType() . "_fence_gate", 0, "minecraft:" . $type->getType() . "_fence_gate"));
 		}
 		self::registerItem(new ItemBlock(BlockIds::BAMBOO_FENCE_GATE, 0, BlockIds::BAMBOO_FENCE_GATE));
+	}
+
+
+	private static function registerDye() : void{
+		foreach(ColorType::values() as $type){
+			self::registerItem(new Dye($type));
+		}
 	}
 }
