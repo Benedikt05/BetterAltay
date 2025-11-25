@@ -174,7 +174,7 @@ class ItemFactory{
 		self::registerItem(new RawFish(ItemIds::SALMON, "Raw Salmon", 2, 0.2));
 		self::registerItem(new CookedFish());
 		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
-		self::registerDye();
+		self::registerDyes();
 		self::registerItem(new Item(ItemIds::LAPIS_LAZULI, 0, "Lapis Lazuli"));
 		self::registerItem(new Item(ItemIds::INK_SAC, 0, "Ink Sac"));
 		self::registerItem(new Item(ItemIds::COCOA_BEANS, 0, "Cocoa Beans"));
@@ -530,7 +530,7 @@ class ItemFactory{
 	}
 
 
-	private static function registerDye() : void{
+	private static function registerDyes() : void{
 		foreach(ColorType::values() as $type){
 			self::registerItem(new Dye($type));
 		}
