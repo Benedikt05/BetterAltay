@@ -32,18 +32,6 @@ use pocketmine\tile\Tile;
 
 class BurningFurnace extends Solid{
 
-	protected $id = self::BURNING_FURNACE;
-
-	protected $itemId = self::FURNACE;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
-
-	public function getName() : string{
-		return "Burning Furnace";
-	}
-
 	public function getHardness() : float{
 		return 3.5;
 	}
@@ -62,15 +50,16 @@ class BurningFurnace extends Solid{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$faces = [
-			0 => 4,
+			0 => 1,
 			1 => 2,
-			2 => 5,
-			3 => 3
+			2 => 3,
+			3 => 0
 		];
-		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
 
-		Tile::createTile(Tile::FURNACE, $this->getLevelNonNull(), TileFurnace::createNBT($this, $face, $item, $player));
+		$this->meta = $faces[$player instanceof Player ? $player->getDirection() : 0];
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
+
+		Tile::createTile($this->id === BlockIds::FURNACE ? Tile::FURNACE : Tile::BLAST_FURNACE, $this->getLevelNonNull(), TileFurnace::createNBT($this, $face, $item, $player));
 
 		return true;
 	}
@@ -79,7 +68,7 @@ class BurningFurnace extends Solid{
 		if($player instanceof Player){
 			$furnace = $this->getLevelNonNull()->getTile($this);
 			if(!($furnace instanceof TileFurnace)){
-				$furnace = Tile::createTile(Tile::FURNACE, $this->getLevelNonNull(), TileFurnace::createNBT($this));
+				$furnace = Tile::createTile($this->id === BlockIds::FURNACE ? Tile::FURNACE : Tile::BLAST_FURNACE, $this->getLevelNonNull(), TileFurnace::createNBT($this));
 				if(!($furnace instanceof TileFurnace)){
 					return true;
 				}
@@ -94,6 +83,7 @@ class BurningFurnace extends Solid{
 
 		return true;
 	}
+
 
 	public function getVariantBitmask() : int{
 		return 0;

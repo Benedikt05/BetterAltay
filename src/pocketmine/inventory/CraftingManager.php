@@ -25,7 +25,12 @@ namespace pocketmine\inventory;
 
 use Closure;
 use Generator;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 use pocketmine\item\Item;
+use pocketmine\item\ItemBlock;
+use pocketmine\item\ItemFactory;
+use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket;
 use pocketmine\Server;
@@ -56,43 +61,118 @@ class CraftingManager{
 	}
 
 	public function init() : void{
-		$recipes = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
-		if(!is_array($recipes)){
+		$data = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
+		if(!is_array($data)){
 			throw new AssumptionFailedError("recipes.json root should contain a map of recipe types");
+		}
+
+		if (!isset($data["recipes"])){
+			throw  new AssumptionFailedError("recipes.json must contain the required root key 'recipes'");
 		}
 
 		$itemDeserializerFunc = Closure::fromCallable([Item::class, 'jsonDeserialize']);
 
-		foreach($recipes["shapeless"] as $recipe){
-			if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
-				continue;
+		foreach($data["recipes"] as $recipe){
+			switch($recipe["type"]){
+				case CraftingDataPacket::ENTRY_SHAPELESS:
+					$this->readShapelessRecipes($recipe, $itemDeserializerFunc);
+					break;
+				case CraftingDataPacket::ENTRY_SHAPED:
+					$this->readShapedRecipes($recipe, $itemDeserializerFunc);
+					break;
+				case CraftingDataPacket::ENTRY_FURNACE:
+				case CraftingDataPacket::ENTRY_FURNACE_DATA:
+					$this->readFurnaceRecipes($recipe, $itemDeserializerFunc);
+					break;
 			}
-			$this->registerShapelessRecipe(new ShapelessRecipe(
-				array_map($itemDeserializerFunc, $recipe["input"]),
-				array_map($itemDeserializerFunc, $recipe["output"])
-			));
 		}
-		foreach($recipes["shaped"] as $recipe){
-			if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
-				continue;
+
+		$this->buildCraftingDataCache();
+	}
+
+	private function readShapelessRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+		if (isset($recipe["id"])){
+			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
+				return;
 			}
-			$this->registerShapedRecipe(new ShapedRecipe(
-				$recipe["shape"],
-				array_map($itemDeserializerFunc, $recipe["input"]),
-				array_map($itemDeserializerFunc, $recipe["output"])
-			));
 		}
-		foreach($recipes["smelting"] as $recipe){
-			if($recipe["block"] !== "furnace"){ //TODO: filter others out for now to avoid breaking economics
+
+		if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
+			return;
+		}
+
+		$ingredients = [];
+		foreach($recipe["input"] as $input){
+			if ($input["type"] !== "default"){ //TODO: handle item_tag type
 				continue;
 			}
+
+			$item = ItemFactory::get($input["itemId"], $input["auxValue"] === ItemTranslator::WILDCARD ? -1 : $input["auxValue"], $input["count"]);
+			if ($item instanceof ItemBlock){
+				if ($item->getBlock()->getId() === BlockIds::UNKNOWN) {
+					continue;
+				}
+			}
+
+			if($item->getName() === "Unknown"){
+				continue;
+			}
+
+			$ingredients[] = $item;
+		}
+
+		$this->registerShapelessRecipe(new ShapelessRecipe(
+			$ingredients,
+			array_map($itemDeserializerFunc, $recipe["output"])
+		));
+	}
+
+	private function readShapedRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+		if (isset($recipe["id"])){
+			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
+				return;
+			}
+		}
+
+		if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
+			return;
+		}
+
+		$ingredients = [];
+		foreach($recipe["input"] as $char => $input){
+			if ($input["type"] !== "default"){ //TODO: handle item_tag and complex_alias type.
+				return;
+			}
+
+			$item = ItemFactory::get($input["itemId"], $input["auxValue"] === ItemTranslator::WILDCARD ? -1 : $input["auxValue"], $input["count"]);
+			if ($item instanceof ItemBlock){
+				if ($item->getBlock()->getId() === BlockIds::UNKNOWN) {
+					return;
+				}
+			}
+
+			if($item->getName() === "Unknown"){
+				return;
+			}
+
+			$ingredients[$char] = $item;
+		}
+
+		$this->registerShapedRecipe(new ShapedRecipe(
+			$recipe["shape"],
+			$ingredients,
+			array_map($itemDeserializerFunc, $recipe["output"])
+		));
+	}
+
+
+	private function readFurnaceRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+		if($recipe["block"] === "furnace" || $recipe["block"] === "blast_furnace"){ //TODO: filter others out for now to avoid breaking economics
 			$this->registerFurnaceRecipe(new FurnaceRecipe(
 					Item::jsonDeserialize($recipe["output"]),
 					Item::jsonDeserialize($recipe["input"]))
 			);
 		}
-
-		$this->buildCraftingDataCache();
 	}
 
 	/**

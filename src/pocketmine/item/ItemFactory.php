@@ -306,6 +306,8 @@ class ItemFactory{
 		self::registerItem(new Item(ItemIds::COPPER_INGOT, 0, "Copper Ingot"));
 		self::registerItem(new Item(ItemIds::COPPER_NUGGET, 0, "Copper Nugget"));
 		self::registerFenceGates();
+		self::registerItem(new ItemBlock(BlockIds::FURNACE, 0, BlockIds::FURNACE));
+		self::registerItem(new ItemBlock(BlockIds::BLAST_FURNACE, 0, BlockIds::BLAST_FURNACE));
 	}
 
 	/**

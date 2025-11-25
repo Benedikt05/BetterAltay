@@ -80,6 +80,8 @@ final class ItemTranslator{
 	private ItemTypeDictionary $dictionary;
 	private array $itemToBlockMappings;
 
+	public const WILDCARD = 0x7FFF;
+
 
 	private static function make() : self{
 		$data = file_get_contents(RESOURCE_PATH . '/vanilla/r16_to_current_item_map.json');
@@ -178,7 +180,7 @@ final class ItemTranslator{
 	 */
 	public function legacyToNetworkId(int $internalId, int $internalMeta) : array{
 		if($internalMeta === -1){
-			$internalMeta = 0x7fff;
+			$internalMeta = self::WILDCARD;
 		}
 		if(isset($this->complexCoreToNetMapping[$internalId][$internalMeta])){
 			return [$this->complexCoreToNetMapping[$internalId][$internalMeta], 0];
@@ -192,7 +194,7 @@ final class ItemTranslator{
 
 	public function toNetworkId(string $internalId, int $internalMeta) : array {
 		if($internalMeta === -1){
-			$internalMeta = 0x7fff;
+			$internalMeta = self::WILDCARD;
 		}
 
 		return [$this->dictionary->fromStringId($internalId), $internalMeta];
@@ -228,7 +230,7 @@ final class ItemTranslator{
 	 */
 	public function legacyFromNetworkIdWithWildcardHandling(int $networkId, int $networkMeta) : array{
 		$isComplexMapping = false;
-		if($networkMeta !== 0x7fff){
+		if($networkMeta !== self::WILDCARD){
 			return $this->legacyFromNetworkId($networkId, $networkMeta);
 		}
 		[$id, $meta] = $this->legacyFromNetworkId($networkId, 0, $isComplexMapping);
@@ -236,7 +238,7 @@ final class ItemTranslator{
 	}
 
 	public function fromNetworkIdWithWildcardHandling(int $networkId, int $networkMeta) : array{
-		if($networkMeta !== 0x7fff){
+		if($networkMeta !== self::WILDCARD){
 			return $this->fromNetworkId($networkId, $networkMeta);
 		} else {
 			return $this->fromNetworkId($networkId, -1);

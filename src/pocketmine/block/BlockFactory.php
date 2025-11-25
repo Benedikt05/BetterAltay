@@ -119,11 +119,13 @@ class BlockFactory{
 //		self::registerBlock(new Chest());
 //		//TODO: REDSTONE_WIRE
 		self::registerBlock(new Diamond());
-//		self::registerBlock(new CraftingTable());
+		self::registerBlock(new CraftingTable());
 		self::registerBlock(new Wheat());
 		self::registerBlock(new Farmland());
-//		self::registerBlock(new Furnace());
-//		self::registerBlock(new BurningFurnace());
+		self::registerBlock(new Furnace(BlockIds::FURNACE, 0, "Furnace", BlockIds::FURNACE));
+		self::registerBlock(new Furnace(BlockIds::BLAST_FURNACE, 0, "Blast Furnace", BlockIds::BLAST_FURNACE));
+		self::registerBlock(new BurningFurnace(BlockIds::LIT_FURNACE, 0, "Lit Furnace", BlockIds::FURNACE));
+		self::registerBlock(new BurningFurnace(BlockIds::LIT_BLAST_FURNACE, 0, "Lit Blast Furnace", BlockIds::BLAST_FURNACE));
 		self::registerBlock(new Ladder());
 		self::registerBlock(new Rail());
 		self::registerBlock(new CobblestoneStairs());

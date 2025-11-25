@@ -58,6 +58,7 @@ abstract class Tile extends Position{
 	public const BANNER = "Banner";
 	public const BED = "Bed";
 	public const BREWING_STAND = "BrewingStand";
+	public const BLAST_FURNACE = "BlastFurnace";
 	public const CAULDRON = "Cauldron";
 	public const CHEST = "Chest";
 	public const ENCHANT_TABLE = "EnchantTable";
@@ -111,6 +112,7 @@ abstract class Tile extends Position{
 		self::registerTile(EnderChest::class, [self::ENDER_CHEST, "minecraft:ender_chest"]);
 		self::registerTile(FlowerPot::class, [self::FLOWER_POT, "minecraft:flower_pot"]);
 		self::registerTile(Furnace::class, [self::FURNACE, "minecraft:furnace"]);
+		self::registerTile(BlastFurnace::class, [self::BLAST_FURNACE, "minecraft:blast_furnace"]);
 		self::registerTile(GlowItemFrame::class, [self::GLOW_ITEM_FRAME]);
 		self::registerTile(ItemFrame::class, [self::ITEM_FRAME]); //this is an entity in PC
 		self::registerTile(Sign::class, [self::SIGN, "minecraft:sign"]);

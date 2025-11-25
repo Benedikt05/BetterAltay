@@ -32,7 +32,7 @@ use function array_key_exists;
 
 class CraftingTable extends Solid{
 
-	protected $id = self::CRAFTING_TABLE;
+	protected string $id = self::CRAFTING_TABLE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

@@ -31,12 +31,12 @@ class FurnaceInventory extends ContainerInventory{
 	/** @var Furnace */
 	protected $holder;
 
-	public function __construct(Furnace $tile){
+	public function __construct(Furnace $tile, private int $windowsType){
 		parent::__construct($tile);
 	}
 
 	public function getNetworkType() : int{
-		return WindowTypes::FURNACE;
+		return $this->windowsType;
 	}
 
 	public function getName() : string{

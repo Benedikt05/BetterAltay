@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace pocketmine\tile;
 
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 use pocketmine\event\inventory\FurnaceBurnEvent;
 use pocketmine\event\inventory\FurnaceSmeltEvent;
 use pocketmine\event\inventory\FurnaceCookEvent;
@@ -38,6 +38,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\ContainerSetDataPacket;
+use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use function ceil;
 use function count;
 use function max;
@@ -61,6 +62,8 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 	/** @var int */
 	private $maxTime;
 
+	protected int $windowType = WindowTypes::FURNACE;
+
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
 		if($this->burnTime > 0){
@@ -83,7 +86,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 
 		$this->loadName($nbt);
 
-		$this->inventory = new FurnaceInventory($this);
+		$this->inventory = new FurnaceInventory($this, $this->windowType);
 		$this->loadItems($nbt);
 
 		$this->inventory->setEventProcessor(new class($this) implements InventoryEventProcessor{
@@ -148,8 +151,10 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 
 		$this->maxTime = $this->burnTime = $ev->getBurnTime();
 
-		if($this->getBlock()->getId() === Block::FURNACE){
-			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::BURNING_FURNACE, $this->getBlock()->getDamage()), true);
+		if($this->getBlock()->getId() === BlockIds::FURNACE){
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::LIT_FURNACE, $this->getBlock()->getDamage()), true);
+		} elseif($this->getBlock()->getId() === BlockIds::BLAST_FURNACE) {
+			$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::LIT_BLAST_FURNACE, $this->getBlock()->getDamage()), true);
 		}
 
 		if($this->burnTime > 0 and $ev->isBurning()){
@@ -182,7 +187,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 		if($this->burnTime <= 0 and $canSmelt and $fuel->getFuelTime() > 0 and $fuel->getCount() > 0){
 			$this->checkFuel($fuel);
 		}
-		$maxCookTime = 200;
+		$maxCookTime = $this->windowType === WindowTypes::FURNACE ? 200 : 100;
 
 		if($this->burnTime > 0){
 			--$this->burnTime;
@@ -197,7 +202,7 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 				    ++$this->cookTime;
 				}
 
-				if($this->cookTime >= $maxCookTime){ //10 seconds
+				if($this->cookTime >= $maxCookTime){
 					$product = ItemFactory::get($smelt->getResult()->getId(), $smelt->getResult()->getDamage(), $product->getCount() + 1);
 
 					$ev = new FurnaceSmeltEvent($this, $raw, $product);
@@ -218,8 +223,10 @@ class Furnace extends Spawnable implements InventoryHolder, Container, Nameable{
 			}
 			$ret = true;
 		}else{
-			if($this->getBlock()->getId() === Block::BURNING_FURNACE){
-				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(Block::FURNACE, $this->getBlock()->getDamage()), true);
+			if($this->getBlock()->getId() === BlockIds::LIT_FURNACE){
+				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::FURNACE, $this->getBlock()->getDamage()), true);
+			} elseif($this->getBlock()->getId() === BlockIds::LIT_BLAST_FURNACE) {
+				$this->getLevelNonNull()->setBlock($this, BlockFactory::get(BlockIds::BLAST_FURNACE, $this->getBlock()->getDamage()), true);
 			}
 			$this->burnTime = $this->cookTime = $this->maxTime = 0;
 		}
