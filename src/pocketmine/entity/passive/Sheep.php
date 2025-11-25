@@ -83,7 +83,7 @@ class Sheep extends Animal{
 	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
 			if($item instanceof Shears and !$this->isSheared()){
-				$this->setSheared(true);
+				$this->setSheared();
 				$item->applyDamage(1);
 
 				$i = 1 + $this->level->random->nextBoundedInt(3);
@@ -103,7 +103,26 @@ class Sheep extends Animal{
 					$item->pop();
 				}
 
-				$this->propertyManager->setByte(self::DATA_COLOR, $item->getDamage());
+				$this->propertyManager->setByte(self::DATA_COLOR,
+					match ($item->getId()) {
+						ItemIds::BLACK_DYE => Color::COLOR_SHEEP_BLACK,
+						ItemIds::RED_DYE => Color::COLOR_SHEEP_RED,
+						ItemIds::GREEN_DYE => Color::COLOR_SHEEP_GREEN,
+						ItemIds::BROWN_DYE => Color::COLOR_SHEEP_BROWN,
+						ItemIds::BLUE_DYE => Color::COLOR_SHEEP_BLUE,
+						ItemIds::PURPLE_DYE => Color::COLOR_SHEEP_PURPLE,
+						ItemIds::CYAN_DYE => Color::COLOR_SHEEP_CYAN,
+						ItemIds::LIGHT_GRAY_DYE => Color::COLOR_SHEEP_LIGHT_GRAY,
+						ItemIds::GRAY_DYE => Color::COLOR_SHEEP_GRAY,
+						ItemIds::PINK_DYE => Color::COLOR_SHEEP_PINK,
+						ItemIds::LIME_DYE => Color::COLOR_SHEEP_LIME,
+						ItemIds::YELLOW_DYE => Color::COLOR_SHEEP_YELLOW,
+						ItemIds::LIGHT_BLUE_DYE => Color::COLOR_SHEEP_LIGHT_BLUE,
+						ItemIds::MAGENTA_DYE => Color::COLOR_SHEEP_MAGENTA,
+						ItemIds::ORANGE_DYE => Color::COLOR_SHEEP_ORANGE,
+						default => Color::COLOR_SHEEP_WHITE,
+					}
+				);
 				return true;
 			}
 		}
