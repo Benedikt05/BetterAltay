@@ -48,7 +48,7 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use function array_merge;
 use function min;
-//TODO: UPDATE
+
 class ArmorStand extends Living{
 
 	public const NETWORK_ID = EntityIds::ARMOR_STAND;
@@ -77,7 +77,7 @@ class ArmorStand extends Living{
 
 	protected function initEntity() : void{
 		$this->setMaxHealth(6);
-		$this->setImmobile(true);
+		$this->setImmobile();
 
 		parent::initEntity();
 
