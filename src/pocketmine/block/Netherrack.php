@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Netherrack extends Solid{
 
-	protected $id = self::NETHERRACK;
+	protected string $id = self::NETHERRACK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

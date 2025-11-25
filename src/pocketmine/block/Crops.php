@@ -43,7 +43,7 @@ abstract class Crops extends Flowable{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($this->meta < 7 and $item->getId() === ItemIds::DYE and $item->getDamage() === 0x0F){ //Bonemeal
+		if($this->meta < 7 and $item->getId() === ItemIds::BONE_MEAL){
 			$block = clone $this;
 			$block->meta += mt_rand(2, 5);
 			if($block->meta > 7){

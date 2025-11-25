@@ -44,7 +44,7 @@ class Sugarcane extends Flowable{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($item->getId() === ItemIds::DYE and $item->getDamage() === 0x0F){ //Bonemeal
+		if($item->getId() === ItemIds::BONE_MEAL){
 			if($this->getSide(Vector3::SIDE_DOWN)->getId() !== self::REEDS){
 				for($y = 1; $y < 3; ++$y){
 					$b = $this->getLevelNonNull()->getBlockAt($this->x, $this->y + $y, $this->z);

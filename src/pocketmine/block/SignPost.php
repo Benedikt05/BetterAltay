@@ -111,7 +111,7 @@ class SignPost extends Waterloggable{
 
 		$tile = $this->getLevelNonNull()->getTile($this);
 		if($tile instanceof TileSign){
-			$color = $item instanceof Dye ? $item->getColorFromMeta() : match ($item->getId()){
+			$color = $item instanceof Dye ? $item->getColor() : match ($item->getId()){
 				ItemIds::BONE => new Color(0xf0, 0xf0, 0xf0),
 				self::LAPIS_ORE => new Color(0x3c, 0x44, 0xaa),
 				self::COCOA => new Color(0x83, 0x54, 0x32),

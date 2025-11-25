@@ -42,6 +42,7 @@ use function is_numeric;
 use function is_object;
 use function is_string;
 use function mb_strtoupper;
+use function pocketmine\server;
 use function str_replace;
 use function trim;
 
@@ -59,7 +60,7 @@ class ItemFactory{
 	/**
 	 * @return void
 	 */
-	public static function init(){
+	public static function init() : void{
 
 		self::registerItem(new Shovel(ItemIds::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
 		self::registerItem(new Pickaxe(ItemIds::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
@@ -176,6 +177,10 @@ class ItemFactory{
 		self::registerItem(new CookedFish());
 		self::registerItem(new CookedFish(ItemIds::COOKED_SALMON, "Cooked Salmon", 6, 9.6));
 		self::registerDye();
+		self::registerItem(new Item(ItemIds::LAPIS_LAZULI, 0, "Lapis Lazuli"));
+		self::registerItem(new Item(ItemIds::INK_SAC, 0, "Ink Sac"));
+		self::registerItem(new Item(ItemIds::COCOA_BEANS, 0, "Cocoa Beans"));
+		self::registerItem(new Item(ItemIds::BONE_MEAL, 0, "Bone Meal"));
 		self::registerItem(new Item(ItemIds::BONE, 0, "Bone"));
 		self::registerItem(new Item(ItemIds::SUGAR, 0, "Sugar"));
 		self::registerItem(new ItemBlock(BlockIds::CAKE, 0, ItemIds::CAKE));

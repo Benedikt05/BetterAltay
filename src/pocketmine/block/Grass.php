@@ -103,7 +103,7 @@ class Grass extends Solid{
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		if($item->getId() === ItemIds::DYE and $item->getDamage() === 0x0F){
+		if($item->getId() === ItemIds::BONE_MEAL){
 			$item->pop();
 			TallGrassObject::growGrass($this->getLevelNonNull(), $this, new Random(mt_rand()), 8, 2);
 

@@ -141,13 +141,13 @@ class BlockFactory{
 		self::registerBlock(new Ice());
 		self::registerBlock(new Snow());
 		self::registerBlock(new Cactus());
-//		self::registerBlock(new Clay());
+		self::registerBlock(new Clay());
 		self::registerBlock(new Sugarcane());
 		self::registerBlock(new Jukebox());
 		self::registerBlock(new Pumpkin());
-//		self::registerBlock(new Netherrack());
+		self::registerBlock(new Netherrack());
 		self::registerBlock(new SoulSand());
-//		self::registerBlock(new Glowstone());
+		self::registerBlock(new Glowstone());
 //		self::registerBlock(new Portal());
 		self::registerBlock(new LitPumpkin());
 		self::registerBlock(new Cake());

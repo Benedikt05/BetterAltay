@@ -25,10 +25,11 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 
 class Clay extends Solid{
 
-	protected $id = self::CLAY_BLOCK;
+	protected string $id = self::CLAY;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -48,7 +49,7 @@ class Clay extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::CLAY_BALL, 0, 4)
+			ItemFactory::get(ItemIds::CLAY_BALL, 0, 4)
 		];
 	}
 }

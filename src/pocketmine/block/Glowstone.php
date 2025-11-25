@@ -25,11 +25,12 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use function mt_rand;
 
 class Glowstone extends Transparent{
 
-	protected $id = self::GLOWSTONE;
+	protected string $id = self::GLOWSTONE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -53,7 +54,7 @@ class Glowstone extends Transparent{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::GLOWSTONE_DUST, 0, mt_rand(2, 4))
+			ItemFactory::get(ItemIds::GLOWSTONE_DUST, 0, mt_rand(2, 4))
 		];
 	}
 }
