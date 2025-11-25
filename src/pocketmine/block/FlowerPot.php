@@ -35,8 +35,7 @@ class FlowerPot extends Flowable{
 	public const STATE_EMPTY = 0;
 	public const STATE_FULL = 1;
 
-	protected $id = self::FLOWER_POT_BLOCK;
-	protected $itemId = Item::FLOWER_POT;
+	protected string $id = self::FLOWER_POT;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -99,7 +98,7 @@ class FlowerPot extends Flowable{
 		$tile = $this->getLevelNonNull()->getTile($this);
 		if($tile instanceof TileFlowerPot){
 			$item = $tile->getItem();
-			if($item->getId() !== Item::AIR){
+			if($item->getId() !== BlockIds::AIR){
 				$items[] = $item;
 			}
 		}

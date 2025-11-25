@@ -75,14 +75,14 @@ class CraftingManager{
 		foreach($data["recipes"] as $recipe){
 			switch($recipe["type"]){
 				case CraftingDataPacket::ENTRY_SHAPELESS:
-					$this->readShapelessRecipes($recipe, $itemDeserializerFunc);
+					$this->readShapelessRecipe($recipe, $itemDeserializerFunc);
 					break;
 				case CraftingDataPacket::ENTRY_SHAPED:
-					$this->readShapedRecipes($recipe, $itemDeserializerFunc);
+					$this->readShapedRecipe($recipe, $itemDeserializerFunc);
 					break;
 				case CraftingDataPacket::ENTRY_FURNACE:
 				case CraftingDataPacket::ENTRY_FURNACE_DATA:
-					$this->readFurnaceRecipes($recipe, $itemDeserializerFunc);
+					$this->readFurnaceRecipe($recipe, $itemDeserializerFunc);
 					break;
 			}
 		}
@@ -90,7 +90,7 @@ class CraftingManager{
 		$this->buildCraftingDataCache();
 	}
 
-	private function readShapelessRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+	private function readShapelessRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
 		if (isset($recipe["id"])){
 			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
 				return;
@@ -127,7 +127,7 @@ class CraftingManager{
 		));
 	}
 
-	private function readShapedRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+	private function readShapedRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
 		if (isset($recipe["id"])){
 			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
 				return;
@@ -166,7 +166,7 @@ class CraftingManager{
 	}
 
 
-	private function readFurnaceRecipes(array $recipe, Closure $itemDeserializerFunc) : void{
+	private function readFurnaceRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
 		if($recipe["block"] === "furnace" || $recipe["block"] === "blast_furnace"){ //TODO: filter others out for now to avoid breaking economics
 			$this->registerFurnaceRecipe(new FurnaceRecipe(
 					Item::jsonDeserialize($recipe["output"]),

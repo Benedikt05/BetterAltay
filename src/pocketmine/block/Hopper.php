@@ -33,8 +33,7 @@ use pocketmine\tile\Tile;
 
 class Hopper extends Transparent{
 
-	protected $id = self::HOPPER_BLOCK;
-	protected $itemId = Item::HOPPER;
+	protected string $id = self::HOPPER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -87,7 +86,7 @@ class Hopper extends Transparent{
 		];
 
 		$this->meta = $faces[$face];
-		$this->getLevel()->setBlock($this, $this, true, true);
+		$this->getLevel()->setBlock($this, $this, true);
 
 		Tile::createTile(Tile::HOPPER, $this->getLevel(), TileHopper::createNBT($this, $face, $item, $player));
 

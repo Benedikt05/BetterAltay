@@ -142,7 +142,7 @@ class BlockFactory{
 		self::registerBlock(new Snow());
 		self::registerBlock(new Cactus());
 //		self::registerBlock(new Clay());
-//		self::registerBlock(new Sugarcane());
+		self::registerBlock(new Sugarcane());
 		self::registerBlock(new Jukebox());
 		self::registerBlock(new Pumpkin());
 //		self::registerBlock(new Netherrack());
@@ -192,9 +192,9 @@ class BlockFactory{
 		//TODO: COMMAND_BLOCK
 //		self::registerBlock(new Beacon());
 //		self::registerBlock(new CobblestoneWall());
-//		self::registerBlock(new FlowerPot());
-//		self::registerBlock(new Carrot());
-//		self::registerBlock(new Potato());
+		self::registerBlock(new FlowerPot());
+		self::registerBlock(new Carrot());
+		self::registerBlock(new Potato());
 //		self::registerBlock(new WoodenButton());
 		self::registerSkulls();
 //		self::registerBlock(new Anvil());
@@ -205,7 +205,7 @@ class BlockFactory{
 		//TODO: POWERED_COMPARATOR
 //		self::registerBlock(new DaylightSensor());
 //		self::registerBlock(new Redstone());
-//		self::registerBlock(new Hopper());
+		self::registerBlock(new Hopper());
 //		self::registerBlock(new Quartz());
 		self::registerBlock(new QuartzStairs());
 //		self::registerBlock(new DoubleWoodenSlab());

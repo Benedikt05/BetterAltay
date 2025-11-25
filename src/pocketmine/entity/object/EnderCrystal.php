@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\entity\object;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Fire;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -47,7 +48,7 @@ class EnderCrystal extends Entity{
 
 	public function onUpdate(int $currentTick) : bool{
 		if($this->level->getProvider()->getPath() === End::class){
-			if($this->level->getBlock($this)->getId() !== Block::FIRE){
+			if($this->level->getBlock($this)->getId() !== BlockIds::FIRE){
 				$this->level->setBlock($this, new Fire());
 			}
 		}

@@ -29,7 +29,7 @@ use function mt_rand;
 
 class Potato extends Crops{
 
-	protected $id = self::POTATO_BLOCK;
+	protected string $id = self::POTATOES;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

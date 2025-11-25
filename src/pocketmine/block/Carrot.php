@@ -25,11 +25,12 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use function mt_rand;
 
 class Carrot extends Crops{
 
-	protected $id = self::CARROT_BLOCK;
+	protected string $id = self::CARROTS;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -41,11 +42,11 @@ class Carrot extends Crops{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::CARROT, 0, $this->meta >= 0x07 ? mt_rand(1, 4) : 1)
+			ItemFactory::get(ItemIds::CARROT, 0, $this->meta >= 0x07 ? mt_rand(1, 4) : 1)
 		];
 	}
 
 	public function getPickedItem() : Item{
-		return ItemFactory::get(Item::CARROT);
+		return ItemFactory::get(ItemIds::CARROT);
 	}
 }

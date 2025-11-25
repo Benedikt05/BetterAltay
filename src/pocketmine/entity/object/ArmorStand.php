@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\object;
 
+use pocketmine\block\BlockIds;
+use pocketmine\block\Skull;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityIds;
 use pocketmine\entity\Living;
@@ -34,7 +36,9 @@ use pocketmine\inventory\ArmorInventory;
 use pocketmine\inventory\utils\EquipmentSlot;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -122,7 +126,7 @@ class ArmorStand extends Living{
 			if($item instanceof Armor){
 				$targetSlot = $item->getArmorSlot();
 				$isArmorSlot = true;
-			}elseif($item->getId() === Item::SKULL or $item->getId() === Item::PUMPKIN){
+			}elseif(($item instanceof ItemBlock && $item->getBlock() instanceof Skull) or $item->getId() === BlockIds::CARVED_PUMPKIN){
 				$targetSlot = Armor::SLOT_HELMET;
 				$isArmorSlot = true;
 			}elseif($item->isNull()){
@@ -204,7 +208,7 @@ class ArmorStand extends Living{
 	}
 
 	public function getDrops() : array{
-		return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+		return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(ItemIds::ARMOR_STAND)]);
 	}
 
 	public function attack(EntityDamageEvent $source) : void{

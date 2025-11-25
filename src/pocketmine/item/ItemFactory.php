@@ -160,7 +160,7 @@ class ItemFactory{
 		//TODO: KELP
 		self::registerItem(new Item(ItemIds::BRICK, 0, "Brick"));
 		self::registerItem(new Item(ItemIds::CLAY_BALL, 0, "Clay"));
-		//self::registerItem(new ItemBlock(BlockIds::REEDS, 0, ItemIds::SUGAR_CANE));
+		self::registerItem(new ItemBlock(BlockIds::REEDS, 0, ItemIds::SUGAR_CANE));
 		self::registerItem(new Item(ItemIds::PAPER, 0, "Paper"));
 		self::registerItem(new Book());
 		self::registerItem(new Item(ItemIds::SLIME_BALL, 0, "Slimeball"));
@@ -210,12 +210,12 @@ class ItemFactory{
 		self::registerSpawnEggs();
 		self::registerItem(new ExperienceBottle());
 		//TODO: FIREBALL
-//		self::registerItem(new WritableBook());
-//		self::registerItem(new WrittenBook());
+		self::registerItem(new WritableBook());
+		self::registerItem(new WrittenBook());
 		self::registerItem(new Item(ItemIds::EMERALD, 0, "Emerald"));
 		self::registerItem(new ItemBlock(BlockIds::FRAME, 0, ItemIds::FRAME));
 		self::registerItem(new ItemBlock(BlockIds::GLOW_FRAME, 0, ItemIds::GLOW_FRAME));
-		//self::registerItem(new ItemBlock(Block::FLOWER_POT_BLOCK, 0, Item::FLOWER_POT));
+		self::registerItem(new ItemBlock(BlockIds::FLOWER_POT, 0, ItemIds::FLOWER_POT));
 		self::registerItem(new Carrot());
 		self::registerItem(new Potato());
 		self::registerItem(new BakedPotato());
@@ -228,40 +228,35 @@ class ItemFactory{
 		self::registerItem(new PumpkinPie());
 		self::registerItem(new Fireworks());
 		self::registerItem(new Item(ItemIds::FIREWORK_STAR, 0, "Fireworks Charge"));
-//		self::registerItem(new EnchantedBook());
+		self::registerItem(new EnchantedBook());
 		//self::registerItem(new ItemBlock(Block::COMPARATOR_BLOCK, 0, Item::COMPARATOR));
 		self::registerItem(new Item(ItemIds::NETHERBRICK, 0, "Nether Brick"));
 		self::registerItem(new Item(ItemIds::QUARTZ, 0, "Nether Quartz"));
 		//TODO: MINECART_WITH_TNT
 		//TODO: HOPPER_MINECART
-//		self::registerItem(new Item(Item::PRISMARINE_SHARD, 0, "Prismarine Shard"));
-		//self::registerItem(new ItemBlock(Block::HOPPER_BLOCK, 0, Item::HOPPER));
-//		self::registerItem(new RawRabbit());
-//		self::registerItem(new CookedRabbit());
-//		self::registerItem(new RabbitStew());
-//		self::registerItem(new Item(Item::RABBIT_FOOT, 0, "Rabbit's Foot"));
-//		self::registerItem(new Item(Item::RABBIT_HIDE, 0, "Rabbit Hide"));
-//		self::registerItem(new LeatherHorseArmor());
-//		self::registerItem(new IronHorseArmor());
-//		self::registerItem(new GoldenHorseArmor());
-//		self::registerItem(new DiamondHorseArmor());
-//		self::registerItem(new Item(Item::LEAD, 0, "Lead"));
+		self::registerItem(new Item(ItemIds::PRISMARINE_SHARD, 0, "Prismarine Shard"));
+		self::registerItem(new ItemBlock(BlockIds::HOPPER, 0, ItemIds::HOPPER));
+		self::registerItem(new RawRabbit());
+		self::registerItem(new CookedRabbit());
+		self::registerItem(new RabbitStew());
+		self::registerItem(new Item(ItemIds::RABBIT_FOOT, 0, "Rabbit's Foot"));
+		self::registerItem(new Item(ItemIds::RABBIT_HIDE, 0, "Rabbit Hide"));
+		self::registerItem(new LeatherHorseArmor());
+		self::registerItem(new IronHorseArmor());
+		self::registerItem(new GoldenHorseArmor());
+		self::registerItem(new DiamondHorseArmor());
+		self::registerItem(new Item(ItemIds::LEAD, 0, "Lead"));
 		//TODO: NAMETAG
-//		self::registerItem(new Item(Item::PRISMARINE_CRYSTALS, 0, "Prismarine Crystals"));
-//		self::registerItem(new RawMutton());
-//		self::registerItem(new CookedMutton());
-//		self::registerItem(new ArmorStand());
-//		self::registerItem(new EndCrystal());
-//		self::registerItem(new ItemBlock(Block::SPRUCE_DOOR_BLOCK, 0, Item::SPRUCE_DOOR));
-//		self::registerItem(new ItemBlock(Block::BIRCH_DOOR_BLOCK, 0, Item::BIRCH_DOOR));
-//		self::registerItem(new ItemBlock(Block::JUNGLE_DOOR_BLOCK, 0, Item::JUNGLE_DOOR));
-//		self::registerItem(new ItemBlock(Block::ACACIA_DOOR_BLOCK, 0, Item::ACACIA_DOOR));
-//		self::registerItem(new ItemBlock(Block::DARK_OAK_DOOR_BLOCK, 0, Item::DARK_OAK_DOOR));
-//		self::registerItem(new ChorusFruit());
-//		self::registerItem(new Item(Item::CHORUS_FRUIT_POPPED, 0, "Popped Chorus Fruit"));
-//
-//		self::registerItem(new Item(Item::DRAGON_BREATH, 0, "Dragon's Breath"));
-//		self::registerItem(new SplashPotion());
+		self::registerItem(new Item(ItemIds::PRISMARINE_CRYSTALS, 0, "Prismarine Crystals"));
+		self::registerItem(new RawMutton());
+		self::registerItem(new CookedMutton());
+		self::registerItem(new ArmorStand());
+		self::registerItem(new EndCrystal());
+		self::registerItem(new ChorusFruit());
+		self::registerItem(new Item(ItemIds::POPPED_CHORUS_FRUIT, 0, "Popped Chorus Fruit"));
+
+		self::registerItem(new Item(ItemIds::DRAGON_BREATH, 0, "Dragon's Breath"));
+		self::registerItem(new SplashPotion());
 
 		//TODO: LINGERING_POTION
 		//TODO: SPARKLER
@@ -288,7 +283,7 @@ class ItemFactory{
 		self::registerItem(new Item(ItemIds::NAUTILUS_SHELL, 0, "Nautilus Shell"));
 		self::registerItem(new GoldenAppleEnchanted());
 		self::registerItem(new Item(ItemIds::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
-		self::registerItem(new Item(ItemIds::TURTLE_SHELL_PIECE, 0, "Scute"));
+		self::registerItem(new Item(ItemIds::TURTLE_SCUTE, 0, "Scute"));
 		self::registerItem(new TurtleHelmet());
 		self::registerMusicDiscs();
 		self::registerItem(new Item(ItemIds::DISC_FRAGMENT_5, 0, "Disc Fragment"));
