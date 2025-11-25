@@ -75,7 +75,7 @@ class VersionString{
 		return $this->baseVersion;
 	}
 
-	public function getForkVersion(bool $build = false) : string{
+	public function getFullVersion(bool $build = false) : string{
 		$retval = $this->forkVersion;
 		if($this->development){
 			$retval .= "+dev";
@@ -86,10 +86,6 @@ class VersionString{
 		}
 
 		return $retval;
-	}
-
-	public function getFullVersion() : string{
-		return $this->baseVersion;
 	}
 
 	public function getMajor() : int{
@@ -117,7 +113,7 @@ class VersionString{
 	}
 
 	public function __toString() : string{
-		return $this->getFullVersion();
+		return $this->getBaseVersion();
 	}
 
 	public function compare(VersionString $target, bool $diff = false) : int{

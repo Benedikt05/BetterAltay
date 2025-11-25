@@ -246,8 +246,8 @@ JIT_WARNING
 		define('pocketmine\BUILD_NUMBER', $buildNumber);
 
 		$version = new VersionString(BASE_VERSION, IS_DEVELOPMENT_BUILD, BUILD_NUMBER);
-		define('pocketmine\VERSION', $version->getFullVersion());
-		define('pocketmine\BETTER_ALTAY_VERSION', $version->getForkVersion(true));
+		define('pocketmine\VERSION', $version->getBaseVersion());
+		define('pocketmine\BETTER_ALTAY_VERSION', $version->getFullVersion(true));
 
 		$composerGitHash = InstalledVersions::getReference('pocketmine/pocketmine-mp');
 		if($composerGitHash !== null){
