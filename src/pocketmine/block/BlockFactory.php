@@ -102,8 +102,8 @@ class BlockFactory{
 //
 //		self::registerBlock(new Dandelion());
 //		self::registerBlock(new Flower());
-//		self::registerBlock(new BrownMushroom());
-//		self::registerBlock(new RedMushroom());
+		self::registerBlock(new BrownMushroom());
+		self::registerBlock(new RedMushroom());
 		self::registerBlock(new Gold());
 		self::registerBlock(new Iron());
 //		self::registerBlock(new DoubleStoneSlab());
@@ -157,8 +157,8 @@ class BlockFactory{
 //		self::registerBlock(new Trapdoor());
 //		self::registerBlock(new MonsterEgg());
 //		self::registerBlock(new StoneBricks());
-//		self::registerBlock(new BrownMushroomBlock());
-//		self::registerBlock(new RedMushroomBlock());
+		self::registerBlock(new BrownMushroomBlock());
+		self::registerBlock(new RedMushroomBlock());
 //		self::registerBlock(new IronBars());
 		self::registerBlock(new Melon());
 		self::registerBlock(new PumpkinStem());
@@ -232,12 +232,6 @@ class BlockFactory{
 		self::registerFenceGate();
 		//TODO: REPEATING_COMMAND_BLOCK
 		//TODO: CHAIN_COMMAND_BLOCK
-
-//		self::registerBlock(new WoodenDoor(BlockIds::SPRUCE_DOOR_BLOCK, 0, "Spruce Door", Item::SPRUCE_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockIds::BIRCH_DOOR_BLOCK, 0, "Birch Door", Item::BIRCH_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockIds::JUNGLE_DOOR_BLOCK, 0, "Jungle Door", Item::JUNGLE_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockIds::ACACIA_DOOR_BLOCK, 0, "Acacia Door", Item::ACACIA_DOOR));
-//		self::registerBlock(new WoodenDoor(BlockIds::DARK_OAK_DOOR_BLOCK, 0, "Dark Oak Door", Item::DARK_OAK_DOOR));
 		self::registerBlock(new GrassPath());
 		self::registerBlock(new ItemFrame());
 		self::registerBlock(new GlowItemFrame());

@@ -25,7 +25,11 @@ namespace pocketmine\block;
 
 class BrownMushroom extends RedMushroom{
 
-	protected $id = self::BROWN_MUSHROOM;
+	public function __construct(int $meta = 0){
+		$this->id = self::BROWN_MUSHROOM;
+		parent::__construct($meta);
+	}
+
 
 	public function getName() : string{
 		return "Brown Mushroom";

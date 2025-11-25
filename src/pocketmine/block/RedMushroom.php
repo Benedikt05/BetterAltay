@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class RedMushroom extends Flowable{
 
-	protected $id = self::RED_MUSHROOM;
+	protected string $id = self::RED_MUSHROOM;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

@@ -73,10 +73,10 @@ class Block extends Position implements BlockIds, Metadatable{
 	protected $collisionBoxes = null;
 
 	/**
-	 * @param int         $id The block type's ID, 0-255
+	 * @param string      $id The block type's ID
 	 * @param int         $meta Meta value of the block type
 	 * @param string|null $name English name of the block type (TODO: implement translations)
-	 * @param string         $itemId The item ID of the block type, used for block picking and dropping items.
+	 * @param string      $itemId The item ID of the block type, used for block picking and dropping items.
 	 */
 	public function __construct(string $id, int $meta = 0, string $name = null, string $itemId = ""){
 		$this->id = $id;

@@ -28,7 +28,7 @@ use function mt_rand;
 
 class RedMushroomBlock extends Solid{
 
-	protected $id = Block::RED_MUSHROOM_BLOCK;
+	protected string $id = BlockIds::RED_MUSHROOM_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

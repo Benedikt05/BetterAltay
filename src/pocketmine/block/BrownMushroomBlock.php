@@ -29,7 +29,7 @@ use function mt_rand;
 
 class BrownMushroomBlock extends RedMushroomBlock{
 
-	protected $id = BlockIds::BROWN_MUSHROOM_BLOCK;
+	protected string $id = BlockIds::BROWN_MUSHROOM_BLOCK;
 
 	public function getName() : string{
 		return "Brown Mushroom Block";
