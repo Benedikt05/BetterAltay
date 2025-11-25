@@ -843,8 +843,12 @@ class Item implements ItemIds, JsonSerializable{
 
 		$id = $data["id"];
 		if (is_int($id)) {
-			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($id, (int) ($data["damage"] ?? 0));
-			$id = ItemTypeDictionary::getInstance()->fromIntId($rid);
+			try {
+				[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($id, (int) ($data["damage"] ?? 0));
+				$id = ItemTypeDictionary::getInstance()->fromIntId($rid);
+			} catch (InvalidArgumentException $e) {
+				return ItemFactory::get(BlockIds::AIR);
+			}
 		}
 
 		return ItemFactory::get(
@@ -896,8 +900,12 @@ class Item implements ItemIds, JsonSerializable{
 		if($idTag instanceof StringTag){
 			$item = ItemFactory::get($idTag->getValue(), $meta, $count);
 		} else if ($idTag instanceof ShortTag) {
-			[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($idTag->getValue(), $meta);
-			$item = ItemFactory::get(ItemTypeDictionary::getInstance()->fromIntId($rid), $meta, $count);
+			try{
+				[$rid, ] = ItemTranslator::getInstance()->legacyToNetworkId($idTag->getValue(), $meta);
+				$item = ItemFactory::get(ItemTypeDictionary::getInstance()->fromIntId($rid), $meta, $count);
+			} catch(InvalidArgumentException $e){
+				return ItemFactory::get(BlockIds::AIR);
+			}
 		} else{
 			throw new InvalidArgumentException("Item CompoundTag ID must be an instance of StringTag or ShortTag, " . get_class($idTag) . " given");
 		}
