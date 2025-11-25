@@ -160,7 +160,7 @@ class ItemFactory{
 		//TODO: KELP
 		self::registerItem(new Item(ItemIds::BRICK, 0, "Brick"));
 		self::registerItem(new Item(ItemIds::CLAY_BALL, 0, "Clay"));
-		self::registerItem(new ItemBlock(BlockIds::REEDS, 0, ItemIds::SUGAR_CANE));
+		//self::registerItem(new ItemBlock(BlockIds::REEDS, 0, ItemIds::SUGAR_CANE));
 		self::registerItem(new Item(ItemIds::PAPER, 0, "Paper"));
 		self::registerItem(new Book());
 		self::registerItem(new Item(ItemIds::SLIME_BALL, 0, "Slimeball"));
@@ -212,26 +212,26 @@ class ItemFactory{
 		//TODO: FIREBALL
 //		self::registerItem(new WritableBook());
 //		self::registerItem(new WrittenBook());
-//		self::registerItem(new Item(Item::EMERALD, 0, "Emerald"));
+		self::registerItem(new Item(ItemIds::EMERALD, 0, "Emerald"));
 		self::registerItem(new ItemBlock(BlockIds::FRAME, 0, ItemIds::FRAME));
 		self::registerItem(new ItemBlock(BlockIds::GLOW_FRAME, 0, ItemIds::GLOW_FRAME));
 		//self::registerItem(new ItemBlock(Block::FLOWER_POT_BLOCK, 0, Item::FLOWER_POT));
-//		self::registerItem(new Carrot());
-//		self::registerItem(new Potato());
-//		self::registerItem(new BakedPotato());
-//		self::registerItem(new PoisonousPotato());
+		self::registerItem(new Carrot());
+		self::registerItem(new Potato());
+		self::registerItem(new BakedPotato());
+		self::registerItem(new PoisonousPotato());
 //		self::registerItem(new EmptyMap());
 		self::registerItem(new GoldenCarrot());
 		self::registerSkulls();
 		//TODO: CARROTONASTICK
-//		self::registerItem(new Item(Item::NETHER_STAR, 0, "Nether Star"));
+		self::registerItem(new Item(ItemIds::NETHER_STAR, 0, "Nether Star"));
 		self::registerItem(new PumpkinPie());
 		self::registerItem(new Fireworks());
-		self::registerItem(new Item(ItemIds::FIREWORKSCHARGE, 0, "Fireworks Charge"));
+		self::registerItem(new Item(ItemIds::FIREWORK_STAR, 0, "Fireworks Charge"));
 //		self::registerItem(new EnchantedBook());
 		//self::registerItem(new ItemBlock(Block::COMPARATOR_BLOCK, 0, Item::COMPARATOR));
-//		self::registerItem(new Item(Item::NETHER_BRICK, 0, "Nether Brick"));
-//		self::registerItem(new Item(Item::NETHER_QUARTZ, 0, "Nether Quartz"));
+		self::registerItem(new Item(ItemIds::NETHERBRICK, 0, "Nether Brick"));
+		self::registerItem(new Item(ItemIds::QUARTZ, 0, "Nether Quartz"));
 		//TODO: MINECART_WITH_TNT
 		//TODO: HOPPER_MINECART
 //		self::registerItem(new Item(Item::PRISMARINE_SHARD, 0, "Prismarine Shard"));

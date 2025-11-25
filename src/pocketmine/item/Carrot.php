@@ -25,6 +25,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIds;
 
 class Carrot extends Food{
 	public function __construct(int $meta = 0){
@@ -32,7 +33,7 @@ class Carrot extends Food{
 	}
 
 	public function getBlock() : Block{
-		return BlockFactory::get(Block::CARROT_BLOCK);
+		return BlockFactory::get(BlockIds::CARROTS);
 	}
 
 	public function getFoodRestore() : int{
