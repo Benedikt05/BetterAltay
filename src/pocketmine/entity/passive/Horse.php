@@ -179,4 +179,13 @@ class Horse extends AbstractHorse implements InventoryHolder{
 			$this->namedtag->setTag($this->inventory->getArmor()->nbtSerialize(-1, "ArmorItem"));
 		}
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::GOLDEN_APPLE,
+			ItemIds::GOLDEN_CARROT => true,
+			default => false,
+		};
+	}
+
 }

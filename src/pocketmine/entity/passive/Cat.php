@@ -136,4 +136,13 @@ class Cat extends Tamable{
 			parent::attack($source);
 		}
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::COD,
+			ItemIds::SALMON => true,
+			default => false,
+		};
+	}
+
 }

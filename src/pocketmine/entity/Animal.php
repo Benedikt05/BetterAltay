@@ -45,7 +45,7 @@ abstract class Animal extends Mob implements Ageable{
 		return $this->level->getBlock($this->down())->getId() === $this->spawnableBlock and $this->level->getBlockSkyLightAt($this->getFloorX(), $this->getFloorY(), $this->getFloorZ()) > 8 and parent::canSpawnHere();
 	}
 
-	public function isBreedingItem(Item $item) : bool{ // TODO: Apply this to all animals
+	public function isBreedingItem(Item $item) : bool{
 		return $item->getId() === ItemIds::WHEAT;
 	}
 

@@ -147,4 +147,16 @@ class Wolf extends Tamable{
 
 		$this->setAttackDamage(4);
 	}
+
+	public function isBreedingItem(Item $item): bool{
+		return match ($item->getId()) {
+			ItemIds::BEEF,
+			ItemIds::CHICKEN,
+			ItemIds::MUTTON,
+			ItemIds::PORKCHOP,
+			ItemIds::RABBIT,
+			ItemIds::ROTTEN_FLESH => true,
+			default => false,
+		};
+	}
 }

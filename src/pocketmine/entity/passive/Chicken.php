@@ -129,13 +129,14 @@ class Chicken extends Animal{
 	}
 
 	public function isBreedingItem(Item $item) : bool{
-		return in_array($item->getId(), [
+		return match ($item->getId()) {
 			ItemIds::WHEAT_SEEDS,
 			ItemIds::MELON_SEEDS,
 			ItemIds::PUMPKIN_SEEDS,
 			ItemIds::BEETROOT_SEEDS,
 			ItemIds::TORCHFLOWER_SEEDS,
-			ItemIds::PITCHER_POD,
-		], true);
+			ItemIds::PITCHER_POD => true,
+			default => false,
+		};
 	}
 }

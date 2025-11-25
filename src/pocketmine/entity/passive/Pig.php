@@ -122,4 +122,14 @@ class Pig extends Animal implements PlayerInventoryMount{
 	public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
 		return new Vector3(0, 0.63, 0);
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::CARROT,
+			ItemIds::POTATO,
+			ItemIds::BEETROOT => true,
+			default => false,
+		};
+	}
+
 }
