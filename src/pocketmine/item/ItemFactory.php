@@ -31,7 +31,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use RuntimeException;
-use SplFixedArray;
 use TypeError;
 use function constant;
 use function defined;
@@ -42,7 +41,6 @@ use function is_numeric;
 use function is_object;
 use function is_string;
 use function mb_strtoupper;
-use function pocketmine\server;
 use function str_replace;
 use function trim;
 
