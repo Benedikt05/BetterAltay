@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class Podzol extends Solid{
 
-	protected $id = self::PODZOL;
+	protected string $id = self::PODZOL;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

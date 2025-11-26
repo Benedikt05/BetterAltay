@@ -225,7 +225,6 @@ class BlockFactory{
 		self::registerBlock(new StandingBanner());
 		self::registerBlock(new WallBanner());
 		//TODO: DAYLIGHT_DETECTOR_INVERTED
-//		self::registerBlock(new RedSandstone());
 		self::registerBlock(new RedSandstoneStairs());
 //		self::registerBlock(new DoubleStoneSlab2());
 //		self::registerBlock(new StoneSlab2());
@@ -240,13 +239,13 @@ class BlockFactory{
 //
 		self::registerBlock(new PurpurStairs());
 //
-//		self::registerBlock(new EndStoneBricks());
+		self::registerBlock(new EndStoneBricks());
 		//TODO: FROSTED_ICE
 //		self::registerBlock(new EndRod());
 		//TODO: END_GATEWAY
 
-//		self::registerBlock(new Magma());
-//		self::registerBlock(new NetherWartBlock());
+		self::registerBlock(new Magma());
+		self::registerBlock(new NetherWartBlock());
 //		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
 //		self::registerBlock(new BoneBlock());
 		self::registerGlazedTerracotta();
@@ -255,7 +254,7 @@ class BlockFactory{
 
 		//TODO: CHORUS_PLANT
 
-//		self::registerBlock(new Podzol());
+		self::registerBlock(new Podzol());
 		self::registerBlock(new Beetroot());
 //		self::registerBlock(new Stonecutter());
 //		self::registerBlock(new GlowingObsidian());

@@ -30,7 +30,7 @@ use pocketmine\item\TieredTool;
 
 class Magma extends Solid{
 
-	protected $id = Block::MAGMA;
+	protected string $id = BlockIds::MAGMA;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
