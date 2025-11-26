@@ -56,7 +56,7 @@ class Bucket extends Item implements MaybeConsumable{
 	}
 
 	public function getFuelResidue() : Item{
-		if($this->id === BlockIds::LAVA){
+		if($this->id === self::LAVA_BUCKET){
 			return ItemFactory::get(self::BUCKET);
 		}
 
