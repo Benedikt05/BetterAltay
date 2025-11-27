@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class Bricks extends Solid{
 
-	protected $id = self::BRICK_BLOCK;
+	protected string $id = self::BRICK_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

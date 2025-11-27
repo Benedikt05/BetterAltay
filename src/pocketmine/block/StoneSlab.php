@@ -35,10 +35,10 @@ class StoneSlab extends Slab{
 	public const QUARTZ = 6;
 	public const NETHER_BRICK = 7;
 
-	protected string $id = self::STONE_BRICK_SLAB;
+	protected string $id = self::NORMAL_STONE_SLAB;
 
 	public function getDoubleSlabId() : string{
-		return self::STONE_BRICK_DOUBLE_SLAB;
+		return self::NORMAL_STONE_SLAB;
 	}
 
 	public function getHardness() : float{
@@ -46,17 +46,7 @@ class StoneSlab extends Slab{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::STONE => "Stone",
-			self::SANDSTONE => "Sandstone",
-			self::WOODEN => "Wooden",
-			self::COBBLESTONE => "Cobblestone",
-			self::BRICK => "Brick",
-			self::STONE_BRICK => "Stone Brick",
-			self::QUARTZ => "Quartz",
-			self::NETHER_BRICK => "Nether Brick"
-		];
-		return (($this->meta & 0x08) > 0 ? "Upper " : "") . ($names[$this->getVariant()] ?? "") . " Slab";
+		return "Stone Brick Slab";
 	}
 
 	public function getToolType() : int{

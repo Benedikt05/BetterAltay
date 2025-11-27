@@ -42,7 +42,7 @@ abstract class Slab extends Waterloggable{
 		}
 
 		if($blockReplace->getId() === $this->getId() and $blockReplace->getVariant() === $this->getVariant()){
-			if(($blockReplace->getDamage() & 0x08) !== 0){ //Trying to combine with top slab
+			if(($blockReplace->getDamage() & 0x01) !== 0){ //Trying to combine with top slab
 				return $clickVector->y <= 0.5 or (!$isClickedBlock and $face === Vector3::SIDE_UP);
 			}else{
 				return $clickVector->y >= 0.5 or (!$isClickedBlock and $face === Vector3::SIDE_DOWN);
@@ -53,9 +53,8 @@ abstract class Slab extends Waterloggable{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->meta &= 0x07;
 		if($face === Vector3::SIDE_DOWN){
-			if($blockClicked->getId() === $this->id and ($blockClicked->getDamage() & 0x08) === 0x08 and $blockClicked->getVariant() === $this->getVariant()){
+			if($blockClicked->getId() === $this->id and ($blockClicked->getDamage() & 0x01) === 0x01 and $blockClicked->getVariant() === $this->getVariant()){
 				$this->getLevelNonNull()->setBlock($blockClicked, BlockFactory::get($this->getDoubleSlabId(), $this->getVariant()), true);
 
 				return true;
@@ -64,10 +63,10 @@ abstract class Slab extends Waterloggable{
 
 				return true;
 			}else{
-				$this->meta |= 0x08;
+				$this->meta |= 0x01;
 			}
 		}elseif($face === Vector3::SIDE_UP){
-			if($blockClicked->getId() === $this->id and ($blockClicked->getDamage() & 0x08) === 0 and $blockClicked->getVariant() === $this->getVariant()){
+			if($blockClicked->getId() === $this->id and ($blockClicked->getDamage() & 0x01) === 0 and $blockClicked->getVariant() === $this->getVariant()){
 				$this->getLevelNonNull()->setBlock($blockClicked, BlockFactory::get($this->getDoubleSlabId(), $this->getVariant()), true);
 
 				return true;
@@ -87,7 +86,7 @@ abstract class Slab extends Waterloggable{
 				return false;
 			}else{
 				if($clickVector->y > 0.5){
-					$this->meta |= 0x08;
+					$this->meta |= 0x01;
 				}
 			}
 		}
@@ -100,13 +99,9 @@ abstract class Slab extends Waterloggable{
 		return true;
 	}
 
-	public function getVariantBitmask() : int{
-		return 0x07;
-	}
-
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
 
-		if(($this->meta & 0x08) > 0){
+		if(($this->meta & 0x01) > 0){
 			return new AxisAlignedBB(
 				$this->x,
 				$this->y + 0.5,
@@ -128,6 +123,6 @@ abstract class Slab extends Waterloggable{
 	}
 
 	public function isPassable() : bool{
-		return ($this->meta & 0x08) < 0;
+		return ($this->meta & 0x01) < 0;
 	}
 }

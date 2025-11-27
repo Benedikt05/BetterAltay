@@ -109,10 +109,10 @@ class BlockFactory{
 		self::registerBlock(new RedMushroom());
 		self::registerBlock(new Gold());
 		self::registerBlock(new Iron());
-//		self::registerBlock(new Bricks());
+		self::registerBlock(new Bricks());
 		self::registerBlock(new TNT());
 		self::registerBlock(new Bookshelf());
-//		self::registerBlock(new MossyCobblestone());
+		self::registerBlock(new MossyCobblestone());
 		self::registerBlock(new Obsidian());
 		self::registerBlock(new Torch());
 		self::registerBlock(new Fire());
@@ -176,7 +176,7 @@ class BlockFactory{
 		self::registerBlock(new Cauldron());
 //		self::registerBlock(new EndPortal());
 //		self::registerBlock(new EndPortalFrame());
-//		self::registerBlock(new EndStone());
+		self::registerBlock(new EndStone());
 		self::registerBlock(new DragonEgg());
 //		self::registerBlock(new RedstoneLamp());
 //		self::registerBlock(new LitRedstoneLamp());
@@ -528,6 +528,23 @@ class BlockFactory{
 	private static function registerSlabBlocks() : void{
 		self::registerBlock(new StoneSlab());
 		self::registerBlock(new DoubleStoneSlab());
+		self::registerBlock(new CobblestoneSlab());
+		self::registerBlock(new DoubleCobblestoneSlab());
+		self::registerBlock(new StoneBrickSlab());
+		self::registerBlock(new DoubleStoneBrickSlab());
+		self::registerBlock(new BrickSlab());
+		self::registerBlock(new DoubleBrickSlab());
+		self::registerBlock(new MossyCobblestoneSlab());
+		self::registerBlock(new DoubleMossyCobblestoneSlab());
+		self::registerBlock(new EndStoneBrickSlab());
+		self::registerBlock(new DoubleEndStoneBrickSlab());
+
+		foreach(SandstoneType::values() as $type){
+			self::registerBlock(new SandstoneSlab($type));
+			self::registerBlock(new DoubleSandstoneSlab($type));
+			self::registerBlock(new RedSandstoneSlab($type));
+			self::registerBlock(new DoubleRedSandStoneSlab($type));
+		}
 
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenSlab($type));

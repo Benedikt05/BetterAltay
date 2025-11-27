@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class MossyCobblestone extends Cobblestone{
 
-	protected $id = self::MOSSY_COBBLESTONE;
+	protected string $id = self::MOSSY_COBBLESTONE;
 
 	public function getName() : string{
 		return "Moss Stone";

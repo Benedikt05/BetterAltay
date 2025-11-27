@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class EndStone extends Solid{
 
-	protected $id = self::END_STONE;
+	protected string $id = self::END_STONE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

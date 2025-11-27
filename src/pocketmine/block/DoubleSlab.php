@@ -26,7 +26,7 @@ namespace pocketmine\block;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 
-abstract class DoubleSlab extends Solid{
+abstract class DoubleSlab extends Waterloggable{
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
