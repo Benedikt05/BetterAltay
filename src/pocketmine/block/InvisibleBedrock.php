@@ -27,7 +27,7 @@ use pocketmine\item\Item;
 
 class InvisibleBedrock extends Transparent{
 
-	protected $id = self::INVISIBLE_BEDROCK;
+	protected string $id = self::INVISIBLE_BEDROCK;
 
 	public function __construct(){
 

@@ -19,41 +19,34 @@
  *
 */
 
-declare(strict_types=1);
+namespace pocketmine\block\material;
 
-namespace pocketmine\block;
+class AnvilType extends Material{
 
-use pocketmine\item\TieredTool;
+	private static ?AnvilType $NORMAL = null;
+	private static ?AnvilType $CHIPPED = null;
+	private static ?AnvilType $CHISELED = null;
 
-class GlowingObsidian extends Solid{
-
-	protected string $id = self::GLOWINGOBSIDIAN;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
+	public static function NORMAL() : AnvilType{
+		return self::$NORMAL ??= new AnvilType("normal", "Normal");
 	}
 
-	public function getName() : string{
-		return "Glowing Obsidian";
+	public static function CHIPPED() : AnvilType{
+		return self::$CHIPPED ??= new AnvilType("chipped", "Chipped");
 	}
 
-	public function getLightLevel() : int{
-		return 12;
+	public static function DAMAGED() : AnvilType{
+		return self::$CHISELED ??= new AnvilType("damaged", "Damaged");
 	}
 
-	public function getHardness() : float{
-		return 10;
-	}
-
-	public function getBlastResistance() : float{
-		return 50;
-	}
-
-	public function getToolType() : int{
-		return BlockToolType::TYPE_PICKAXE;
-	}
-
-	public function getToolHarvestLevel() : int{
-		return TieredTool::TIER_DIAMOND;
+	/**
+	 * @return AnvilType[]
+	 */
+	public static function values() : array{
+		return [
+			AnvilType::NORMAL(),
+			AnvilType::CHIPPED(),
+			AnvilType::DAMAGED(),
+		];
 	}
 }

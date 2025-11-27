@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use InvalidArgumentException;
+use pocketmine\block\material\AnvilType;
 use pocketmine\block\material\ColorType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
@@ -152,7 +153,7 @@ class BlockFactory{
 		self::registerBlock(new Cake());
 		//TODO: REPEATER_BLOCK
 		//TODO: POWERED_REPEATER
-//		self::registerBlock(new InvisibleBedrock());
+		self::registerBlock(new InvisibleBedrock());
 //		self::registerBlock(new Trapdoor());
 //		self::registerBlock(new MonsterEgg());
 //		self::registerBlock(new StoneBricks());
@@ -175,11 +176,11 @@ class BlockFactory{
 		self::registerBlock(new BrewingStand());
 		self::registerBlock(new Cauldron());
 //		self::registerBlock(new EndPortal());
-//		self::registerBlock(new EndPortalFrame());
+		self::registerBlock(new EndPortalFrame());
 		self::registerBlock(new EndStone());
 		self::registerBlock(new DragonEgg());
-//		self::registerBlock(new RedstoneLamp());
-//		self::registerBlock(new LitRedstoneLamp());
+		self::registerBlock(new RedstoneLamp());
+		self::registerBlock(new LitRedstoneLamp());
 		//TODO: DROPPER
 //		self::registerBlock(new ActivatorRail());
 		self::registerBlock(new CocoaBlock());
@@ -196,7 +197,7 @@ class BlockFactory{
 		self::registerBlock(new Potato());
 		self::registerButtonBlocks();
 		self::registerSkulls();
-		self::registerBlock(new Anvil());
+		self::registerAnvils();
 		self::registerBlock(new TrappedChest());
 		//TODO: COMPARATOR_BLOCK
 		//TODO: POWERED_COMPARATOR
@@ -249,7 +250,7 @@ class BlockFactory{
 		self::registerBlock(new Podzol());
 		self::registerBlock(new Beetroot());
 		self::registerBlock(new Stonecutter());
-//		self::registerBlock(new GlowingObsidian());
+		self::registerBlock(new GlowingObsidian());
 //		self::registerBlock(new NetherReactor());
 		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE, 0, "update!"));
 		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE2, 0, "ate!upd"));
@@ -560,6 +561,12 @@ class BlockFactory{
 		self::registerBlock(new StoneButton());
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenButton($type));
+		}
+	}
+
+	private static function registerAnvils() : void{
+		foreach(AnvilType::values() as $type){
+			self::registerBlock(new Anvil($type));
 		}
 	}
 }

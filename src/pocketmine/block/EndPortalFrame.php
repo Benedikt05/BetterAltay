@@ -28,7 +28,7 @@ use pocketmine\math\AxisAlignedBB;
 
 class EndPortalFrame extends Solid{
 
-	protected $id = self::END_PORTAL_FRAME;
+	protected string $id = self::END_PORTAL_FRAME;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

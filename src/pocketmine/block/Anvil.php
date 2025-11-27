@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\AnvilType;
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\inventory\AnvilInventory;
 use pocketmine\item\Item;
@@ -40,8 +41,13 @@ class Anvil extends Fallable{
 
 	protected string $id = self::ANVIL;
 
-	public function __construct(int $meta = 0){
+	public function __construct(protected AnvilType $material, int $meta = 0){
 		$this->meta = $meta;
+		if($this->material->equals(AnvilType::NORMAL())) {
+			$this->id = self::ANVIL;
+		} else {
+			$this->id = "minecraft:" . $this->material->getType() . "_anvil";
+		}
 	}
 
 	public function isTransparent() : bool{
@@ -61,12 +67,11 @@ class Anvil extends Fallable{
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::TYPE_NORMAL => "Anvil",
-			self::TYPE_SLIGHTLY_DAMAGED => "Slightly Damaged Anvil",
-			self::TYPE_VERY_DAMAGED => "Very Damaged Anvil"
-		];
-		return $names[$this->getVariant()] ?? "Anvil";
+		if($this->material->equals(AnvilType::NORMAL())){
+			return "Anvil";
+		}else{
+			return $this->material->getName() . " Anvil";
+		}
 	}
 
 	public function getToolType() : int{
