@@ -60,6 +60,9 @@ class BlockFactory{
 	 * this if you need to reset the block factory back to its original defaults for whatever reason.
 	 */
 	public static function init() : void{
+		if (!empty(self::$fullList)) {
+			return;
+		}
 
 		self::registerBlock(new Air());
 		self::registerBlock(new Stone());

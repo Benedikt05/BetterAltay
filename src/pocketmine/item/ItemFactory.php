@@ -59,6 +59,9 @@ class ItemFactory{
 	 * @return void
 	 */
 	public static function init() : void{
+		if (!empty(self::$list)) {
+			return;
+		}
 
 		self::registerItem(new Shovel(ItemIds::IRON_SHOVEL, 0, "Iron Shovel", TieredTool::TIER_IRON));
 		self::registerItem(new Pickaxe(ItemIds::IRON_PICKAXE, 0, "Iron Pickaxe", TieredTool::TIER_IRON));
