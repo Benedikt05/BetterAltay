@@ -37,7 +37,7 @@ class Vine extends Flowable{
 	public const FLAG_NORTH = 0x04;
 	public const FLAG_EAST = 0x08;
 
-	protected $id = self::VINE;
+	protected string $id = self::VINE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

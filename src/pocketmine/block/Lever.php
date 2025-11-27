@@ -29,7 +29,7 @@ use pocketmine\Player;
 
 class Lever extends Flowable{
 
-	protected $id = self::LEVER;
+	protected string $id = self::LEVER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -70,7 +70,7 @@ class Lever extends Flowable{
 			}
 		}
 
-		return $this->level->setBlock($blockReplace, $this, true, true);
+		return $this->level->setBlock($blockReplace, $this, true);
 	}
 
 	public function onNearbyBlockChange() : void{

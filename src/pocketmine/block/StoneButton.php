@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class StoneButton extends Button{
 
-	protected $id = self::STONE_BUTTON;
+	protected string $id = self::STONE_BUTTON;
 
 	public function getName() : string{
 		return "Stone Button";

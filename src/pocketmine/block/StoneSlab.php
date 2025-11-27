@@ -35,10 +35,10 @@ class StoneSlab extends Slab{
 	public const QUARTZ = 6;
 	public const NETHER_BRICK = 7;
 
-	protected $id = self::STONE_SLAB;
+	protected string $id = self::STONE_BRICK_SLAB;
 
-	public function getDoubleSlabId() : int{
-		return self::DOUBLE_STONE_SLAB;
+	public function getDoubleSlabId() : string{
+		return self::STONE_BRICK_DOUBLE_SLAB;
 	}
 
 	public function getHardness() : float{

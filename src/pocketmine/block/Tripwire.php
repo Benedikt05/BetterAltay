@@ -25,10 +25,11 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 
 class Tripwire extends Flowable{
 
-	protected $id = self::TRIPWIRE;
+	protected string $id = self::TRIP_WIRE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -40,7 +41,7 @@ class Tripwire extends Flowable{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::STRING)
+			ItemFactory::get(ItemIds::STRING)
 		];
 	}
 

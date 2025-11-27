@@ -34,7 +34,7 @@ abstract class Slab extends Waterloggable{
 		$this->meta = $meta;
 	}
 
-	abstract public function getDoubleSlabId() : int;
+	abstract public function getDoubleSlabId() : string;
 
 	public function canBePlacedAt(Block $blockReplace, Vector3 $clickVector, int $face, bool $isClickedBlock) : bool{
 		if(parent::canBePlacedAt($blockReplace, $clickVector, $face, $isClickedBlock)){
@@ -95,7 +95,7 @@ abstract class Slab extends Waterloggable{
 		if($blockReplace->getId() === $this->id and $blockClicked->getVariant() !== $this->getVariant()){
 			return false;
 		}
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 		return true;
 	}

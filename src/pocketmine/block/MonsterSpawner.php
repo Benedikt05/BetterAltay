@@ -34,7 +34,7 @@ use function mt_rand;
 
 class MonsterSpawner extends Transparent{
 
-	protected $id = self::MONSTER_SPAWNER;
+	protected string $id = self::MOB_SPAWNER;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

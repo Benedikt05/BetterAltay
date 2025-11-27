@@ -31,7 +31,7 @@ use pocketmine\Player;
 
 class BoneBlock extends Solid{
 
-	protected $id = Block::BONE_BLOCK;
+	protected string $id = self::BONE_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -55,7 +55,7 @@ class BoneBlock extends Solid{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$this->meta = PillarRotationHelper::getMetaFromFace($this->meta, $face);
-		return $this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		return $this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 	}
 
 	public function getVariantBitmask() : int{

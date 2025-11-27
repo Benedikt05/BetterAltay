@@ -23,12 +23,22 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
+
 class WoodenButton extends Button{
 
-	protected $id = self::WOODEN_BUTTON;
+	public function __construct(private WoodType $material, int $meta = 0){
+		$type = $this->material->getType();
+		if ($this->material->equals(WoodType::OAK())) {
+			$type = "wooden";
+		}
+		$this->id = "minecraft:" . $type . "_button";
+		parent::__construct($meta);
+	}
+
 
 	public function getName() : string{
-		return "Wooden Button";
+		return $this->material->getName() . " Button";
 	}
 
 	public function getHardness() : float{

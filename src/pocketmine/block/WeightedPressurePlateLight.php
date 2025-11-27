@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class WeightedPressurePlateLight extends Transparent{
 
-	protected $id = self::LIGHT_WEIGHTED_PRESSURE_PLATE;
+	protected string $id = self::LIGHT_WEIGHTED_PRESSURE_PLATE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

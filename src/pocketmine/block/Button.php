@@ -41,7 +41,7 @@ abstract class Button extends Flowable{
 		//TODO: check valid target block
 		$this->meta = $face;
 
-		return $this->level->setBlock($this, $this, true, true);
+		return $this->level->setBlock($this, $this, true);
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{

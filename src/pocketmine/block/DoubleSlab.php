@@ -32,7 +32,7 @@ abstract class DoubleSlab extends Solid{
 		$this->meta = $meta;
 	}
 
-	abstract public function getSlabId() : int;
+	abstract public function getSlabId() : string;
 
 	public function getName() : string{
 		return "Double " . BlockFactory::get($this->getSlabId(), $this->getVariant())->getName();

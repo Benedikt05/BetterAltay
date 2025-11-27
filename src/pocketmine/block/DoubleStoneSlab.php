@@ -27,10 +27,10 @@ use pocketmine\item\TieredTool;
 
 class DoubleStoneSlab extends DoubleSlab{
 
-	protected $id = self::DOUBLE_STONE_SLAB;
+	protected string $id = self::STONE_BRICK_DOUBLE_SLAB;
 
-	public function getSlabId() : int{
-		return self::STONE_SLAB;
+	public function getSlabId() : string{
+		return self::STONE_BRICK_SLAB;
 	}
 
 	public function getHardness() : float{

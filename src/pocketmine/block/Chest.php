@@ -32,7 +32,7 @@ use pocketmine\tile\Tile;
 
 class Chest extends Waterloggable{
 
-	protected $id = self::CHEST;
+	protected string $id = self::CHEST;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -89,7 +89,7 @@ class Chest extends Waterloggable{
 			}
 		}
 
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 		$tile = Tile::createTile(Tile::CHEST, $this->getLevelNonNull(), TileChest::createNBT($this, $face, $item, $player));
 
 		if($chest instanceof TileChest and $tile instanceof TileChest){

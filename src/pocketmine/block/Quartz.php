@@ -35,7 +35,7 @@ class Quartz extends Solid{
 	public const CHISELED = 1;
 	public const PILLAR = 2;
 
-	protected $id = self::QUARTZ_BLOCK;
+	protected string $id = self::QUARTZ_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

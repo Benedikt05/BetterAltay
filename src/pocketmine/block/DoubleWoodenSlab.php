@@ -23,12 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\WoodType;
+
 class DoubleWoodenSlab extends DoubleSlab{
 
-	protected $id = self::DOUBLE_WOODEN_SLAB;
+	public function __construct(private WoodType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_double_slab";
+		parent::__construct($meta);
+	}
 
-	public function getSlabId() : int{
-		return self::WOODEN_SLAB;
+	public function getSlabId() : string{
+		return "minecraft:" . $this->material->getType() . "_slab";
 	}
 
 	public function getHardness() : float{

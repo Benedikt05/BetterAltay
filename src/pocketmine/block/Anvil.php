@@ -38,7 +38,7 @@ class Anvil extends Fallable{
 	public const TYPE_SLIGHTLY_DAMAGED = 4;
 	public const TYPE_VERY_DAMAGED = 8;
 
-	protected $id = self::ANVIL;
+	protected string $id = self::ANVIL;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

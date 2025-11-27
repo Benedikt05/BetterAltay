@@ -25,16 +25,10 @@ namespace pocketmine\block;
 
 class Purpur extends Quartz{
 
-	protected $id = self::PURPUR_BLOCK;
+	protected string $id = self::PURPUR_BLOCK;
 
 	public function getName() : string{
-		static $names = [
-			self::NORMAL => "Purpur Block",
-			self::CHISELED => "Chiseled Purpur", //wtf?
-			self::PILLAR => "Purpur Pillar"
-		];
-
-		return $names[$this->getVariant()] ?? "Unknown";
+		return "Purpur Block";
 	}
 
 	public function getHardness() : float{

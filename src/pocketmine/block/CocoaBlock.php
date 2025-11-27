@@ -30,7 +30,7 @@ use function mt_rand;
 
 class CocoaBlock extends Transparent{
 
-	protected $id = self::COCOA_BLOCK;
+	protected string $id = self::COCOA;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

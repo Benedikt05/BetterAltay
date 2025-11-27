@@ -25,6 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\item\TieredTool;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -33,7 +34,7 @@ use pocketmine\tile\Tile;
 
 class EnderChest extends Chest{
 
-	protected $id = self::ENDER_CHEST;
+	protected string $id = self::ENDER_CHEST;
 
 	public function getHardness() : float{
 		return 22.5;
@@ -102,7 +103,7 @@ class EnderChest extends Chest{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::OBSIDIAN, 0, 8)
+			ItemFactory::get(self::OBSIDIAN, 0, 8)
 		];
 	}
 

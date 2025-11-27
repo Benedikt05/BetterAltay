@@ -28,7 +28,7 @@ use pocketmine\entity\Entity;
 
 class Slime extends Solid{
 
-	protected $id = self::SLIME_BLOCK;
+	protected string $id = self::SLIME;
 
 	public function __construct(){
 
