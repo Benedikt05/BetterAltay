@@ -200,8 +200,8 @@ class BlockFactory{
 		self::registerBlock(new TrappedChest());
 		//TODO: COMPARATOR_BLOCK
 		//TODO: POWERED_COMPARATOR
-//		self::registerBlock(new DaylightSensor());
-//		self::registerBlock(new Redstone());
+		self::registerBlock(new DaylightSensor());
+		self::registerBlock(new Redstone());
 		self::registerBlock(new Hopper());
 		self::registerBlock(new Quartz());
 		self::registerBlock(new QuartzStairs());
@@ -238,7 +238,7 @@ class BlockFactory{
 
 		self::registerBlock(new Magma());
 		self::registerBlock(new NetherWartBlock());
-//		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
+		self::registerBlock(new NetherBrick(BlockIds::RED_NETHER_BRICK, 0, "Red Nether Bricks"));
 		self::registerBlock(new BoneBlock());
 		self::registerGlazedTerracotta();
 		self::registerConcreteBlocks();
@@ -248,11 +248,11 @@ class BlockFactory{
 
 		self::registerBlock(new Podzol());
 		self::registerBlock(new Beetroot());
-//		self::registerBlock(new Stonecutter());
+		self::registerBlock(new Stonecutter());
 //		self::registerBlock(new GlowingObsidian());
 //		self::registerBlock(new NetherReactor());
-//		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE, 0, "update!"));
-//		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE2, 0, "ate!upd"));
+		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE, 0, "update!"));
+		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE2, 0, "ate!upd"));
 		//TODO: MOVINGBLOCK
 		//TODO: OBSERVER
 		//TODO: STRUCTURE_BLOCK

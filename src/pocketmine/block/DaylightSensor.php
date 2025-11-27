@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 class DaylightSensor extends Transparent{
 
-	protected $id = self::DAYLIGHT_SENSOR;
+	protected string $id = self::DAYLIGHT_DETECTOR;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
