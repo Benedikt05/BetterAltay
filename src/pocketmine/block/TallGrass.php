@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\GroundCoverType;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -32,10 +33,16 @@ use function mt_rand;
 
 class TallGrass extends Flowable{
 
-	protected string $id = self::FERN;
+	protected string $id = self::TALL_GRASS;
 
-	public function __construct(int $meta = 1){
+	public function __construct(protected GroundCoverType $material, int $meta = 0){
 		$this->meta = $meta;
+		$type = $this->material->getType();
+		$this->id = match (true) {
+			$this->material->equals(GroundCoverType::SHORT()) => "minecraft:{$type}_grass",
+			$this->material->equals(GroundCoverType::FERN())  => "minecraft:$type",
+			default => self::TALL_GRASS
+		};
 	}
 
 	public function canBeReplaced() : bool{
@@ -43,7 +50,11 @@ class TallGrass extends Flowable{
 	}
 
 	public function getName() : string{
-		return "Tall Grass";
+		if ($this->material->equals(GroundCoverType::FERN())) {
+			return $this->material->getName();
+		}
+
+		return $this->material->getName() . " Grass";
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{

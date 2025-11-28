@@ -29,6 +29,7 @@ use pocketmine\block\material\ColorType;
 use pocketmine\block\material\FlowerType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
+use pocketmine\block\material\GroundCoverType;
 use pocketmine\block\material\WoodType;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -93,7 +94,7 @@ class BlockFactory{
 		self::registerBlock(new DetectorRail());
 		//TODO: STICKY_PISTON
 		self::registerBlock(new Cobweb());
-		self::registerBlock(new TallGrass());
+		self::registerTallGrassBlocks();
 		self::registerBlock(new DeadBush());
 		//TODO: PISTON
 		//TODO: PISTONARMCOLLISION
@@ -572,6 +573,12 @@ class BlockFactory{
 	private static function registerFlowerBlocks() : void{
 		foreach(FlowerType::values() as $type) {
 			self::registerBlock(new Flower($type));
+		}
+	}
+
+	private static function registerTallGrassBlocks() : void{
+		foreach(GroundCoverType::values() as $type){
+			self::registerBlock(new TallGrass($type));
 		}
 	}
 }
