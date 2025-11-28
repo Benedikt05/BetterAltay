@@ -26,6 +26,7 @@ namespace pocketmine\block;
 use InvalidArgumentException;
 use pocketmine\block\material\AnvilType;
 use pocketmine\block\material\ColorType;
+use pocketmine\block\material\FlowerType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
 use pocketmine\block\material\WoodType;
@@ -103,9 +104,7 @@ class BlockFactory{
 		self::registerWoodenStairs();
 		self::registerWoodenFences();
 		self::registerShulkerBoxes();
-//
-//		self::registerBlock(new Dandelion());
-//		self::registerBlock(new Flower());
+		self::registerFlowerBlocks();
 		self::registerBlock(new BrownMushroom());
 		self::registerBlock(new RedMushroom());
 		self::registerBlock(new Gold());
@@ -567,6 +566,12 @@ class BlockFactory{
 	private static function registerAnvils() : void{
 		foreach(AnvilType::values() as $type){
 			self::registerBlock(new Anvil($type));
+		}
+	}
+
+	private static function registerFlowerBlocks() : void{
+		foreach(FlowerType::values() as $type) {
+			self::registerBlock(new Flower($type));
 		}
 	}
 }

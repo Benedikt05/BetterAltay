@@ -23,40 +23,20 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\FlowerType;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class Flower extends Flowable{
-	public const TYPE_POPPY = 0;
-	public const TYPE_BLUE_ORCHID = 1;
-	public const TYPE_ALLIUM = 2;
-	public const TYPE_AZURE_BLUET = 3;
-	public const TYPE_RED_TULIP = 4;
-	public const TYPE_ORANGE_TULIP = 5;
-	public const TYPE_WHITE_TULIP = 6;
-	public const TYPE_PINK_TULIP = 7;
-	public const TYPE_OXEYE_DAISY = 8;
 
-	protected $id = self::RED_FLOWER;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected FlowerType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType();
 		$this->meta = $meta;
 	}
 
 	public function getName() : string{
-		static $names = [
-			self::TYPE_POPPY => "Poppy",
-			self::TYPE_BLUE_ORCHID => "Blue Orchid",
-			self::TYPE_ALLIUM => "Allium",
-			self::TYPE_AZURE_BLUET => "Azure Bluet",
-			self::TYPE_RED_TULIP => "Red Tulip",
-			self::TYPE_ORANGE_TULIP => "Orange Tulip",
-			self::TYPE_WHITE_TULIP => "White Tulip",
-			self::TYPE_PINK_TULIP => "Pink Tulip",
-			self::TYPE_OXEYE_DAISY => "Oxeye Daisy"
-		];
-		return $names[$this->getVariant()] ?? "Unknown";
+		return $this->material->getName();
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
@@ -82,5 +62,9 @@ class Flower extends Flowable{
 
 	public function getFlammability() : int{
 		return 100;
+	}
+
+	public function getMaterial() : FlowerType{
+		return $this->material;
 	}
 }

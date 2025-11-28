@@ -47,7 +47,8 @@ class Cactus extends Populator{
 	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
 		$this->level = $level;
 		$amount = $random->nextRange(0, $this->randomAmount + 1) + $this->baseAmount;
-		$rid = RuntimeBlockMapping::toRuntimeId(BlockIds::CACTUS);
+		$cactus = RuntimeBlockMapping::toRuntimeId(BlockIds::CACTUS);
+		$cactusFlower = RuntimeBlockMapping::toRuntimeId(BlockIds::CACTUS_FLOWER);
 		for($i = 0; $i < $amount; ++$i){
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
@@ -56,13 +57,19 @@ class Cactus extends Populator{
 				continue;
 			}
 
-			if(rand(1, 2) === 1){
-				$this->level->setBlockIdAt($x, $y, $z, $rid);
-				$this->level->setBlockIdAt($x, $y + 1, $z, $rid);
+			if(rand(1, 3) === 1){
+				$this->level->setBlockIdAt($x, $y, $z, $cactus);
+				$this->level->setBlockIdAt($x, $y + 1, $z, $cactus);
+				if (mt_rand(1, 10) === 1) {
+					$this->level->setBlockIdAt($x, $y + 2, $z, $cactusFlower);
+				}
 			}else{
-				$this->level->setBlockIdAt($x, $y, $z, $rid);
-				$this->level->setBlockIdAt($x, $y + 1, $z, $rid);
-				$this->level->setBlockIdAt($x, $y + 2, $z, $rid);
+				$this->level->setBlockIdAt($x, $y, $z, $cactus);
+				$this->level->setBlockIdAt($x, $y + 1, $z, $cactus);
+				$this->level->setBlockIdAt($x, $y + 2, $z, $cactus);
+				if (mt_rand(1, 4) === 1) {
+					$this->level->setBlockIdAt($x, $y + 3, $z, $cactusFlower);
+				}
 			}
 		}
 	}
