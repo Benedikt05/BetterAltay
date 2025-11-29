@@ -190,7 +190,7 @@ class BlockFactory{
 		self::registerBlock(new Tripwire());
 		self::registerBlock(new Emerald());
 		//TODO: COMMAND_BLOCK
-//		self::registerBlock(new Beacon());
+		self::registerBlock(new Beacon());
 //		self::registerBlock(new CobblestoneWall());
 		self::registerBlock(new FlowerPot());
 		self::registerBlock(new Carrot());
@@ -214,8 +214,8 @@ class BlockFactory{
 		self::registerBlock(new SeaLantern());
 		self::registerBlock(new HayBale());
 		self::registerCarpetBlocks();
-//		self::registerBlock(new Coal());
-//		self::registerBlock(new PackedIce());
+		self::registerBlock(new Coal());
+		self::registerBlock(new PackedIce());
 //		self::registerBlock(new DoublePlant());
 		self::registerBlock(new StandingBanner());
 		self::registerBlock(new WallBanner());

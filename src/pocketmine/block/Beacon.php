@@ -32,7 +32,7 @@ use pocketmine\tile\Tile;
 
 class Beacon extends Transparent{
 
-	protected $id = self::BEACON;
+	protected string $id = self::BEACON;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -55,7 +55,7 @@ class Beacon extends Transparent{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->getLevel()->setBlock($blockReplace, $this, true, true);
+		$this->getLevel()->setBlock($blockReplace, $this, true);
 
 		Tile::createTile(Tile::BEACON, $this->getLevel(), TileBeacon::createNBT($this, $face, $item, $player));
 
