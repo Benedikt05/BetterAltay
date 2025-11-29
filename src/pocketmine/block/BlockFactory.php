@@ -211,8 +211,8 @@ class BlockFactory{
 //
 //		self::registerBlock(new IronTrapdoor());
 //		self::registerBlock(new Prismarine());
-//		self::registerBlock(new SeaLantern());
-//		self::registerBlock(new HayBale());
+		self::registerBlock(new SeaLantern());
+		self::registerBlock(new HayBale());
 //		self::registerBlock(new Carpet());
 //		self::registerBlock(new Coal());
 //		self::registerBlock(new PackedIce());

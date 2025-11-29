@@ -43,9 +43,9 @@ class Anvil extends Fallable{
 
 	public function __construct(protected AnvilType $material, int $meta = 0){
 		$this->meta = $meta;
-		if($this->material->equals(AnvilType::NORMAL())) {
+		if($this->material->equals(AnvilType::NORMAL())){
 			$this->id = self::ANVIL;
-		} else {
+		}else{
 			$this->id = "minecraft:" . $this->material->getType() . "_anvil";
 		}
 	}

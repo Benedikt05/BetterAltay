@@ -30,7 +30,7 @@ use pocketmine\Player;
 
 class HayBale extends Solid{
 
-	protected $id = self::HAY_BALE;
+	protected string $id = self::HAY_BLOCK;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -46,7 +46,7 @@ class HayBale extends Solid{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$this->meta = PillarRotationHelper::getMetaFromFace($this->meta, $face);
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 		return true;
 	}
