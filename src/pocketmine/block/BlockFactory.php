@@ -213,7 +213,7 @@ class BlockFactory{
 //		self::registerBlock(new Prismarine());
 		self::registerBlock(new SeaLantern());
 		self::registerBlock(new HayBale());
-//		self::registerBlock(new Carpet());
+		self::registerCarpetBlocks();
 //		self::registerBlock(new Coal());
 //		self::registerBlock(new PackedIce());
 //		self::registerBlock(new DoublePlant());
@@ -579,6 +579,12 @@ class BlockFactory{
 	private static function registerTallGrassBlocks() : void{
 		foreach(GroundCoverType::values() as $type){
 			self::registerBlock(new TallGrass($type));
+		}
+	}
+
+	private static function registerCarpetBlocks() : void{
+		foreach(ColorType::values() as $type){
+			self::registerBlock(new Carpet($type));
 		}
 	}
 }

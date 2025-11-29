@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\ColorType;
 use pocketmine\block\utils\ColorBlockMetaHelper;
 use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
@@ -31,10 +32,11 @@ use pocketmine\Player;
 
 class Carpet extends Flowable{
 
-	protected $id = self::CARPET;
+	protected string $id = self::WHITE_CARPET;
 
-	public function __construct(int $meta = 0){
+	public function __construct(protected ColorType $material, int $meta = 0){
 		$this->meta = $meta;
+		$this->id = "minecraft:" . $this->material->getType() . "_carpet";
 	}
 
 	public function getHardness() : float{
@@ -46,7 +48,7 @@ class Carpet extends Flowable{
 	}
 
 	public function getName() : string{
-		return ColorBlockMetaHelper::getColorFromMeta($this->getVariant()) . " Carpet";
+		return $this->material->getName() . " Carpet";
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
@@ -64,7 +66,7 @@ class Carpet extends Flowable{
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
 		if($down->getId() !== self::AIR){
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+			$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 			return true;
 		}
