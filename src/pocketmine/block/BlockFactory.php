@@ -154,7 +154,7 @@ class BlockFactory{
 		//TODO: REPEATER_BLOCK
 		//TODO: POWERED_REPEATER
 		self::registerBlock(new InvisibleBedrock());
-//		self::registerBlock(new Trapdoor());
+		self::registerTrapdoorBlocks();
 //		self::registerBlock(new MonsterEgg());
 		self::registerBlock(new StoneBricks());
 		self::registerBlock(new MossyStoneBricks());
@@ -211,8 +211,7 @@ class BlockFactory{
 		self::registerBlock(new QuartzStairs());
 		self::registerSlabBlocks();
 		self::registerBlock(new Slime());
-//
-//		self::registerBlock(new IronTrapdoor());
+
 		self::registerBlock(new Prismarine());
 		self::registerBlock(new DarkPrismarine());
 		self::registerBlock(new PrismarineBricks());
@@ -590,6 +589,13 @@ class BlockFactory{
 	private static function registerCarpetBlocks() : void{
 		foreach(ColorType::values() as $type){
 			self::registerBlock(new Carpet($type));
+		}
+	}
+
+	private static function registerTrapdoorBlocks() : void{
+		self::registerBlock(new IronTrapdoor());
+		foreach(WoodType::values() as $type){
+			self::registerBlock(new WoodenTrapdoor($type));
 		}
 	}
 }

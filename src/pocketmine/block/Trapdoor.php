@@ -29,7 +29,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Trapdoor extends Transparent{
+abstract class Trapdoor extends Transparent{
 	public const MASK_UPPER = 0x04;
 	public const MASK_OPENED = 0x08;
 	public const MASK_SIDE = 0x03;
@@ -38,14 +38,8 @@ class Trapdoor extends Transparent{
 	public const MASK_SIDE_EAST = 0;
 	public const MASK_SIDE_WEST = 1;
 
-	protected $id = self::TRAPDOOR;
-
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
-	}
-
-	public function getName() : string{
-		return "Wooden Trapdoor";
 	}
 
 	public function getHardness() : float{
@@ -140,7 +134,7 @@ class Trapdoor extends Transparent{
 		if(($clickVector->y > 0.5 and $face !== self::SIDE_UP) or $face === self::SIDE_DOWN){
 			$this->meta |= self::MASK_UPPER; //top half of block
 		}
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 		return true;
 	}
 
