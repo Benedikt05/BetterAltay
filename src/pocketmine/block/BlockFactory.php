@@ -169,7 +169,7 @@ class BlockFactory{
 		self::registerBlock(new Vine());
 		self::registerBlock(new BrickStairs());
 		self::registerBlock(new StoneBrickStairs());
-//		self::registerBlock(new Mycelium());
+		self::registerBlock(new Mycelium());
 		self::registerBlock(new WaterLily());
 		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK, 0, "Nether Bricks"));
 		self::registerBlock(new NetherBrickFence());

@@ -31,7 +31,7 @@ use function mt_rand;
 
 class Mycelium extends Solid{
 
-	protected $id = self::MYCELIUM;
+	protected string $id = self::MYCELIUM;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -51,7 +51,7 @@ class Mycelium extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::DIRT)
+			ItemFactory::get(self::DIRT)
 		];
 	}
 
@@ -65,9 +65,9 @@ class Mycelium extends Solid{
 		$y = mt_rand($this->y - 2, $this->y + 2);
 		$z = mt_rand($this->z - 1, $this->z + 1);
 		$block = $this->getLevelNonNull()->getBlockAt($x, $y, $z);
-		if($block->getId() === Block::DIRT){
+		if($block->getId() === BlockIds::DIRT){
 			if($block->getSide(Vector3::SIDE_UP) instanceof Transparent){
-				$ev = new BlockSpreadEvent($block, $this, BlockFactory::get(Block::MYCELIUM));
+				$ev = new BlockSpreadEvent($block, $this, BlockFactory::get(BlockIds::MYCELIUM));
 				$ev->call();
 				if(!$ev->isCancelled()){
 					$this->getLevelNonNull()->setBlock($block, $ev->getNewState());
