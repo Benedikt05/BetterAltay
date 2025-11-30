@@ -30,7 +30,7 @@ use pocketmine\Player;
 
 class WaterLily extends Flowable{
 
-	protected $id = self::WATER_LILY;
+	protected string $id = self::WATERLILY;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -58,8 +58,8 @@ class WaterLily extends Flowable{
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if($blockClicked instanceof Water){
 			$up = $blockClicked->getSide(Vector3::SIDE_UP);
-			if($up->getId() === Block::AIR){
-				$this->getLevelNonNull()->setBlock($up, $this, true, true);
+			if($up->getId() === BlockIds::AIR){
+				$this->getLevelNonNull()->setBlock($up, $this, true);
 				return true;
 			}
 		}

@@ -148,7 +148,7 @@ class BlockFactory{
 		self::registerBlock(new Netherrack());
 		self::registerBlock(new SoulSand());
 		self::registerBlock(new Glowstone());
-//		self::registerBlock(new Portal());
+		self::registerBlock(new Portal());
 		self::registerBlock(new LitPumpkin());
 		self::registerBlock(new Cake());
 		//TODO: REPEATER_BLOCK
@@ -156,7 +156,10 @@ class BlockFactory{
 		self::registerBlock(new InvisibleBedrock());
 //		self::registerBlock(new Trapdoor());
 //		self::registerBlock(new MonsterEgg());
-//		self::registerBlock(new StoneBricks());
+		self::registerBlock(new StoneBricks());
+		self::registerBlock(new MossyStoneBricks());
+		self::registerBlock(new CrackedStoneBricks());
+		self::registerBlock(new ChiseledStoneBricks());
 		self::registerBlock(new BrownMushroomBlock());
 		self::registerBlock(new RedMushroomBlock());
 		self::registerBlock(new IronBars());
@@ -167,12 +170,12 @@ class BlockFactory{
 		self::registerBlock(new BrickStairs());
 		self::registerBlock(new StoneBrickStairs());
 //		self::registerBlock(new Mycelium());
-//		self::registerBlock(new WaterLily());
-//		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK_BLOCK, 0, "Nether Bricks"));
+		self::registerBlock(new WaterLily());
+		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK, 0, "Nether Bricks"));
 		self::registerBlock(new NetherBrickFence());
 		self::registerBlock(new NetherBrickStairs());
 //		self::registerBlock(new NetherWartPlant());
-//		self::registerBlock(new EnchantingTable());
+		self::registerBlock(new EnchantingTable());
 		self::registerBlock(new BrewingStand());
 		self::registerBlock(new Cauldron());
 //		self::registerBlock(new EndPortal());
@@ -210,7 +213,9 @@ class BlockFactory{
 		self::registerBlock(new Slime());
 //
 //		self::registerBlock(new IronTrapdoor());
-//		self::registerBlock(new Prismarine());
+		self::registerBlock(new Prismarine());
+		self::registerBlock(new DarkPrismarine());
+		self::registerBlock(new PrismarineBricks());
 		self::registerBlock(new SeaLantern());
 		self::registerBlock(new HayBale());
 		self::registerCarpetBlocks();

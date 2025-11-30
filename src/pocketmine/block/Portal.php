@@ -24,12 +24,14 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\PillarRotationHelper;
 use pocketmine\item\Item;
+use pocketmine\math\Vector3;
 use pocketmine\Player;
 
 class Portal extends Flowable{
 
-	protected $id = self::PORTAL;
+	protected string $id = self::PORTAL;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -53,6 +55,11 @@ class Portal extends Flowable{
 
 	public function isBreakable(Item $item) : bool{
 		return false;
+	}
+
+	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
+		$this->meta = PillarRotationHelper::getMetaFromFace($this->meta, $face);
+		return $this->getLevelNonNull()->setBlock($this, $this, true);
 	}
 
 	public function onBreak(Item $item, Player $player = null) : bool{

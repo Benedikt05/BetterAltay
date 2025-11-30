@@ -78,7 +78,7 @@ class TallGrass extends Populator{
 	}
 
 	private function getHighestWorkableBlock(int $x, int $z) : int{
-		for($y = 127; $y >= 0; --$y){
+		for($y = 259; $y >= 0; --$y){
 			$rid = $this->level->getBlockIdAt($x, $y, $z);
 			[$id, $meta] = RuntimeBlockMapping::fromRuntimeId($rid);
 			$block = BlockFactory::get($id, $meta);

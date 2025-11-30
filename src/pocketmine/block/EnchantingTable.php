@@ -33,14 +33,14 @@ use pocketmine\tile\Tile;
 
 class EnchantingTable extends Transparent{
 
-	protected $id = self::ENCHANTING_TABLE;
+	protected string $id = self::ENCHANTING_TABLE;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 
 		Tile::createTile(Tile::ENCHANT_TABLE, $this->getLevelNonNull(), TileEnchantTable::createNBT($this, $face, $item, $player));
 

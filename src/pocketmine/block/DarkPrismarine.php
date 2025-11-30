@@ -25,31 +25,11 @@ namespace pocketmine\block;
 
 use pocketmine\item\TieredTool;
 
-class Prismarine extends Solid{
+class DarkPrismarine extends Prismarine{
 
-	public const NORMAL = 0;
-	public const DARK = 1;
-	public const BRICKS = 2;
-
-	protected string $id = self::PRISMARINE;
-
-	public function __construct(int $meta = 0){
-		$this->meta = $meta;
-	}
-
-	public function getHardness() : float{
-		return 1.5;
-	}
+	protected string $id = self::DARK_PRISMARINE;
 
 	public function getName() : string{
-		return "Prismarine";
-	}
-
-	public function getToolType() : int{
-		return BlockToolType::TYPE_PICKAXE;
-	}
-
-	public function getToolHarvestLevel() : int{
-		return TieredTool::TIER_WOODEN;
+		return "Dark Prismarine";
 	}
 }
