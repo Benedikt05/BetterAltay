@@ -174,7 +174,7 @@ class BlockFactory{
 		self::registerBlock(new NetherBrick(BlockIds::NETHER_BRICK, 0, "Nether Bricks"));
 		self::registerBlock(new NetherBrickFence());
 		self::registerBlock(new NetherBrickStairs());
-//		self::registerBlock(new NetherWartPlant());
+		self::registerBlock(new NetherWartPlant());
 		self::registerBlock(new EnchantingTable());
 		self::registerBlock(new BrewingStand());
 		self::registerBlock(new Cauldron());
@@ -185,7 +185,7 @@ class BlockFactory{
 		self::registerBlock(new RedstoneLamp());
 		self::registerBlock(new LitRedstoneLamp());
 		//TODO: DROPPER
-//		self::registerBlock(new ActivatorRail());
+		self::registerBlock(new ActivatorRail());
 		self::registerBlock(new CocoaBlock());
 		self::registerBlock(new SandstoneStairs());
 		self::registerBlock(new EnderChest());

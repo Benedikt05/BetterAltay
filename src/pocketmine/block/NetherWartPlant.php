@@ -31,9 +31,7 @@ use pocketmine\Player;
 use function mt_rand;
 
 class NetherWartPlant extends Flowable{
-	protected $id = Block::NETHER_WART_PLANT;
-
-	protected $itemId = Item::NETHER_WART;
+	protected string $id = BlockIds::NETHER_WART;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -45,8 +43,8 @@ class NetherWartPlant extends Flowable{
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$down = $this->getSide(Vector3::SIDE_DOWN);
-		if($down->getId() === Block::SOUL_SAND){
-			$this->getLevelNonNull()->setBlock($blockReplace, $this, false, true);
+		if($down->getId() === BlockIds::SOUL_SAND){
+			$this->getLevelNonNull()->setBlock($blockReplace, $this);
 
 			return true;
 		}
@@ -55,7 +53,7 @@ class NetherWartPlant extends Flowable{
 	}
 
 	public function onNearbyBlockChange() : void{
-		if($this->getSide(Vector3::SIDE_DOWN)->getId() !== Block::SOUL_SAND){
+		if($this->getSide(Vector3::SIDE_DOWN)->getId() !== BlockIds::SOUL_SAND){
 			$this->getLevelNonNull()->useBreakOn($this);
 		}
 	}
@@ -71,7 +69,7 @@ class NetherWartPlant extends Flowable{
 			$ev = new BlockGrowEvent($this, $block);
 			$ev->call();
 			if(!$ev->isCancelled()){
-				$this->getLevelNonNull()->setBlock($this, $ev->getNewState(), false, true);
+				$this->getLevelNonNull()->setBlock($this, $ev->getNewState());
 			}
 		}
 	}
