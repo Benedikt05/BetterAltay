@@ -155,7 +155,7 @@ class BlockFactory{
 		//TODO: POWERED_REPEATER
 		self::registerBlock(new InvisibleBedrock());
 		self::registerTrapdoorBlocks();
-//		self::registerBlock(new MonsterEgg());
+		self::registerInfestedStoneBlocks();
 		self::registerBlock(new StoneBricks());
 		self::registerBlock(new MossyStoneBricks());
 		self::registerBlock(new CrackedStoneBricks());
@@ -597,5 +597,14 @@ class BlockFactory{
 		foreach(WoodType::values() as $type){
 			self::registerBlock(new WoodenTrapdoor($type));
 		}
+	}
+
+	private static function registerInfestedStoneBlocks() : void{
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_STONE));
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_COBBLESTONE));
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_STONE_BRICKS));
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_MOSSY_STONE_BRICKS));
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_CRACKED_STONE_BRICKS));
+		self::registerBlock(new InfestedStone(BlockIds::INFESTED_CHISELED_STONE_BRICKS));
 	}
 }
