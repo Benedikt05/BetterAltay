@@ -42,22 +42,24 @@ class AnimatePacket extends DataPacket{
 	public int $entityRuntimeId;
 	public float $data = 0.0;
 	public float $rowingTime = 0.0; // Boat rowing time
+	public ?string $swingSource = null;
 
 	protected function decodePayload() : void{
-		$this->action = $this->getVarInt();
+		$this->action = $this->getByte();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->data = $this->getLFloat();
-		if(($this->action & 0x80) !== 0){
-			$this->rowingTime = $this->getLFloat();
+		if($this->getBool()){
+			$this->swingSource = $this->getString();
 		}
 	}
 
 	protected function encodePayload() : void{
-		$this->putVarInt($this->action);
+		$this->putByte($this->action);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putLFloat($this->data);
-		if(($this->action & 0x80) !== 0){
-			$this->putLFloat($this->rowingTime);
+		$this->putBool($this->swingSource !== null);
+		if($this->swingSource !== null){
+			$this->putString($this->swingSource);
 		}
 	}
 

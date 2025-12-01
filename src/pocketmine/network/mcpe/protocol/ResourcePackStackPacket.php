@@ -42,7 +42,7 @@ class ResourcePackStackPacket extends DataPacket{
 	public Experiments $experiments;
 	public bool $includeEditorPacks = false;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->mustAccept = $this->getBool();
 		$behaviorPackCount = $this->getUnsignedVarInt();
 		while($behaviorPackCount-- > 0){
@@ -63,15 +63,15 @@ class ResourcePackStackPacket extends DataPacket{
 		$this->includeEditorPacks = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putBool($this->mustAccept);
 
-		$this->putUnsignedVarInt(count($this->behaviorPackStack));
+		/*$this->putUnsignedVarInt(count($this->behaviorPackStack));
 		foreach($this->behaviorPackStack as $entry){
 			$this->putString($entry->getPackId());
 			$this->putString($entry->getPackVersion());
 			$this->putString(""); //TODO: subpack name
-		}
+		}*/
 
 		$this->putUnsignedVarInt(count($this->resourcePackStack));
 		foreach($this->resourcePackStack as $entry){

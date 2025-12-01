@@ -914,7 +914,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$pk->commandData[$data->commandName] = $data;
 		}
 
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 
 	}
 
@@ -4015,7 +4015,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk = new TextPacket();
 		$pk->type = TextPacket::TYPE_RAW;
 		$pk->message = $this->server->getLanguage()->translateString($message);
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
@@ -4037,7 +4037,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$pk->type = TextPacket::TYPE_RAW;
 			$pk->message = $this->server->getLanguage()->translateString($message, $parameters);
 		}
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
@@ -4053,7 +4053,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk = new TextPacket();
 		$pk->type = TextPacket::TYPE_POPUP;
 		$pk->message = $message;
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
@@ -4063,7 +4063,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk = new TextPacket();
 		$pk->type = TextPacket::TYPE_TIP;
 		$pk->message = $message;
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
@@ -4074,7 +4074,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->type = TextPacket::TYPE_WHISPER;
 		$pk->sourceName = $sender;
 		$pk->message = $message;
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
