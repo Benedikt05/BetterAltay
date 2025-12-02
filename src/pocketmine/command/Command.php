@@ -90,7 +90,7 @@ abstract class Command{
 		$this->commandData->commandName = $name;
 		$this->commandData->commandDescription = $description;
 		$this->commandData->flags = 0;
-		$this->commandData->permission = 0;
+		$this->commandData->permission = "any";
 		$this->commandData->aliases = null;
 		$this->commandData->overloads = $overloads ?? [[new CommandParameter()]];
 
