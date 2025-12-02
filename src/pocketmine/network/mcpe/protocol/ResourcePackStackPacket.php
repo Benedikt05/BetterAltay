@@ -35,8 +35,6 @@ class ResourcePackStackPacket extends DataPacket{
 
 	public bool $mustAccept = false;
 	/** @var ResourcePack[] */
-	public array $behaviorPackStack = [];
-	/** @var ResourcePack[] */
 	public array $resourcePackStack = [];
 	public string $baseGameVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK;
 	public Experiments $experiments;
@@ -44,12 +42,6 @@ class ResourcePackStackPacket extends DataPacket{
 
 	protected function decodePayload() : void{
 		$this->mustAccept = $this->getBool();
-		$behaviorPackCount = $this->getUnsignedVarInt();
-		while($behaviorPackCount-- > 0){
-			$this->getString();
-			$this->getString();
-			$this->getString();
-		}
 
 		$resourcePackCount = $this->getUnsignedVarInt();
 		while($resourcePackCount-- > 0){
@@ -65,13 +57,6 @@ class ResourcePackStackPacket extends DataPacket{
 
 	protected function encodePayload() : void{
 		$this->putBool($this->mustAccept);
-
-		/*$this->putUnsignedVarInt(count($this->behaviorPackStack));
-		foreach($this->behaviorPackStack as $entry){
-			$this->putString($entry->getPackId());
-			$this->putString($entry->getPackVersion());
-			$this->putString(""); //TODO: subpack name
-		}*/
 
 		$this->putUnsignedVarInt(count($this->resourcePackStack));
 		foreach($this->resourcePackStack as $entry){
