@@ -36,22 +36,17 @@ class InteractPacket extends DataPacket{
 	public const ACTION_OPEN_NPC = 5;
 	public const ACTION_OPEN_INVENTORY = 6;
 
-	/** @var int */
-	public $action;
-	/** @var int */
-	public $target;
+	public int $action;
+	public int $target;
 
-	/** @var float */
-	public $x;
-	/** @var float */
-	public $y;
-	/** @var float */
-	public $z;
+	public float $x;
+	public float $y;
+	public float $z;
 
 	protected function decodePayload() : void{
 		$this->action = $this->getByte();
 		$this->target = $this->getEntityRuntimeId();
-		if($this->getBool()){//TODO:  //is this correct??
+		if($this->getBool()){ //TODO: is this correct??
 			//TODO: should this be a vector3?
 			$this->x = $this->getLFloat();
 			$this->y = $this->getLFloat();

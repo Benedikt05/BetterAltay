@@ -201,7 +201,7 @@ class AvailableCommandsPacket extends DataPacket{
 			if($index === -1){
 				throw new InvalidStateException("Enum value '$value' not found");
 			}
-			$this->putLint($index);
+			$this->putLInt($index);
 		}
 	}
 
