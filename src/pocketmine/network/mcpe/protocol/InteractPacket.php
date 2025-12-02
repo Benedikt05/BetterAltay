@@ -30,6 +30,7 @@ use pocketmine\network\mcpe\NetworkSession;
 class InteractPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::INTERACT_PACKET;
 
+	public const ACTION_INVALID = 0;
 	public const ACTION_LEAVE_VEHICLE = 3;
 	public const ACTION_MOUSEOVER = 4;
 	public const ACTION_OPEN_NPC = 5;
@@ -47,11 +48,10 @@ class InteractPacket extends DataPacket{
 	/** @var float */
 	public $z;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->action = $this->getByte();
 		$this->target = $this->getEntityRuntimeId();
-
-		if($this->action === self::ACTION_MOUSEOVER || $this->action === self::ACTION_LEAVE_VEHICLE){
+		if($this->getBool()){//TODO:  //is this correct??
 			//TODO: should this be a vector3?
 			$this->x = $this->getLFloat();
 			$this->y = $this->getLFloat();
@@ -59,7 +59,7 @@ class InteractPacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putByte($this->action);
 		$this->putEntityRuntimeId($this->target);
 
