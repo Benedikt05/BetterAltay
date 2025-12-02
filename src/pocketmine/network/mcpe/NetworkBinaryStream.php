@@ -783,26 +783,22 @@ class NetworkBinaryStream extends BinaryStream{
 
 	protected function getCommandOriginData() : CommandOriginData{
 		$result = new CommandOriginData();
-
-		$result->type = $this->getUnsignedVarInt();
+		//TODO: improve this
+		if($this->getString() === "player"){
+			$result->type = CommandOriginData::ORIGIN_PLAYER;
+		}
 		$result->uuid = $this->getUUID();
 		$result->requestId = $this->getString();
-
-		if($result->type === CommandOriginData::ORIGIN_DEV_CONSOLE or $result->type === CommandOriginData::ORIGIN_TEST){
-			$result->playerEntityUniqueId = $this->getVarLong();
-		}
+		$result->playerEntityUniqueId = $this->getLLong();
 
 		return $result;
 	}
 
 	protected function putCommandOriginData(CommandOriginData $data) : void{
-		$this->putUnsignedVarInt($data->type);
+		$this->putString("player");
 		$this->putUUID($data->uuid);
 		$this->putString($data->requestId);
-
-		if($data->type === CommandOriginData::ORIGIN_DEV_CONSOLE or $data->type === CommandOriginData::ORIGIN_TEST){
-			$this->putVarLong($data->playerEntityUniqueId);
-		}
+		$this->putLLong($data->playerEntityUniqueId);
 	}
 
 	protected function getStructureSettings() : StructureSettings{
