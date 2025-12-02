@@ -3416,15 +3416,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			return true;
 		}
 
-		$riding = $this->getRidingEntity();
-		if($riding instanceof Boat){
-			if($packet->action === AnimatePacket::ACTION_ROW_RIGHT){
-				$riding->setPaddleTimeRight($packet->rowingTime);
-			}elseif($packet->action === AnimatePacket::ACTION_ROW_LEFT){
-				$riding->setPaddleTimeLeft($packet->rowingTime);
-			}
-		}
-
 		$pk = new AnimatePacket();
 		$pk->entityRuntimeId = $this->getId();
 		$pk->action = $ev->getAnimationType();
