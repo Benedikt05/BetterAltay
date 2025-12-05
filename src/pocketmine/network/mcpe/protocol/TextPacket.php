@@ -58,7 +58,7 @@ class TextPacket extends DataPacket{
 	public array $parameters = [];
 	public string $xboxUserId = "";
 	public string $platformChatId = "";
-	public string $filteredMessage = "";
+	public ?string $filteredMessage = null;
 
 	protected function decodePayload() : void{
 		$this->needsTranslation = $this->getBool();
@@ -105,7 +105,7 @@ class TextPacket extends DataPacket{
 
 		$this->xboxUserId = $this->getString();
 		$this->platformChatId = $this->getString();
-		$this->filteredMessage = $this->getString();
+		$this->filteredMessage = $this->readOptional(fn() => $this->getString());
 	}
 
 	protected function encodePayload() : void{
@@ -159,7 +159,7 @@ class TextPacket extends DataPacket{
 
 		$this->putString($this->xboxUserId);
 		$this->putString($this->platformChatId);
-		$this->putString($this->filteredMessage);
+		$this->writeOptional($this->filteredMessage, fn(string $filteredMessage) => $this->putString($filteredMessage));
 	}
 
 	protected function getOneOfType(int $textType) : int{
