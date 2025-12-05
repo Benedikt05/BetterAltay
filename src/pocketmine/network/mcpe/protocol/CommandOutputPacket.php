@@ -33,41 +33,37 @@ use function count;
 class CommandOutputPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::COMMAND_OUTPUT_PACKET;
 
-	public const TYPE_LAST = 1;
-	public const TYPE_SILENT = 2;
-	public const TYPE_ALL = 3;
-	public const TYPE_DATA_SET = 4;
+	public const TYPE_NONE = "none";
+	public const TYPE_LAST = "lastoutput";
+	public const TYPE_SILENT = "silent";
+	public const TYPE_ALL = "alloutput";
+	public const TYPE_DATA_SET = "dataset";
 
-	/** @var CommandOriginData */
-	public $originData;
-	/** @var int */
-	public $outputType;
-	/** @var int */
-	public $successCount;
-	/** @var CommandOutputMessage[] */
-	public $messages = [];
-	/** @var string */
-	public $unknownString;
+	public CommandOriginData $originData;
+	public string $outputType;
+	public int $successCount;
+	public array $messages = [];
+	public string $data;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->originData = $this->getCommandOriginData();
-		$this->outputType = $this->getByte();
-		$this->successCount = $this->getUnsignedVarInt();
+		$this->outputType = $this->getString();
+		$this->successCount = $this->getLInt();
 
 		for($i = 0, $size = $this->getUnsignedVarInt(); $i < $size; ++$i){
 			$this->messages[] = $this->getCommandMessage();
 		}
 
 		if($this->outputType === self::TYPE_DATA_SET){
-			$this->unknownString = $this->getString();
+			$this->data = $this->getString();
 		}
 	}
 
 	protected function getCommandMessage() : CommandOutputMessage{
 		$message = new CommandOutputMessage();
 
-		$message->isInternal = $this->getBool();
 		$message->messageId = $this->getString();
+		$message->successful = $this->getBool();
 
 		for($i = 0, $size = $this->getUnsignedVarInt(); $i < $size; ++$i){
 			$message->parameters[] = $this->getString();
@@ -76,10 +72,10 @@ class CommandOutputPacket extends DataPacket{
 		return $message;
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putCommandOriginData($this->originData);
-		$this->putByte($this->outputType);
-		$this->putUnsignedVarInt($this->successCount);
+		$this->putString($this->outputType);
+		$this->putLInt($this->successCount);
 
 		$this->putUnsignedVarInt(count($this->messages));
 		foreach($this->messages as $message){
@@ -87,16 +83,16 @@ class CommandOutputPacket extends DataPacket{
 		}
 
 		if($this->outputType === self::TYPE_DATA_SET){
-			$this->putString($this->unknownString);
+			$this->putString($this->data);
 		}
 	}
 
 	/**
 	 * @return void
 	 */
-	protected function putCommandMessage(CommandOutputMessage $message){
-		$this->putBool($message->isInternal);
+	protected function putCommandMessage(CommandOutputMessage $message) : void{
 		$this->putString($message->messageId);
+		$this->putBool($message->successful);
 
 		$this->putUnsignedVarInt(count($message->parameters));
 		foreach($message->parameters as $parameter){
