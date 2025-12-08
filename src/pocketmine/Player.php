@@ -2096,6 +2096,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->amplifier = $effect->getAmplifier();
 		$pk->particles = $effect->isVisible();
 		$pk->duration = $effect->getDuration();
+		$pk->ambient = $effect->isAmbient();
 
 		$this->dataPacket($pk);
 	}

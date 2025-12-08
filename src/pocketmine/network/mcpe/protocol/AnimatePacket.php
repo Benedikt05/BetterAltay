@@ -26,6 +26,7 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\SwingSource;
 
 class AnimatePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ANIMATE_PACKET;
@@ -39,7 +40,7 @@ class AnimatePacket extends DataPacket{
 	public int $action;
 	public int $entityRuntimeId;
 	public float $data = 0.0;
-	public ?string $swingSource = null;
+	public string $swingSource = SwingSource::NONE;
 
 	protected function decodePayload() : void{
 		$this->action = $this->getByte();
@@ -54,8 +55,8 @@ class AnimatePacket extends DataPacket{
 		$this->putByte($this->action);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putLFloat($this->data);
-		$this->putBool($this->swingSource !== null);
-		if($this->swingSource !== null){
+		$this->putBool($this->swingSource !== SwingSource::NONE);
+		if($this->swingSource !== SwingSource::NONE){
 			$this->putString($this->swingSource);
 		}
 	}
