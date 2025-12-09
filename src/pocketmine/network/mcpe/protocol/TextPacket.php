@@ -138,18 +138,19 @@ class TextPacket extends DataPacket{
 
 		$this->putByte($this->type);
 
+		$message = $this->message === "" ? " " : $this->message;
 		switch($oneOfType){
 			case self::ONEOF_MESSAGE_ONLY:
-				$this->putString($this->message);
+				$this->putString($message);
 				break;
 
 			case self::ONEOF_AUTHOR_AND_MESSAGE:
 				$this->putString($this->sourceName);
-				$this->putString($this->message);
+				$this->putString($message);
 				break;
 
 			case self::ONEOF_MESSAGE_AND_PARAMS:
-				$this->putString($this->message);
+				$this->putString($message);
 				$this->putUnsignedVarInt(count($this->parameters));
 				foreach($this->parameters as $p){
 					$this->putString($p);
