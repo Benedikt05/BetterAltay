@@ -14,10 +14,10 @@
 		<img src="https://img.shields.io/discord/930544524655202317?color=5865F2&logo=discord&logoColor=white" alt="Discord">
 	</a>
 	<a href="https://feedback.minecraft.net/hc/en-us/articles/41224903492621-Minecraft-1-21-130-Bedrock">
-		<img src="https://img.shields.io/badge/Minecraft_1.21.124-blue?style=flat-square" alt="Minecraft">
+		<img src="https://img.shields.io/badge/Minecraft_1.21.130-blue?style=flat-square" alt="Minecraft">
 	</a>
 	<a href="https://github.com/Mojang/bedrock-protocol-docs">
-		<img src="https://img.shields.io/badge/protocol-897-yellow?style=flat-square" alt="Protocol">
+		<img src="https://img.shields.io/badge/protocol-898-yellow?style=flat-square" alt="Protocol">
 	</a>
 	<a href="https://github.com/Benedikt05/BetterAltay/releases">
 		<img src="https://img.shields.io/github/v/release/Benedikt05/BetterAltay?color=green&label=Latest%20Release&logo=github" alt="Latest Release">
