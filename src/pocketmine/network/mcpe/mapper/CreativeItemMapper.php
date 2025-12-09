@@ -45,7 +45,7 @@ class CreativeItemMapper{
 
 		foreach($groups as $group){
 			$name = $group["name"];
-			$categoryId = $group["creative_category"];
+			$category = $group["category"];
 			$icon = $group["icon"];
 
 			try{
@@ -53,6 +53,13 @@ class CreativeItemMapper{
 			}catch(InvalidArgumentException $ignore){
 				$iconValue = ItemFactory::get("minecraft:air");
 			}
+
+			$categoryId = match ($category) {
+				"construction" => CreativeContentPacket::CATEGORY_CONSTRUCTION,
+				"nature" => CreativeContentPacket::CATEGORY_NATURE,
+				"equipment" => CreativeContentPacket::CATEGORY_EQUIPMENT,
+				"items" => CreativeContentPacket::CATEGORY_ITEMS
+			};
 
 			$this->groups[] = new CreativeGroupEntry($categoryId, $name, $iconValue);
 		}
@@ -88,7 +95,7 @@ class CreativeItemMapper{
 
 			}
 			if($itemValue->getName() !== "Unknown"){
-				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["group_index"]);
+				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
 			}
 		}
 

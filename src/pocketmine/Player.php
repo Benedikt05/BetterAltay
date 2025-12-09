@@ -2097,6 +2097,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->amplifier = $effect->getAmplifier();
 		$pk->particles = $effect->isVisible();
 		$pk->duration = $effect->getDuration();
+		$pk->ambient = $effect->isAmbient();
 
 		$this->dataPacket($pk);
 	}
@@ -3415,15 +3416,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$ev->call();
 		if($ev->isCancelled()){
 			return true;
-		}
-
-		$riding = $this->getRidingEntity();
-		if($riding instanceof Boat){
-			if($packet->action === AnimatePacket::ACTION_ROW_RIGHT){
-				$riding->setPaddleTimeRight($packet->rowingTime);
-			}elseif($packet->action === AnimatePacket::ACTION_ROW_LEFT){
-				$riding->setPaddleTimeLeft($packet->rowingTime);
-			}
 		}
 
 		$pk = new AnimatePacket();

@@ -26,6 +26,7 @@ namespace pocketmine\network\mcpe\protocol;
 #include <rules/DataPacket.h>
 
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\network\mcpe\protocol\types\SwingSource;
 
 class AnimatePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::ANIMATE_PACKET;
@@ -35,29 +36,28 @@ class AnimatePacket extends DataPacket{
 	public const ACTION_STOP_SLEEP = 3;
 	public const ACTION_CRITICAL_HIT = 4;
 	public const ACTION_MAGICAL_CRITICAL_HIT = 5;
-	public const ACTION_ROW_RIGHT = 128;
-	public const ACTION_ROW_LEFT = 129;
 
 	public int $action;
 	public int $entityRuntimeId;
 	public float $data = 0.0;
-	public float $rowingTime = 0.0; // Boat rowing time
+	public string $swingSource = SwingSource::NONE;
 
 	protected function decodePayload() : void{
-		$this->action = $this->getVarInt();
+		$this->action = $this->getByte();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->data = $this->getLFloat();
-		if(($this->action & 0x80) !== 0){
-			$this->rowingTime = $this->getLFloat();
+		if($this->getBool()){
+			$this->swingSource = $this->getString();
 		}
 	}
 
 	protected function encodePayload() : void{
-		$this->putVarInt($this->action);
+		$this->putByte($this->action);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putLFloat($this->data);
-		if(($this->action & 0x80) !== 0){
-			$this->putLFloat($this->rowingTime);
+		$this->putBool($this->swingSource !== SwingSource::NONE);
+		if($this->swingSource !== SwingSource::NONE){
+			$this->putString($this->swingSource);
 		}
 	}
 

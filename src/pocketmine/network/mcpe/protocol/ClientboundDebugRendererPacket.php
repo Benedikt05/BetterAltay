@@ -25,38 +25,19 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
-use InvalidArgumentException;
-use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
-use UnexpectedValueException;
+use pocketmine\network\mcpe\protocol\types\DebugMarkerData;
 
 class ClientboundDebugRendererPacket extends DataPacket/* implements ClientboundPacket*/
 {
 	public const NETWORK_ID = ProtocolInfo::CLIENTBOUND_DEBUG_RENDERER_PACKET;
 
-	public const TYPE_CLEAR = 1;
-	public const TYPE_ADD_CUBE = 2;
+	public const TYPE_CLEAR = "cleardebugmarkers";
+	public const TYPE_ADD_CUBE = "adddebugmarkercube";
+	private string $type;
+	private ?DebugMarkerData $data = null;
 
-	/** @var int */
-	private $type;
-
-	//TODO: if more types are added, we'll probably want to make a separate data type and interfaces
-	/** @var string */
-	private $text;
-	/** @var Vector3 */
-	private $position;
-	/** @var float */
-	private $red;
-	/** @var float */
-	private $green;
-	/** @var float */
-	private $blue;
-	/** @var float */
-	private $alpha;
-	/** @var int */
-	private $durationMillis;
-
-	private static function base(int $type) : self{
+	private static function base(string $type) : self{
 		$result = new self;
 		$result->type = $type;
 		return $result;
@@ -64,74 +45,22 @@ class ClientboundDebugRendererPacket extends DataPacket/* implements Clientbound
 
 	public static function clear() : self{ return self::base(self::TYPE_CLEAR); }
 
-	public static function addCube(string $text, Vector3 $position, float $red, float $green, float $blue, float $alpha, int $durationMillis) : self{
+	public static function addCube(DebugMarkerData $data) : self{
 		$result = self::base(self::TYPE_ADD_CUBE);
-		$result->text = $text;
-		$result->position = $position;
-		$result->red = $red;
-		$result->green = $green;
-		$result->blue = $blue;
-		$result->alpha = $alpha;
-		$result->durationMillis = $durationMillis;
+		$result->data = $data;
 		return $result;
 	}
 
-	public function getType() : int{ return $this->type; }
-
-	public function getText() : string{ return $this->text; }
-
-	public function getPosition() : Vector3{ return $this->position; }
-
-	public function getRed() : float{ return $this->red; }
-
-	public function getGreen() : float{ return $this->green; }
-
-	public function getBlue() : float{ return $this->blue; }
-
-	public function getAlpha() : float{ return $this->alpha; }
-
-	public function getDurationMillis() : int{ return $this->durationMillis; }
+	public function getType() : string{ return $this->type; }
 
 	protected function decodePayload() : void{
-		$this->type = $this->getLInt();
-
-		switch($this->type){
-			case self::TYPE_CLEAR:
-				//NOOP
-				break;
-			case self::TYPE_ADD_CUBE:
-				$this->text = $this->getString();
-				$this->position = $this->getVector3();
-				$this->red = $this->getLFloat();
-				$this->green = $this->getLFloat();
-				$this->blue = $this->getLFloat();
-				$this->alpha = $this->getLFloat();
-				$this->durationMillis = $this->getLLong();
-				break;
-			default:
-				throw new UnexpectedValueException("Unknown type " . $this->type);
-		}
+		$this->type = $this->getString();
+		$this->data = $this->readOptional(fn() => DebugMarkerData::read($this));
 	}
 
 	protected function encodePayload() : void{
-		$this->putLInt($this->type);
-
-		switch($this->type){
-			case self::TYPE_CLEAR:
-				//NOOP
-				break;
-			case self::TYPE_ADD_CUBE:
-				$this->putString($this->text);
-				$this->putVector3($this->position);
-				$this->putLFloat($this->red);
-				$this->putLFloat($this->green);
-				$this->putLFloat($this->blue);
-				$this->putLFloat($this->alpha);
-				$this->putLLong($this->durationMillis);
-				break;
-			default:
-				throw new InvalidArgumentException("Unknown type " . $this->type);
-		}
+		$this->putString($this->type);
+		$this->writeOptional($this->data, fn(DebugMarkerData $data) => $data->write($this));
 	}
 
 	public function handle(NetworkSession $session) : bool{

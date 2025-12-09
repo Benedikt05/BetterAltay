@@ -33,6 +33,7 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandData;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
+use pocketmine\network\mcpe\protocol\types\PermissionLevel;
 use pocketmine\permission\PermissionManager;
 use pocketmine\Server;
 use pocketmine\timings\TimingsHandler;
@@ -90,7 +91,7 @@ abstract class Command{
 		$this->commandData->commandName = $name;
 		$this->commandData->commandDescription = $description;
 		$this->commandData->flags = 0;
-		$this->commandData->permission = 0;
+		$this->commandData->permission = PermissionLevel::ANY;
 		$this->commandData->aliases = null;
 		$this->commandData->overloads = $overloads ?? [[new CommandParameter()]];
 

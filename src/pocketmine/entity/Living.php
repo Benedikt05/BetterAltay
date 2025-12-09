@@ -485,6 +485,7 @@ abstract class Living extends Entity implements Damageable{
 			$pk->particles = $effect->isVisible();
 			$pk->duration = $effect->getDuration();
 			$pk->eventId = MobEffectPacket::EVENT_ADD;
+			$pk->ambient = $effect->isAmbient();
 
 			$player->dataPacket($pk);
 		}
