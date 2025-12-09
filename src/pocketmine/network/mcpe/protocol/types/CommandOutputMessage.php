@@ -25,7 +25,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 class CommandOutputMessage{
 	/** @var bool */
-	public $isInternal;
+	public $successful;
 	/** @var string */
 	public $messageId;
 	/** @var string[] */

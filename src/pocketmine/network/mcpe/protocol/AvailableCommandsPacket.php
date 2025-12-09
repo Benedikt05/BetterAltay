@@ -120,7 +120,7 @@ class AvailableCommandsPacket extends DataPacket{
 	public array $enumConstraints = [];
 
 	//requires fix
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		/** @var string[] $enumValues */
 		$enumValues = [];
 		for($i = 0, $enumValuesCount = $this->getUnsignedVarInt(); $i < $enumValuesCount; ++$i){
@@ -165,10 +165,8 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval = new CommandEnum();
 		$retval->enumName = $this->getString();
 
-		$listSize = count($enumValueList);
-
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
-			$index = $this->getEnumValueIndex($listSize);
+			$index = $this->getLInt();
 			if(!isset($enumValueList[$index])){
 				throw new UnexpectedValueException("Invalid enum value index $index");
 			}
@@ -198,13 +196,12 @@ class AvailableCommandsPacket extends DataPacket{
 		$this->putString($enum->enumName);
 
 		$this->putUnsignedVarInt(count($enum->enumValues));
-		$listSize = count($enumValueMap);
 		foreach($enum->enumValues as $value){
 			$index = $enumValueMap[$value] ?? -1;
 			if($index === -1){
 				throw new InvalidStateException("Enum value '$value' not found");
 			}
-			$this->putEnumValueIndex($index, $listSize);
+			$this->putLInt($index);
 		}
 	}
 
@@ -214,29 +211,6 @@ class AvailableCommandsPacket extends DataPacket{
 		$this->putUnsignedVarInt(count($enum->enumValues));
 		foreach($enum->enumValues as $value){
 			$this->putString($value);
-		}
-	}
-
-	/**
-	 * @throws BinaryDataException
-	 */
-	protected function getEnumValueIndex(int $valueCount) : int{
-		if($valueCount < 256){
-			return $this->getByte();
-		}elseif($valueCount < 65536){
-			return $this->getLShort();
-		}else{
-			return $this->getLInt();
-		}
-	}
-
-	protected function putEnumValueIndex(int $index, int $valueCount) : void{
-		if($valueCount < 256){
-			$this->putByte($index);
-		}elseif($valueCount < 65536){
-			$this->putLShort($index);
-		}else{
-			$this->putLInt($index);
 		}
 	}
 
@@ -293,7 +267,7 @@ class AvailableCommandsPacket extends DataPacket{
 		$retval->commandName = $this->getString();
 		$retval->commandDescription = $this->getString();
 		$retval->flags = $this->getLShort();
-		$retval->permission = $this->getByte();
+		$retval->permission = $this->getString();
 		$retval->aliases = $enums[$this->getLInt()] ?? null;
 
 		for($overloadIndex = 0, $overloadCount = $this->getUnsignedVarInt(); $overloadIndex < $overloadCount; ++$overloadIndex){
@@ -337,7 +311,7 @@ class AvailableCommandsPacket extends DataPacket{
 		$this->putString($data->commandName);
 		$this->putString($data->commandDescription);
 		$this->putLShort($data->flags);
-		$this->putByte($data->permission);
+		$this->putString($data->permission);
 
 		if($data->aliases !== null){
 			$this->putLInt($enumIndexes[$data->aliases->enumName] ?? -1);
@@ -374,7 +348,7 @@ class AvailableCommandsPacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		/** @var int[] $enumValueIndexes */
 		$enumValueIndexes = [];
 		/** @var int[] $postfixIndexes */
