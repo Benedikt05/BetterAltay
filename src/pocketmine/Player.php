@@ -2786,8 +2786,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 						$originalPaddlingLeft = $inputFlags->get(PlayerAuthInputFlags::PADDLING_LEFT);
 						$originalPaddlingRight = $inputFlags->get(PlayerAuthInputFlags::PADDLING_RIGHT);
 						if($packet->getInputMode() === InputMode::TOUCHSCREEN){
-							$originalPaddlingLeft = $packet->getMoveVecX() > 0;
-							$originalPaddlingRight = $packet->getMoveVecX() < 0;
+							$originalPaddlingLeft = $packet->getMoveVecX() > 0.35;
+							$originalPaddlingRight = $packet->getMoveVecX() < -0.35;
 						}
 						$ent->handleRiderInput($moveZ, $originalPaddlingLeft, $originalPaddlingRight);
 					}
