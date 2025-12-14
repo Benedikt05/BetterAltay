@@ -88,6 +88,48 @@ class Boat extends Vehicle implements PlayerInventoryMount{
 		$this->propertyManager->setInt(self::DATA_VARIANT, $boatType);
 	}
 
+	public function handleRiderInput(float $moveZ, bool $originalPaddlingLeft, bool $originalPaddlingRight) : void{
+		$maxSpeed = 0.4;
+
+		$yaw = $this->getYaw();
+		$pitch = $this->getPitch();
+		$isMovingForward = abs($moveZ) > 0.01;
+
+		if($originalPaddlingLeft xor $originalPaddlingRight){
+			$yaw += ($originalPaddlingRight ? 3.0 : -3.0);
+			$this->setRotation($yaw, $pitch);
+		}
+
+		$dirX = 0.0;
+		$dirZ = 0.0;
+
+		if($isMovingForward){
+			$radYaw = deg2rad($yaw + 90);
+			$input = $moveZ;
+
+			$dirX = sin($radYaw) * $input * $maxSpeed;
+			$dirZ = -cos($radYaw) * $input * $maxSpeed;
+		}
+
+		$this->setMotion(new Vector3($dirX, $this->getMotion()->y, $dirZ));
+
+		$isPaddlingLeft = $originalPaddlingLeft;
+		$isPaddlingRight = $originalPaddlingRight;
+
+		if($isMovingForward){
+			$isPaddlingLeft = $isPaddlingRight = true;
+		}
+
+		$animation_delta = 0.04;
+
+		if($isMovingForward && $moveZ < 0){
+			$animation_delta = -0.04;
+		}
+
+		$this->setPaddleTimeLeft($isPaddlingLeft ? $this->getPaddleTimeLeft() + $animation_delta : 0);
+		$this->setPaddleTimeRight($isPaddlingRight ? $this->getPaddleTimeRight() + $animation_delta : 0);
+	}
+
 	public function setClientPositionAndRotation(Vector3 $pos, float $yaw, float $pitch, int $clientMoveTicks, bool $immediate) : void{
 		$riddenByEntity = $this->getRiddenByEntity();
 
