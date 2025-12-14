@@ -188,6 +188,7 @@ use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 use pocketmine\network\mcpe\protocol\types\Experiments;
 use pocketmine\network\mcpe\protocol\types\GameMode;
+use pocketmine\network\mcpe\protocol\types\InputMode;
 use pocketmine\network\mcpe\protocol\types\inventory\MismatchTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\ReleaseItemTransactionData;
@@ -2772,13 +2773,23 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				if($this->isRiding()){
 					$ent = $this->getRidingEntity();
-					$vehicle = $packet->getVehicleInfo();
+					/*$vehicle = $packet->getVehicleInfo();
 
 					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$yaw = fmod($packet->getYaw() + 90, 360);
 							$ent->setClientPositionAndRotation($packet->getPosition(), $yaw, 0, 3, true);
+					*/
+					if($ent instanceof Boat){
+						$inputFlags = $packet->getInputFlags();
+						$moveZ = $packet->getMoveVecZ();
+						$originalPaddlingLeft = $inputFlags->get(PlayerAuthInputFlags::PADDLING_LEFT);
+						$originalPaddlingRight = $inputFlags->get(PlayerAuthInputFlags::PADDLING_RIGHT);
+						if($packet->getInputMode() === InputMode::TOUCHSCREEN){
+							$originalPaddlingLeft = $packet->getMoveVecX() > 0.35;
+							$originalPaddlingRight = $packet->getMoveVecX() < -0.35;
 						}
+						$ent->handleRiderInput($moveZ, $originalPaddlingLeft, $originalPaddlingRight);
 					}
 				}
 			}
