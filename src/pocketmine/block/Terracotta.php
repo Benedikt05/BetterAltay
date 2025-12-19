@@ -26,7 +26,7 @@ namespace pocketmine\block;
 use pocketmine\block\material\ColorType;
 use pocketmine\item\TieredTool;
 
-class Terracotta extends Solid{
+class Terracotta extends HardenedClay{
 
 	public function __construct(private ColorType $material, int $meta = 0){
 		$this->id = "minecraft:" . $this->material->getType() . "_terracotta";

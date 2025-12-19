@@ -27,7 +27,7 @@ use pocketmine\item\TieredTool;
 
 class HardenedClay extends Solid{
 
-	protected $id = self::HARDENED_CLAY;
+	protected string $id = self::HARDENED_CLAY;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;

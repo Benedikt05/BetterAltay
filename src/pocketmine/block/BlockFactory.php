@@ -217,6 +217,7 @@ class BlockFactory{
 		self::registerBlock(new PrismarineBricks());
 		self::registerBlock(new SeaLantern());
 		self::registerBlock(new HayBale());
+		self::registerBlock(new HardenedClay());
 		self::registerCarpetBlocks();
 		self::registerBlock(new Coal());
 		self::registerBlock(new PackedIce());
