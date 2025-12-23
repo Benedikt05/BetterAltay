@@ -178,7 +178,7 @@ class BlockFactory{
 		self::registerBlock(new EnchantingTable());
 		self::registerBlock(new BrewingStand());
 		self::registerBlock(new Cauldron());
-//		self::registerBlock(new EndPortal());
+		self::registerBlock(new EndPortal());
 		self::registerBlock(new EndPortalFrame());
 		self::registerBlock(new EndStone());
 		self::registerBlock(new DragonEgg());

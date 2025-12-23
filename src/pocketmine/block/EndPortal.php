@@ -32,7 +32,7 @@ use pocketmine\Server;
 
 class EndPortal extends Transparent{
 
-	protected $id = self::END_PORTAL;
+	protected string $id = self::END_PORTAL;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
