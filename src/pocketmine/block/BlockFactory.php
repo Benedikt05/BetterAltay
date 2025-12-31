@@ -30,6 +30,7 @@ use pocketmine\block\material\FlowerType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
 use pocketmine\block\material\GroundCoverType;
+use pocketmine\block\material\StoneType;
 use pocketmine\block\material\WoodType;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -68,7 +69,7 @@ class BlockFactory{
 		}
 
 		self::registerBlock(new Air());
-		self::registerBlock(new Stone());
+		self::registerStoneBlocks();
 		self::registerBlock(new Grass());
 		self::registerBlock(new Dirt());
 		self::registerBlock(new CoarseDirt());
@@ -607,5 +608,11 @@ class BlockFactory{
 		self::registerBlock(new InfestedStone(BlockIds::INFESTED_MOSSY_STONE_BRICKS));
 		self::registerBlock(new InfestedStone(BlockIds::INFESTED_CRACKED_STONE_BRICKS));
 		self::registerBlock(new InfestedStone(BlockIds::INFESTED_CHISELED_STONE_BRICKS));
+	}
+
+	private static function registerStoneBlocks() : void{
+		foreach(StoneType::values() as $type){
+			self::registerBlock(new Stone($type));
+		}
 	}
 }
