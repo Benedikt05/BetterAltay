@@ -27,6 +27,10 @@ class DoubleMossyCobblestoneSlab extends DoubleStoneSlab{
 
 	protected string $id = self::MOSSY_COBBLESTONE_DOUBLE_SLAB;
 
+	public function __construct(int $meta = 0){
+		$this->meta = $meta;
+	}
+
 	public function getName() : string{
 		return "Mossy Cobblestone Double slab";
 	}

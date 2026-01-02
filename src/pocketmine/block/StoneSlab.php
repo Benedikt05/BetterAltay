@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\StoneType;
 use pocketmine\item\TieredTool;
 
 class StoneSlab extends Slab{
@@ -35,10 +36,13 @@ class StoneSlab extends Slab{
 	public const QUARTZ = 6;
 	public const NETHER_BRICK = 7;
 
-	protected string $id = self::NORMAL_STONE_SLAB;
+	public function __construct(protected StoneType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_slab";
+		parent::__construct($meta);
+	}
 
 	public function getDoubleSlabId() : string{
-		return self::NORMAL_STONE_SLAB;
+		return "minecraft:" . $this->material->getType() . "_double_slab";
 	}
 
 	public function getHardness() : float{
@@ -46,7 +50,7 @@ class StoneSlab extends Slab{
 	}
 
 	public function getName() : string{
-		return "Stone Brick Slab";
+		return $this->material->getName() . " Slab";
 	}
 
 	public function getToolType() : int{

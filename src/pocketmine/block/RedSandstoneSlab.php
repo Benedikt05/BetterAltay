@@ -25,7 +25,7 @@ namespace pocketmine\block;
 
 use pocketmine\block\material\SandstoneType;
 
-class RedSandstoneSlab extends StoneSlab{
+class RedSandstoneSlab extends Slab{
 
 	public function __construct(protected SandstoneType $material, int $meta = 0){
 		if ($this->material->equals(SandstoneType::NORMAL())){
@@ -34,7 +34,7 @@ class RedSandstoneSlab extends StoneSlab{
 			$this->id = "minecraft:" . $this->material->getType() . "_red_sandstone_slab";
 		}
 
-		parent::__construct($meta);
+		$this->meta = $meta;
 	}
 
 	public function getName() : string{

@@ -104,6 +104,7 @@ class BlockFactory{
 		self::registerWoodenDoors();
 		self::registerBlock(new IronDoor());
 		self::registerWoodenStairs();
+		self::registerStoneStairs();
 		self::registerWoodenFences();
 		self::registerShulkerBoxes();
 		self::registerFlowerBlocks();
@@ -131,7 +132,6 @@ class BlockFactory{
 		self::registerBlock(new BurningFurnace(BlockIds::LIT_BLAST_FURNACE, 0, "Lit Blast Furnace", BlockIds::BLAST_FURNACE));
 		self::registerBlock(new Ladder());
 		self::registerBlock(new Rail());
-		self::registerBlock(new CobblestoneStairs());
 		self::registerBlock(new Lever());
 		self::registerPressurePlateBlocks();
 		self::registerBlock(new RedstoneTorchUnlit());
@@ -195,7 +195,6 @@ class BlockFactory{
 		self::registerBlock(new Emerald());
 		//TODO: COMMAND_BLOCK
 		self::registerBlock(new Beacon());
-//		self::registerBlock(new CobblestoneWall());
 		self::registerBlock(new FlowerPot());
 		self::registerBlock(new Carrot());
 		self::registerBlock(new Potato());
@@ -257,7 +256,7 @@ class BlockFactory{
 		self::registerBlock(new Beetroot());
 		self::registerBlock(new Stonecutter());
 		self::registerBlock(new GlowingObsidian());
-//		self::registerBlock(new NetherReactor());
+		self::registerBlock(new NetherReactor());
 		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE, 0, "update!"));
 		self::registerBlock(new InfoUpdate(BlockIds::INFO_UPDATE2, 0, "ate!upd"));
 		//TODO: MOVINGBLOCK
@@ -533,8 +532,6 @@ class BlockFactory{
 	}
 
 	private static function registerSlabBlocks() : void{
-		self::registerBlock(new StoneSlab());
-		self::registerBlock(new DoubleStoneSlab());
 		self::registerBlock(new CobblestoneSlab());
 		self::registerBlock(new DoubleCobblestoneSlab());
 		self::registerBlock(new StoneBrickSlab());
@@ -545,6 +542,11 @@ class BlockFactory{
 		self::registerBlock(new DoubleMossyCobblestoneSlab());
 		self::registerBlock(new EndStoneBrickSlab());
 		self::registerBlock(new DoubleEndStoneBrickSlab());
+
+		foreach(StoneType::values() as $type){
+			self::registerBlock(new StoneSlab($type));
+			self::registerBlock(new DoubleStoneSlab($type));
+		}
 
 		foreach(SandstoneType::values() as $type){
 			self::registerBlock(new SandstoneSlab($type));
@@ -613,6 +615,12 @@ class BlockFactory{
 	private static function registerStoneBlocks() : void{
 		foreach(StoneType::values() as $type){
 			self::registerBlock(new Stone($type));
+		}
+	}
+
+	private static function registerStoneStairs(): void{
+		foreach(StoneType::values() as $type){
+			self::registerBlock(new StoneStairs($type));
 		}
 	}
 }

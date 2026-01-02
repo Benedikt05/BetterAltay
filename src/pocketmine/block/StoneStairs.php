@@ -23,13 +23,13 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\StoneType;
 use pocketmine\item\TieredTool;
 
-class CobblestoneStairs extends Stair{
+class StoneStairs extends Stair{
 
-	protected string $id = self::STONE_STAIRS;
-
-	public function __construct(int $meta = 0){
+	public function __construct(protected StoneType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_stairs";
 		$this->meta = $meta;
 	}
 
@@ -46,6 +46,6 @@ class CobblestoneStairs extends Stair{
 	}
 
 	public function getName() : string{
-		return "Cobblestone Stairs";
+		return $this->material->getName() . " Stairs";
 	}
 }

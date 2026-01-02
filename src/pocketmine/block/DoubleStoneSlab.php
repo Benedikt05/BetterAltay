@@ -23,11 +23,19 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\material\StoneType;
 use pocketmine\item\TieredTool;
 
 class DoubleStoneSlab extends DoubleSlab{
 
-	protected string $id = self::NORMAL_STONE_DOUBLE_SLAB;
+	public function __construct(protected StoneType $material, int $meta = 0){
+		$this->id = "minecraft:" . $this->material->getType() . "_double_slab";
+		$this->meta = $meta;
+	}
+
+	public function getDoubleSlabId() : string{
+		return "minecraft:" . $this->material->getType() . "_slab";
+	}
 
 	public function getSlabId() : string{
 		return self::NORMAL_STONE_SLAB;

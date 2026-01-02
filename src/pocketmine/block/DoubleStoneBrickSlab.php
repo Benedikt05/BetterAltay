@@ -27,6 +27,10 @@ class DoubleStoneBrickSlab extends DoubleStoneSlab{
 
 	protected string $id = self::STONE_BRICK_DOUBLE_SLAB;
 
+	public function __construct(int $meta = 0){
+		$this->meta = $meta;
+	}
+
 	public function getName() : string{
 		return "Stone Brick slab";
 	}
