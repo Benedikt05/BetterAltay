@@ -24,11 +24,12 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\TieredTool;
 
 class NetherReactor extends Solid{
-	protected $id = Block::NETHER_REACTOR;
+	protected string $id = self::NETHERREACTOR;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -57,8 +58,8 @@ class NetherReactor extends Solid{
 
 	public function getDropsForCompatibleTool(Item $item) : array{
 		return [
-			ItemFactory::get(Item::IRON_INGOT, 0, 6),
-			ItemFactory::get(Item::DIAMOND, 0, 3)
+			ItemFactory::get(ItemIds::IRON_INGOT, 0, 6),
+			ItemFactory::get(ItemIds::DIAMOND, 0, 3)
 		];
 	}
 }
