@@ -188,7 +188,7 @@ class ItemFactory{
 		self::registerItem(new Bed());
 //		self::registerItem(new ItemBlock(BlockIds::UNPOWERED_REPEATER, 0, ItemIds::REPEATER));
 		self::registerItem(new Cookie());
-//		self::registerItem(new Map());
+		self::registerItem(new Map());
 		self::registerItem(new Shears());
 		self::registerItem(new Melon());
 		self::registerItem(new PumpkinSeeds());
@@ -226,7 +226,7 @@ class ItemFactory{
 		self::registerItem(new Potato());
 		self::registerItem(new BakedPotato());
 		self::registerItem(new PoisonousPotato());
-//		self::registerItem(new EmptyMap());
+		self::registerItem(new EmptyMap());
 		self::registerItem(new GoldenCarrot());
 		self::registerSkulls();
 		//TODO: CARROTONASTICK
