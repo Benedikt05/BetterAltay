@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace pocketmine\maps\renderer;
 
-use pocketmine\block\Block;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Color;
 use const pocketmine\RESOURCE_PATH;
