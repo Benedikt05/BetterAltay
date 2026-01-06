@@ -56,6 +56,7 @@ use pocketmine\level\generator\GeneratorManager;
 use pocketmine\level\Level;
 use pocketmine\level\LevelException;
 use pocketmine\maps\MapManager;
+use pocketmine\maps\renderer\MapColorTable;
 use pocketmine\metadata\EntityMetadataStore;
 use pocketmine\metadata\LevelMetadataStore;
 use pocketmine\metadata\PlayerMetadataStore;
@@ -1614,6 +1615,7 @@ class Server{
 			ItemFactory::init();
 			Biome::init();
 			MapManager::loadIdCounts();
+			MapColorTable::init();
 			Color::initDyeColors();
 
 			CreativeItemMapper::getInstance()->initCreativeContent();

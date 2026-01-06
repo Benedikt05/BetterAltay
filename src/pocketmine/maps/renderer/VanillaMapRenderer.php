@@ -22,10 +22,11 @@
 
 namespace pocketmine\maps\renderer;
 
-use pocketmine\block\Air;
+use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
 use pocketmine\block\Liquid;
 use pocketmine\maps\MapData;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\Player;
 use pocketmine\utils\Color;
 use function floor;
@@ -68,8 +69,6 @@ class VanillaMapRenderer extends MapRenderer{
 			$maxCheckDistance = 128 / $realScale;
 
 			$world = $player->level;
-			$air = new Air();
-
 			$avgY = 0;
 
 			for($y = max(0, $playerMapY - $maxCheckDistance + 1); $y < min(128, $playerMapY + $maxCheckDistance); $y++){
@@ -87,29 +86,35 @@ class VanillaMapRenderer extends MapRenderer{
 				if($world->isChunkLoaded($worldX >> 4, $worldZ >> 4)){
 					$liquidDepth = 0;
 					$nextAvgY = 0;
+					$block = null;
 
 					$chunk = $world->getChunk($worldX >> 4, $worldZ >> 4);
-					$worldY = $chunk->getHeightMap($worldX & 15, $worldZ & 15) + 1;
-					$block = clone $air;
+					$cX = $worldX & 15;
+					$cZ = $worldZ & 15;
+					$worldY = $chunk->getHeightMap($cX, $cZ) + 1;
 
 					if($worldY > 1){
 						while(true){
 							$worldY--;
-							$block = $world->getBlockAt($worldX, $worldY, $worldZ, true, false);
+							$rid = $chunk->getBlockId($cX, $worldY, $cZ, 0);
+							$id = RuntimeBlockMapping::getIdFromRuntimeId($rid);
+							$mapColor = MapColorTable::getColor($id);
 
-							$mapColor = MapColorTable::getColor($block);
-
-							if(($block->getId() !== BlockIds::AIR and $mapColor->getA() > 0) or $worldY <= 0){
+							if(($id !== BlockIds::AIR and $mapColor->getA() > 0) or $worldY <= 0){
 								break;
 							}
 						}
+
+						$block = BlockFactory::get($id);
 
 						if($worldY > 0 and $block instanceof Liquid){
 							$attempt = 0;
 							$worldY2 = $worldY - 1;
 
 							while($attempt++ <= 10){
-								$b = $world->getBlockAt($worldX, $worldY2--, $worldZ, true, false);
+								$rid2 = $chunk->getBlockId($cX, $worldY2--, $cZ, 0);
+								$bid2 = RuntimeBlockMapping::getIdFromRuntimeId($rid2);
+								$b = BlockFactory::get($bid2);
 								$liquidDepth++;
 
 								if($worldY2 <= 0 or !($b instanceof Liquid)){
@@ -135,7 +140,7 @@ class VanillaMapRenderer extends MapRenderer{
 						$colorDepth = 0;
 					}
 
-					if($block instanceof Liquid){
+					if(isset($block) and $block instanceof Liquid){
 						$avgYDifference = (int) $liquidDepth * 0.1 + (int) ($mapX + $mapY & 1) * 0.2;
 						$colorDepth = 1;
 

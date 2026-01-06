@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace pocketmine\maps\renderer;
 
 use pocketmine\block\Block;
+use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Color;
 use const pocketmine\RESOURCE_PATH;
 use function file_exists;
@@ -81,14 +82,16 @@ class MapColorTable{
 	private static ?Color $C_189_48_49 = null;
 	private static ?Color $C_216_175_147 = null;
 
-	public static function getColor(Block $block) : Color{
+	public static function init(): void{
 		if(empty(self::$mapping)){
 			$path = RESOURCE_PATH . '/vanilla/map_colors.json';
-			if(!file_exists($path)) return new Color(0, 0, 0, 0);
+			if(!file_exists($path)) throw new AssumptionFailedError("Missing required resource file");
 			self::$mapping = json_decode(file_get_contents($path), true) ?? [];
 		}
+	}
 
-		$key = self::$mapping[$block->getId()] ?? null;
+	public static function getColor(string $block) : Color{
+		$key = self::$mapping[$block] ?? null;
 
 		return match ($key) {
 			'112_112_112' => self::$C_112_112_112 ??= new Color(112, 112, 112),
