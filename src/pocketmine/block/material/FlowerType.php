@@ -18,10 +18,6 @@ class FlowerType extends Material {
 	private static ?FlowerType $LILY_OF_THE_VALLEY = null;
 	private static ?FlowerType $TORCHFLOWER = null;
 	private static ?FlowerType $WITHER_ROSE = null;
-	private static ?FlowerType $SUNFLOWER = null;
-	private static ?FlowerType $LILAC = null;
-	private static ?FlowerType $ROSE_BUSH = null;
-	private static ?FlowerType $PEONY = null;
 	private static ?FlowerType $OPEN_EYEBLOSSOM = null;
 	private static ?FlowerType $CLOSED_EYEBLOSSOM = null;
 	private static ?FlowerType $WILDFLOWERS = null;
@@ -84,22 +80,6 @@ class FlowerType extends Material {
 		return self::$WITHER_ROSE ??= new FlowerType("wither_rose", "Wither Rose");
 	}
 
-	public static function SUNFLOWER() : FlowerType{
-		return self::$SUNFLOWER ??= new FlowerType("sunflower", "Sunflower");
-	}
-
-	public static function LILAC() : FlowerType{
-		return self::$LILAC ??= new FlowerType("lilac", "Lilac");
-	}
-
-	public static function ROSE_BUSH() : FlowerType{
-		return self::$ROSE_BUSH ??= new FlowerType("rose_bush", "Rose Bush");
-	}
-
-	public static function PEONY() : FlowerType{
-		return self::$PEONY ??= new FlowerType("peony", "Peony");
-	}
-
 	public static function OPEN_EYEBLOSSOM() : FlowerType{
 		return self::$OPEN_EYEBLOSSOM ??= new FlowerType("open_eyeblossom", "Open EyeBlossom");
 	}
@@ -136,10 +116,6 @@ class FlowerType extends Material {
 			self::LILY_OF_THE_VALLEY(),
 			self::TORCHFLOWER(),
 			self::WITHER_ROSE(),
-			self::SUNFLOWER(),
-			self::LILAC(),
-			self::ROSE_BUSH(),
-			self::PEONY(),
 			self::OPEN_EYEBLOSSOM(),
 			self::CLOSED_EYEBLOSSOM(),
 			self::WILDFLOWERS(),
