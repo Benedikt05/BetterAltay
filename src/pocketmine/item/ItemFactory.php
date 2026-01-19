@@ -71,6 +71,7 @@ class ItemFactory{
 		self::registerItem(new Bow());
 		self::registerItem(new Arrow());
 		self::registerItem(new Coal());
+		self::registerItem(new Charcoal());
 		self::registerItem(new Item(ItemIds::DIAMOND, 0, "Diamond"));
 		self::registerItem(new Item(ItemIds::IRON_INGOT, 0, "Iron Ingot"));
 		self::registerItem(new Item(ItemIds::GOLD_INGOT, 0, "Gold Ingot"));
