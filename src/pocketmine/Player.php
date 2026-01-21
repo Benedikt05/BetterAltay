@@ -4018,7 +4018,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk = new TextPacket();
 		$pk->type = TextPacket::TYPE_RAW;
 		$pk->message = $this->server->getLanguage()->translateString($message);
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
@@ -4040,7 +4040,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$pk->type = TextPacket::TYPE_RAW;
 			$pk->message = $this->server->getLanguage()->translateString($message, $parameters);
 		}
-		$this->dataPacket($pk);
+		//$this->dataPacket($pk);
 	}
 
 	/**
