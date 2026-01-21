@@ -138,8 +138,8 @@ class StartGamePacket extends DataPacket{
 	public bool $serverAuthSound = true;
 	public bool $serverJoinInformation = false;
 	public string $serverId = "";
-	public string $worldId = "";
 	public string $scenarioId = "";
+	public string $worldId = "";
 	public string $ownerId = "";
 
 	protected function decodePayload() : void{
@@ -233,8 +233,8 @@ class StartGamePacket extends DataPacket{
 		$this->serverAuthSound = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
 		$this->serverId = $this->getString();
-		$this->worldId = $this->getString();
 		$this->scenarioId = $this->getString();
+		$this->worldId = $this->getString();
 		$this->ownerId = $this->getString();
 	}
 
@@ -330,8 +330,8 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->serverAuthSound);
 		$this->putBool($this->serverJoinInformation);
 		$this->putString($this->serverId);
-		$this->putString($this->worldId);
 		$this->putString($this->scenarioId);
+		$this->putString($this->worldId);
 		$this->putString($this->ownerId);
 	}
 
