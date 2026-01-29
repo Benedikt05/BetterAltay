@@ -169,13 +169,24 @@ class CraftingManager{
 			$tagName = $input["itemTag"];
 			if(isset($this->itemTags[$tagName])){
 				foreach($this->itemTags[$tagName] as $itemId){
-					$items[] = ItemFactory::get($itemId, -1, $input["count"]);
+					$item = ItemFactory::get($itemId, -1, $input["count"]);
+					if(!($item instanceof ItemBlock && $item->getBlock()->getId() === BlockIds::UNKNOWN) && $item->getName() !== "Unknown"){
+						$items[] = $item;
+					}
 				}
 			}
 		}elseif($input["type"] === "complex_alias"){
-			$item = ItemFactory::get($input["name"], -1, $input["count"]); //TODO: implement this properly
+			$aliasName = $input["name"];
+			$item = ItemFactory::get($aliasName, -1, $input["count"]);
 			if(!($item instanceof ItemBlock && $item->getBlock()->getId() === BlockIds::UNKNOWN) && $item->getName() !== "Unknown"){
 				$items[] = $item;
+			}
+			$complex = ItemTranslator::getInstance()->getComplexAliases();
+			foreach($complex[$aliasName] as $itemId){
+				$item = ItemFactory::get($itemId, -1, $input["count"]);
+				if(!($item instanceof ItemBlock && $item->getBlock()->getId() === BlockIds::UNKNOWN) && $item->getName() !== "Unknown"){
+					$items[] = $item;
+				}
 			}
 		}
 		return $items;
