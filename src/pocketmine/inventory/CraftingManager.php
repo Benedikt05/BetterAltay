@@ -25,7 +25,6 @@ namespace pocketmine\inventory;
 
 use Closure;
 use Generator;
-use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemBlock;
@@ -52,6 +51,8 @@ class CraftingManager{
 	protected $shapelessRecipes = [];
 	/** @var FurnaceRecipe[] */
 	protected $furnaceRecipes = [];
+	/** @var string[][] */
+	protected $itemTags = [];
 
 	/** @var BatchPacket|null */
 	private $craftingDataCache;
@@ -61,13 +62,23 @@ class CraftingManager{
 	}
 
 	public function init() : void{
-		$data = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
+		$path = RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR;
+		$tagsData = json_decode(file_get_contents($path . "item_tags.json"), true);
+
+		if(!is_array($tagsData)){
+			throw new AssumptionFailedError("Invalid item_tags.json");
+		}
+
+		$this->itemTags = $tagsData;
+
+		$data = json_decode(file_get_contents($path . "recipes.json"), true);
+
 		if(!is_array($data)){
 			throw new AssumptionFailedError("recipes.json root should contain a map of recipe types");
 		}
 
-		if (!isset($data["recipes"])){
-			throw  new AssumptionFailedError("recipes.json must contain the required root key 'recipes'");
+		if(!isset($data["recipes"])){
+			throw new AssumptionFailedError("recipes.json must contain the required root key 'recipes'");
 		}
 
 		$itemDeserializerFunc = Closure::fromCallable([Item::class, 'jsonDeserialize']);
@@ -91,78 +102,83 @@ class CraftingManager{
 	}
 
 	private function readShapelessRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
-		if (isset($recipe["id"])){
-			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
-				return;
-			}
-		}
-
 		if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
 			return;
 		}
 
-		$ingredients = [];
+		$allPossibleSets = [[]];
 		foreach($recipe["input"] as $input){
-			if ($input["type"] !== "default"){ //TODO: handle item_tag type
-				continue;
-			}
+			$possibleItems = $this->resolveInputToItems($input);
+			if(empty($possibleItems)) return;
 
-			$item = ItemFactory::get($input["itemId"], $input["auxValue"] === ItemTranslator::WILDCARD ? -1 : $input["auxValue"], $input["count"]);
-			if ($item instanceof ItemBlock){
-				if ($item->getBlock()->getId() === BlockIds::UNKNOWN) {
-					continue;
+			$newSets = [];
+			foreach($allPossibleSets as $existingSet){
+				foreach($possibleItems as $item){
+					$newSets[] = [...$existingSet, $item];
 				}
 			}
-
-			if($item->getName() === "Unknown"){
-				continue;
-			}
-
-			$ingredients[] = $item;
+			$allPossibleSets = $newSets;
 		}
 
-		$this->registerShapelessRecipe(new ShapelessRecipe(
-			$ingredients,
-			array_map($itemDeserializerFunc, $recipe["output"])
-		));
+		foreach($allPossibleSets as $ingredients){
+			$this->registerShapelessRecipe(new ShapelessRecipe($ingredients, array_map($itemDeserializerFunc, $recipe["output"])));
+		}
 	}
 
 	private function readShapedRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
-		if (isset($recipe["id"])){
-			if (!ItemFactory::isRegistered($recipe["id"]) && !BlockFactory::isRegistered($recipe["id"])) {
-				return;
-			}
-		}
-
 		if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
 			return;
 		}
 
-		$ingredients = [];
+		$possibleIngredientsMap = [];
 		foreach($recipe["input"] as $char => $input){
-			if ($input["type"] !== "default"){ //TODO: handle item_tag and complex_alias type.
-				return;
-			}
-
-			$item = ItemFactory::get($input["itemId"], $input["auxValue"] === ItemTranslator::WILDCARD ? -1 : $input["auxValue"], $input["count"]);
-			if ($item instanceof ItemBlock){
-				if ($item->getBlock()->getId() === BlockIds::UNKNOWN) {
-					return;
-				}
-			}
-
-			if($item->getName() === "Unknown"){
-				return;
-			}
-
-			$ingredients[$char] = $item;
+			$items = $this->resolveInputToItems($input);
+			if(empty($items)) return;
+			$possibleIngredientsMap[$char] = $items;
 		}
 
-		$this->registerShapedRecipe(new ShapedRecipe(
-			$recipe["shape"],
-			$ingredients,
-			array_map($itemDeserializerFunc, $recipe["output"])
-		));
+		$allIngredientCombos = [[]];
+		foreach($possibleIngredientsMap as $char => $items){
+			$newCombos = [];
+			foreach($allIngredientCombos as $combo){
+				foreach($items as $item){
+					$newCombo = $combo;
+					$newCombo[$char] = $item;
+					$newCombos[] = $newCombo;
+				}
+			}
+			$allIngredientCombos = $newCombos;
+		}
+
+		foreach($allIngredientCombos as $ingredients){
+			$this->registerShapedRecipe(new ShapedRecipe($recipe["shape"], $ingredients, array_map($itemDeserializerFunc, $recipe["output"])));
+		}
+	}
+
+	/**
+	 * @return Item[]
+	 */
+	private function resolveInputToItems(array $input) : array{
+		$items = [];
+		if($input["type"] === "default"){
+			$item = ItemFactory::get($input["itemId"], $input["auxValue"] === ItemTranslator::WILDCARD ? -1 : $input["auxValue"], $input["count"]);
+			if(!($item instanceof ItemBlock && $item->getBlock()->getId() === BlockIds::UNKNOWN) && $item->getName() !== "Unknown"){
+				$items[] = $item;
+			}
+		}elseif($input["type"] === "item_tag"){
+			$tagName = $input["itemTag"];
+			if(isset($this->itemTags[$tagName])){
+				foreach($this->itemTags[$tagName] as $itemId){
+					$items[] = ItemFactory::get($itemId, -1, $input["count"]);
+				}
+			}
+		}elseif($input["type"] === "complex_alias"){
+			$item = ItemFactory::get($input["name"], -1, $input["count"]); //TODO: implement this properly
+			if(!($item instanceof ItemBlock && $item->getBlock()->getId() === BlockIds::UNKNOWN) && $item->getName() !== "Unknown"){
+				$items[] = $item;
+			}
+		}
+		return $items;
 	}
 
 
@@ -339,8 +355,7 @@ class CraftingManager{
 	/**
 	 * @param Item[] $outputs
 	 *
-	 * @return CraftingRecipe[]|Generator
-	 * @phpstan-return Generator<int, CraftingRecipe, void, void>
+	 * @return Generator
 	 */
 	public function matchRecipeByOutputs(array $outputs) : Generator{
 		//TODO: try to match special recipes before anything else (first they need to be implemented!)
