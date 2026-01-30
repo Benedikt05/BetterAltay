@@ -713,6 +713,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	protected $clientPitch = 0;
 	/** @var bool */
 	protected $isKilled = false;
+	/** @var bool */
+	protected $isFlammable = true;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		$this->random = new Random(intval(microtime(true) * 1000));
@@ -793,6 +795,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 		$this->scheduleUpdate();
 
+	}
+
+	public function isFlammable() : bool{
+	    return $this->isFlammable;
+	}
+
+	public function setFlammable(bool $value) : void{
+	    $this->isFlammable = $value;
 	}
 
 	public function getNameTag() : string{

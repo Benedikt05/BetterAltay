@@ -295,8 +295,8 @@ class ItemFactory{
 		self::registerMusicDiscs();
 		self::registerItem(new Item(ItemIds::DISC_FRAGMENT_5, 0, "Disc Fragment"));
 		self::registerItem(new Shield());
-		self::registerItem(new Item(ItemIds::NETHERITE_INGOT, 0, "Netherite Ingot"));
-		self::registerItem(new Item(ItemIds::NETHERITE_SCRAP, 0, "Netherite Scrap"));
+		self::registerItem(new NetheriteIngot());
+		self::registerItem(new NetheriteScrap());
 		self::registerItem(new Item(ItemIds::HONEYCOMB, 0, "Honeycomb"));
 		self::registerItem(new HoneyBottle());
 		self::registerItem(new Spyglass());
