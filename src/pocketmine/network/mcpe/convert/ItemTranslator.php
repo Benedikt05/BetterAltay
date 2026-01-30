@@ -76,6 +76,12 @@ final class ItemTranslator{
 	 */
 	private array $complexMappings = [];
 
+	/**
+	 * @var string[][]
+	 * @phpstan-var array<string, array<int, string>>
+	 */
+	private array $complexAliases = [];
+
 	/** @var ItemTypeDictionary */
 	private ItemTypeDictionary $dictionary;
 	private array $itemToBlockMappings;
@@ -141,7 +147,7 @@ final class ItemTranslator{
 			throw new AssumptionFailedError("Invalid item table format");
 		}
 
-		return new self(ItemTypeDictionary::getInstance(), $simpleMappings, $complexMappings, array_flip($itemIdToBlockIdMappings));
+		return new self(ItemTypeDictionary::getInstance(), $simpleMappings, $complexMappings, array_flip($itemIdToBlockIdMappings), $json["complex"]);
 	}
 
 	/**
@@ -151,7 +157,7 @@ final class ItemTranslator{
 	 * @phpstan-param array<string, int>             $simpleMappings
 	 * @phpstan-param array<string, array<int, int>> $complexMappings
 	 */
-	public function __construct(ItemTypeDictionary $dictionary, array $simpleMappings, array $complexMappings, array $itemIdToBlockIdMappings){
+	public function __construct(ItemTypeDictionary $dictionary, array $simpleMappings, array $complexMappings, array $itemIdToBlockIdMappings, array $complexAliases){
 		$this->dictionary = $dictionary;
 		$this->itemToBlockMappings = $itemIdToBlockIdMappings;
 		foreach($dictionary->getEntries() as $entry){
@@ -168,9 +174,14 @@ final class ItemTranslator{
 				//not all items have a legacy mapping - for now, we only support the ones that do
 				continue;
 			}
-			$this->simpleMappings = $simpleMappings;
-			$this->complexMappings = $complexMappings;
 		}
+		$this->simpleMappings = $simpleMappings;
+		$this->complexMappings = $complexMappings;
+		$this->complexAliases = $complexAliases;
+	}
+
+	public function getComplexAliases() : array{
+		return $this->complexAliases;
 	}
 
 	/**
