@@ -232,6 +232,7 @@ class StartGamePacket extends DataPacket{
 		$this->blockNetworkIdsAreHashes = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
+		if($this->serverJoinInformation) $this->getBool();
 		$this->serverId = $this->getString();
 		$this->scenarioId = $this->getString();
 		$this->worldId = $this->getString();
@@ -329,6 +330,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);
 		$this->putBool($this->serverJoinInformation);
+		if($this->serverJoinInformation) $this->putBool(false);
 		$this->putString($this->serverId);
 		$this->putString($this->scenarioId);
 		$this->putString($this->worldId);

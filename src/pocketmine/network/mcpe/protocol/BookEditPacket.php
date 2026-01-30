@@ -38,8 +38,8 @@ class BookEditPacket extends DataPacket{
 	public const TYPE_SWAP_PAGES = 3;
 	public const TYPE_SIGN_BOOK = 4;
 
-	public int $type;
 	public int $inventorySlot;
+	public int $type;
 	public int $pageNumber;
 	public int $secondaryPageNumber;
 
@@ -50,23 +50,23 @@ class BookEditPacket extends DataPacket{
 	public string $author;
 	public string $xuid;
 
-	protected function decodePayload(){
-		$this->type = $this->getByte();
-		$this->inventorySlot = $this->getByte();
+	protected function decodePayload() : void{
+		$this->inventorySlot = $this->getVarInt();
+		$this->type = $this->getUnsignedVarInt();
 
 		switch($this->type){
 			case self::TYPE_REPLACE_PAGE:
 			case self::TYPE_ADD_PAGE:
-				$this->pageNumber = $this->getByte();
+				$this->pageNumber = $this->getVarInt();
 				$this->text = $this->getString();
 				$this->photoName = $this->getString();
 				break;
 			case self::TYPE_DELETE_PAGE:
-				$this->pageNumber = $this->getByte();
+				$this->pageNumber = $this->getVarInt();
 				break;
 			case self::TYPE_SWAP_PAGES:
-				$this->pageNumber = $this->getByte();
-				$this->secondaryPageNumber = $this->getByte();
+				$this->pageNumber = $this->getVarInt();
+				$this->secondaryPageNumber = $this->getVarInt();
 				break;
 			case self::TYPE_SIGN_BOOK:
 				$this->title = $this->getString();
@@ -78,23 +78,23 @@ class BookEditPacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->type);
-		$this->putByte($this->inventorySlot);
+	protected function encodePayload() : void{
+		$this->putVarInt($this->inventorySlot);
+		$this->putUnsignedVarInt($this->type);
 
 		switch($this->type){
 			case self::TYPE_REPLACE_PAGE:
 			case self::TYPE_ADD_PAGE:
-				$this->putByte($this->pageNumber);
+				$this->putVarInt($this->pageNumber);
 				$this->putString($this->text);
 				$this->putString($this->photoName);
 				break;
 			case self::TYPE_DELETE_PAGE:
-				$this->putByte($this->pageNumber);
+				$this->putVarInt($this->pageNumber);
 				break;
 			case self::TYPE_SWAP_PAGES:
-				$this->putByte($this->pageNumber);
-				$this->putByte($this->secondaryPageNumber);
+				$this->putVarInt($this->pageNumber);
+				$this->putVarInt($this->secondaryPageNumber);
 				break;
 			case self::TYPE_SIGN_BOOK:
 				$this->putString($this->title);
