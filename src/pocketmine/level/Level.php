@@ -1844,6 +1844,7 @@ class Level implements ChunkManager, Metadatable{
 			$itemEntity = Entity::createEntity("Item", $this, $nbt);
 
 			if($itemEntity instanceof ItemEntity){
+			    $itemEntity->setFlammable(!$item->isFireResistant());
 				$itemEntity->spawnToAll();
 
 				return $itemEntity;
@@ -1875,6 +1876,7 @@ class Level implements ChunkManager, Metadatable{
 				continue;
 			}
 
+			$orb->setFlammable(false);
 			$orb->spawnToAll();
 			if($orb instanceof ExperienceOrb){
 				$orbs[] = $orb;

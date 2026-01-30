@@ -207,6 +207,10 @@ class Item implements ItemIds, JsonSerializable{
 		$this->name = $name;
 	}
 
+	public function isFireResistant() : bool{
+	    return false;
+	}
+
 	/**
 	 * @param CompoundTag|string|null $tags
 	 *
