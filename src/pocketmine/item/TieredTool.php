@@ -115,8 +115,4 @@ abstract class TieredTool extends Tool{
 
 		return 0;
 	}
-
-	public function isFireResistant() : bool{
-	    return $this->getTier() === self::TIER_NETHERITE;
-	}
 }

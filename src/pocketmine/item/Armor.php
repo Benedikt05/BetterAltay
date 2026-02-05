@@ -147,8 +147,4 @@ abstract class Armor extends Durable{
 	public function getTier() : int{
 		return self::TIER_OTHER;
 	}
-
-	public function isFireResistant() : bool{
-	    return $this->getTier() === self::TIER_NETHERITE;
-	}
 }
