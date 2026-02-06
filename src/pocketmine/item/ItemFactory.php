@@ -410,6 +410,8 @@ class ItemFactory{
 			$item = self::get($id, $meta);
 		}elseif(defined(ItemIds::class . "::" . mb_strtoupper($b[0]))){
 			$item = self::get(constant(ItemIds::class . "::" . mb_strtoupper($b[0])), $meta);
+		}elseif(defined(BlockIds::class . "::" . mb_strtoupper($b[0]))){
+			$item = self::get(constant(BLockIds::class . "::" . mb_strtoupper($b[0])), $meta);
 		}else{
 			throw new InvalidArgumentException("Unable to resolve \"" . $str . "\" to a valid item");
 		}
