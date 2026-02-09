@@ -232,7 +232,9 @@ class StartGamePacket extends DataPacket{
 		$this->blockNetworkIdsAreHashes = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
-		if($this->serverJoinInformation) $this->getBool();
+		if($this->serverJoinInformation){
+			$this->getBool();
+		}
 		$this->serverId = $this->getString();
 		$this->scenarioId = $this->getString();
 		$this->worldId = $this->getString();
@@ -328,13 +330,17 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
-		$this->putBool($this->serverAuthSound);
+		$this->putBool($this->serverAuthSound);	//NetworkPermissions
 		$this->putBool($this->serverJoinInformation);
-		if($this->serverJoinInformation) $this->putBool(false);
+		if($this->serverJoinInformation){
+			$this->putBool(false); //containsGatheringJoinInfo
+		}
+		//ServerTelemetryData
 		$this->putString($this->serverId);
 		$this->putString($this->scenarioId);
 		$this->putString($this->worldId);
 		$this->putString($this->ownerId);
+		//ServerTelemetryData end
 	}
 
 	public function handle(NetworkSession $session) : bool{
