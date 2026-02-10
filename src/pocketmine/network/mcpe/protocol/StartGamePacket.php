@@ -302,6 +302,12 @@ class StartGamePacket extends DataPacket{
 
 		$this->putByte($this->chatRestrictionLevel);
 		$this->putBool($this->disablePlayerInteractions);
+		if($this->protocol <= ProtocolInfo::P_1_21_130){
+			$this->putString($this->serverId);
+			$this->putString($this->worldId);
+			$this->putString($this->scenarioId);
+			$this->putString($this->ownerId);
+		}
 		//Level settings end
 
 		$this->putString($this->levelId);
@@ -329,12 +335,14 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);
-		$this->putBool($this->serverJoinInformation);
-		if($this->serverJoinInformation) $this->putBool(false);
-		$this->putString($this->serverId);
-		$this->putString($this->scenarioId);
-		$this->putString($this->worldId);
-		$this->putString($this->ownerId);
+		if($this->protocol >= ProtocolInfo::P_1_26_0){
+			$this->putBool($this->serverJoinInformation);
+			if($this->serverJoinInformation) $this->putBool(false);
+			$this->putString($this->serverId);
+			$this->putString($this->scenarioId);
+			$this->putString($this->worldId);
+			$this->putString($this->ownerId);
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

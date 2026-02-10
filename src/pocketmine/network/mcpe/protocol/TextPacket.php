@@ -63,6 +63,27 @@ class TextPacket extends DataPacket{
 	protected function decodePayload() : void{
 		$this->needsTranslation = $this->getBool();
 		$oneOfType = $this->getByte();
+		if($this->protocol <= ProtocolInfo::P_1_21_130){
+			switch($oneOfType){
+				case self::ONEOF_MESSAGE_ONLY:
+					for($i = 0; $i < 6; $i++){
+						$this->getString(); //Read strings: raw, tip, systemMessage, textObjectWhisper, textObjectAnnouncement, textObject
+					}
+					break;
+				case self::ONEOF_AUTHOR_AND_MESSAGE:
+					for($i = 0; $i < 3; $i++){
+						$this->getString(); //Read strings: chat, whisper, announcement
+					}
+					break;
+				case self::ONEOF_MESSAGE_AND_PARAMS:
+					for($i = 0; $i < 3; $i++){
+						$this->getString(); //Read strings: translate, popup, jukeboxPopup
+					}
+					break;
+				default:
+					throw new UnexpectedValueException("Not oneOf<MessageOnly, AuthorAndMessage, MessageAndParams>");
+			}
+		}
 
 		$this->type = $this->getUnsignedVarInt();
 
@@ -96,6 +117,28 @@ class TextPacket extends DataPacket{
 		$oneOfType = $this->getOneOfType($this->type);
 
 		$this->putByte($oneOfType);
+		if($this->protocol <= ProtocolInfo::P_1_21_130){
+			switch($oneOfType){
+				case self::ONEOF_MESSAGE_ONLY:
+					$this->putString("raw");
+					$this->putString("tip");
+					$this->putString("systemMessage");
+					$this->putString("textObjectWhisper");
+					$this->putString("textObjectAnnouncement");
+					$this->putString("textObject");
+					break;
+				case self::ONEOF_AUTHOR_AND_MESSAGE:
+					$this->putString("chat");
+					$this->putString("whisper");
+					$this->putString("announcement");
+					break;
+				case self::ONEOF_MESSAGE_AND_PARAMS:
+					$this->putString("translate");
+					$this->putString("popup");
+					$this->putString("jukeboxPopup");
+					break;
+			}
+		}
 
 		$this->putUnsignedVarInt($this->type);
 

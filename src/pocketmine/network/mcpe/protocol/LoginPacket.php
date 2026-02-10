@@ -40,7 +40,7 @@ class LoginPacket extends DataPacket{
 	/** @var string */
 	public $username;
 	/** @var int */
-	public $protocol;
+	public int $protocol;
 	/** @var string */
 	public $clientUUID;
 	/** @var int */

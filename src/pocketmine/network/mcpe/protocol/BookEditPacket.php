@@ -51,22 +51,27 @@ class BookEditPacket extends DataPacket{
 	public string $xuid;
 
 	protected function decodePayload() : void{
-		$this->inventorySlot = $this->getVarInt();
-		$this->type = $this->getUnsignedVarInt();
+		if($this->protocol <= ProtocolInfo::P_1_21_130){
+			$this->type = $this->getByte();
+			$this->inventorySlot = $this->getByte();
+		}else{
+			$this->inventorySlot = $this->getVarInt();
+			$this->type = $this->getUnsignedVarInt();
+		}
 
 		switch($this->type){
 			case self::TYPE_REPLACE_PAGE:
 			case self::TYPE_ADD_PAGE:
-				$this->pageNumber = $this->getVarInt();
+				$this->pageNumber = $this->readPageNumber();
 				$this->text = $this->getString();
 				$this->photoName = $this->getString();
 				break;
 			case self::TYPE_DELETE_PAGE:
-				$this->pageNumber = $this->getVarInt();
+				$this->pageNumber = $this->readPageNumber();
 				break;
 			case self::TYPE_SWAP_PAGES:
-				$this->pageNumber = $this->getVarInt();
-				$this->secondaryPageNumber = $this->getVarInt();
+				$this->pageNumber = $this->readPageNumber();
+				$this->secondaryPageNumber = $this->readPageNumber();
 				break;
 			case self::TYPE_SIGN_BOOK:
 				$this->title = $this->getString();
@@ -79,22 +84,27 @@ class BookEditPacket extends DataPacket{
 	}
 
 	protected function encodePayload() : void{
-		$this->putVarInt($this->inventorySlot);
-		$this->putUnsignedVarInt($this->type);
+		if($this->protocol <= ProtocolInfo::P_1_21_130){
+			$this->putByte($this->type);
+			$this->putByte($this->inventorySlot);
+		}else{
+			$this->putVarInt($this->inventorySlot);
+			$this->putUnsignedVarInt($this->type);
+		}
 
 		switch($this->type){
 			case self::TYPE_REPLACE_PAGE:
 			case self::TYPE_ADD_PAGE:
-				$this->putVarInt($this->pageNumber);
+				$this->writePageNumber($this->pageNumber);
 				$this->putString($this->text);
 				$this->putString($this->photoName);
 				break;
 			case self::TYPE_DELETE_PAGE:
-				$this->putVarInt($this->pageNumber);
+				$this->writePageNumber($this->pageNumber);
 				break;
 			case self::TYPE_SWAP_PAGES:
-				$this->putVarInt($this->pageNumber);
-				$this->putVarInt($this->secondaryPageNumber);
+				$this->writePageNumber($this->pageNumber);
+				$this->writePageNumber($this->secondaryPageNumber);
 				break;
 			case self::TYPE_SIGN_BOOK:
 				$this->putString($this->title);
@@ -104,6 +114,14 @@ class BookEditPacket extends DataPacket{
 			default:
 				throw new InvalidArgumentException("Unknown book edit type $this->type!");
 		}
+	}
+
+	private function writePageNumber(int $page) : void{
+		$this->protocol <= ProtocolInfo::P_1_21_130 ? $this->putByte($page) : $this->putVarInt($page);
+	}
+
+	private function readPageNumber() : int{
+		return $this->protocol <= ProtocolInfo::P_1_21_130 ? $this->getByte() : $this->getVarInt();
 	}
 
 	public function handle(NetworkSession $session) : bool{

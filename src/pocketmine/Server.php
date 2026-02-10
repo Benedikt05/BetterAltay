@@ -1858,7 +1858,7 @@ class Server{
 	 * @return void
 	 */
 	public function broadcastPacket(array $players, DataPacket $packet){
-		$packet->encode();
+		//$packet->encode();
 		$this->batchPackets($players, [$packet], false);
 	}
 
@@ -1877,16 +1877,18 @@ class Server{
 		Timings::$playerNetworkTimer->startTiming();
 
 		$targets = array_filter($players, function(Player $player) : bool{ return $player->isConnected(); });
-
+		$pk = new BatchPacket();
+		if(!$compress){
+			$pk->enableCompression = false;
+		}
 		if(count($targets) > 0){
-			$pk = new BatchPacket();
-
-			if(!$compress){
-				$pk->enableCompression = false;
-			}
-
-			foreach($packets as $p){
-				$pk->addPacket($p);
+			foreach($targets as $target){
+				$pk->protocol = $target->getProtocol();
+				foreach($packets as $pt){
+					$p = clone $pt;
+					$p->protocol = $target->getProtocol();
+					$pk->addPacket($p);
+				}
 			}
 
 			if(Network::$BATCH_THRESHOLD >= 0 and strlen($pk->payload) >= Network::$BATCH_THRESHOLD){
