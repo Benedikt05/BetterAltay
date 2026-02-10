@@ -231,6 +231,7 @@ use pocketmine\utils\UUID;
 use RuntimeException;
 use UnexpectedValueException;
 use function abs;
+use function array_flip;
 use function array_key_exists;
 use function array_merge;
 use function assert;
