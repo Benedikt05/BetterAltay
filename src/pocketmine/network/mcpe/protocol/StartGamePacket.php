@@ -336,7 +336,7 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
-		$this->putBool($this->serverAuthSound);    //NetworkPermissions
+		$this->putBool($this->serverAuthSound); //NetworkPermissions
 		if($this->protocol >= ProtocolInfo::P_1_26_0){
 			$this->putBool($this->serverJoinInformation);
 			if($this->serverJoinInformation){
