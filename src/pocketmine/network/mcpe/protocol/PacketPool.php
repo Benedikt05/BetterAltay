@@ -217,7 +217,20 @@ class PacketPool{
 		static::registerPacket(new UpdateClientOptionsPacket());
 		static::registerPacket(new PlayerLocationPacket());
 		static::registerPacket(new ClientboundControlSchemeSetPacket());
-		static::registerPacket(new DebugDrawerPacket());
+		static::registerPacket(new DebugDrawerPacket());//TODO: Update
+		/*
+		TODO:
+		static::registerPacket(new ServerboundPackSettingChangePacket());
+		static::registerPacket(new ClientboundDataStorePacket());
+		static::registerPacket(new GraphicsOverrideParameterPacket());
+		static::registerPacket(new ServerboundDataStorePacket());
+		*/
+
+		static::registerPacket(new ClientboundDataDrivenUIShowScreenPacket());
+		static::registerPacket(new ClientboundDataDrivenUICloseAllScreensPacket());
+		static::registerPacket(new ClientboundDataDrivenUIReloadPacket());
+		static::registerPacket(new ClientboundTextureShiftPacket());
+		static::registerPacket(new VoxelShapesPacket());
 	}
 
 	/**

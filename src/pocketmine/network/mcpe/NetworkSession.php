@@ -50,8 +50,12 @@ use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
 use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseAllScreensPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIReloadPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIShowScreenPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
+use pocketmine\network\mcpe\protocol\ClientboundTextureShiftPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheBlobStatusPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheMissResponsePacket;
 use pocketmine\network\mcpe\protocol\ClientCacheStatusPacket;
@@ -204,6 +208,7 @@ use pocketmine\network\mcpe\protocol\UpdatePlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;
 use pocketmine\network\mcpe\protocol\UpdateSubChunkBlocksPacket;
 use pocketmine\network\mcpe\protocol\UpdateTradePacket;
+use pocketmine\network\mcpe\protocol\VoxelShapesPacket;
 
 abstract class NetworkSession{
 
@@ -933,6 +938,26 @@ abstract class NetworkSession{
 	}
 
 	public function handleDebugDrawer(DebugDrawerPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundDataDrivenUIShowScreen(ClientboundDataDrivenUIShowScreenPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundDataDrivenUICloseAllScreens(ClientboundDataDrivenUICloseAllScreensPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundDataDrivenUIReload(ClientboundDataDrivenUIReloadPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundTextureShift(ClientboundTextureShiftPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleVoxelShapes(VoxelShapesPacket $packet) : bool{
 		return false;
 	}
 
