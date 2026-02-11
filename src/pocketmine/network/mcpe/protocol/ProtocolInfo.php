@@ -37,11 +37,11 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = 898;
+	public const CURRENT_PROTOCOL = 924;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v' . self::MINECRAFT_VERSION_NETWORK;
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.21.130';
+	public const MINECRAFT_VERSION_NETWORK = '1.26.0';
 
 	public const LOGIN_PACKET = 0x01;
 	public const PLAY_STATUS_PACKET = 0x02;
@@ -228,6 +228,18 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
 	public const PLAYER_LOCATION_PACKET = 0x146;
 	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
-	public const DEBUG_DRAWER_PACKET = 0x148;
+	public const DEBUG_DRAWER_PACKET = 0x148; //328 //TODO: Update
+	/**
+	 * TODO: implement these
+	 * public const SERVERBOUND_PACK_SETTING_CHANGE_PACKET = 0x149; //329
+	 * public const CLIENTBOUND_DATA_STORE_PACKET = 0x14a; //330
+	 * public const GRAPHICS_OVERRIDE_PARAMETER_PACKET = 0x14b; //331
+	 * public const SERVERBOUND_DATA_STORE_PACKET = 0x14c; //332
+	*/
+	public const CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN_PACKET = 0x14d; //333
+	public const CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS_PACKET = 0x14e; //334
+	public const CLIENTBOUND_DATA_DRIVEN_UI_RELOAD_PACKET = 0x14f; //335
+	public const CLIENTBOUND_TEXTURE_SHIFT_PACKET = 0x150; //336
+	public const VOXEL_SHAPES_PACKET = 0x151; //337
 
 }

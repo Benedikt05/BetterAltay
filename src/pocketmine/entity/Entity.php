@@ -275,8 +275,23 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_IS_BUOYANT = 119; //byte
 	public const DATA_FREEZING_EFFECT_STRENGTH = 120; //float
 	public const DATA_BUOYANCY_DATA = 121; // string
-
+	public const DATA_GOAT_HORN_COUNT = 122; //int
+	public const DATA_BASE_RUNTIME_ID = 123; //string
+	public const DATA_MOVEMENT_SOUND_DISTANCE_OFFSET = 124;
+	public const DATA_HEARTBEAT_INTERVAL_TICKS = 125; //int
+	public const DATA_HEARTBEAT_SOUND_EVENT = 126; //int
+	public const DATA_PLAYER_LAST_DEATH_POS = 127; //blockpos
+	public const DATA_PLAYER_LAST_DEATH_DIMENSION = 128; //int
+	public const DATA_PLAYER_HAS_DIED = 129; //byte
+	public const DATA_COLLISION_BOX = 130; //compound
 	public const DATA_VISIBLE_MOB_EFFECTS = 131; //long
+	public const DATA_FILTERED_NAME = 132; //string
+	public const DATA_ENTER_BED_POSITION = 133; //blockpos
+	public const DATA_SEAT_THIRD_PERSON_CAMERA_RADIUS = 134;
+	public const DATA_SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING = 135;
+	public const DATA_IM_ASSIST_PRIORITY_PRESET_ID = 136; //int
+	public const DATA_AIM_ASSIST_PRIORITY_CATEGORY_ID = 137; //int
+	public const DATA_AIM_ASSIST_PRIORITY_ACTOR_ID = 138; //int
 
 	public const DATA_FLAG_ONFIRE = 0;
 	public const DATA_FLAG_SNEAKING = 1;
@@ -406,6 +421,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_DOES_SERVER_AUTH_ONLY_DISMOUNT = 123;
 	public const DATA_FLAG_BODY_ROTATION_ALWAYS_FOLLOWS_HEAD = 124;
 	public const DATA_FLAG_CAN_USE_VERTICAL_MOVEMENT_ACTION = 125;
+	public const DATA_FLAG_ROTATION_LOCKED_TO_VEHICLE = 126;
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
 	public const DATA_PLAYER_FLAG_DEAD = 2; //TODO: CHECK
