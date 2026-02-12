@@ -213,6 +213,7 @@ use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
+use pocketmine\network\mcpe\protocol\VoxelShapesPacket;
 use pocketmine\network\mcpe\VerifyLoginTask;
 use pocketmine\network\SourceInterface;
 use pocketmine\permission\PermissibleBase;
@@ -2574,6 +2575,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->spawnPosition = $this->level->getSafeSpawn();
 			}
 		}
+
+		$this->sendDataPacket(new VoxelShapesPacket());
 
 		$spawnPosition = $this->getSpawn();
 

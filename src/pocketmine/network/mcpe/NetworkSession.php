@@ -50,7 +50,7 @@ use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
 use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
-use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseAllScreensPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseScreenPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIReloadPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIShowScreenPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
@@ -149,10 +149,12 @@ use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
+use pocketmine\network\mcpe\protocol\ResourcePacksReadyForValidationPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\ServerboundDataDrivenScreenClosedPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerStatsPacket;
@@ -945,7 +947,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleClientboundDataDrivenUICloseAllScreens(ClientboundDataDrivenUICloseAllScreensPacket $packet) : bool{
+	public function handleClientboundDataDrivenUICloseScreen(ClientboundDataDrivenUICloseScreenPacket $packet) : bool{
 		return false;
 	}
 
@@ -958,6 +960,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleVoxelShapes(VoxelShapesPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleResourcePacksReadyForValidation(ResourcePacksReadyForValidationPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerboundDataDrivenScreenClosed(ServerboundDataDrivenScreenClosedPacket $packet) : bool{
 		return false;
 	}
 
