@@ -31,6 +31,7 @@ use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\Player;
+use InvalidArgumentException;
 
 /*
  * This is a Helper class to create a simple Bossbar
@@ -128,7 +129,7 @@ class Bossbar extends Vector3 {
 	}
 	
 	public static function getColorByName(string $name) : int{
-        return match (strtolower($name)) {
+        return match ($name) {
             "pink", "PINK" => self::PINK,
             "blue", "BLUE" => self::BLUE,
             "red", "RED" => self::RED,
@@ -137,7 +138,7 @@ class Bossbar extends Vector3 {
             "purple", "PURPLE" => self::PURPLE,
             "rebecca_purple", "REBECCA_PURPLE" => self::REBECCA_PURPLE,
             "white", "WHITE" => self::WHITE,
-            default => self::PURPLE,
+            default => throw new InvalidArgumentException("Invalid bossbar color: " . $name),
         };
     }
     
@@ -151,7 +152,7 @@ class Bossbar extends Vector3 {
             self::PURPLE => "PURPLE",
             self::REBECCA_PURPLE => "REBECCA_PURPLE",
             self::WHITE => "WHITE",
-            default => "PURPLE",
+            default => throw new InvalidArgumentException("Invalid bossbar color ID: " . $id),
         };
     }
 
