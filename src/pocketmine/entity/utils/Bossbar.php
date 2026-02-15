@@ -76,7 +76,7 @@ class Bossbar extends Vector3 {
 	/** @var Player[] */
 	protected $viewers = [];
 
-	public function __construct(string $title = "", int $color = self::PURPLE, float $hp = 1.0) {
+	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE) {
 		parent::__construct(0, 0, 0);
 
 		$this->entityId = Entity::$entityCount++;
