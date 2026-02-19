@@ -38,9 +38,9 @@ use InvalidArgumentException;
  * Note: This is not an entity
  */
 
-class Bossbar extends Vector3 {
-    
-    public const PINK = 0;
+class Bossbar extends Vector3{
+
+	public const PINK = 0;
 	public const BLUE = 1;
 	public const RED = 2;
 	public const GREEN = 3;
@@ -48,18 +48,18 @@ class Bossbar extends Vector3 {
 	public const PURPLE = 5;
 	public const REBECCA_PURPLE = 6;
 	public const WHITE = 7;
-	
+
 	/** @var array */
 	public $colors = [
-	    self::PINK,
-	    self::BLUE,
-	    self::RED,
-	    self::GREEN,
-	    self::YELLOW,
-	    self::PURPLE,
-	    self::REBECCA_PURPLE,
-	    self::WHITE
-    ];
+		self::PINK,
+		self::BLUE,
+		self::RED,
+		self::GREEN,
+		self::YELLOW,
+		self::PURPLE,
+		self::REBECCA_PURPLE,
+		self::WHITE
+	];
 
 	/** @var int */
 	protected $entityId;
@@ -69,14 +69,14 @@ class Bossbar extends Vector3 {
 
 	/** @var float */
 	protected $healthPercent;
-	
+
 	/** @var int */
 	protected $color;
 
 	/** @var Player[] */
 	protected $viewers = [];
 
-	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE) {
+	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE){
 		parent::__construct(0, 0, 0);
 
 		$this->entityId = Entity::$entityCount++;
@@ -88,7 +88,7 @@ class Bossbar extends Vector3 {
 	public function setTitle(string $title, bool $update = true) : void{
 		$this->title = $title;
 
-		if ($update) {
+		if($update){
 			$this->updateForAll();
 		}
 	}
@@ -104,7 +104,7 @@ class Bossbar extends Vector3 {
 	public function setHealthPercent(float $hp, bool $update = true) : void{
 		$this->healthPercent = max(0, min(1.0, $hp));
 
-		if ($update) {
+		if($update){
 			$this->updateForAll();
 		}
 	}
@@ -112,49 +112,49 @@ class Bossbar extends Vector3 {
 	public function getHealthPercent() : float{
 		return $this->healthPercent;
 	}
-	
-	public function setColor(int $color, bool $update = true) : void{
-        $this->color = $color;
 
-        if ($update) {
-            foreach ($this->viewers as $player) {
-                $this->sendBossEventPacket($player, BossEventPacket::TYPE_HIDE);
-                $this->sendBossEventPacket($player, BossEventPacket::TYPE_SHOW);
-            }
-        }
-    }
-	
-	public function getColor() : int{
-	    return $this->color;
+	public function setColor(int $color, bool $update = true) : void{
+		$this->color = $color;
+
+		if($update){
+			foreach($this->viewers as $player){
+				$this->sendBossEventPacket($player, BossEventPacket::TYPE_HIDE);
+				$this->sendBossEventPacket($player, BossEventPacket::TYPE_SHOW);
+			}
+		}
 	}
-	
+
+	public function getColor() : int{
+		return $this->color;
+	}
+
 	public static function getColorByName(string $name) : int{
-        return match ($name) {
-            "pink", "PINK" => self::PINK,
-            "blue", "BLUE" => self::BLUE,
-            "red", "RED" => self::RED,
-            "green", "GREEN" => self::GREEN,
-            "yellow", "YELLOW" => self::YELLOW,
-            "purple", "PURPLE" => self::PURPLE,
-            "rebecca_purple", "REBECCA_PURPLE" => self::REBECCA_PURPLE,
-            "white", "WHITE" => self::WHITE,
-            default => throw new InvalidArgumentException("Invalid bossbar color: " . $name),
-        };
-    }
-    
-    public static function getColorByID(int $id) : string{
-        return match ($id) {
-            self::PINK => "PINK",
-            self::BLUE => "BLUE",
-            self::RED => "RED",
-            self::GREEN => "GREEN",
-            self::YELLOW => "YELLOW",
-            self::PURPLE => "PURPLE",
-            self::REBECCA_PURPLE => "REBECCA_PURPLE",
-            self::WHITE => "WHITE",
-            default => throw new InvalidArgumentException("Invalid bossbar color ID: " . $id),
-        };
-    }
+		return match ($name) {
+			"pink", "PINK" => self::PINK,
+			"blue", "BLUE" => self::BLUE,
+			"red", "RED" => self::RED,
+			"green", "GREEN" => self::GREEN,
+			"yellow", "YELLOW" => self::YELLOW,
+			"purple", "PURPLE" => self::PURPLE,
+			"rebecca_purple", "REBECCA_PURPLE" => self::REBECCA_PURPLE,
+			"white", "WHITE" => self::WHITE,
+			default => throw new InvalidArgumentException("Invalid bossbar color: " . $name),
+		};
+	}
+
+	public static function getColorByID(int $id) : string{
+		return match ($id) {
+			self::PINK => "PINK",
+			self::BLUE => "BLUE",
+			self::RED => "RED",
+			self::GREEN => "GREEN",
+			self::YELLOW => "YELLOW",
+			self::PURPLE => "PURPLE",
+			self::REBECCA_PURPLE => "REBECCA_PURPLE",
+			self::WHITE => "WHITE",
+			default => throw new InvalidArgumentException("Invalid bossbar color ID: " . $id),
+		};
+	}
 
 	public function showTo(Player $player, bool $isViewer = true) : void{
 		$pk = new AddActorPacket();
@@ -175,7 +175,7 @@ class Bossbar extends Vector3 {
 		$player->sendDataPacket($pk);
 		$this->sendBossEventPacket($player, BossEventPacket::TYPE_SHOW);
 
-		if ($isViewer) {
+		if($isViewer){
 			$this->viewers[spl_object_id($player)] = $player;
 		}
 	}
@@ -188,7 +188,7 @@ class Bossbar extends Vector3 {
 
 		$player->sendDataPacket($pk2);
 
-		if (isset($this->viewers[spl_object_id($player)])) {
+		if(isset($this->viewers[spl_object_id($player)])){
 			unset($this->viewers[spl_object_id($player)]);
 		}
 	}
@@ -199,7 +199,7 @@ class Bossbar extends Vector3 {
 	}
 
 	public function updateForAll() : void{
-		foreach ($this->viewers as $player) {
+		foreach($this->viewers as $player){
 			$this->updateFor($player);
 		}
 	}
@@ -209,7 +209,7 @@ class Bossbar extends Vector3 {
 		$pk->bossEid = $this->entityId;
 		$pk->eventType = $eventType;
 
-		switch ($eventType) {
+		switch($eventType){
 			case BossEventPacket::TYPE_SHOW:
 				$pk->title = $this->title;
 				$pk->filteredTitle = $this->title;
