@@ -31,17 +31,19 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
+use function count;
+use function strtolower;
 
 class GameRuleCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%altay.command.gamerule.description", "%altay.command.gamerule.usage", [], [
 			[
-				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownGameRules()), 1),
+				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownBoolGameRules()), 1),
 				new CommandParameter("value", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("Bool", ["true", "false"])),
 			],
 			[
-				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("IntGameRule", $this->getKnownIntGameRules()), 1),
+				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("IntGameRule", $this->getKnownIntGameRules())),
 				new CommandParameter("value", AvailableCommandsPacket::ARG_TYPE_INT),
 			]
 		]);
@@ -54,7 +56,7 @@ class GameRuleCommand extends VanillaCommand{
 			return true;
 		}
 
-		if(count($args) < 2){
+		if(empty($args)){
 			throw new InvalidCommandSyntaxException();
 		}
 
@@ -65,6 +67,11 @@ class GameRuleCommand extends VanillaCommand{
 		}
 
 		$ruleName = $this->matchRuleName($level->getGameRules()->getRules(), $args[0]);
+
+		if(count($args) <= 1){
+			$sender->sendMessage($ruleName . " = " . $level->getGameRules()->toStringValue($level->getGameRules()->getRuleValue($ruleName)));
+			return true;
+		}
 
 		if($level->getGameRules()->hasRule($ruleName)){
 			if($level->getGameRules()->setRuleWithMatching($ruleName, $args[1])){
@@ -82,7 +89,7 @@ class GameRuleCommand extends VanillaCommand{
 		return true;
 	}
 
-	public function getKnownGameRules() : array{
+	public function getKnownBoolGameRules() : array{
 		return [
 			"commandblockoutput", "dodaylightcycle", "doentitydrops", "dofiretick", "doinsomnia", "domobloot",
 			"domobspawning", "dotiledrops", "doimmediaterespawn", "doweathercycle", "drowningdamage", "falldamage", "firedamage",
