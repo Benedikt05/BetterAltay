@@ -123,7 +123,27 @@ class LoginPacket extends DataPacket{
 			}
 		}
 
-		if(is_array($chainArray)){
+		if(isset($this->loginData["Token"])){
+			try{
+				var_dump("token auth");
+				$authToken = $this->loginData["Token"];
+				[$header, $claimsArray,] = JwtUtils::parse($authToken);
+				$claims = new JwtClaims($claimsArray);
+				$token = new JwtToken($header, $claims);
+				//var_dump($token->header);
+
+				$this->username = $claims->get("xname") ?? $this->username;
+
+				if(($xid = $claims->get("xid")) !== null){
+					$this->clientUUID = UUID::fromXuid($xid)->toString();
+					$this->xuid = $xid;
+				}
+
+				$this->identityPublicKey = $claims->get("cpk") ?? $this->identityPublicKey;
+			}catch(\Throwable $e){
+				var_dump("Could not parse token: " . $e->getMessage());
+			}
+		}elseif(is_array($chainArray)){
 			var_dump("legacy auth");
 			$hasExtraData = false;
 			foreach($chainArray as $chain){
@@ -143,27 +163,8 @@ class LoginPacket extends DataPacket{
 					$this->identityPublicKey = $webtoken["identityPublicKey"];
 				}
 			}
-		}elseif(isset($this->loginData["Token"])){
-			try{
-				$authToken = $this->loginData["Token"];
-				[$header, $claimsArray,] = JwtUtils::parse($authToken);
-				$claims = new JwtClaims($claimsArray);
-				$token = new JwtToken($header, $claims);
-				//var_dump($token->header);
-
-				$this->username = $claims->get("xname") ?? $this->username;
-
-				if(($xid = $claims->get("xid")) !== null){
-					$this->clientUUID = UUID::fromXuid($xid)->toString();
-					$this->xuid = $xid;
-				}
-
-				$this->identityPublicKey = $claims->get("cpk") ?? $this->identityPublicKey;
-			}catch(\Throwable $e){
-				var_dump("Could not parse token: " . $e->getMessage());
-			}
 		}else{
-			var_dump("Neither Certificate nor Token field found");
+			var_dump("Neither Token nor Certificate field found");
 		}
 
 		$this->clientDataJwt = $buffer->get($buffer->getLInt());
