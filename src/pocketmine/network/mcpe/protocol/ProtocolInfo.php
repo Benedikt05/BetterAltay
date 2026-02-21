@@ -37,7 +37,7 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = 935;
+	public const CURRENT_PROTOCOL = 941;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v' . self::MINECRAFT_VERSION_NETWORK;
 	/** Version number sent to clients in ping responses. */
@@ -252,5 +252,6 @@ interface ProtocolInfo{
 	public const LOCATOR_BAR_PACKET = 0x155; //341
 	public const PARTY_CHANGED_PACKET = 0x156; //342
 	public const SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED_PACKET = 0x157; //343
+	public const SYNC_WORLD_CLOCKS_PACKET = 0x158; //344
 
 }
