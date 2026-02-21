@@ -122,6 +122,7 @@ use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
+use pocketmine\network\mcpe\protocol\PartyChangedPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -968,6 +969,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleServerboundDataDrivenScreenClosed(ServerboundDataDrivenScreenClosedPacket $packet) : bool{
+		return false;
+	}
+
+	public function handlePartyChanged(PartyChangedPacket $packet) : bool{
 		return false;
 	}
 

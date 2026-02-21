@@ -226,6 +226,7 @@ class PacketPool{
 		static::registerPacket(new VoxelShapesPacket());
 		static::registerPacket(new ResourcePacksReadyForValidationPacket());
 		static::registerPacket(new ServerboundDataDrivenScreenClosedPacket());
+		static::registerPacket(new PartyChangedPacket());
 	}
 
 	/**
