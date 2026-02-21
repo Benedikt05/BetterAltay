@@ -113,10 +113,6 @@ class StartGamePacket extends DataPacket{
 
 	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
-	public string $serverId = "";
-	public string $worldId = "";
-	public string $scenarioId = "";
-	public string $ownerId = "";
 	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	public string $worldName;
 	public string $premiumWorldTemplateId = "";
@@ -139,8 +135,12 @@ class StartGamePacket extends DataPacket{
 	public UUID $worldTemplateId;
 	public bool $clientSideGeneration = false;
 	public bool $blockNetworkIdsAreHashes = false;
-	public bool $tickDeathSystemsEnabled = false;
 	public bool $serverAuthSound = true;
+	public bool $serverJoinInformation = false;
+	public string $serverId = "";
+	public string $scenarioId = "";
+	public string $worldId = "";
+	public string $ownerId = "";
 
 	protected function decodePayload() : void{
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -206,10 +206,6 @@ class StartGamePacket extends DataPacket{
 
 		$this->chatRestrictionLevel = $this->getByte();
 		$this->disablePlayerInteractions = $this->getBool();
-		$this->serverId = $this->getString();
-		$this->worldId = $this->getString();
-		$this->scenarioId = $this->getString();
-		$this->ownerId = $this->getString();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -234,8 +230,15 @@ class StartGamePacket extends DataPacket{
 		$this->worldTemplateId = $this->getUUID();
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
-		$this->tickDeathSystemsEnabled = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
+		$this->serverJoinInformation = $this->getBool();
+		if($this->serverJoinInformation){
+			$this->getBool();
+		}
+		$this->serverId = $this->getString();
+		$this->scenarioId = $this->getString();
+		$this->worldId = $this->getString();
+		$this->ownerId = $this->getString();
 	}
 
 	protected function encodePayload() : void{
@@ -301,10 +304,6 @@ class StartGamePacket extends DataPacket{
 
 		$this->putByte($this->chatRestrictionLevel);
 		$this->putBool($this->disablePlayerInteractions);
-		$this->putString($this->serverId);
-		$this->putString($this->worldId);
-		$this->putString($this->scenarioId);
-		$this->putString($this->ownerId);
 		//Level settings end
 
 		$this->putString($this->levelId);
@@ -331,8 +330,17 @@ class StartGamePacket extends DataPacket{
 		$this->putUUID($this->worldTemplateId);
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
-		$this->putBool($this->tickDeathSystemsEnabled);
-		$this->putBool($this->serverAuthSound);
+		$this->putBool($this->serverAuthSound);	//NetworkPermissions
+		$this->putBool($this->serverJoinInformation);
+		if($this->serverJoinInformation){
+			$this->putBool(false); //containsGatheringJoinInfo
+		}
+		//ServerTelemetryData
+		$this->putString($this->serverId);
+		$this->putString($this->scenarioId);
+		$this->putString($this->worldId);
+		$this->putString($this->ownerId);
+		//ServerTelemetryData end
 	}
 
 	public function handle(NetworkSession $session) : bool{

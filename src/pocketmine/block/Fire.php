@@ -63,6 +63,9 @@ class Fire extends Flowable{
 	}
 
 	public function onEntityCollide(Entity $entity) : void{
+	    if (!$entity->isFlammable()) {
+			return;
+		}
 		$ev = new EntityDamageByBlockEvent($this, $entity, EntityDamageEvent::CAUSE_FIRE, 1);
 		$entity->attack($ev);
 

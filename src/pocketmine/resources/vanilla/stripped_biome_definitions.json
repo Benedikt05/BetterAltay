@@ -1504,6 +1504,33 @@
             "spawns_warm_variant_farm_animals"
         ]
     },
+    "minecraft:basalt_deltas": {
+        "temperature": 2.0,
+        "downfall": 0.0,
+        "redSporeDensity": 0.0,
+        "blueSporeDensity": 0.0,
+        "ashDensity": 0.0,
+        "whiteAshDensity": 0.0,
+        "foliageSnow": 0.0,
+        "depth": 0.1,
+        "scale": 0.2,
+        "mapWaterColor": {
+            "a": 165,
+            "r": 63,
+            "g": 118,
+            "b": 228
+        },
+        "rain": false,
+        "chunkGenData": null,
+        "id": null,
+        "tags": [
+            "nether",
+            "basalt_deltas",
+            "spawn_many_magma_cubes",
+            "spawn_ghast",
+            "spawns_warm_variant_farm_animals"
+        ]
+    },
     "minecraft:mesa_plateau_stone": {
         "temperature": 2.0,
         "downfall": 0.0,
@@ -2114,33 +2141,6 @@
             "netherwart_forest",
             "warped_forest",
             "spawn_endermen",
-            "spawns_warm_variant_farm_animals"
-        ]
-    },
-    "minecraft:basalt_deltas": {
-        "temperature": 2.0,
-        "downfall": 0.0,
-        "redSporeDensity": 0.0,
-        "blueSporeDensity": 0.0,
-        "ashDensity": 0.0,
-        "whiteAshDensity": 0.0,
-        "foliageSnow": 0.0,
-        "depth": 0.1,
-        "scale": 0.2,
-        "mapWaterColor": {
-            "a": 165,
-            "r": 63,
-            "g": 118,
-            "b": 228
-        },
-        "rain": false,
-        "chunkGenData": null,
-        "id": null,
-        "tags": [
-            "nether",
-            "basalt_deltas",
-            "spawn_many_magma_cubes",
-            "spawn_ghast",
             "spawns_warm_variant_farm_animals"
         ]
     },

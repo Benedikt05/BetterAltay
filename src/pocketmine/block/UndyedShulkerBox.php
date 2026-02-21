@@ -24,6 +24,11 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\tile\ShulkerBox as TileShulkerBox;
+
 class UndyedShulkerBox extends ShulkerBox{
 
 	protected $id = self::UNDYED_SHULKER_BOX;
@@ -31,4 +36,21 @@ class UndyedShulkerBox extends ShulkerBox{
 	public function getName() : string{
 		return "Undyed Shulker Box";
 	}
+
+	public function getDropsForCompatibleTool(Item $item) : array{
+		$t = $this->getLevel()->getTile($this);
+		if($t instanceof TileShulkerBox){
+			$item = ItemFactory::get(Item::UNDYED_SHULKER_BOX, $this->getVariant());
+
+			$blockData = new CompoundTag();
+			$t->writeBlockData($blockData);
+
+			$item->setCustomBlockData($blockData);
+
+			return [$item];
+		}
+
+		return [];
+	}
+
 }

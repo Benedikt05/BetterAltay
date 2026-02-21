@@ -21,21 +21,14 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\item;
 
-use function defined;
+class NetheriteIngot extends Item {
+	public function __construct(){
+		parent::__construct(self::NETHERITE_INGOT, 0, "Netherite Ingot");
+	}
 
-// composer autoload doesn't use require_once and also pthreads can inherit things
-// TODO: drop this file and use a final class with constants
-if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
-	return;
+	public function isFireResistant() : bool{
+	    return true;
+	}
 }
-const _VERSION_INFO_INCLUDED = true;
-
-const NAME = "BetterAltay";
-//Do not modify this. Change FORK_VERSION instead.
-const BASE_VERSION = "3.28.0";
-const FORK_VERSION = "1.38.1";
-const IS_DEVELOPMENT_BUILD = false;
-const BUILD_CHANNEL = "master";
-

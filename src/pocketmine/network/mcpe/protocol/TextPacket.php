@@ -25,7 +25,9 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
 use pocketmine\network\mcpe\NetworkSession;
+use UnexpectedValueException;
 use function count;
 
 class TextPacket extends DataPacket{
@@ -44,7 +46,11 @@ class TextPacket extends DataPacket{
 	public const TYPE_JSON = 10;
 	public const TYPE_JSON_ANNOUNCEMENT = 11;
 
-	public int $type;
+	private const ONEOF_MESSAGE_ONLY = 0;
+	private const ONEOF_AUTHOR_AND_MESSAGE = 1;
+	private const ONEOF_MESSAGE_AND_PARAMS = 2;
+
+	public int $type; //TextPacket::TYPE_*
 	public bool $needsTranslation = false;
 	public string $sourceName;
 	public string $message;
@@ -52,29 +58,25 @@ class TextPacket extends DataPacket{
 	public array $parameters = [];
 	public string $xboxUserId = "";
 	public string $platformChatId = "";
-	public string $filteredMessage = "";
+	public ?string $filteredMessage = null;
 
-	protected function decodePayload(){
-		$this->type = $this->getByte();
+	protected function decodePayload() : void{
 		$this->needsTranslation = $this->getBool();
-		switch($this->type){
-			case self::TYPE_CHAT:
-			case self::TYPE_WHISPER:
-				/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_ANNOUNCEMENT:
-				$this->sourceName = $this->getString();
-			case self::TYPE_RAW:
-			case self::TYPE_TIP:
-			case self::TYPE_SYSTEM:
-			case self::TYPE_JSON_WHISPER:
-			case self::TYPE_JSON:
-			case self::TYPE_JSON_ANNOUNCEMENT:
+		$oneOfType = $this->getByte();
+
+		$this->type = $this->getUnsignedVarInt();
+
+		switch($oneOfType){
+			case self::ONEOF_MESSAGE_ONLY:
 				$this->message = $this->getString();
 				break;
 
-			case self::TYPE_TRANSLATION:
-			case self::TYPE_POPUP:
-			case self::TYPE_JUKEBOX_POPUP:
+			case self::ONEOF_AUTHOR_AND_MESSAGE:
+				$this->sourceName = $this->getString();
+				$this->message = $this->getString();
+				break;
+
+			case self::ONEOF_MESSAGE_AND_PARAMS:
 				$this->message = $this->getString();
 				$count = $this->getUnsignedVarInt();
 				for($i = 0; $i < $count; ++$i){
@@ -85,31 +87,32 @@ class TextPacket extends DataPacket{
 
 		$this->xboxUserId = $this->getString();
 		$this->platformChatId = $this->getString();
-		$this->filteredMessage = $this->getString();
+		$this->filteredMessage = $this->readOptional(fn() => $this->getString());
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->type);
+	protected function encodePayload() : void{
 		$this->putBool($this->needsTranslation);
-		switch($this->type){
-			case self::TYPE_CHAT:
-			case self::TYPE_WHISPER:
-				/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_ANNOUNCEMENT:
-				$this->putString($this->sourceName);
-			case self::TYPE_RAW:
-			case self::TYPE_TIP:
-			case self::TYPE_SYSTEM:
-			case self::TYPE_JSON_WHISPER:
-			case self::TYPE_JSON:
-			case self::TYPE_JSON_ANNOUNCEMENT:
-				$this->putString($this->message);
+
+		$oneOfType = $this->getOneOfType($this->type);
+
+		$this->putByte($oneOfType);
+
+		$this->putUnsignedVarInt($this->type);
+
+		$message = $this->message === "" ? " " : $this->message;
+
+		switch($oneOfType){
+			case self::ONEOF_MESSAGE_ONLY:
+				$this->putString($message);
 				break;
 
-			case self::TYPE_TRANSLATION:
-			case self::TYPE_POPUP:
-			case self::TYPE_JUKEBOX_POPUP:
-				$this->putString($this->message);
+			case self::ONEOF_AUTHOR_AND_MESSAGE:
+				$this->putString($this->sourceName);
+				$this->putString($message);
+				break;
+
+			case self::ONEOF_MESSAGE_AND_PARAMS:
+				$this->putString($message);
 				$this->putUnsignedVarInt(count($this->parameters));
 				foreach($this->parameters as $p){
 					$this->putString($p);
@@ -119,7 +122,26 @@ class TextPacket extends DataPacket{
 
 		$this->putString($this->xboxUserId);
 		$this->putString($this->platformChatId);
-		$this->putString($this->filteredMessage);
+		$this->writeOptional($this->filteredMessage, fn(string $filteredMessage) => $this->putString($filteredMessage));
+	}
+
+	protected function getOneOfType(int $textType) : int{
+		return match ($textType) {
+			self::TYPE_CHAT,
+			self::TYPE_WHISPER,
+			self::TYPE_ANNOUNCEMENT => self::ONEOF_AUTHOR_AND_MESSAGE,
+			self::TYPE_TRANSLATION,
+			self::TYPE_POPUP,
+			self::TYPE_JUKEBOX_POPUP => self::ONEOF_MESSAGE_AND_PARAMS,
+			self::TYPE_RAW,
+			self::TYPE_TIP,
+			self::TYPE_SYSTEM,
+			self::TYPE_JSON,
+			self::TYPE_JSON_WHISPER,
+			self::TYPE_JSON_ANNOUNCEMENT => self::ONEOF_MESSAGE_ONLY,
+
+			default => throw new InvalidArgumentException("Unsupported TextType " . $textType),
+		};
 	}
 
 	public function handle(NetworkSession $session) : bool{

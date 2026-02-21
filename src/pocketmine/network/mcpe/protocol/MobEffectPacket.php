@@ -41,8 +41,9 @@ class MobEffectPacket extends DataPacket{
 	public bool $particles = true;
 	public int $duration = 0;
 	public int $tick = 0;
+	public bool $ambient = false;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->eventId = $this->getByte();
 		$this->effectId = $this->getVarInt();
@@ -50,9 +51,10 @@ class MobEffectPacket extends DataPacket{
 		$this->particles = $this->getBool();
 		$this->duration = $this->getVarInt();
 		$this->tick = $this->getUnsignedVarLong();
+		$this->ambient = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putByte($this->eventId);
 		$this->putVarInt($this->effectId);
@@ -60,6 +62,7 @@ class MobEffectPacket extends DataPacket{
 		$this->putBool($this->particles);
 		$this->putVarInt($this->duration);
 		$this->putUnsignedVarLong($this->tick);
+		$this->putBool($this->ambient);
 	}
 
 	public function handle(NetworkSession $session) : bool{
