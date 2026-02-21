@@ -51,6 +51,7 @@ class UseItemTransactionData extends TransactionData{
 	private Vector3 $clickPos;
 	private int $blockRuntimeId;
 	private int $clientPrediction;
+	private int $clientCooldownState;
 
 	public function getActionType() : int{
 		return $this->actionType;
@@ -92,6 +93,10 @@ class UseItemTransactionData extends TransactionData{
 		return $this->clientPrediction;
 	}
 
+	public function getClientCooldownState() : int{
+		return $this->clientCooldownState;
+	}
+
 	public function getTypeId() : int{
 		return InventoryTransactionPacket::TYPE_USE_ITEM;
 	}
@@ -108,7 +113,8 @@ class UseItemTransactionData extends TransactionData{
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 		$this->blockRuntimeId = $stream->getUnsignedVarInt();
-		$this->clientPrediction = $stream->getByte();
+		$this->clientPrediction = $stream->getUnsignedVarInt();
+		$this->clientCooldownState = $stream->getUnsignedVarInt();
 	}
 
 	protected function encodeData(PacketSerializer $stream) : void{
@@ -121,7 +127,8 @@ class UseItemTransactionData extends TransactionData{
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 		$stream->putUnsignedVarInt($this->blockRuntimeId);
-		$stream->putByte($this->clientPrediction);
+		$stream->putUnsignedVarInt($this->clientPrediction);
+		$stream->putUnsignedVarInt($this->clientCooldownState);
 	}
 
 	/**
