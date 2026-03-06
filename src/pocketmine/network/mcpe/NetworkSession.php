@@ -101,6 +101,7 @@ use pocketmine\network\mcpe\protocol\LevelChunkPacket;
 use pocketmine\network\mcpe\protocol\LevelEventGenericPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\LocatorBarPacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\MapCreateLockedCopyPacket;
 use pocketmine\network\mcpe\protocol\MapInfoRequestPacket;
@@ -976,4 +977,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
+	public function handleLocatorBar(LocatorBarPacket $packet) : bool{
+		return false;
+	}
 }
