@@ -28,14 +28,14 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\LocatorBarWaypointPayload;
 
-class LocatorBarPacket extends DataPacket {
+class LocatorBarPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LOCATOR_BAR_PACKET;
 
 	/** @var LocatorBarWaypointPayload[] */
 	protected array $waypoints = [];
 
 
-	public function getWaypoints() : array {
+	public function getWaypoints() : array{
 		return $this->waypoints;
 	}
 
@@ -50,19 +50,19 @@ class LocatorBarPacket extends DataPacket {
 
 	protected function decodePayload() : void{
 		$length = $this->getUnsignedVarInt();
-		for($i = 0; $i < $length; ++$i) {
+		for($i = 0; $i < $length; ++$i){
 			$this->waypoints[] = LocatorBarWaypointPayload::read($this);
 		}
 	}
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt(count($this->waypoints));
-		foreach($this->waypoints as $waypoint) {
+		foreach($this->waypoints as $waypoint){
 			$waypoint->write($this);
 		}
 	}
 
-	public function handle(NetworkSession $session) : bool {
+	public function handle(NetworkSession $session) : bool{
 		return $session->handleLocatorBar($this);
 	}
 }

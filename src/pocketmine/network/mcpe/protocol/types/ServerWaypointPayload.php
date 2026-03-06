@@ -23,7 +23,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
-class ServerWaypointPayload {
+class ServerWaypointPayload{
 
 	public function __construct(
 		private int $updateFlag,
@@ -32,7 +32,8 @@ class ServerWaypointPayload {
 		private ?int $textureId,
 		private ?int $color,
 		private ?bool $clientPositionAuthority
-	){}
+	){
+	}
 
 	public function getUpdateFlag() : int{
 		return $this->updateFlag;
@@ -42,6 +43,7 @@ class ServerWaypointPayload {
 		return $this->isVisible;
 
 	}
+
 	public function getWorldPosition() : ?WorldPosition{
 		return $this->worldPosition;
 	}
@@ -49,6 +51,7 @@ class ServerWaypointPayload {
 	public function getTextureId() : ?int{
 		return $this->textureId;
 	}
+
 	public function getColor() : ?int{
 		return $this->color;
 	}

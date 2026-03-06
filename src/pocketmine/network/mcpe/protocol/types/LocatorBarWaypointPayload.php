@@ -24,7 +24,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\UUID;
 
-class LocatorBarWaypointPayload {
+class LocatorBarWaypointPayload{
 
 	public const ACTION_NONE = 0;
 	public const ACTION_ADD = 1;
@@ -35,7 +35,8 @@ class LocatorBarWaypointPayload {
 		private UUID $group,
 		private ServerWaypointPayload $waypoint,
 		private int $actionFlag
-	) {}
+	){
+	}
 
 	public function getGroup() : UUID{
 		return $this->group;
@@ -49,7 +50,7 @@ class LocatorBarWaypointPayload {
 		return $this->actionFlag;
 	}
 
-	public static function read(NetworkBinaryStream $in) : self {
+	public static function read(NetworkBinaryStream $in) : self{
 		$group = $in->getUUID();
 		$waypoint = ServerWaypointPayload::read($in);
 		$actionFlag = $in->getByte();
@@ -57,7 +58,7 @@ class LocatorBarWaypointPayload {
 		return new self($group, $waypoint, $actionFlag);
 	}
 
-	public function write(NetworkBinaryStream $out) : void {
+	public function write(NetworkBinaryStream $out) : void{
 		$out->putUUID($this->group);
 		$this->waypoint->write($out);
 		$out->putByte($this->actionFlag);

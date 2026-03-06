@@ -514,8 +514,8 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_GOLDEN_SPEAR_USE = 594;
 	public const SOUND_DIAMOND_SPEAR_USE = 595;
 	public const SOUND_NETHERITE_SPEAR_USE = 596;
-	public const PAUSE_GROWTH = 597;
-	public const RESET_GROWTH = 598;
+	public const SOUND_PAUSE_GROWTH = 597;
+	public const SOUND_RESET_GROWTH = 598;
 	public const SOUND_UNDEFINED = 599;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{

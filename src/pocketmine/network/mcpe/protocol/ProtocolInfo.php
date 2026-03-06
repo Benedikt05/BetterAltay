@@ -245,13 +245,14 @@ interface ProtocolInfo{
 	public const VOXEL_SHAPES_PACKET = 0x151; //337
 	/**
 	 * public const CAMERA_SPLINE_PACKET = 0x152; //338
-	 * public const CAMERA_AIM_ASSIST_ACTOR_PRIORITY_PACKET = 0x153; //339
 	 *
+	 * public const CAMERA_AIM_ASSIST_ACTOR_PRIORITY_PACKET = 0x153; //339
 	 */
 	public const RESOURCE_PACKS_READY_FOR_VALIDATION_PACKET = 0x154; //340
 	public const LOCATOR_BAR_PACKET = 0x155; //341
 	public const PARTY_CHANGED_PACKET = 0x156; //342
 	public const SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED_PACKET = 0x157; //343
-	public const SYNC_WORLD_CLOCKS_PACKET = 0x158; //344
-
+	/**
+	 * public const SYNC_WORLD_CLOCKS_PACKET = 0x158; //344
+	 */
 }

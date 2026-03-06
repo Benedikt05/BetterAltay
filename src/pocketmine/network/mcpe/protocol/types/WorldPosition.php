@@ -24,7 +24,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
-class WorldPosition {
+class WorldPosition{
 
 	public const OVERWORLD = 0;
 	public const NETHER = 1;
@@ -34,13 +34,14 @@ class WorldPosition {
 	public function __construct(
 		private Vector3 $position,
 		private int $dimensionType
-	) {}
+	){
+	}
 
-	public function getPosition() : Vector3 {
+	public function getPosition() : Vector3{
 		return $this->position;
 	}
 
-	public function getDimensionType() : int {
+	public function getDimensionType() : int{
 		return $this->dimensionType;
 	}
 
@@ -51,7 +52,7 @@ class WorldPosition {
 		return new self($position, $dimensionType);
 	}
 
-	public function write(NetworkBinaryStream $out) : void {
+	public function write(NetworkBinaryStream $out) : void{
 		$out->putVector3($this->position);
 		$out->putVarInt($this->dimensionType);
 	}
