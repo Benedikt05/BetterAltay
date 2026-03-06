@@ -11,14 +11,14 @@ use pocketmine\network\mcpe\NetworkSession;
 class PartyChangedPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PARTY_CHANGED_PACKET;
 
-	public string $partyId;
+	public ?string $partyId = null;
 
 	protected function decodePayload() : void{
-		$this->partyId = $this->getString();
+		$this->partyId = $this->readOptional(fn() => $this->getString());
 	}
 
 	protected function encodePayload() : void{
-		$this->putString($this->partyId);
+		$this->writeOptional($this->partyId, fn(string $partyId) => $this->putString($partyId));
 	}
 
 	public function handle(NetworkSession $session) : bool{
