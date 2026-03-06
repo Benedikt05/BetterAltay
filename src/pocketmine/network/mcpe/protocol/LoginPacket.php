@@ -83,6 +83,9 @@ class LoginPacket extends DataPacket{
 	 */
 	public bool $skipVerification = false;
 
+
+	public ?JwtToken $token = null;
+
 	public function canBeSentBeforeLogin() : bool{
 		return true;
 	}
@@ -122,29 +125,22 @@ class LoginPacket extends DataPacket{
 				$chainArray = $certificateData["chain"];
 			}
 		}
-
 		if(isset($this->loginData["Token"])){
 			try{
-				var_dump("token auth");
-				$authToken = $this->loginData["Token"];
-				[$header, $claimsArray,] = JwtUtils::parse($authToken);
-				$claims = new JwtClaims($claimsArray);
-				$token = new JwtToken($header, $claims);
-				//var_dump($token->header);
+				$this->token = JwtToken::parse($this->loginData["Token"]);
 
-				$this->username = $claims->get("xname") ?? $this->username;
+				$this->username = $this->token->getClaims()->get("xname") ?? $this->username;
 
-				if(($xid = $claims->get("xid")) !== null){
+				if(($xid = $this->token->getClaims()->get("xid")) !== null){
 					$this->clientUUID = UUID::fromXuid($xid)->toString();
 					$this->xuid = $xid;
 				}
 
-				$this->identityPublicKey = $claims->get("cpk") ?? $this->identityPublicKey;
+				$this->identityPublicKey = $this->token->getClaims()->get("cpk") ?? $this->identityPublicKey;
 			}catch(\Throwable $e){
-				var_dump("Could not parse token: " . $e->getMessage());
+				throw new RuntimeException("Could not parse token: " . $e->getMessage());
 			}
 		}elseif(is_array($chainArray)){
-			var_dump("legacy auth");
 			$hasExtraData = false;
 			foreach($chainArray as $chain){
 				$webtoken = Utils::decodeJWT($chain);
@@ -164,7 +160,7 @@ class LoginPacket extends DataPacket{
 				}
 			}
 		}else{
-			var_dump("Neither Token nor Certificate field found");
+			throw new RuntimeException("Neither Token nor legacy login successful");
 		}
 
 		$this->clientDataJwt = $buffer->get($buffer->getLInt());
@@ -176,10 +172,6 @@ class LoginPacket extends DataPacket{
 		$this->locale = $this->clientData["LanguageCode"] ?? null;
 	}
 
-	public function getAuthenticationType() : int{
-		return $this->loginData["AuthenticationType"];
-	}
-	
 	protected function encodePayload() : void{
 		//TODO
 	}
