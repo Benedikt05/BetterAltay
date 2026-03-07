@@ -53,6 +53,7 @@ use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseAllScreensPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIReloadPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIShowScreenPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientboundTextureShiftPacket;
@@ -958,6 +959,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleVoxelShapes(VoxelShapesPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundDataStore(ClientboundDataStorePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerboundDataStore(protocol\ServerboundDataStorePacket $packet) : bool{
 		return false;
 	}
 

@@ -234,13 +234,6 @@ interface ProtocolInfo{
 	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
 	public const DEBUG_DRAWER_PACKET = 0x148; //328 //TODO: Update
 	/**
-	 * TODO: implement these
-	 * public const SERVERBOUND_PACK_SETTING_CHANGE_PACKET = 0x149; //329
-	 * public const CLIENTBOUND_DATA_STORE_PACKET = 0x14a; //330
-	 * public const GRAPHICS_OVERRIDE_PARAMETER_PACKET = 0x14b; //331
-	 * public const SERVERBOUND_DATA_STORE_PACKET = 0x14c; //332
-	*/
-	/**
 	 * public const SERVERBOUND_PACK_SETTING_CHANGE_PACKET = 0x149; //329
 	 */
 	public const CLIENTBOUND_DATA_STORE_PACKET = 0x14a; //330
