@@ -218,6 +218,8 @@ class PacketPool{
 		static::registerPacket(new PlayerLocationPacket());
 		static::registerPacket(new ClientboundControlSchemeSetPacket());
 		static::registerPacket(new DebugDrawerPacket());//TODO: Update
+		static::registerPacket(new ClientboundDataStorePacket());
+		static::registerPacket(new ServerboundDataStorePacket());
 		/*
 		TODO:
 		static::registerPacket(new ServerboundPackSettingChangePacket());
