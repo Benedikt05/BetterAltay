@@ -68,16 +68,11 @@ final class RuntimeBlockMapping{
 		$metaMap = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/block_state_meta_map.json"));
 		$stream = new NetworkBinaryStream($canonicalBlockStatesFile);
 		self::$bedrockKnownStates = [];
-		/**
-		 * @var int[][] $idToStatesMap string id -> int[] list of candidate state indices
-		 */
-		$idToStatesMap = [];
 
 		$rid = 0;
 		while(!$stream->feof()){
 			$state = $stream->getNbtCompoundRoot();
 			self::$bedrockKnownStates[] = $state;
-			$idToStatesMap[$state->getString("name")][] = $rid;
 
 			self::$stateToRuntimeMap[self::hashBlockStateNBT($state)] = $rid;
 			self::registerMapping($state->getString("name"), $metaMap[$rid], $rid);
