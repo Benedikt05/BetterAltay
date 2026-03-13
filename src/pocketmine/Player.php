@@ -2309,7 +2309,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 
 		if(!$packet->skipVerification){
-			$this->server->getAsyncPool()->submitTask(new VerifyLoginTask($this, $packet));
+			VerifyLoginTask::verify($this, $packet);
 		}else{
 			$this->onVerifyCompleted($packet, null, true);
 		}
