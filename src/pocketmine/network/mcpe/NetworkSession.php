@@ -53,6 +53,7 @@ use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseAllScreensPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIReloadPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIShowScreenPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientboundTextureShiftPacket;
@@ -153,6 +154,7 @@ use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\ServerboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerStatsPacket;
@@ -938,6 +940,14 @@ abstract class NetworkSession{
 	}
 
 	public function handleDebugDrawer(DebugDrawerPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundDataStore(ClientboundDataStorePacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerboundDataStore(ServerboundDataStorePacket $packet) : bool{
 		return false;
 	}
 
