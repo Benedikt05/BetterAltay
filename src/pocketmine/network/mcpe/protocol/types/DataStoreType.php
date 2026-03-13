@@ -16,7 +16,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 final class DataStoreType{
 
-	public function __construct(){
+	private function __construct(){
 		//NOOP
 	}
 

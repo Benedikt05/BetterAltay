@@ -15,6 +15,11 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 final class DataStoreValueType{
+
+	private function __construct(){
+		//NOOP
+	}
+
 	public const DOUBLE = 0;
 	public const BOOL = 1;
 	public const STRING = 2;
