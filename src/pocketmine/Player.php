@@ -936,7 +936,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function isConnected() : bool{
-		return $this->connected !== null;
+		return $this->connected;
 	}
 
 	/**
