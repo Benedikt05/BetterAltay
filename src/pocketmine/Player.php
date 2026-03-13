@@ -315,11 +315,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	/** @var SourceInterface */
 	protected $interface;
 
-	/**
-	 * @var PlayerNetworkSessionAdapter
-	 * TODO: remove this once player and network are divorced properly
-	 */
-	protected $sessionAdapter;
+	protected bool $connected = true;
 
 	/** @var string */
 	protected $ip;
@@ -937,12 +933,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->creationTime = microtime(true);
 
 		$this->allowMovementCheats = (bool) $this->server->getProperty("player.anti-cheat.allow-movement-cheats", false);
-
-		$this->sessionAdapter = new PlayerNetworkSessionAdapter($this->server, $this);
 	}
 
 	public function isConnected() : bool{
-		return $this->sessionAdapter !== null;
+		return $this->connected !== null;
 	}
 
 	/**
@@ -3743,17 +3737,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * Called when a packet is received from the client. This method will call DataPacketReceiveEvent.
-	 *
-	 * @return void
-	 */
-	public function handleDataPacket(DataPacket $packet){
-		if($this->sessionAdapter !== null){
-			$this->sessionAdapter->handleDataPacket($packet);
-		}
-	}
-
-	/**
 	 * Batch a Data packet into the channel list to send at the end of the tick
 	 */
 	public function batchDataPacket(DataPacket $packet) : bool{
@@ -4165,7 +4148,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->directDataPacket($pk);
 			}
 			$this->interface->close($this, $notify ? $reason : "");
-			$this->sessionAdapter = null;
+			$this->connected = false;
 
 			PermissionManager::getInstance()->unsubscribeFromPermission(Server::BROADCAST_CHANNEL_USERS, $this);
 			PermissionManager::getInstance()->unsubscribeFromPermission(Server::BROADCAST_CHANNEL_ADMINISTRATIVE, $this);

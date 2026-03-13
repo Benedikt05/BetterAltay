@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe;
 
+use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ActorPickRequestPacket;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
@@ -971,4 +972,9 @@ abstract class NetworkSession{
 		return false;
 	}
 
+	abstract public function getCipher(): ?EncryptionContext;
+
+	abstract public function updatePing(int $pingMS): void;
+
+	abstract public function close(string $reason): void;
 }

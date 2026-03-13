@@ -71,8 +71,8 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	/** @var RakLibServer */
 	private $rakLib;
 
-	/** @var Player[] */
-	private $players = [];
+	/** @var PlayerNetworkSessionAdapter[] */
+	private $sessions = [];
 
 	/** @var string[] */
 	private $identifiers = [];
@@ -122,18 +122,18 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	}
 
 	public function closeSession(string $identifier, string $reason) : void{
-		if(isset($this->players[$identifier])){
-			$player = $this->players[$identifier];
-			unset($this->identifiers[spl_object_hash($player)]);
-			unset($this->players[$identifier]);
+		if(isset($this->sessions[$identifier])){
+			$session = $this->sessions[$identifier];
+			unset($this->identifiers[spl_object_hash($session)]);
+			unset($this->sessions[$identifier]);
 			unset($this->identifiersACK[$identifier]);
-			$player->close($player->getLeaveMessage(), $reason);
+			$session->close($reason);
 		}
 	}
 
 	public function close(Player $player, string $reason = "unknown reason"){
 		if(isset($this->identifiers[$h = spl_object_hash($player)])){
-			unset($this->players[$this->identifiers[$h]]);
+			unset($this->sessions[$this->identifiers[$h]]);
 			unset($this->identifiersACK[$this->identifiers[$h]]);
 			$this->interface->closeSession($this->identifiers[$h], $reason);
 			unset($this->identifiers[$h]);
@@ -160,16 +160,16 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 		 * @see Player::__construct()
 		 */
 		$player = new $class($this, $ev->getAddress(), $ev->getPort());
-		$this->players[$identifier] = $player;
+		$this->sessions[$identifier] = new PlayerNetworkSessionAdapter($player->getServer(), $player);
 		$this->identifiersACK[$identifier] = 0;
 		$this->identifiers[spl_object_hash($player)] = $identifier;
 		$this->server->addPlayer($player);
 	}
 
 	public function handleEncapsulated(string $identifier, EncapsulatedPacket $packet, int $flags) : void{
-		if(isset($this->players[$identifier])){
+		if(isset($this->sessions[$identifier])){
 			//get this now for blocking in case the player was closed before the exception was raised
-			$player = $this->players[$identifier];
+			$session = $this->sessions[$identifier];
 
 			try{
 				if($packet->buffer !== ""){
@@ -177,12 +177,12 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 						throw new UnexpectedValueException("Unexpected non-FE packet");
 					}
 
-					$cipher = $player->getCipher();
+					$cipher = $session->getCipher();
 					$buffer = substr($packet->buffer, 1);
 					$buffer = $cipher !== null ? $cipher->decrypt($buffer) : $buffer;
 
 					$pk = new BatchPacket(self::MCPE_RAKNET_PACKET_ID . $buffer);
-					$player->handleDataPacket($pk);
+					$session->handleDataPacket($pk);
 				}
 			}catch(Throwable $e){
 				$logger = $this->server->getLogger();
@@ -190,10 +190,10 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 				$logger->logException($e);
 
 				if((bool) $this->server->internalErrorKick === false){
-					$player->sendMessage("Internal server error");
+					$session->getPlayer()->sendMessage("Internal server error");
 				}else{
-					$address = $player->getAddress();
-					$player->close($player->getLeaveMessage(), "Internal server error");
+					$address = $session->getPlayer()->getAddress();
+					$session->close("Internal server error");
 					$this->interface->blockAddress($address, 5);
 				}
 			}
@@ -292,8 +292,8 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface{
 	}
 
 	public function updatePing(string $identifier, int $pingMS) : void{
-		if(isset($this->players[$identifier])){
-			$this->players[$identifier]->updatePing($pingMS);
+		if(isset($this->sessions[$identifier])){
+			$this->sessions[$identifier]->updatePing($pingMS);
 		}
 	}
 }

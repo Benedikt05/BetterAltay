@@ -28,6 +28,7 @@ use pocketmine\event\player\PlayerGameplayUpdateEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
+use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ActorPickRequestPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
@@ -392,5 +393,21 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handlePlayerAuthInput(PlayerAuthInputPacket $packet) : bool{
 		return $this->player->handlePlayerAuthInput($packet);
+	}
+
+	public function getPlayer() : Player{
+		return $this->player;
+	}
+
+	public function getCipher() : ?EncryptionContext{
+		return $this->player->getCipher();
+	}
+
+	public function updatePing(int $pingMS) : void{
+		$this->player->updatePing($pingMS);
+	}
+
+	public function close(string $reason) : void{
+		$this->player->close($this->player->getLeaveMessage(), $reason);
 	}
 }
