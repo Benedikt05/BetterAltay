@@ -26,7 +26,7 @@ namespace pocketmine\network\mcpe\auth\validator;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use pocketmine\network\mcpe\auth\JwtToken;
-use pocketmine\network\mcpe\VerifyLoginException;
+use pocketmine\network\mcpe\auth\VerifyLoginException;
 use function chunk_split;
 use function openssl_pkey_get_public;
 

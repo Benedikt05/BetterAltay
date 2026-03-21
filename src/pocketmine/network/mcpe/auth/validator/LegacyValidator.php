@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\auth\validator;
 
-use pocketmine\network\mcpe\VerifyLoginException;
+use pocketmine\network\mcpe\auth\VerifyLoginException;
 use function base64_decode;
 use function chr;
 use function count;
@@ -31,8 +31,8 @@ use function explode;
 use function json_decode;
 use function ltrim;
 use function ord;
-use function strlen;
 use function str_split;
+use function strlen;
 use function strtr;
 use function time;
 use function wordwrap;

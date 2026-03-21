@@ -21,10 +21,8 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe;
+namespace pocketmine\network\mcpe\auth;
 
-use pocketmine\network\mcpe\auth\JwkProvider;
-use pocketmine\network\mcpe\auth\JwtToken;
 use pocketmine\network\mcpe\auth\validator\LegacyValidator;
 use pocketmine\network\mcpe\auth\validator\OdicValidator;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -32,10 +30,10 @@ use pocketmine\network\mcpe\protocol\types\login\AuthenticationType;
 use pocketmine\Player;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
+use function is_array;
 use function json_decode;
 use function serialize;
 use function unserialize;
-use function is_array;
 
 class VerifyLoginTask extends AsyncTask{
 
