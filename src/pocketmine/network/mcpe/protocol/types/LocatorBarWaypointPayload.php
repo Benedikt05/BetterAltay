@@ -53,7 +53,7 @@ class LocatorBarWaypointPayload{
 	public static function read(NetworkBinaryStream $in) : self{
 		$group = $in->getUUID();
 		$waypoint = ServerWaypointPayload::read($in);
-		$actionFlag = $in->getByte();
+		$actionFlag = $in->getUnsignedVarInt();
 
 		return new self($group, $waypoint, $actionFlag);
 	}
@@ -61,6 +61,6 @@ class LocatorBarWaypointPayload{
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putUUID($this->group);
 		$this->waypoint->write($out);
-		$out->putByte($this->actionFlag);
+		$out->putUnsignedVarInt($this->actionFlag);
 	}
 }
