@@ -25,12 +25,15 @@ namespace pocketmine\utils;
 
 use InvalidArgumentException;
 use function bin2hex;
+use function chr;
 use function getmypid;
 use function getmyuid;
 use function hash;
 use function hex2bin;
 use function implode;
+use function md5;
 use function mt_rand;
+use function ord;
 use function str_replace;
 use function strlen;
 use function substr;

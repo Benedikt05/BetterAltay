@@ -21,10 +21,13 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe\auth;
+namespace pocketmine\network\mcpe\auth\task;
 
+use pocketmine\network\mcpe\auth\JwkProvider;
+use pocketmine\network\mcpe\auth\JwtToken;
 use pocketmine\network\mcpe\auth\validator\LegacyValidator;
 use pocketmine\network\mcpe\auth\validator\OdicValidator;
+use pocketmine\network\mcpe\auth\VerifyLoginException;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\types\login\AuthenticationType;
 use pocketmine\Player;
