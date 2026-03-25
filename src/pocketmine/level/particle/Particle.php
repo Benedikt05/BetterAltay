@@ -126,6 +126,8 @@ abstract class Particle extends Vector3{
 	public const TYPE_EYEBLOSSOM_OPEN = 96;
 	public const TYPE_EYEBLOSSOM_CLOSE = 97;
 	public const TYPE_GREEN_FLAME = 98;
+	public const TYPE_PAUSE_MOB_GROWTH = 99;
+	public const TYPE_REST_MOB_GROWTH = 100;
 
 	/**
 	 * @return DataPacket|DataPacket[]

@@ -12,16 +12,13 @@ class UpdateClientInputLocksPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::UPDATE_CLIENT_INPUT_LOCKS_PACKET;
 
 	public int $lockComponentData;
-	private Vector3 $serverPosition;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->lockComponentData = $this->getUnsignedVarInt();
-		$this->serverPosition = $this->getVector3();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->lockComponentData);
-		$this->putVector3($this->serverPosition);
 	}
 
 	public function handle(NetworkSession $session) : bool{

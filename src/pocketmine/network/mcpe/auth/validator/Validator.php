@@ -21,21 +21,8 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\network\mcpe\auth\validator;
 
-use function defined;
-
-// composer autoload doesn't use require_once and also pthreads can inherit things
-// TODO: drop this file and use a final class with constants
-if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
-	return;
+interface Validator{
+	public function validate(): ValidatorResult;
 }
-const _VERSION_INFO_INCLUDED = true;
-
-const NAME = "BetterAltay";
-//Do not modify this. Change FORK_VERSION instead.
-const BASE_VERSION = "3.28.0";
-const FORK_VERSION = "1.39.0";
-const IS_DEVELOPMENT_BUILD = false;
-const BUILD_CHANNEL = "master";
-
