@@ -220,13 +220,6 @@ class PacketPool{
 		static::registerPacket(new DebugDrawerPacket());//TODO: Update
 		static::registerPacket(new ClientboundDataStorePacket());
 		static::registerPacket(new ServerboundDataStorePacket());
-		/*
-		TODO:
-		static::registerPacket(new ServerboundPackSettingChangePacket());
-		static::registerPacket(new ClientboundDataStorePacket());
-		static::registerPacket(new GraphicsOverrideParameterPacket());
-		*/
-
 		static::registerPacket(new ClientboundDataDrivenUIShowScreenPacket());
 		static::registerPacket(new ClientboundDataDrivenUICloseScreenPacket());
 		static::registerPacket(new ClientboundDataDrivenUIReloadPacket());
