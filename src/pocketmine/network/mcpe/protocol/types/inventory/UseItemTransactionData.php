@@ -113,8 +113,8 @@ class UseItemTransactionData extends TransactionData{
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 		$this->blockRuntimeId = $stream->getUnsignedVarInt();
-		$this->clientPrediction = $stream->getUnsignedVarInt();
-		$this->clientCooldownState = $stream->getUnsignedVarInt();
+		$this->clientPrediction = $stream->getByte();
+		$this->clientCooldownState = $stream->getByte();
 	}
 
 	protected function encodeData(PacketSerializer $stream) : void{
@@ -127,8 +127,8 @@ class UseItemTransactionData extends TransactionData{
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 		$stream->putUnsignedVarInt($this->blockRuntimeId);
-		$stream->putUnsignedVarInt($this->clientPrediction);
-		$stream->putUnsignedVarInt($this->clientCooldownState);
+		$stream->putByte($this->clientPrediction);
+		$stream->putByte($this->clientCooldownState);
 	}
 
 	/**
