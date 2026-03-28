@@ -36,6 +36,7 @@ use pocketmine\entity\Attribute;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityIds;
 use pocketmine\entity\Human;
 use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
@@ -69,6 +70,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerMissSwingEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -2700,6 +2702,15 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return true;
 	}
 
+	public function missSwing() : void{
+		$ev = new PlayerMissSwingEvent($this);
+		$ev->call();
+		if(!$ev->isCancelled()){
+			$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_ATTACK_NODAMAGE, -1, EntityIds::PLAYER);
+			$this->broadcastEntityEvent(ActorEventPacket::ARM_SWING, 0, $this->getViewers());
+		}
+	}
+
 	private function resolveOnOffInputFlags(BitSet $inputFlags, int $startFlag, int $stopFlag) : ?bool{
 		$enabled = $inputFlags->get($startFlag);
 		$disabled = $inputFlags->get($stopFlag);
@@ -2754,6 +2765,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 			if($inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 				$this->jump();
+			}
+
+			if($inputFlags->get(PlayerAuthInputFlags::MISSED_SWING)){
+				$this->missSwing();
 			}
 
 			if($packet->getYaw() !== $this->lastPlayerAuthInputYaw || $packet->getPitch() !== $this->lastPlayerAuthInputPitch){
