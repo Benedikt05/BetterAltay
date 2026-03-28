@@ -121,6 +121,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\auth\task\VerifyLoginTask;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
 use pocketmine\network\mcpe\encryption\EncryptionContext;
 use pocketmine\network\mcpe\encryption\PrepareEncryptionTask;
@@ -213,7 +214,7 @@ use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
-use pocketmine\network\mcpe\VerifyLoginTask;
+use pocketmine\network\mcpe\protocol\VoxelShapesPacket;
 use pocketmine\network\SourceInterface;
 use pocketmine\permission\PermissibleBase;
 use pocketmine\permission\PermissionAttachment;
@@ -2195,7 +2196,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 		$this->seenLoginPacket = true;
 
-		if(!self::isValidUserName($packet->username)){
+		if(!self::isValidUserName($packet->username ?? "")){
 			$this->close("", "disconnectionScreen.invalidName");
 
 			return true;
@@ -2315,7 +2316,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 
 		if(!$packet->skipVerification){
-			$this->server->getAsyncPool()->submitTask(new VerifyLoginTask($this, $packet));
+			VerifyLoginTask::verify($this, $packet);
 		}else{
 			$this->onVerifyCompleted($packet, null, true);
 		}
@@ -2581,6 +2582,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->spawnPosition = $this->level->getSafeSpawn();
 			}
 		}
+
+		$this->sendDataPacket(new VoxelShapesPacket());
 
 		$spawnPosition = $this->getSpawn();
 

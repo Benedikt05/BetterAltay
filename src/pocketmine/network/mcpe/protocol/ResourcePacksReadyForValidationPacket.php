@@ -8,8 +8,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\network\mcpe\NetworkSession;
 
-class ClientboundDataDrivenUICloseAllScreensPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS_PACKET;
+class ResourcePacksReadyForValidationPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::RESOURCE_PACKS_READY_FOR_VALIDATION_PACKET;
 
 	/**
 	 * @generate-create-func
@@ -27,6 +27,6 @@ class ClientboundDataDrivenUICloseAllScreensPacket extends DataPacket{
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleClientboundDataDrivenUICloseAllScreens($this);
+		return $session->handleResourcePacksReadyForValidation($this);
 	}
 }

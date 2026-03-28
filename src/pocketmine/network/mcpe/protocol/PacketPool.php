@@ -220,19 +220,14 @@ class PacketPool{
 		static::registerPacket(new DebugDrawerPacket());//TODO: Update
 		static::registerPacket(new ClientboundDataStorePacket());
 		static::registerPacket(new ServerboundDataStorePacket());
-		/*
-		TODO:
-		static::registerPacket(new ServerboundPackSettingChangePacket());
-		static::registerPacket(new ClientboundDataStorePacket());
-		static::registerPacket(new GraphicsOverrideParameterPacket());
-		static::registerPacket(new ServerboundDataStorePacket());
-		*/
-
 		static::registerPacket(new ClientboundDataDrivenUIShowScreenPacket());
-		static::registerPacket(new ClientboundDataDrivenUICloseAllScreensPacket());
+		static::registerPacket(new ClientboundDataDrivenUICloseScreenPacket());
 		static::registerPacket(new ClientboundDataDrivenUIReloadPacket());
 		static::registerPacket(new ClientboundTextureShiftPacket());
 		static::registerPacket(new VoxelShapesPacket());
+		static::registerPacket(new ResourcePacksReadyForValidationPacket());
+		static::registerPacket(new ServerboundDataDrivenScreenClosedPacket());
+		static::registerPacket(new PartyChangedPacket());
 	}
 
 	/**
