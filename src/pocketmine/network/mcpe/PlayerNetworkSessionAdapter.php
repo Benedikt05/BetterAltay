@@ -56,6 +56,7 @@ use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
+use pocketmine\network\mcpe\protocol\PartyChangedPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
@@ -393,6 +394,10 @@ class PlayerNetworkSessionAdapter extends NetworkSession{
 
 	public function handlePlayerAuthInput(PlayerAuthInputPacket $packet) : bool{
 		return $this->player->handlePlayerAuthInput($packet);
+	}
+
+	public function handlePartyChanged(PartyChangedPacket $packet) : bool{
+		return true; //do we have to handle this?
 	}
 
 	public function getPlayer() : Player{

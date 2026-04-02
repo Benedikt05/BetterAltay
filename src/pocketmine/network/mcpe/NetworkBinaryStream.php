@@ -593,7 +593,7 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * Reads an block position with unsigned Y coordinate.
+	 * Reads a block position with a signed Y coordinate.
 	 *
 	 * @param int $x reference parameter
 	 * @param int $y reference parameter
@@ -601,16 +601,16 @@ class NetworkBinaryStream extends BinaryStream{
 	 */
 	public function getBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
-		$y = Binary::signInt($this->getUnsignedVarInt());
+		$y = $this->getVarInt();
 		$z = $this->getVarInt();
 	}
 
 	/**
-	 * Writes a block position with unsigned Y coordinate.
+	 * Writes a block position with a signed Y coordinate.
 	 */
 	public function putBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);
-		$this->putUnsignedVarInt(Binary::unsignInt($y));
+		$this->putVarInt($y);
 		$this->putVarInt($z);
 	}
 
@@ -620,6 +620,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @param int $x reference parameter
 	 * @param int $y reference parameter
 	 * @param int $z reference parameter
+	 * @deprecated Use {@see getBlockPosition()} instead.
 	 */
 	public function getSignedBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
@@ -629,6 +630,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 	/**
 	 * Writes a block position with a signed Y coordinate.
+	 * @deprecated Use {@see putBlockPosition()} instead.
 	 */
 	public function putSignedBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);

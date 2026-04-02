@@ -35,6 +35,7 @@
       "adhocore/json-comment": "^1.1",
       "benedikt05/nbt": "3.0.1",
       "fgrosse/phpasn1": "^2.3",
+      "firebase/php-jwt": "^7.0",
       "pocketmine/binaryutils": "^0.1.9",
       "pocketmine/callback-validator": "^1.0.2",
       "pocketmine/classloader": "^0.1.0",

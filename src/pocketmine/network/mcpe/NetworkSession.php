@@ -51,7 +51,7 @@ use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\network\mcpe\protocol\ChunkRadiusUpdatedPacket;
 use pocketmine\network\mcpe\protocol\ClientboundCloseFormPacket;
 use pocketmine\network\mcpe\protocol\ClientboundControlSchemeSetPacket;
-use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseAllScreensPacket;
+use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUICloseScreenPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIReloadPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataDrivenUIShowScreenPacket;
 use pocketmine\network\mcpe\protocol\ClientboundDataStorePacket;
@@ -103,6 +103,7 @@ use pocketmine\network\mcpe\protocol\LevelChunkPacket;
 use pocketmine\network\mcpe\protocol\LevelEventGenericPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\LocatorBarPacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\MapCreateLockedCopyPacket;
 use pocketmine\network\mcpe\protocol\MapInfoRequestPacket;
@@ -124,6 +125,7 @@ use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\PacketViolationWarningPacket;
+use pocketmine\network\mcpe\protocol\PartyChangedPacket;
 use pocketmine\network\mcpe\protocol\PhotoTransferPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerArmorDamagePacket;
@@ -151,10 +153,12 @@ use pocketmine\network\mcpe\protocol\ResourcePackChunkRequestPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackClientResponsePacket;
 use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
+use pocketmine\network\mcpe\protocol\ResourcePacksReadyForValidationPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
 use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\ServerboundDataDrivenScreenClosedPacket;
 use pocketmine\network\mcpe\protocol\ServerboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
@@ -956,7 +960,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleClientboundDataDrivenUICloseAllScreens(ClientboundDataDrivenUICloseAllScreensPacket $packet) : bool{
+	public function handleClientboundDataDrivenUICloseScreen(ClientboundDataDrivenUICloseScreenPacket $packet) : bool{
 		return false;
 	}
 
@@ -972,6 +976,21 @@ abstract class NetworkSession{
 		return false;
 	}
 
+	public function handleResourcePacksReadyForValidation(ResourcePacksReadyForValidationPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleServerboundDataDrivenScreenClosed(ServerboundDataDrivenScreenClosedPacket $packet) : bool{
+		return false;
+	}
+
+	public function handlePartyChanged(PartyChangedPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleLocatorBar(LocatorBarPacket $packet) : bool{
+		return false;
+	}
 	abstract public function getCipher(): ?EncryptionContext;
 
 	abstract public function updatePing(int $pingMS): void;
