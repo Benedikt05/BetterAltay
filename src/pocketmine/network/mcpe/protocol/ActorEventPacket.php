@@ -25,6 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 
 class ActorEventPacket extends DataPacket{
@@ -99,17 +100,20 @@ class ActorEventPacket extends DataPacket{
 	public int $entityRuntimeId;
 	public int $event;
 	public int $data = 0;
+	public ?Vector3 $fireAtPosition = null;
 
 	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->event = $this->getByte();
 		$this->data = $this->getVarInt();
+		$this->fireAtPosition = $this->getVector3();
 	}
 
 	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putByte($this->event);
 		$this->putVarInt($this->data);
+		$this->putVector3Nullable($this->fireAtPosition);
 	}
 
 	public function handle(NetworkSession $session) : bool{

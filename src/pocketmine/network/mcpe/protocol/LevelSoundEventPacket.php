@@ -537,6 +537,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public bool $isBabyMob = false; //...
 	public bool $disableRelativeVolume = false;
 	public int $entityUniqueId = -1;
+	public ?Vector3 $fireAtPosition = null;
 
 	protected function decodePayload() : void{
 		$this->sound = $this->getUnsignedVarInt();
@@ -546,6 +547,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$this->isBabyMob = $this->getBool();
 		$this->disableRelativeVolume = $this->getBool();
 		$this->entityUniqueId = $this->getLLong();
+		$this->fireAtPosition = $this->getVector3();
 	}
 
 	protected function encodePayload() : void{
@@ -556,6 +558,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$this->putBool($this->isBabyMob);
 		$this->putBool($this->disableRelativeVolume);
 		$this->putLLong($this->entityUniqueId);
+		$this->putVector3Nullable($this->fireAtPosition);
 	}
 
 	public function handle(NetworkSession $session) : bool{
