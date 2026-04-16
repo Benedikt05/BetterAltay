@@ -38,7 +38,7 @@ use pocketmine\Player;
  * Note: This is not an entity
  */
 
-class Bossbar extends Vector3 {
+class Bossbar extends Vector3{
 
 	public const PINK = 0;
 	public const BLUE = 1;
@@ -64,7 +64,7 @@ class Bossbar extends Vector3 {
 	/** @var Player[] */
 	protected $viewers = [];
 
-	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE) {
+	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE){
 		parent::__construct(0, 0, 0);
 
 		$this->entityId = Entity::$entityCount++;
