@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-class BossBarColor {
+class BossBarColor{
 
     public const PINK = 0;
 	public const BLUE = 1;
