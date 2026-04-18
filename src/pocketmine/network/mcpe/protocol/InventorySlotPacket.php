@@ -45,9 +45,9 @@ class InventorySlotPacket extends DataPacket{
 			$this->containerName = FullContainerName::read($this);
 		}
 		if($this->getBool()){
-			$this->storageItem = ItemStackWrapper::read($this);
+			$this->storageItem = ItemStackWrapper::read($this, true);
 		}
-		$this->item = ItemStackWrapper::read($this);
+		$this->item = ItemStackWrapper::read($this, true);
 	}
 
 	protected function encodePayload() : void{
