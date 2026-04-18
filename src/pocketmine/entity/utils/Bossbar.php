@@ -31,6 +31,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
+use pocketmine\network\mcpe\protocol\types\BossBarColor;
 use pocketmine\Player;
 
 /*
@@ -39,15 +40,6 @@ use pocketmine\Player;
  */
 
 class Bossbar extends Vector3{
-
-	public const PINK = 0;
-	public const BLUE = 1;
-	public const RED = 2;
-	public const GREEN = 3;
-	public const YELLOW = 4;
-	public const PURPLE = 5;
-	public const REBECCA_PURPLE = 6;
-	public const WHITE = 7;
 
 	/** @var int */
 	protected $entityId;
@@ -64,7 +56,7 @@ class Bossbar extends Vector3{
 	/** @var Player[] */
 	protected $viewers = [];
 
-	public function __construct(string $title = "", float $hp = 1.0, int $color = self::PURPLE){
+	public function __construct(string $title = "", float $hp = 1.0, int $color = BossBarColor::PURPLE){
 		parent::__construct(0, 0, 0);
 
 		$this->entityId = Entity::$entityCount++;
