@@ -25,8 +25,6 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
-use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\FullContainerName;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
@@ -43,25 +41,23 @@ class InventorySlotPacket extends DataPacket{
 	protected function decodePayload() : void{
 		$this->windowId = $this->getUnsignedVarInt();
 		$this->inventorySlot = $this->getUnsignedVarInt();
-		$this->containerName = FullContainerName::read($this);
-		$this->storageItem = ItemStackWrapper::read($this);
+		if($this->getBool()){
+			$this->containerName = FullContainerName::read($this);
+		}
+		if($this->getBool()){
+			$this->storageItem = ItemStackWrapper::read($this);
+		}
 		$this->item = ItemStackWrapper::read($this);
 	}
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->windowId);
 		$this->putUnsignedVarInt($this->inventorySlot);
-		if($this->containerName === null){
-			$this->containerName = new FullContainerName(0);
-		}
-		$this->containerName->write($this);
-
-		if($this->storageItem === null){
-			$this->storageItem = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
-		}
-		$this->storageItem->write($this);
-
-		$this->item->write($this);
+		$this->putBool($this->containerName !== null);
+		$this->containerName?->write($this);
+		$this->putBool($this->storageItem !== null);
+		$this->storageItem?->write($this, true);
+		$this->item->write($this, true);
 	}
 
 	public function handle(NetworkSession $session) : bool{
