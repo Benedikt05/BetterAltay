@@ -109,29 +109,29 @@ class Bossbar extends Vector3{
 	}
 
 	public static function getColorByName(string $name) : int{
-		return match ($name) {
-			"pink", "PINK" => self::PINK,
-			"blue", "BLUE" => self::BLUE,
-			"red", "RED" => self::RED,
-			"green", "GREEN" => self::GREEN,
-			"yellow", "YELLOW" => self::YELLOW,
-			"purple", "PURPLE" => self::PURPLE,
-			"rebecca_purple", "REBECCA_PURPLE" => self::REBECCA_PURPLE,
-			"white", "WHITE" => self::WHITE,
+		return match($name){
+			"pink", "PINK" => BossBarColor::PINK,
+			"blue", "BLUE" => BossBarColor::BLUE,
+			"red", "RED" => BossBarColor::RED,
+			"green", "GREEN" => BossBarColor::GREEN,
+			"yellow", "YELLOW" => BossBarColor::YELLOW,
+			"purple", "PURPLE" => BossBarColor::PURPLE,
+			"rebecca_purple", "REBECCA_PURPLE" => BossBarColor::REBECCA_PURPLE,
+			"white", "WHITE" => BossBarColor::WHITE,
 			default => throw new InvalidArgumentException("Invalid bossbar color: " . $name),
 		};
 	}
 
 	public static function getColorByID(int $id) : string{
-		return match ($id) {
-			self::PINK => "PINK",
-			self::BLUE => "BLUE",
-			self::RED => "RED",
-			self::GREEN => "GREEN",
-			self::YELLOW => "YELLOW",
-			self::PURPLE => "PURPLE",
-			self::REBECCA_PURPLE => "REBECCA_PURPLE",
-			self::WHITE => "WHITE",
+		return match($id){
+			BossBarColor::PINK => "PINK",
+			BossBarColor::BLUE => "BLUE",
+			BossBarColor::RED => "RED",
+			BossBarColor::GREEN => "GREEN",
+			BossBarColor::YELLOW => "YELLOW",
+			BossBarColor::PURPLE => "PURPLE",
+			BossBarColor::REBECCA_PURPLE => "REBECCA_PURPLE",
+			BossBarColor::WHITE => "WHITE",
 			default => throw new InvalidArgumentException("Invalid bossbar color ID: " . $id),
 		};
 	}
