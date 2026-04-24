@@ -293,7 +293,7 @@ class CraftingDataPacket extends DataPacket{
 	}
 
 	protected function encodePayload(){
-		$this->putUnsignedVarInt(count($this->entries));
+		$this->putUnsignedVarInt(count($this->entries = []));
 
 		$writer = new NetworkBinaryStream();
 		$counter = 0;

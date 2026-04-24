@@ -164,7 +164,7 @@ class PlayerInventory extends BaseInventory{
 	 * @return void
 	 */
 	public function sendHeldItem($target){
-		$item = $this->getItemInHand();
+		/*$item = $this->getItemInHand();
 
 		$pk = new MobEquipmentPacket();
 		$pk->entityRuntimeId = $this->getHolder()->getId();
@@ -182,7 +182,7 @@ class PlayerInventory extends BaseInventory{
 			if(in_array($this->getHolder(), $target, true)){
 				$this->sendSlot($this->getHeldItemIndex(), $this->getHolder());
 			}
-		}
+		}*/
 	}
 
 	/**
