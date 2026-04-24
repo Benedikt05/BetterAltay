@@ -226,6 +226,14 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getItemStack(Closure $readExtraCrapInTheMiddle, bool $net = false) : Item{
 		if($net){
 			$netId = $this->getLShort();
+			$this->getLShort(); //count
+			$this->getUnsignedVarInt(); //damage
+			$hasNetId = $this->getBool();
+			if($hasNetId){
+				$this->readGenericTypeNetworkId();
+			}
+			$this->getUnsignedVarInt(); //blockRuntimeId
+			$this->getString(); //nbt
 		}else{
 			$netId = $this->getVarInt();
 		}
