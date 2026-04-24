@@ -27,20 +27,14 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 
 final class MineBlockStackRequestAction extends ItemStackRequestAction{
 
-	/** @var int */
-	private $unknown1;
-	/** @var int */
-	private $predictedDurability;
-	/** @var int */
-	private $stackId;
 
-	public function __construct(int $unknown1, int $predictedDurability, int $stackId){
-		$this->unknown1 = $unknown1;
-		$this->predictedDurability = $predictedDurability;
-		$this->stackId = $stackId;
-	}
+	public function __construct(
+		private int $hotbarSlot,
+		private int $predictedDurability,
+		private int $stackId
+	){}
 
-	public function getUnknown1() : int{ return $this->unknown1; }
+	public function getUnknown1() : int{ return $this->hotbarSlot; }
 
 	public function getPredictedDurability() : int{ return $this->predictedDurability; }
 
@@ -49,14 +43,14 @@ final class MineBlockStackRequestAction extends ItemStackRequestAction{
 	public static function getTypeId() : int{ return ItemStackRequestActionType::MINE_BLOCK; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$unknown1 = $in->getVarInt();
+		$hotbarSlot = $in->getVarInt();
 		$predictedDurability = $in->getVarInt();
 		$stackId = $in->readGenericTypeNetworkId();
-		return new self($unknown1, $predictedDurability, $stackId);
+		return new self($hotbarSlot, $predictedDurability, $stackId);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putVarInt($this->unknown1);
+		$out->putVarInt($this->hotbarSlot);
 		$out->putVarInt($this->predictedDurability);
 		$out->writeGenericTypeNetworkId($this->stackId);
 	}
