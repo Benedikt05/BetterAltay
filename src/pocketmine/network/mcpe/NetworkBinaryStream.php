@@ -246,7 +246,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkId($netId, $netData);
 
-		$readExtraCrapInTheMiddle($this);
+		$readExtraCrapInTheMiddle($this, $net);
 
 		$this->getVarInt(); //blockRuntimeId
 
@@ -343,7 +343,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLShort($item->getCount());
 		$this->putUnsignedVarInt($netData);
 
-		$writeExtraCrapInTheMiddle($this);
+		$writeExtraCrapInTheMiddle($this, $net);
 
 		$blockRuntimeId = 0;
 		$isBlockItem = $item->getId() < 256;
