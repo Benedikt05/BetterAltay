@@ -36,6 +36,7 @@ class Skull extends Spawnable{
 	public const TYPE_HUMAN = 3;
 	public const TYPE_CREEPER = 4;
 	public const TYPE_DRAGON = 5;
+	public const TYPE_PIGLIN = 6;
 
 	public const TAG_SKULL_TYPE = "SkullType"; //TAG_Byte
 	public const TAG_ROT = "Rot"; //TAG_Byte

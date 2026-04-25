@@ -223,6 +223,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
 use pocketmine\tile\ItemFrame;
+use pocketmine\tile\Skull;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\timings\Timings;
@@ -1199,6 +1200,19 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->usedChunks[Level::chunkHash($x, $z)] = true;
 		$this->dataPacket($payload);
+
+		$chunk = $this->level->getChunk($x, $z);
+		if($chunk !== null){
+			$blocksToUpdate = [];
+			foreach($chunk->getTiles() as $tile){
+				if($tile instanceof Skull){
+					$blocksToUpdate[] = $tile->getBlock();
+				}
+			}
+			if(count($blocksToUpdate) > 0){
+				$this->getLevel()->sendBlocks([$this], $blocksToUpdate, UpdateBlockPacket::FLAG_ALL_PRIORITY);
+			}
+		}
 
 		if($this->spawned){
 			foreach($this->level->getChunkEntities($x, $z) as $entity){
