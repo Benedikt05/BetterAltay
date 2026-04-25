@@ -54,6 +54,8 @@ final class ItemStackRequest{
 	 */
 	public function getFilterStrings() : array{ return $this->filterStrings; }
 
+	public function getFilterStringCause() : int{ return $this->filterStringCause; }
+
 	private static function readAction(NetworkBinaryStream $in, int $typeId) : ItemStackRequestAction{
 		switch($typeId){
 			case TakeStackRequestAction::getTypeId():
