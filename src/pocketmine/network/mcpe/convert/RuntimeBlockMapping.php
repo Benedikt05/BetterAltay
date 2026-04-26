@@ -44,6 +44,7 @@ final class RuntimeBlockMapping{
 	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
+	private static array $skullMapping;
 
 	private function __construct(){
 		//NOOP
@@ -118,6 +119,7 @@ final class RuntimeBlockMapping{
 			}
 			throw new RuntimeException("Mapped new state does not appear in network table");
 		}
+		self::$skullMapping = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/skull_rid_mapping.json"), true);
 	}
 
 	private static function lazyInit() : void{
@@ -156,5 +158,9 @@ final class RuntimeBlockMapping{
 	public static function getBedrockKnownStates() : array{
 		self::lazyInit();
 		return self::$bedrockKnownStates;
+	}
+
+	public static function getSkullMapping() : array{
+		return self::$skullMapping;
 	}
 }
