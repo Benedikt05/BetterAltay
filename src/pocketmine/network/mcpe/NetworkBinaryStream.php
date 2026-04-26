@@ -233,10 +233,7 @@ class NetworkBinaryStream extends BinaryStream{
 			if($net){
 				$this->getLShort(); //count
 				$this->getUnsignedVarInt(); //damage
-				$hasNetId = $this->getBool();
-				if($hasNetId){
-					$this->readGenericTypeNetworkId();
-				}
+				$readExtraCrapInTheMiddle($this, $net);
 				$this->getUnsignedVarInt(); //blockRuntimeId
 				$this->getString(); //nbt
 			}
