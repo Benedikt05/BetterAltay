@@ -225,7 +225,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 */
 	public function getItemStack(Closure $readExtraCrapInTheMiddle, bool $net = false) : Item{
 		if($net){
-			$netId = $this->getLShort();
+			$netId = $this->getSignedLShort();
 		}else{
 			$netId = $this->getVarInt();
 		}
@@ -235,7 +235,7 @@ class NetworkBinaryStream extends BinaryStream{
 				$this->getUnsignedVarInt(); //damage
 				$readExtraCrapInTheMiddle($this, $net);
 				$this->getUnsignedVarInt(); //blockRuntimeId
-				$this->getString(); //nbt
+				$this->get($this->getUnsignedVarInt()); //nbt
 			}
 			return ItemFactory::get(0, 0, 0);
 		}
@@ -247,7 +247,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$readExtraCrapInTheMiddle($this, $net);
 
-		$this->getVarInt(); //blockRuntimeId
+		$this->getUnsignedVarInt(); //blockRuntimeId
 
 		$extraData = new NetworkBinaryStream($this->getString());
 		return (static function() use ($extraData, $netId, $id, $meta, $cnt) : Item{
@@ -352,7 +352,7 @@ class NetworkBinaryStream extends BinaryStream{
 				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
 			}
 		}
-		$this->putVarInt($blockRuntimeId);
+		$this->putUnsignedVarInt($blockRuntimeId);
 
 		$nbt = null;
 		if($item->hasCompoundTag()){
