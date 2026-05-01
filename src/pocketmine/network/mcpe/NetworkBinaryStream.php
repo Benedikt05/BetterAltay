@@ -221,7 +221,7 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $readExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readExtraCrapInTheMiddle
 	 */
 	public function getItemStack(Closure $readExtraCrapInTheMiddle, bool $net = false) : Item{
 		if($net){
@@ -314,7 +314,7 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeExtraCrapInTheMiddle
 	 */
 	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle, bool $net = false) : void{
 		if($item->getId() === 0){
