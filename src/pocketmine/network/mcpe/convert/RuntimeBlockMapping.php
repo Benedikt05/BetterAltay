@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
+use pocketmine\item\ItemIds;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
@@ -90,7 +91,15 @@ final class RuntimeBlockMapping{
 		 */
 		$idToStatesMap = [];
 		foreach(self::$bedrockKnownStates as $k => $state){
-			$idToStatesMap[$state->getString("name")][] = $k;
+			$name = $state->getString("name");
+			$idToStatesMap[$name][] = $k;
+			if(ItemTranslator::getInstance()->fromStringId($name)[0] === ItemIds::SKULL){
+				$states = $state->getCompoundTag("states");
+				if($states !== null){
+					$facing = $states->getInt("facing_direction", 0);
+					self::$skullMapping[$name][$facing] = $k;
+				}
+			}
 		}
 		foreach($legacyStateMap as $pair){
 			$id = $legacyIdMap[$pair->getId()] ?? null;
@@ -119,7 +128,6 @@ final class RuntimeBlockMapping{
 			}
 			throw new RuntimeException("Mapped new state does not appear in network table");
 		}
-		self::$skullMapping = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/skull_rid_mapping.json"), true);
 	}
 
 	private static function lazyInit() : void{
