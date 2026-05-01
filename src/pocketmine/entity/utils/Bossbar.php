@@ -24,12 +24,14 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\utils;
 
+use InvalidArgumentException;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
+use pocketmine\network\mcpe\protocol\types\BossBarColor;
 use pocketmine\Player;
 
 /*
@@ -38,24 +40,32 @@ use pocketmine\Player;
  */
 
 class Bossbar extends Vector3{
+
 	/** @var int */
 	protected $entityId;
+
 	/** @var string */
 	protected $title;
+
 	/** @var float */
 	protected $healthPercent;
+
+	/** @var int */
+	protected $color;
+
 	/** @var Player[] */
 	protected $viewers = [];
 
-	public function __construct(string $title = "", float $hp = 1.0){
+	public function __construct(string $title = "", float $hp = 1.0, int $color = BossBarColor::PURPLE){
 		parent::__construct(0, 0, 0);
 
 		$this->entityId = Entity::$entityCount++;
 		$this->title = $title;
 		$this->setHealthPercent($hp, false);
+		$this->color = $color;
 	}
 
-	public function setTitle(string $title, bool $update = true){
+	public function setTitle(string $title, bool $update = true) : void{
 		$this->title = $title;
 
 		if($update){
@@ -71,7 +81,7 @@ class Bossbar extends Vector3{
 	 * @param float $hp This should be in 0.0-1.0 range
 	 * @param bool  $update
 	 */
-	public function setHealthPercent(float $hp, bool $update = true){
+	public function setHealthPercent(float $hp, bool $update = true) : void{
 		$this->healthPercent = max(0, min(1.0, $hp));
 
 		if($update){
@@ -83,7 +93,50 @@ class Bossbar extends Vector3{
 		return $this->healthPercent;
 	}
 
-	public function showTo(Player $player, bool $isViewer = true){
+	public function setColor(int $color, bool $update = true) : void{
+		$this->color = $color;
+
+		if($update){
+			foreach($this->viewers as $player){
+				$this->sendBossEventPacket($player, BossEventPacket::TYPE_HIDE);
+				$this->sendBossEventPacket($player, BossEventPacket::TYPE_SHOW);
+			}
+		}
+	}
+
+	public function getColor() : int{
+		return $this->color;
+	}
+
+	public static function getColorByName(string $name) : int{
+		return match($name){
+			"pink", "PINK" => BossBarColor::PINK,
+			"blue", "BLUE" => BossBarColor::BLUE,
+			"red", "RED" => BossBarColor::RED,
+			"green", "GREEN" => BossBarColor::GREEN,
+			"yellow", "YELLOW" => BossBarColor::YELLOW,
+			"purple", "PURPLE" => BossBarColor::PURPLE,
+			"rebecca_purple", "REBECCA_PURPLE" => BossBarColor::REBECCA_PURPLE,
+			"white", "WHITE" => BossBarColor::WHITE,
+			default => throw new InvalidArgumentException("Invalid bossbar color: " . $name),
+		};
+	}
+
+	public static function getColorByID(int $id) : string{
+		return match($id){
+			BossBarColor::PINK => "PINK",
+			BossBarColor::BLUE => "BLUE",
+			BossBarColor::RED => "RED",
+			BossBarColor::GREEN => "GREEN",
+			BossBarColor::YELLOW => "YELLOW",
+			BossBarColor::PURPLE => "PURPLE",
+			BossBarColor::REBECCA_PURPLE => "REBECCA_PURPLE",
+			BossBarColor::WHITE => "WHITE",
+			default => throw new InvalidArgumentException("Invalid bossbar color ID: " . $id),
+		};
+	}
+
+	public function showTo(Player $player, bool $isViewer = true) : void{
 		$pk = new AddActorPacket();
 		$pk->entityRuntimeId = $this->entityId;
 		$pk->type = AddActorPacket::LEGACY_ID_MAP_BC[EntityIds::SLIME];
@@ -107,7 +160,7 @@ class Bossbar extends Vector3{
 		}
 	}
 
-	public function hideFrom(Player $player){
+	public function hideFrom(Player $player) : void{
 		$this->sendBossEventPacket($player, BossEventPacket::TYPE_HIDE);
 
 		$pk2 = new RemoveActorPacket();
@@ -120,7 +173,7 @@ class Bossbar extends Vector3{
 		}
 	}
 
-	public function updateFor(Player $player){
+	public function updateFor(Player $player) : void{
 		$this->sendBossEventPacket($player, BossEventPacket::TYPE_HEALTH_PERCENT);
 		$this->sendBossEventPacket($player, BossEventPacket::TYPE_TITLE);
 	}
@@ -141,7 +194,7 @@ class Bossbar extends Vector3{
 				$pk->title = $this->title;
 				$pk->filteredTitle = $this->title;
 				$pk->healthPercent = $this->healthPercent;
-				$pk->color = 0;
+				$pk->color = $this->color;
 				$pk->overlay = 0;
 				$pk->darkenScreen = 0;
 				break;

@@ -27,6 +27,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\Player;
 use pocketmine\tile\Skull as TileSkull;
 use pocketmine\tile\Tile;
@@ -34,6 +35,7 @@ use pocketmine\tile\Tile;
 class Skull extends Flowable{
 
 	protected $id = self::SKULL_BLOCK;
+	private int $type;
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -65,6 +67,7 @@ class Skull extends Flowable{
 		}
 
 		$this->meta = $face;
+		$this->type = $item->getDamage();
 		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 		Tile::createTile(Tile::SKULL, $this->getLevelNonNull(), TileSkull::createNBT($this, $face, $item, $player));
 
@@ -86,5 +89,11 @@ class Skull extends Flowable{
 
 	public function getPickedItem() : Item{
 		return $this->getItem();
+	}
+
+	public function getRuntimeId() : int{
+		$tile = $this->level->getTile($this);
+		$type = ($tile instanceof TileSkull) ? $tile->getType() : $this->type;
+		return RuntimeBlockMapping::getSkullMapping()[$type][$this->meta] ?? parent::getRuntimeId();
 	}
 }
