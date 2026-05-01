@@ -128,6 +128,7 @@ abstract class Particle extends Vector3{
 	public const TYPE_GREEN_FLAME = 98;
 	public const TYPE_PAUSE_MOB_GROWTH = 99;
 	public const TYPE_REST_MOB_GROWTH = 100;
+	public const TYPE_SULFUR_CUBE = 101;
 
 	/**
 	 * @return DataPacket|DataPacket[]
