@@ -114,9 +114,9 @@ class CraftingManager{
 			}
 		}
 
-		foreach($this->furnaceRecipes as $recipe){
+		/*foreach($this->furnaceRecipes as $recipe){
 			$pk->addFurnaceRecipe($recipe);
-		}
+		}*/
 
 		$pk->encode();
 
