@@ -37,6 +37,20 @@ class Skull extends Flowable{
 	protected $id = self::SKULL_BLOCK;
 	private int $type;
 
+	private static array $skullTypes = [
+		"minecraft:skeleton_skull",
+		"minecraft:wither_skeleton_skull",
+		"minecraft:zombie_head",
+		"minecraft:player_head",
+		"minecraft:creeper_head",
+		"minecraft:dragon_head",
+		"minecraft:piglin_head",
+	];
+
+	public static function getSkullNameByType(int $type) : ?string{
+		return self::$skullTypes[$type] ?? null;
+	}
+
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
 	}
@@ -94,6 +108,10 @@ class Skull extends Flowable{
 	public function getRuntimeId() : int{
 		$tile = $this->level->getTile($this);
 		$type = ($tile instanceof TileSkull) ? $tile->getType() : $this->type;
-		return RuntimeBlockMapping::getSkullMapping()[$type][$this->meta] ?? parent::getRuntimeId();
+		$name = self::getSkullNameByType($type);
+		if($name !== null){
+			return RuntimeBlockMapping::getSkullMapping()[$name][$this->meta] ?? parent::getRuntimeId();
+		}
+		return parent::getRuntimeId();
 	}
 }
