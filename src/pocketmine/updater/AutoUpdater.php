@@ -103,7 +103,7 @@ class AutoUpdater{
 	 */
 	public function showConsoleUpdate(){
 		$messages = [
-			"Your version of " . $this->server->getName() . " is out of date. Version " . $this->newVersion->getFullVersion(true) . " was released on " . date("D M j h:i:s Y", $this->updateInfo["date"])
+			"Your version of " . $this->server->getName() . " is out of date. Version " . $this->newVersion->getBaseVersion(true) . " was released on " . date("D M j h:i:s Y", $this->updateInfo["date"])
 		];
 		if($this->updateInfo["details_url"] !== null){
 			$messages[] = "Details: " . $this->updateInfo["details_url"];
@@ -196,10 +196,10 @@ class AutoUpdater{
 			return;
 		}
 
-		if($currentVersion->compare($newVersion) > 0 and ($currentVersion->getFullVersion() !== $newVersion->getFullVersion() or $currentVersion->getBuild() > 0)){
+		if($currentVersion->compare($newVersion) > 0 and ($currentVersion->getBaseVersion() !== $newVersion->getBaseVersion() or $currentVersion->getBuild() > 0)){
 			$this->newVersion = $newVersion;
 		}else{
-			$this->server->getLogger()->debug("[AutoUpdater] API reported version is an older version or the same version (" . $newVersion->getFullVersion() . "), not showing notification");
+			$this->server->getLogger()->debug("[AutoUpdater] API reported version is an older version or the same version (" . $newVersion->getBaseVersion() . "), not showing notification");
 		}
 	}
 

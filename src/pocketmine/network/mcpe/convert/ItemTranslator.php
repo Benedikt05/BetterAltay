@@ -151,9 +151,9 @@ final class ItemTranslator{
 				//not all items have a legacy mapping - for now, we only support the ones that do
 				continue;
 			}
-			$this->simpleMappings = $simpleMappings;
-			$this->complexMappings = $complexMappings;
 		}
+		$this->simpleMappings = $simpleMappings;
+		$this->complexMappings = $complexMappings;
 	}
 
 	/**
