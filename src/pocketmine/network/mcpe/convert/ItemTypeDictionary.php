@@ -58,7 +58,7 @@ final class ItemTypeDictionary{
 	private $stringToIntMap = [];
 
 	private static function make() : self{
-		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true)["items"];
+		$table = json_decode(file_get_contents(RESOURCE_PATH . '/vanilla/runtime_item_states.json'), true);
 		$itemComponentsData = file_get_contents(RESOURCE_PATH . '/vanilla/item_components.nbt');
 
 		if(!is_array($table) || !is_string($itemComponentsData)){
@@ -73,7 +73,7 @@ final class ItemTypeDictionary{
 
 		$params = [];
 		foreach($table as $entry){
-			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["component_based"], $entry["id"], $entry["version"]) || !is_bool($entry["component_based"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
+			if(!is_array($entry) || !is_string($entry["name"]) || !isset($entry["componentBased"], $entry["id"], $entry["version"]) || !is_bool($entry["componentBased"]) || !is_int($entry["id"]) || !is_int($entry["version"])){
 				throw new AssumptionFailedError("Invalid item list format");
 			}
 
@@ -82,7 +82,7 @@ final class ItemTypeDictionary{
 			$params[] = new ItemTypeEntry(
 				$entry["name"],
 				$entry["id"],
-				$entry["component_based"],
+				$entry["componentBased"],
 				$entry["version"],
 				$nbt
 			);

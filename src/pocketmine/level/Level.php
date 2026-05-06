@@ -622,7 +622,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return void
 	 */
-	public function broadcastLevelSoundEvent(Vector3 $pos, int $soundId, int $extraData = -1, int $entityTypeId = -1, bool $isBabyMob = false, bool $disableRelativeVolume = false){
+	public function broadcastLevelSoundEvent(Vector3 $pos, int $soundId, int $extraData = -1, int $entityTypeId = -1, bool $isBabyMob = false, bool $disableRelativeVolume = false, int $entityUniqueId = -1, ?Vector3 $fireAtPosition = null){
 		$pk = new LevelSoundEventPacket();
 		$pk->sound = $soundId;
 		$pk->extraData = $extraData;
@@ -630,6 +630,8 @@ class Level implements ChunkManager, Metadatable{
 		$pk->isBabyMob = $isBabyMob;
 		$pk->disableRelativeVolume = $disableRelativeVolume;
 		$pk->position = $pos->asVector3();
+		$pk->entityUniqueId = $entityUniqueId;
+		$pk->fireAtPosition = $fireAtPosition;
 		$this->broadcastPacketToViewers($pos, $pk);
 	}
 

@@ -221,11 +221,22 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $readExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readExtraCrapInTheMiddle
 	 */
-	public function getItemStack(Closure $readExtraCrapInTheMiddle) : Item{
-		$netId = $this->getVarInt();
+	public function getItemStack(Closure $readExtraCrapInTheMiddle, bool $net = false) : Item{
+		if($net){
+			$netId = $this->getSignedLShort();
+		}else{
+			$netId = $this->getVarInt();
+		}
 		if($netId === 0){
+			if($net){
+				$this->getLShort(); //count
+				$this->getUnsignedVarInt(); //damage
+				$readExtraCrapInTheMiddle($this, $net);
+				$this->getUnsignedVarInt(); //blockRuntimeId
+				$this->get($this->getUnsignedVarInt()); //nbt
+			}
 			return ItemFactory::get(0, 0, 0);
 		}
 
@@ -234,9 +245,9 @@ class NetworkBinaryStream extends BinaryStream{
 
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkId($netId, $netData);
 
-		$readExtraCrapInTheMiddle($this);
+		$readExtraCrapInTheMiddle($this, $net);
 
-		$this->getVarInt();
+		$this->getUnsignedVarInt(); //blockRuntimeId
 
 		$extraData = new NetworkBinaryStream($this->getString());
 		return (static function() use ($extraData, $netId, $id, $meta, $cnt) : Item{
@@ -303,23 +314,35 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeExtraCrapInTheMiddle
 	 */
-	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle) : void{
+	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle, bool $net = false) : void{
 		if($item->getId() === 0){
-			$this->putVarInt(0);
-
+			if($net){
+				$this->putLShort(0); //id
+				$this->putLShort(0); //count
+				$this->putUnsignedVarInt(0); //damage
+				$this->putBool(false); //isUsingNetId
+				$this->putUnsignedVarInt(0); //blockRuntimeId
+				$this->putUnsignedVarInt(0); //userData Length
+			}else{
+				$this->putVarInt(0);
+			}
 			return;
 		}
 
 		$coreData = $item->getDamage();
 		[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $coreData);
 
-		$this->putVarInt($netId);
+		if($net){
+			$this->putLShort($netId);
+		}else{
+			$this->putVarInt($netId);
+		}
 		$this->putLShort($item->getCount());
 		$this->putUnsignedVarInt($netData);
 
-		$writeExtraCrapInTheMiddle($this);
+		$writeExtraCrapInTheMiddle($this, $net);
 
 		$blockRuntimeId = 0;
 		$isBlockItem = $item->getId() < 256;
@@ -329,7 +352,7 @@ class NetworkBinaryStream extends BinaryStream{
 				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
 			}
 		}
-		$this->putVarInt($blockRuntimeId);
+		$this->putUnsignedVarInt($blockRuntimeId);
 
 		$nbt = null;
 		if($item->hasCompoundTag()){

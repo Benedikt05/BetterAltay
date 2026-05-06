@@ -15,7 +15,8 @@ class UpdateClientOptionsPacket extends DataPacket{
 	public const GRAPHICS_MODE_ADVANCED = 2;
 	public const GRAPHICS_MODE_RAY_TRACED = 3;
 
-	private ?int $graphicsMode;
+	private ?int $graphicsMode = null;
+	private ?bool $filterProfanityChange = null;
 
 	/**
 	 * @return int|null
@@ -24,8 +25,13 @@ class UpdateClientOptionsPacket extends DataPacket{
 		return $this->graphicsMode;
 	}
 
+	public function getFilterProfanityChange() : ?bool{
+		return $this->filterProfanityChange;
+	}
+
 	protected function decodePayload() : void{
 		$this->graphicsMode = $this->getBool() ? $this->getByte() : null;
+		$this->filterProfanityChange = $this->readOptional(fn() => $this->getBool());
 	}
 
 	protected function encodePayload() : void{
@@ -33,6 +39,7 @@ class UpdateClientOptionsPacket extends DataPacket{
 		if($this->graphicsMode !== null){
 			$this->putByte($this->graphicsMode);
 		}
+		$this->writeOptional($this->filterProfanityChange, fn(bool $filterProfanityChange) => $this->putBool($filterProfanityChange));
 	}
 
 	public function handle(NetworkSession $session) : bool{
