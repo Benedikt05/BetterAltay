@@ -41,13 +41,13 @@ final class Enchant{
 	public function getLevel() : int{ return $this->level; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$id = $in->getByte();
+		$id = $in->getUnsignedVarInt();
 		$level = $in->getByte();
 		return new self($id, $level);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putByte($this->id);
+		$out->putUnsignedVarInt($this->id);
 		$out->putByte($this->level);
 	}
 }

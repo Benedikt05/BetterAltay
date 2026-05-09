@@ -99,7 +99,7 @@ final class EnchantOption{
 	}
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$cost = $in->getUnsignedVarInt();
+		$cost = $in->getByte();
 
 		$slotFlags = $in->getLInt();
 		$equipActivatedEnchants = self::readEnchantList($in);
@@ -113,7 +113,7 @@ final class EnchantOption{
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putUnsignedVarInt($this->cost);
+		$out->putByte($this->cost);
 
 		$out->putLInt($this->slotFlags);
 		self::writeEnchantList($out, $this->equipActivatedEnchantments);
