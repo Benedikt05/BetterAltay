@@ -129,27 +129,6 @@ class CraftingDataPacket extends DataPacket{
 					$entry["net_id"] = $this->getUnsignedVarInt();
 
 					break;
-				case self::ENTRY_FURNACE:
-				case self::ENTRY_FURNACE_DATA:
-					$inputIdNet = $this->getVarInt();
-					if($recipeType === self::ENTRY_FURNACE){
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, 0x7fff);
-					}else{
-						$inputMetaNet = $this->getVarInt();
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, $inputMetaNet);
-					}
-					$entry["input"] = ItemFactory::get($inputId, $inputData);
-					$entry["output"] = $out = $this->getItemStackWithoutStackId();
-					if($out->getDamage() === 0x7fff){
-						$out->setDamage(0); //TODO HACK: some 1.12 furnace recipe outputs have wildcard damage values
-					}
-					$entry["block"] = $this->getString();
-
-					break;
-				case self::ENTRY_MULTI:
-					$entry["uuid"] = $this->getUUID()->toString();
-					$entry["net_id"] = $this->getUnsignedVarInt();
-					break;
 				default:
 					throw new UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
 			}
