@@ -217,7 +217,7 @@ class PacketPool{
 		static::registerPacket(new UpdateClientOptionsPacket());
 		static::registerPacket(new PlayerLocationPacket());
 		static::registerPacket(new ClientboundControlSchemeSetPacket());
-		static::registerPacket(new DebugDrawerPacket());//TODO: Update
+		static::registerPacket(new PrimitiveShapesPacket());
 		static::registerPacket(new ClientboundDataStorePacket());
 		static::registerPacket(new ServerboundDataStorePacket());
 		static::registerPacket(new ClientboundDataDrivenUIShowScreenPacket());

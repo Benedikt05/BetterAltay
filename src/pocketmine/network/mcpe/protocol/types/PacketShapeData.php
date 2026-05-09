@@ -19,7 +19,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Color;
 
 /**
- * @see DebugDrawerPacket
+ * @see PrimitiveShapesPacket
  */
 final class PacketShapeData{
 
@@ -30,20 +30,29 @@ final class PacketShapeData{
 		private ?float $scale,
 		private ?Vector3 $rotation,
 		private ?float $totalTimeLeft,
+		private ?float $maximumRenderDistance,
 		private ?Color $color,
 		private ?string $text,
+		private ?bool $useRotation,
+		private ?Color $backgroundColor,
+		private ?bool $depthTest,
+		private ?bool $showBackface,
+		private ?bool $showTextBackface,
 		private ?Vector3 $boxBound,
 		private ?Vector3 $lineEndLocation,
 		private ?float $arrowHeadLength,
 		private ?float $arrowHeadRadius,
 		private ?int $segments,
-	){}
-
-	public static function remove(int $networkId) : self{
-		return new self($networkId, null, null, null, null, null, null, null, null, null, null, null, null);
+		private ?int $dimensionId,
+		private ?int $attachedToEntityId,
+	){
 	}
 
-	public static function line(int $networkId, Vector3 $location, Vector3 $lineEndLocation, ?Color $color = null) : self{
+	public static function remove(int $networkId, ?int $dimensionId = null) : self{
+		return new self($networkId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, $dimensionId, null);
+	}
+
+	public static function line(int $networkId, Vector3 $location, Vector3 $lineEndLocation, ?Color $color = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::LINE,
@@ -51,17 +60,25 @@ final class PacketShapeData{
 			scale: null,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: null,
+			useRotation: null,
+			backgroundColor: null,
+			depthTest: null,
+			showBackface: null,
+			showTextBackface: null,
 			boxBound: null,
 			lineEndLocation: $lineEndLocation,
 			arrowHeadLength: null,
 			arrowHeadRadius: null,
-			segments: null
+			segments: null,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
-	public static function box(int $networkId, Vector3 $location, Vector3 $boxBound, ?float $scale = null, ?Color $color = null) : self{
+	public static function box(int $networkId, Vector3 $location, Vector3 $boxBound, ?float $scale = null, ?Color $color = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::BOX,
@@ -69,17 +86,25 @@ final class PacketShapeData{
 			scale: $scale,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: null,
+			useRotation: null,
+			backgroundColor: null,
+			depthTest: null,
+			showBackface: null,
+			showTextBackface: null,
 			boxBound: $boxBound,
 			lineEndLocation: null,
 			arrowHeadLength: null,
 			arrowHeadRadius: null,
-			segments: null
+			segments: null,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
-	public static function sphere(int $networkId, Vector3 $location, ?float $scale = null, ?Color $color = null, ?int $segments = null) : self{
+	public static function sphere(int $networkId, Vector3 $location, ?float $scale = null, ?Color $color = null, ?int $segments = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::SPHERE,
@@ -87,17 +112,25 @@ final class PacketShapeData{
 			scale: $scale,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: null,
+			useRotation: null,
+			backgroundColor: null,
+			depthTest: null,
+			showBackface: null,
+			showTextBackface: null,
 			boxBound: null,
 			lineEndLocation: null,
 			arrowHeadLength: null,
 			arrowHeadRadius: null,
-			segments: $segments
+			segments: $segments,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
-	public static function circle(int $networkId, Vector3 $location, ?float $scale = null, ?Color $color = null, ?int $segments = null) : self{
+	public static function circle(int $networkId, Vector3 $location, ?float $scale = null, ?Color $color = null, ?int $segments = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::CIRCLE,
@@ -105,17 +138,25 @@ final class PacketShapeData{
 			scale: $scale,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: null,
+			useRotation: null,
+			backgroundColor: null,
+			depthTest: null,
+			showBackface: null,
+			showTextBackface: null,
 			boxBound: null,
 			lineEndLocation: null,
 			arrowHeadLength: null,
 			arrowHeadRadius: null,
-			segments: $segments
+			segments: $segments,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
-	public static function text(int $networkId, Vector3 $location, string $text, ?Color $color = null) : self{
+	public static function text(int $networkId, Vector3 $location, string $text, bool $useRotation = false, ?Color $backgroundColor = null, bool $depthTest = true, bool $showBackface = true, bool $showTextBackface = true, ?Color $color = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::TEXT,
@@ -123,17 +164,25 @@ final class PacketShapeData{
 			scale: null,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: $text,
+			useRotation: $useRotation,
+			backgroundColor: $backgroundColor,
+			depthTest: $depthTest,
+			showBackface: $showBackface,
+			showTextBackface: $showTextBackface,
 			boxBound: null,
 			lineEndLocation: null,
 			arrowHeadLength: null,
 			arrowHeadRadius: null,
-			segments: null
+			segments: null,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
-	public static function arrow(int $networkId, Vector3 $location, Vector3 $lineEndLocation, ?float $scale = null, ?Color $color = null, ?float $arrowHeadLength = null, ?float $arrowHeadRadius = null, ?int $segments = null) : self{
+	public static function arrow(int $networkId, Vector3 $location, Vector3 $lineEndLocation, ?float $scale = null, ?Color $color = null, ?float $arrowHeadLength = null, ?float $arrowHeadRadius = null, ?int $segments = null, ?int $dimensionId = null, ?int $attachedToEntityId = null) : self{
 		return new self(
 			networkId: $networkId,
 			type: ScriptDebugShapeType::ARROW,
@@ -141,13 +190,21 @@ final class PacketShapeData{
 			scale: $scale,
 			rotation: null,
 			totalTimeLeft: null,
+			maximumRenderDistance: null,
 			color: $color,
 			text: null,
+			useRotation: null,
+			backgroundColor: null,
+			depthTest: null,
+			showBackface: null,
+			showTextBackface: null,
 			boxBound: null,
 			lineEndLocation: $lineEndLocation,
 			arrowHeadLength: $arrowHeadLength,
 			arrowHeadRadius: $arrowHeadRadius,
-			segments: $segments
+			segments: $segments,
+			dimensionId: $dimensionId,
+			attachedToEntityId: $attachedToEntityId
 		);
 	}
 
@@ -163,9 +220,21 @@ final class PacketShapeData{
 
 	public function getTotalTimeLeft() : ?float{ return $this->totalTimeLeft; }
 
+	public function getMaximumRenderDistance() : ?float{ return $this->maximumRenderDistance; }
+
 	public function getColor() : ?Color{ return $this->color; }
 
 	public function getText() : ?string{ return $this->text; }
+
+	public function getUseRotation() : ?bool{ return $this->useRotation; }
+
+	public function getBackgroundColor() : ?Color{ return $this->backgroundColor; }
+
+	public function getDepthTest() : ?bool{ return $this->depthTest; }
+
+	public function getShowBackface() : ?bool{ return $this->showBackface; }
+
+	public function getShowTextBackface() : ?bool{ return $this->showTextBackface; }
 
 	public function getBoxBound() : ?Vector3{ return $this->boxBound; }
 
@@ -177,6 +246,10 @@ final class PacketShapeData{
 
 	public function getSegments() : ?int{ return $this->segments; }
 
+	public function getDimensionId() : ?int{ return $this->dimensionId; }
+
+	public function getAttachedToEntityId() : ?int{ return $this->attachedToEntityId; }
+
 	public static function read(NetworkBinaryStream $in) : self{
 		$networkId = $in->getUnsignedVarLong();
 		$type = $in->readOptional(fn() => $in->getByte());
@@ -184,28 +257,57 @@ final class PacketShapeData{
 		$scale = $in->readOptional(fn() => $in->getLFloat());
 		$rotation = $in->readOptional(fn() => $in->getVector3());
 		$totalTimeLeft = $in->readOptional(fn() => $in->getLFloat());
+		$maximumRenderDistance = $in->readOptional(fn() => $in->getLFloat());
 		$color = $in->readOptional(fn() => Color::fromARGB($in->getLInt()));
-		$text = $in->readOptional(fn() => $in->getString());
-		$boxBound = $in->readOptional(fn() => $in->getVector3());
-		$lineEndLocation = $in->readOptional(fn() => $in->getVector3());
-		$arrowHeadLength = $in->readOptional(fn() => $in->getLFloat());
-		$arrowHeadRadius = $in->readOptional(fn() => $in->getLFloat());
-		$segments = $in->readOptional(fn() => $in->getByte());
+		$dimensionId = $in->readOptional(fn() => $in->getVarInt());
+		$attachedToEntityId = $in->readOptional(fn() => $in->getEntityRuntimeId());
+
+		$payloadType = $in->getUnsignedVarInt();
+
+		$text = null;
+		$useRotation = null;
+		$backgroundColor = null;
+		$depthTest = null;
+		$showBackface = null;
+		$showTextBackface = null;
+		$boxBound = null;
+		$lineEndLocation = null;
+		$arrowHeadLength = null;
+		$arrowHeadRadius = null;
+		$segments = null;
+
+		switch($payloadType){
+			case ScriptDebugShapeType::PAYLOAD_TYPE_NONE:
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_ARROW:
+				$lineEndLocation = $in->readOptional(fn() => $in->getVector3());
+				$arrowHeadLength = $in->readOptional(fn() => $in->getLFloat());
+				$arrowHeadRadius = $in->readOptional(fn() => $in->getLFloat());
+				$segments = $in->readOptional(fn() => $in->getByte());
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_TEXT:
+				$text = $in->getString();
+				$useRotation = $in->getBool();
+				$backgroundColor = $in->readOptional(fn() => Color::fromARGB($in->getLInt()));
+				$depthTest = $in->getBool();
+				$showBackface = $in->getBool();
+				$showTextBackface = $in->getBool();
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_BOX:
+				$boxBound = $in->getVector3();
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_LINE:
+				$lineEndLocation = $in->getVector3();
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_CIRCLE_OR_SPHERE:
+				$segments = $in->getByte();
+				break;
+		}
 
 		return new self(
-			$networkId,
-			$type,
-			$location,
-			$scale,
-			$rotation,
-			$totalTimeLeft,
-			$color,
-			$text,
-			$boxBound,
-			$lineEndLocation,
-			$arrowHeadLength,
-			$arrowHeadRadius,
-			$segments
+			$networkId, $type, $location, $scale, $rotation, $totalTimeLeft, $maximumRenderDistance,
+			$color, $text, $useRotation, $backgroundColor, $depthTest, $showBackface, $showTextBackface,
+			$boxBound, $lineEndLocation, $arrowHeadLength, $arrowHeadRadius, $segments, $dimensionId, $attachedToEntityId
 		);
 	}
 
@@ -216,12 +318,40 @@ final class PacketShapeData{
 		$out->writeOptional($this->scale, fn(float $scale) => $out->putLFloat($scale));
 		$out->writeOptional($this->rotation, fn(Vector3 $rotation) => $out->putVector3($rotation));
 		$out->writeOptional($this->totalTimeLeft, fn(float $totalTimeLeft) => $out->putLFloat($totalTimeLeft));
+		$out->writeOptional($this->maximumRenderDistance, fn(float $dist) => $out->putLFloat($dist));
 		$out->writeOptional($this->color, fn(Color $color) => $out->putLInt($color->toARGB()));
-		$out->writeOptional($this->text, fn(string $text) => $out->putString($text));
-		$out->writeOptional($this->boxBound, fn(Vector3 $boxBound) => $out->putVector3($boxBound));
-		$out->writeOptional($this->lineEndLocation, fn(Vector3 $lineEndLocation) => $out->putVector3($lineEndLocation));
-		$out->writeOptional($this->arrowHeadLength, fn(float $arrowHeadLength) => $out->putLFloat($arrowHeadLength));
-		$out->writeOptional($this->arrowHeadRadius, fn(float $arrowHeadRadius) => $out->putLFloat($arrowHeadRadius));
-		$out->writeOptional($this->segments, fn(int $segments) => $out->putByte($segments));
+		$out->writeOptional($this->dimensionId, fn(int $dim) => $out->putVarInt($dim));
+		$out->writeOptional($this->attachedToEntityId, fn(int $eid) => $out->putEntityRuntimeId($eid));
+
+		$payloadType = $this->type !== null ? ScriptDebugShapeType::getPayloadType($this->type) : ScriptDebugShapeType::PAYLOAD_TYPE_NONE;
+		$out->putUnsignedVarInt($payloadType);
+
+		switch($payloadType){
+			case ScriptDebugShapeType::PAYLOAD_TYPE_ARROW:
+				$out->writeOptional($this->lineEndLocation, fn(Vector3 $v) => $out->putVector3($v));
+				$out->writeOptional($this->arrowHeadLength, fn(float $f) => $out->putLFloat($f));
+				$out->writeOptional($this->arrowHeadRadius, fn(float $f) => $out->putLFloat($f));
+				$out->writeOptional($this->segments, fn(int $i) => $out->putByte($i));
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_TEXT:
+				$out->putString($this->text ?? "");
+				$out->putBool($this->useRotation ?? false);
+				$out->writeOptional($this->backgroundColor, fn(Color $c) => $out->putLInt($c->toARGB()));
+				$out->putBool($this->depthTest ?? true);
+				$out->putBool($this->showBackface ?? true);
+				$out->putBool($this->showTextBackface ?? true);
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_BOX:
+				$out->putVector3($this->boxBound ?? new Vector3(0, 0, 0));
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_LINE:
+				$out->putVector3($this->lineEndLocation ?? new Vector3(0, 0, 0));
+				break;
+			case ScriptDebugShapeType::PAYLOAD_TYPE_CIRCLE_OR_SPHERE:
+				$out->putByte($this->segments ?? 0);
+				break;
+			default:
+				throw new \LogicException("Unknown payload type $payloadType");
+		}
 	}
 }

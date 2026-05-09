@@ -228,7 +228,7 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
 	public const PLAYER_LOCATION_PACKET = 0x146;
 	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
-	public const DEBUG_DRAWER_PACKET = 0x148; //328
+	public const PRIMITIVE_SHAPES_PACKET = 0x148; //328
 	/**
 	 * public const SERVERBOUND_PACK_SETTING_CHANGE_PACKET = 0x149; //329
 	 */
