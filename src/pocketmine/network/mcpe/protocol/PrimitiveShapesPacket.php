@@ -18,8 +18,8 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\PacketShapeData;
 use function count;
 
-class DebugDrawerPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::DEBUG_DRAWER_PACKET;
+class PrimitiveShapesPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::PRIMITIVE_SHAPES_PACKET;
 
 	/**
 	 * @var PacketShapeData[]
@@ -59,6 +59,6 @@ class DebugDrawerPacket extends DataPacket{
 	}
 
 	public function handle(NetworkSession $session) : bool{
-		return $session->handleDebugDrawer($this);
+		return $session->handlePrimitiveShapes($this);
 	}
 }
