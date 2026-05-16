@@ -31,7 +31,9 @@ class UpdateClientOptionsPacket extends DataPacket{
 
 	protected function decodePayload() : void{
 		$this->graphicsMode = $this->getBool() ? $this->getByte() : null;
-		$this->filterProfanityChange = $this->readOptional(fn() => $this->getBool());
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->filterProfanityChange = $this->readOptional(fn() => $this->getBool());
+		}
 	}
 
 	protected function encodePayload() : void{
@@ -39,7 +41,9 @@ class UpdateClientOptionsPacket extends DataPacket{
 		if($this->graphicsMode !== null){
 			$this->putByte($this->graphicsMode);
 		}
-		$this->writeOptional($this->filterProfanityChange, fn(bool $filterProfanityChange) => $this->putBool($filterProfanityChange));
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->writeOptional($this->filterProfanityChange, fn(bool $filterProfanityChange) => $this->putBool($filterProfanityChange));
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

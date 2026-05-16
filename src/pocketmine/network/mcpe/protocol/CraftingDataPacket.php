@@ -52,6 +52,7 @@ class CraftingDataPacket extends DataPacket{
 	public const ENTRY_SHAPED = 1;
 	public const ENTRY_FURNACE = 0;
 	public const ENTRY_FURNACE_DATA = 0;
+	public const ENTRY_LEGACY_FURNACE_DATA = 3;
 	public const ENTRY_MULTI = 4; //TODO
 	public const ENTRY_SHULKER_BOX = 5; //TODO
 	public const ENTRY_SHAPELESS_CHEMISTRY = 6; //TODO
@@ -179,7 +180,7 @@ class CraftingDataPacket extends DataPacket{
 		}elseif($entry instanceof ShapedRecipe){
 			return self::writeShapedRecipe($entry, $stream, $pos);
 		}elseif($entry instanceof FurnaceRecipe){
-			return self::writeFurnaceRecipe($entry, $stream, $pos);
+			//return self::writeFurnaceRecipe($entry, $stream, $pos);
 		}
 		//TODO: add MultiRecipe
 
@@ -249,6 +250,21 @@ class CraftingDataPacket extends DataPacket{
 		$stream->putUnsignedVarInt(0); // ingredients size
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 		return CraftingDataPacket::ENTRY_FURNACE_DATA;
+	}
+
+	private static function writeLegacyFurnaceRecipe(FurnaceRecipe $recipe, NetworkBinaryStream $stream) : int{
+		$input = $recipe->getInput();
+		if($input->hasAnyDamageValue()){
+			[$netId,] = ItemTranslator::getInstance()->toNetworkId($input->getId(), 0);
+			$netData = 0x7fff;
+		}else{
+			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($input->getId(), $input->getDamage());
+		}
+		$stream->putVarInt($netId);
+		$stream->putVarInt($netData);
+		$stream->putItemStackWithoutStackId($recipe->getResult());
+		$stream->putString("furnace"); //TODO: blocktype (no prefix) (this might require internal API breaks)
+		return CraftingDataPacket::ENTRY_LEGACY_FURNACE_DATA;
 	}
 
 	/**

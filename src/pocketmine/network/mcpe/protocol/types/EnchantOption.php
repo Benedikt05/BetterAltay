@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use function count;
 
 final class EnchantOption{
@@ -99,8 +100,11 @@ final class EnchantOption{
 	}
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$cost = $in->getByte();
-
+		if($in->protocol >= ProtocolInfo::P_1_26_20){
+			$cost = $in->getByte();
+		}else{
+			$cost = $in->getUnsignedVarInt();
+		}
 		$slotFlags = $in->getLInt();
 		$equipActivatedEnchants = self::readEnchantList($in);
 		$heldActivatedEnchants = self::readEnchantList($in);
@@ -113,8 +117,11 @@ final class EnchantOption{
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putByte($this->cost);
-
+		if($out->protocol >= ProtocolInfo::P_1_26_20){
+			$out->putByte($this->cost);
+		}else{
+			$out->putUnsignedVarInt($this->cost);
+		}
 		$out->putLInt($this->slotFlags);
 		self::writeEnchantList($out, $this->equipActivatedEnchantments);
 		self::writeEnchantList($out, $this->heldActivatedEnchantments);

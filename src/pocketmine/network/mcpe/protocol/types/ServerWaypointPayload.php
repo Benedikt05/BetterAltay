@@ -23,7 +23,7 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\math\Vector2;
 use pocketmine\network\mcpe\NetworkBinaryStream;
-
+//TODO: Translate this for older versions
 class ServerWaypointPayload{
 
 	public function __construct(

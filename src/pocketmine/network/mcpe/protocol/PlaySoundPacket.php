@@ -46,7 +46,9 @@ class PlaySoundPacket extends DataPacket{
 		$this->z /= 8;
 		$this->volume = $this->getLFloat();
 		$this->pitch = $this->getLFloat();
-		$this->serverSoundHandle = $this->readOptional(fn() => $this->getLLong());
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->serverSoundHandle = $this->readOptional(fn() => $this->getLLong());
+		}
 	}
 
 	protected function encodePayload() : void{
@@ -54,7 +56,9 @@ class PlaySoundPacket extends DataPacket{
 		$this->putBlockPosition((int) ($this->x * 8), (int) ($this->y * 8), (int) ($this->z * 8));
 		$this->putLFloat($this->volume);
 		$this->putLFloat($this->pitch);
-		$this->writeOptional($this->serverSoundHandle, fn(int $serverSoundHandle) => $this->putLLong($serverSoundHandle));
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->writeOptional($this->serverSoundHandle, fn(int $serverSoundHandle) => $this->putLLong($serverSoundHandle));
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

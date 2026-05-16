@@ -18,6 +18,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Color;
 
+//TODO: Translate this for older versions
 /**
  * @see PrimitiveShapesPacket
  */

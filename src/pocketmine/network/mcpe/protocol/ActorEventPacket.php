@@ -107,14 +107,18 @@ class ActorEventPacket extends DataPacket{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->event = $this->getByte();
 		$this->data = $this->getVarInt();
-		$this->fireAtPosition = $this->readOptional(fn() => $this->getVector3());
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->fireAtPosition = $this->readOptional(fn() => $this->getVector3());
+		}
 	}
 
 	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putByte($this->event);
 		$this->putVarInt($this->data);
-		$this->writeOptional($this->fireAtPosition, fn($fireAtPosition) => $this->putVector3($fireAtPosition));
+		if($this->protocol >= ProtocolInfo::P_1_26_20){
+			$this->writeOptional($this->fireAtPosition, fn($fireAtPosition) => $this->putVector3($fireAtPosition));
+		}
 	}
 
 	public function handle(NetworkSession $session) : bool{

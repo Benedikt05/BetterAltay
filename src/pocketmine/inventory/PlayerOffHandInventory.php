@@ -80,7 +80,7 @@ class PlayerOffHandInventory extends BaseInventory{
 		$pk->item = ItemStackWrapper::legacy($this->getItem(0));
 		$pk->inventorySlot = $pk->hotbarSlot = 0;
 		$pk->windowId = ContainerIds::OFFHAND;
-		$pk->encode();
+		//$pk->encode();
 
 		foreach($target as $player){
 			if($player === $this->getHolder()){
