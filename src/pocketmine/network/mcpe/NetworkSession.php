@@ -156,7 +156,7 @@ use pocketmine\network\mcpe\protocol\ResourcePacksReadyForValidationPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
 use pocketmine\network\mcpe\protocol\ScriptMessagePacket;
-use pocketmine\network\mcpe\protocol\DebugDrawerPacket;
+use pocketmine\network\mcpe\protocol\PrimitiveShapesPacket;
 use pocketmine\network\mcpe\protocol\ServerboundDataDrivenScreenClosedPacket;
 use pocketmine\network\mcpe\protocol\ServerboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
@@ -943,7 +943,7 @@ abstract class NetworkSession{
 		return false;
 	}
 
-	public function handleDebugDrawer(DebugDrawerPacket $packet) : bool{
+	public function handlePrimitiveShapes(PrimitiveShapesPacket $packet) : bool{
 		return false;
 	}
 

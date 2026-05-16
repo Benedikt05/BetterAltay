@@ -37,16 +37,17 @@ interface ProtocolInfo{
 	 */
 
 	/** Actual Minecraft: PE protocol version */
-	public const CURRENT_PROTOCOL = self::P_1_26_10;
+	public const CURRENT_PROTOCOL = self::P_1_26_20;
 	/** Current Minecraft PE version reported by the server. This is usually the earliest currently supported version. */
 	public const MINECRAFT_VERSION = 'v' . self::MINECRAFT_VERSION_NETWORK;
 	/** Version number sent to clients in ping responses. */
-	public const MINECRAFT_VERSION_NETWORK = '1.26.10';
+	public const MINECRAFT_VERSION_NETWORK = '1.26.20';
 
+	const P_1_26_20 = 975;
 	const P_1_26_10 = 944;
 	const P_1_26_0 = 924;
 	const P_1_21_130 = 898;
-	public const ACCEPTED_PROTOCOLS = [self::CURRENT_PROTOCOL, self::P_1_21_130];
+	public const ACCEPTED_PROTOCOLS = [self::CURRENT_PROTOCOL, self::P_1_21_130, self::P_1_26_0, self::P_1_26_10, self::P_1_26_10];
 
 	public const LOGIN_PACKET = 0x01;
 	public const PLAY_STATUS_PACKET = 0x02;
@@ -233,7 +234,7 @@ interface ProtocolInfo{
 	public const UPDATE_CLIENT_OPTIONS_PACKET = 0x143;
 	public const PLAYER_LOCATION_PACKET = 0x146;
 	public const CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 0x147;
-	public const DEBUG_DRAWER_PACKET = 0x148; //328
+	public const PRIMITIVE_SHAPES_PACKET = 0x148; //328
 	/**
 	 * public const SERVERBOUND_PACK_SETTING_CHANGE_PACKET = 0x149; //329
 	 */

@@ -516,9 +516,11 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_NETHERITE_SPEAR_USE = 596;
 	public const SOUND_PAUSE_GROWTH = 597;
 	public const SOUND_RESET_GROWTH = 598;
-	public const SOUND_UNDEFINED = 599;
+	public const SOUND_PUSHED_BY_PLAYER = 599;
+	public const SOUND_BOUNCE = 600;
+	public const SOUND_UNDEFINED = 601;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
+	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1, ?Vector3 $fireAtPosition = null) : self{
 		$result = new self;
 		$result->sound = $sound;
 		$result->extraData = $extraData;
@@ -527,6 +529,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$result->entityType = $entityType;
 		$result->isBabyMob = $isBabyMob;
 		$result->entityUniqueId = $entityUniqueId;
+		$result->fireAtPosition = $fireAtPosition;
 		return $result;
 	}
 
@@ -537,6 +540,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public bool $isBabyMob = false; //...
 	public bool $disableRelativeVolume = false;
 	public int $entityUniqueId = -1;
+	public ?Vector3 $fireAtPosition = null;
 
 	protected function decodePayload() : void{
 		$this->sound = $this->getUnsignedVarInt();
@@ -546,6 +550,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$this->isBabyMob = $this->getBool();
 		$this->disableRelativeVolume = $this->getBool();
 		$this->entityUniqueId = $this->getLLong();
+		$this->fireAtPosition = $this->readOptional(fn() => $this->getVector3());
 	}
 
 	protected function encodePayload() : void{
@@ -556,6 +561,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$this->putBool($this->isBabyMob);
 		$this->putBool($this->disableRelativeVolume);
 		$this->putLLong($this->entityUniqueId);
+		$this->writeOptional($this->fireAtPosition, fn($fireAtPosition) => $this->putVector3($fireAtPosition));
 	}
 
 	public function handle(NetworkSession $session) : bool{

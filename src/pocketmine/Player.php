@@ -36,6 +36,7 @@ use pocketmine\entity\Attribute;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityIds;
 use pocketmine\entity\Human;
 use pocketmine\entity\InvalidSkinException;
 use pocketmine\entity\Living;
@@ -69,6 +70,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerMissSwingEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -189,7 +191,6 @@ use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\DisconnectFailReason;
 use pocketmine\network\mcpe\protocol\types\Experiments;
 use pocketmine\network\mcpe\protocol\types\GameMode;
-use pocketmine\network\mcpe\protocol\types\InputMode;
 use pocketmine\network\mcpe\protocol\types\inventory\MismatchTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\ReleaseItemTransactionData;
@@ -223,6 +224,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
 use pocketmine\tile\ItemFrame;
+use pocketmine\tile\Skull;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\timings\Timings;
@@ -1204,6 +1206,19 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->usedChunks[Level::chunkHash($x, $z)] = true;
 		$this->dataPacket($payload);
+
+		$chunk = $this->level->getChunk($x, $z);
+		if($chunk !== null){
+			$blocksToUpdate = [];
+			foreach($chunk->getTiles() as $tile){
+				if($tile instanceof Skull){
+					$blocksToUpdate[] = $tile->getBlock();
+				}
+			}
+			if(count($blocksToUpdate) > 0){
+				$this->getLevel()->sendBlocks([$this], $blocksToUpdate, UpdateBlockPacket::FLAG_ALL_PRIORITY);
+			}
+		}
 
 		if($this->spawned){
 			foreach($this->level->getChunkEntities($x, $z) as $entity){
@@ -2708,6 +2723,15 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		return true;
 	}
 
+	public function missSwing() : void{
+		$ev = new PlayerMissSwingEvent($this);
+		$ev->call();
+		if(!$ev->isCancelled()){
+			$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_ATTACK_NODAMAGE, -1, EntityIds::PLAYER);
+			$this->broadcastEntityEvent(ActorEventPacket::ARM_SWING, 0, $this->getViewers());
+		}
+	}
+
 	private function resolveOnOffInputFlags(BitSet $inputFlags, int $startFlag, int $stopFlag) : ?bool{
 		$enabled = $inputFlags->get($startFlag);
 		$disabled = $inputFlags->get($stopFlag);
@@ -2764,6 +2788,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->jump();
 			}
 
+			if($inputFlags->get(PlayerAuthInputFlags::MISSED_SWING)){
+				$this->missSwing();
+			}
+
 			if($packet->getYaw() !== $this->lastPlayerAuthInputYaw || $packet->getPitch() !== $this->lastPlayerAuthInputPitch){
 				$yaw = fmod($packet->getYaw(), 360);
 				$pitch = fmod($packet->getPitch(), 360);
@@ -2783,23 +2811,13 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 				if($this->isRiding()){
 					$ent = $this->getRidingEntity();
-					/*$vehicle = $packet->getVehicleInfo();
+					$vehicle = $packet->getVehicleInfo();
 
 					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
 						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$yaw = fmod($packet->getYaw() + 90, 360);
 							$ent->setClientPositionAndRotation($packet->getPosition(), $yaw, 0, 3, true);
-					*/
-					if($ent instanceof Boat){
-						$inputFlags = $packet->getInputFlags();
-						$moveZ = $packet->getMoveVecZ();
-						$originalPaddlingLeft = $inputFlags->get(PlayerAuthInputFlags::PADDLING_LEFT);
-						$originalPaddlingRight = $inputFlags->get(PlayerAuthInputFlags::PADDLING_RIGHT);
-						if($packet->getInputMode() === InputMode::TOUCHSCREEN){
-							$originalPaddlingLeft = $packet->getMoveVecX() > 0.35;
-							$originalPaddlingRight = $packet->getMoveVecX() < -0.35;
 						}
-						$ent->handleRiderInput($moveZ, $originalPaddlingLeft, $originalPaddlingRight);
 					}
 				}
 			}

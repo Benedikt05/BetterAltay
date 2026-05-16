@@ -30,20 +30,15 @@ use pocketmine\network\mcpe\NetworkSession;
 class PlaySoundPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAY_SOUND_PACKET;
 
-	/** @var string */
-	public $soundName;
-	/** @var float */
-	public $x;
-	/** @var float */
-	public $y;
-	/** @var float */
-	public $z;
-	/** @var float */
-	public $volume;
-	/** @var float */
-	public $pitch;
+	public string $soundName;
+	public float $x;
+	public float $y;
+	public float $z;
+	public float $volume;
+	public float $pitch;
+	public ?int $serverSoundHandle = null;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->soundName = $this->getString();
 		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->x /= 8;
@@ -51,13 +46,15 @@ class PlaySoundPacket extends DataPacket{
 		$this->z /= 8;
 		$this->volume = $this->getLFloat();
 		$this->pitch = $this->getLFloat();
+		$this->serverSoundHandle = $this->readOptional(fn() => $this->getLLong());
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putString($this->soundName);
 		$this->putBlockPosition((int) ($this->x * 8), (int) ($this->y * 8), (int) ($this->z * 8));
 		$this->putLFloat($this->volume);
 		$this->putLFloat($this->pitch);
+		$this->writeOptional($this->serverSoundHandle, fn(int $serverSoundHandle) => $this->putLLong($serverSoundHandle));
 	}
 
 	public function handle(NetworkSession $session) : bool{

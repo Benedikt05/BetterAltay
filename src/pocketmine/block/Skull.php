@@ -27,6 +27,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\Player;
 use pocketmine\tile\Skull as TileSkull;
 use pocketmine\tile\Tile;
@@ -34,6 +35,21 @@ use pocketmine\tile\Tile;
 class Skull extends Flowable{
 
 	protected $id = self::SKULL_BLOCK;
+	private int $type;
+
+	private static array $skullTypes = [
+		"minecraft:skeleton_skull",
+		"minecraft:wither_skeleton_skull",
+		"minecraft:zombie_head",
+		"minecraft:player_head",
+		"minecraft:creeper_head",
+		"minecraft:dragon_head",
+		"minecraft:piglin_head",
+	];
+
+	public static function getSkullNameByType(int $type) : ?string{
+		return self::$skullTypes[$type] ?? null;
+	}
 
 	public function __construct(int $meta = 0){
 		$this->meta = $meta;
@@ -65,6 +81,7 @@ class Skull extends Flowable{
 		}
 
 		$this->meta = $face;
+		$this->type = $item->getDamage();
 		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 		Tile::createTile(Tile::SKULL, $this->getLevelNonNull(), TileSkull::createNBT($this, $face, $item, $player));
 
@@ -86,5 +103,15 @@ class Skull extends Flowable{
 
 	public function getPickedItem() : Item{
 		return $this->getItem();
+	}
+
+	public function getRuntimeId() : int{
+		$tile = $this->level->getTile($this);
+		$type = ($tile instanceof TileSkull) ? $tile->getType() : $this->type;
+		$name = self::getSkullNameByType($type);
+		if($name !== null){
+			return RuntimeBlockMapping::getSkullMapping()[$name][$this->meta] ?? parent::getRuntimeId();
+		}
+		return parent::getRuntimeId();
 	}
 }

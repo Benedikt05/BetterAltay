@@ -31,28 +31,23 @@ use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 class MobEquipmentPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::MOB_EQUIPMENT_PACKET;
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var ItemStackWrapper */
-	public $item;
-	/** @var int */
-	public $inventorySlot;
-	/** @var int */
-	public $hotbarSlot;
-	/** @var int */
-	public $windowId = 0;
+	public int $entityRuntimeId;
+	public ItemStackWrapper $item;
+	public int $inventorySlot;
+	public int $hotbarSlot;
+	public int $windowId = 0;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
-		$this->item = ItemStackWrapper::read($this);
+		$this->item = ItemStackWrapper::read($this, true);
 		$this->inventorySlot = $this->getByte();
 		$this->hotbarSlot = $this->getByte();
 		$this->windowId = $this->getByte();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
-		$this->item->write($this);
+		$this->item->write($this, true);
 		$this->putByte($this->inventorySlot);
 		$this->putByte($this->hotbarSlot);
 		$this->putByte($this->windowId);
