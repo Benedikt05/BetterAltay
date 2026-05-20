@@ -136,6 +136,7 @@ class StartGamePacket extends DataPacket{
 	public bool $clientSideGeneration = false;
 	public bool $blockNetworkIdsAreHashes = false;
 	public bool $serverAuthSound = true;
+	public bool $isLoggingChat = false;
 	public bool $serverJoinInformation = false;
 	public string $serverId = "";
 	public string $scenarioId = "";
@@ -231,6 +232,7 @@ class StartGamePacket extends DataPacket{
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
+		$this->isLoggingChat = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
 		if($this->serverJoinInformation){
 			$this->getBool();
@@ -331,6 +333,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);	//NetworkPermissions
+		$this->putBool($this->isLoggingChat);
 		$this->putBool($this->serverJoinInformation = false); //make sure this is false for now as we don't have all fields implemented related to this yet
 		if($this->serverJoinInformation){
 			$this->putBool(false); //containsGatheringJoinInfo
