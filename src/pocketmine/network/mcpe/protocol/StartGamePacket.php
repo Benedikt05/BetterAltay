@@ -210,7 +210,7 @@ class StartGamePacket extends DataPacket{
 		$this->chatRestrictionLevel = $this->getByte();
 		$this->disablePlayerInteractions = $this->getBool();
 		$this->serverEditorConnectionPolicy = $this->getVarInt();
-		$this->allowAnonymousBlockDropsInEditorWorlds  = $this->getBool();
+		$this->allowAnonymousBlockDropsInEditorWorlds = $this->getBool();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
