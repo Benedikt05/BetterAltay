@@ -27,6 +27,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\utils\AssumptionFailedError;
+use const pocketmine\RESOURCE_PATH;
 
 class LevelSoundEventPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LEVEL_SOUND_EVENT_PACKET;
@@ -518,7 +520,22 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RESET_GROWTH = 598;
 	public const SOUND_PUSHED_BY_PLAYER = 599;
 	public const SOUND_BOUNCE = 600;
-	public const SOUND_UNDEFINED = 601;
+	public const SOUND_SLIME_LANDING = 601;
+	public const SOUND_ABSORB_BLOCK = 602;
+	public const SOUND_EJECT_BLOCK = 603;
+	public const SOUND_GEYSER_ERUPTION_START = 604;
+	public const SOUND_GEYSER_ERUPTION_ACTIVE = 605;
+	public const SOUND_RECORD_BOUNCE = 606;
+	public const SOUND_BUCKET_FILL_LAND_ANIMAL = 607;
+	public const SOUND_BUCKET_EMPTY_LAND_ANIMAL = 608;
+	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_START = 609;
+	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_ACTIVE = 610;
+	public const SOUND_UNDEFINED = 611;
+
+	/** @var array<int, string> */
+	private static array $idToStringMap;
+	/** @var array<string, int> */
+	private static array $stringToIdMap;
 
 	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1, ?Vector3 $fireAtPosition = null) : self{
 		$result = new self;
@@ -542,8 +559,20 @@ class LevelSoundEventPacket extends DataPacket{
 	public int $entityUniqueId = -1;
 	public ?Vector3 $fireAtPosition = null;
 
+	private static function makeSoundMap() : void{
+		$map = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/level_sound_id_map.json"), true);
+		if(!is_array($map)){
+			throw new AssumptionFailedError("Invalid resource file format");
+		}
+		self::$idToStringMap = array_flip($map);
+		self::$stringToIdMap = $map;
+	}
+
 	protected function decodePayload() : void{
-		$this->sound = $this->getUnsignedVarInt();
+		if(!isset(self::$idToStringMap)){
+			self::makeSoundMap();
+		}
+		$this->sound = self::$stringToIdMap[$this->getString()] ?? -1;
 		$this->position = $this->getVector3();
 		$this->extraData = $this->getVarInt();
 		$this->entityType = $this->getString();
@@ -554,7 +583,10 @@ class LevelSoundEventPacket extends DataPacket{
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt($this->sound);
+		if(!isset(self::$idToStringMap)){
+			self::makeSoundMap();
+		}
+		$this->putString(self::$idToStringMap[$this->sound] ?? "");
 		$this->putVector3($this->position);
 		$this->putVarInt($this->extraData);
 		$this->putString($this->entityType);
