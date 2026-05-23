@@ -221,9 +221,9 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readStackId
 	 */
-	public function getItemStack(Closure $readExtraCrapInTheMiddle, bool $net = false) : Item{
+	public function getItemStack(Closure $readStackId, bool $net = false) : Item{
 		if($net){
 			$netId = $this->getSignedLShort();
 		}else{
@@ -233,7 +233,7 @@ class NetworkBinaryStream extends BinaryStream{
 			if($net){
 				$this->getLShort(); //count
 				$this->getUnsignedVarInt(); //damage
-				$readExtraCrapInTheMiddle($this, $net);
+				$readStackId($this, $net);
 				$this->getUnsignedVarInt(); //blockRuntimeId
 				$this->get($this->getUnsignedVarInt()); //nbt
 			}
@@ -245,7 +245,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkId($netId, $netData);
 
-		$readExtraCrapInTheMiddle($this, $net);
+		$readStackId($this, $net);
 
 		$this->getUnsignedVarInt(); //blockRuntimeId
 
@@ -314,9 +314,9 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeStackId
 	 */
-	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle, bool $net = false) : void{
+	public function putItemStack(Item $item, Closure $writeStackId, bool $net = false) : void{
 		if($item->getId() === 0){
 			if($net){
 				$this->putLShort(0); //id
@@ -342,14 +342,14 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLShort($item->getCount());
 		$this->putUnsignedVarInt($netData);
 
-		$writeExtraCrapInTheMiddle($this, $net);
+		$writeStackId($this, $net);
 
 		$blockRuntimeId = 0;
 		$isBlockItem = $item->getId() < 256;
 		if($isBlockItem){
 			$block = $item->getBlock();
 			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($block->getId(), $block->getDamage());
+				$blockRuntimeId = $block->getRuntimeId();
 			}
 		}
 		$this->putUnsignedVarInt($blockRuntimeId);
