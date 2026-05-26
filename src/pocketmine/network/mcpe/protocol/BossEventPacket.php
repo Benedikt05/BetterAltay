@@ -55,7 +55,6 @@ class BossEventPacket extends DataPacket{
 	public float $healthPercent;
 	public string $title;
 	public string $filteredTitle = "";
-	public int $darkenScreen;
 	public int $color;
 	public int $overlay;
 

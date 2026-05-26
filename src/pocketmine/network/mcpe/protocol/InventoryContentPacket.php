@@ -61,7 +61,6 @@ class InventoryContentPacket extends DataPacket{
 		$this->containerName->write($this);
 		$this->storageItem ??= ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
 		$this->storageItem->write($this, true);
-
 	}
 
 	public function handle(NetworkSession $session) : bool{
