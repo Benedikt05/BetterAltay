@@ -46,6 +46,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\NamedTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\mapper\CreativeItemMapper;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
 use pocketmine\Player;
@@ -853,8 +854,9 @@ class Item implements ItemIds, JsonSerializable{
 	 * @param string $tagName the name to assign to the CompoundTag object
 	 */
 	public function nbtSerialize(int $slot = -1, string $tagName = "") : CompoundTag{
+		$id = ItemTranslator::getInstance()->toStringId($this->id, $this->meta);
 		$result = new CompoundTag($tagName, [
-			new ShortTag("id", $this->id),
+			new StringTag("id", $id),
 			new ByteTag("Count", Binary::signByte($this->count)),
 			new ShortTag("Damage", $this->meta)
 		]);
@@ -890,8 +892,8 @@ class Item implements ItemIds, JsonSerializable{
 			try{
 				$item = ItemFactory::fromStringSingle($idTag->getValue());
 			}catch(InvalidArgumentException $e){
-				//TODO: improve error handling
-				return ItemFactory::get(Item::AIR, 0, 0);
+				[$id, $meta] = ItemTranslator::getInstance()->fromStringId($idTag->getValue());
+				$item = ItemFactory::get($id, $meta);
 			}
 			$item->setDamage($meta);
 			$item->setCount($count);
