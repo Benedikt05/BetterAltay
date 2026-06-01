@@ -91,10 +91,6 @@ class CraftingManager{
 				case CraftingDataPacket::ENTRY_SHAPED:
 					$this->readShapedRecipe($recipe, $itemDeserializerFunc);
 					break;
-				case CraftingDataPacket::ENTRY_FURNACE:
-				case CraftingDataPacket::ENTRY_FURNACE_DATA:
-					$this->readFurnaceRecipe($recipe, $itemDeserializerFunc);
-					break;
 			}
 		}
 
@@ -102,7 +98,16 @@ class CraftingManager{
 	}
 
 	private function readShapelessRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
-		if($recipe["block"] !== "crafting_table"){ //TODO: filter others out for now to avoid breaking economics
+		if($recipe["block"] === "furnace" || $recipe["block"] === "blast_furnace"){
+			$inputs = $this->resolveInputToItems($recipe["input"][0]);
+			$output = $itemDeserializerFunc($recipe["output"][0]);
+
+			foreach($inputs as $inputItem){
+				$this->registerFurnaceRecipe(new FurnaceRecipe($output, $inputItem));
+			}
+			return;
+		}
+		if($recipe["block"] !== "crafting_table"){
 			return;
 		}
 
@@ -190,16 +195,6 @@ class CraftingManager{
 			}
 		}
 		return $items;
-	}
-
-
-	private function readFurnaceRecipe(array $recipe, Closure $itemDeserializerFunc) : void{
-		if($recipe["block"] === "furnace" || $recipe["block"] === "blast_furnace"){ //TODO: filter others out for now to avoid breaking economics
-			$this->registerFurnaceRecipe(new FurnaceRecipe(
-					Item::jsonDeserialize($recipe["output"]),
-					Item::jsonDeserialize($recipe["input"]))
-			);
-		}
 	}
 
 	/**
