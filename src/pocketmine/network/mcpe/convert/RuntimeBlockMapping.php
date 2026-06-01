@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
-use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\AssumptionFailedError;
@@ -70,12 +69,13 @@ final class RuntimeBlockMapping{
 			$state = $stream->getNbtCompoundRoot();
 			self::$bedrockKnownStates[] = $state;
 
+			$name = $state->getString("name");
 			self::$stateToRuntimeMap[self::hashBlockStateNBT($state)] = $rid;
-			self::registerMapping($state->getString("name"), $metaMap[$rid], $rid);
+			self::registerMapping($name, $metaMap[$rid], $rid);
 
-			if (self::$airRid === -1 && $state->getString("name") === "minecraft:air") {
+			if (self::$airRid === -1 && $name === "minecraft:air") {
 				self::$airRid = $rid;
-			} elseif (self::$unknownRid === -1 && $state->getString("name") === "minecraft:unknown") {
+			} elseif (self::$unknownRid === -1 && $name === "minecraft:unknown") {
 				self::$unknownRid = $rid;
 			}
 			$rid++;
@@ -138,8 +138,17 @@ final class RuntimeBlockMapping{
 	 * @return string
 	 */
 	private static function hashBlockStateNBT(CompoundTag $blockState) : string{
-		$writer = new NetworkLittleEndianNBTStream();
-		$bytes = $writer->write($blockState);
-		return hash('adler32', $bytes);
+		$name = $blockState->getString("name");
+
+		$statesTag = $blockState->getCompoundTag("states");
+		$states = [];
+		if($statesTag !== null){
+			foreach($statesTag->getValue() as $key => $tag){
+				$states[$key] = $tag->getValue();
+			}
+			ksort($states);
+		}
+
+		return hash('fnv1a64', $name . ":" . json_encode($states));
 	}
 }
