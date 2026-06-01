@@ -21,24 +21,20 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\form\element;
+namespace pocketmine\network\mcpe\auth\validator;
 
-use function assert;
+class ValidatorResult{
 
-/**
- * Element which displays some text on a form.
- */
-class Label extends CustomFormElement{
+	public function __construct(
+		private bool $authenticated,
+		private ?string $error = null
+	){ }
 
-	public function getType() : string{
-		return "label";
+	public function isAuthenticated() : bool{
+		return $this->authenticated;
 	}
 
-	public function validateValue($value) : void{
-		assert($value === null);
-	}
-
-	protected function serializeElementData() : array{
-		return [];
+	public function getError() : ?string{
+		return $this->error;
 	}
 }

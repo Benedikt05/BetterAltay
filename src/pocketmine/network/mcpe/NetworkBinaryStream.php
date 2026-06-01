@@ -221,11 +221,22 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $readExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readStackId
 	 */
-	public function getItemStack(Closure $readExtraCrapInTheMiddle) : Item{
-		$netId = $this->getVarInt();
+	public function getItemStack(Closure $readStackId, bool $net = false) : Item{
+		if($net){
+			$netId = $this->getSignedLShort();
+		}else{
+			$netId = $this->getVarInt();
+		}
 		if($netId === 0){
+			if($net){
+				$this->getLShort(); //count
+				$this->getUnsignedVarInt(); //damage
+				$readStackId($this, $net);
+				$this->getUnsignedVarInt(); //blockRuntimeId
+				$this->get($this->getUnsignedVarInt()); //nbt
+			}
 			return ItemFactory::get(BlockIds::AIR, 0, 0);
 		}
 
@@ -234,9 +245,9 @@ class NetworkBinaryStream extends BinaryStream{
 
 		[$id, $meta] = ItemTranslator::getInstance()->fromNetworkId($netId, $netData);
 
-		$readExtraCrapInTheMiddle($this);
+		$readStackId($this, $net);
 
-		$this->getVarInt();
+		$this->getUnsignedVarInt(); //blockRuntimeId
 
 		$extraData = new NetworkBinaryStream($this->getString());
 		return (static function() use ($extraData, $netId, $id, $meta, $cnt) : Item{
@@ -303,30 +314,42 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * @phpstan-param Closure(NetworkBinaryStream) : void $writeExtraCrapInTheMiddle
+	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeStackId
 	 */
-	public function putItemStack(Item $item, Closure $writeExtraCrapInTheMiddle) : void{
+	public function putItemStack(Item $item, Closure $writeStackId, bool $net = false) : void{
 		if($item->getId() === BlockIds::AIR){
-			$this->putVarInt(0);
-
+			if($net){
+				$this->putLShort(0); //id
+				$this->putLShort(0); //count
+				$this->putUnsignedVarInt(0); //damage
+				$this->putBool(false); //isUsingNetId
+				$this->putUnsignedVarInt(0); //blockRuntimeId
+				$this->putUnsignedVarInt(0); //userData Length
+			}else{
+				$this->putVarInt(0);
+			}
 			return;
 		}
 
 		$coreData = $item->getDamage();
 		[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $coreData);
 
-		$this->putVarInt($netId);
+		if($net){
+			$this->putLShort($netId);
+		}else{
+			$this->putVarInt($netId);
+		}
 		$this->putLShort($item->getCount());
 		$this->putUnsignedVarInt($netData);
 
-		$writeExtraCrapInTheMiddle($this);
+		$writeStackId($this, $net);
 
 		$blockRuntimeId = 0;
 		$blockId = ItemTranslator::getInstance()->toBlockId($item->getId());
 		if($blockId !== null && $blockId !== BlockIds::AIR){
 			$blockRuntimeId = $item->getBlock()->getRuntimeId();
 		}
-		$this->putVarInt($blockRuntimeId);
+		$this->putUnsignedVarInt($blockRuntimeId);
 
 		$nbt = null;
 		if($item->hasCompoundTag()){
@@ -593,7 +616,7 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * Reads an block position with unsigned Y coordinate.
+	 * Reads a block position with a signed Y coordinate.
 	 *
 	 * @param int $x reference parameter
 	 * @param int $y reference parameter
@@ -601,16 +624,16 @@ class NetworkBinaryStream extends BinaryStream{
 	 */
 	public function getBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
-		$y = Binary::signInt($this->getUnsignedVarInt());
+		$y = $this->getVarInt();
 		$z = $this->getVarInt();
 	}
 
 	/**
-	 * Writes a block position with unsigned Y coordinate.
+	 * Writes a block position with a signed Y coordinate.
 	 */
 	public function putBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);
-		$this->putUnsignedVarInt(Binary::unsignInt($y));
+		$this->putVarInt($y);
 		$this->putVarInt($z);
 	}
 
@@ -620,6 +643,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @param int $x reference parameter
 	 * @param int $y reference parameter
 	 * @param int $z reference parameter
+	 * @deprecated Use {@see getBlockPosition()} instead.
 	 */
 	public function getSignedBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
@@ -629,6 +653,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 	/**
 	 * Writes a block position with a signed Y coordinate.
+	 * @deprecated Use {@see putBlockPosition()} instead.
 	 */
 	public function putSignedBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);

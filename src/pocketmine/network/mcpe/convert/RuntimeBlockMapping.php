@@ -38,10 +38,6 @@ use const pocketmine\RESOURCE_PATH;
  */
 final class RuntimeBlockMapping{
 
-	/** @var int[] */
-	private static $legacyToRuntimeMap = [];
-	/** @var int[] */
-	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
 	/** @var int[]|null */

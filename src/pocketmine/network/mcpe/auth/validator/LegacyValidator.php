@@ -21,92 +21,55 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe;
+namespace pocketmine\network\mcpe\auth\validator;
 
-use pocketmine\network\mcpe\protocol\LoginPacket;
-use pocketmine\Player;
-use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
+use pocketmine\network\mcpe\auth\VerifyLoginException;
 use function base64_decode;
 use function chr;
 use function count;
 use function explode;
 use function json_decode;
 use function ltrim;
-use function openssl_verify;
 use function ord;
-use function serialize;
 use function str_split;
 use function strlen;
 use function strtr;
 use function time;
-use function unserialize;
 use function wordwrap;
-use const OPENSSL_ALGO_SHA384;
 
-class VerifyLoginTask extends AsyncTask{
-
+class LegacyValidator implements Validator{
 	public const MOJANG_ROOT_PUBLIC_KEY = "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAECRXueJeTDqNRRgJi/vlRufByu/2G0i2Ebt6YMar5QX/R0DIIyrJMcUpruK4QveTfJSTp3Shlq4Gk34cD/4GUWwkv0DVuzeuB+tXija7HBxii03NHDbPAD0AKnLr2wdAp";
 
 	private const CLOCK_DRIFT_MAX = 60;
 
-	/** @var string */
-	private $chainJwts;
-	/** @var string */
-	private $clientDataJwt;
+	private bool $authenticated = false;
 
 	/**
-	 * @var string|null
-	 * Whether the keychain signatures were validated correctly. This will be set to an error message if any link in the
-	 * keychain is invalid for whatever reason (bad signature, not in nbf-exp window, etc). If this is non-null, the
-	 * keychain might have been tampered with. The player will always be disconnected if this is non-null.
+	 * @param string[]  $chainsJwts
+	 * @param string $clientDataJwt
 	 */
-	private $error = "Unknown";
-	/**
-	 * @var bool
-	 * Whether the player is logged into Xbox Live. This is true if any link in the keychain is signed with the Mojang
-	 * root public key.
-	 */
-	private $authenticated = false;
+	public function __construct(private array $chainJwts, private string $clientDataJwt){
 
-	public function __construct(Player $player, LoginPacket $packet){
-		$this->storeLocal([$player, $packet]);
-
-		$chainJwtsExtracted = [];
-		if(isset($packet->chainData["Certificate"]) && is_string($packet->chainData["Certificate"])){
-			$certificateData = json_decode($packet->chainData["Certificate"], true);
-			if(isset($certificateData["chain"]) && is_array($certificateData["chain"])){
-				$chainJwtsExtracted = $certificateData["chain"];
-			}
-		}
-		$this->chainJwts = serialize($chainJwtsExtracted);
-		$this->clientDataJwt = $packet->clientDataJwt;
 	}
 
-	public function onRun(){
-		/** @var string[] $chainJwts */
-		$chainJwts = unserialize($this->chainJwts); //Get it in a local variable to make sure it stays unserialized
-
+	public function validate() : ValidatorResult{
 		try{
 			$currentKey = null;
 			$first = true;
 
-			foreach($chainJwts as $jwt){
+			foreach($this->chainJwts as $jwt){
 				$this->validateToken($jwt, $currentKey, $first);
 				$first = false;
 			}
 
 			$this->validateToken($this->clientDataJwt, $currentKey);
 
-			$this->error = null;
-		}catch(VerifyLoginException $e){
-			$this->error = $e->getMessage();
+			return new ValidatorResult($this->authenticated);
+		} catch(\Exception $e){
+			return new ValidatorResult(false, $e->getMessage());
 		}
 	}
 
-	/**
-	 * @throws VerifyLoginException if errors are encountered
-	 */
 	private function validateToken(string $jwt, ?string &$currentPublicKey, bool $first = false) : void{
 		$rawParts = explode('.', $jwt, 3);
 		if(count($rawParts) !== 3){
@@ -174,18 +137,5 @@ class VerifyLoginTask extends AsyncTask{
 		}
 
 		$currentPublicKey = $claims["identityPublicKey"] ?? null; //if there are further links, the next link should be signed with this
-	}
-
-	public function onCompletion(Server $server){
-		/**
-		 * @var Player      $player
-		 * @var LoginPacket $packet
-		 */
-		[$player, $packet] = $this->fetchLocal();
-		if(!$player->isConnected()){
-			$server->getLogger()->error("Player " . $player->getName() . " was disconnected before their login could be verified");
-		}else{
-			$player->onVerifyCompleted($packet, $this->error, $this->authenticated);
-		}
 	}
 }

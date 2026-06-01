@@ -21,10 +21,8 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe;
+namespace pocketmine\network\mcpe\auth\validator;
 
-use RuntimeException;
-
-class VerifyLoginException extends RuntimeException{
-
+interface Validator{
+	public function validate(): ValidatorResult;
 }

@@ -21,10 +21,10 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\form;
+namespace pocketmine\network\mcpe\auth;
 
 use RuntimeException;
 
-class FormValidationException extends RuntimeException{
+class VerifyLoginException extends RuntimeException{
 
 }

@@ -21,18 +21,17 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\form\element;
+namespace pocketmine\event\player;
 
-class StepSlider extends BaseSelector{
+use pocketmine\event\Cancellable;
+use pocketmine\Player;
 
-	public function getType() : string{
-		return "step_slider";
-	}
+/**
+ * Called when a player attempts to perform the attack action (left-click) without a target entity.
+ */
+class PlayerMissSwingEvent extends PlayerEvent implements Cancellable{
 
-	protected function serializeElementData() : array{
-		return [
-			"steps" => $this->options,
-			"default" => $this->defaultOptionIndex
-		];
+	public function __construct(Player $player){
+		$this->player = $player;
 	}
 }

@@ -331,7 +331,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);	//NetworkPermissions
-		$this->putBool($this->serverJoinInformation);
+		$this->putBool($this->serverJoinInformation = false); //make sure this is false for now as we don't have all fields implemented related to this yet
 		if($this->serverJoinInformation){
 			$this->putBool(false); //containsGatheringJoinInfo
 		}
