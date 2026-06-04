@@ -309,6 +309,7 @@ class ItemFactory{
 			Item::RECORD_PRECIPICE => LevelSoundEventPacket::SOUND_RECORD_PRECIPICE,
 			Item::RECORD_TEARS => LevelSoundEventPacket::SOUND_RECORD_TEARS,
 			Item::RECORD_LAVA_CHICKEN => LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN,
+			Item::RECORD_BOUNCE => LevelSoundEventPacket::SOUND_RECORD_BOUNCE
 		];
 
 		foreach($records as $itemId => $soundId){
