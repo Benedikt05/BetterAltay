@@ -112,7 +112,7 @@ class Block extends Position implements BlockIds, Metadatable{
 	public function getRuntimeId() : int{
 		if ($this instanceof BlockState) {
 			$states = new StateData();
-			$this->onDeserialize($states);
+			$this->onSerialize($states);
 
 			$nbt = new CompoundTag("states");
 			BlockStateSerializer::writeToNBT($states, $nbt);
