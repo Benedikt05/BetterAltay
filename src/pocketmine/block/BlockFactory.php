@@ -27,12 +27,15 @@ use InvalidArgumentException;
 use pocketmine\block\material\AnvilType;
 use pocketmine\block\material\ColorType;
 use pocketmine\block\material\FlowerType;
+use pocketmine\block\material\GroundCoverType;
 use pocketmine\block\material\OreType;
 use pocketmine\block\material\SandstoneType;
-use pocketmine\block\material\GroundCoverType;
 use pocketmine\block\material\StoneType;
 use pocketmine\block\material\WoodType;
+use pocketmine\block\state\BlockState;
+use pocketmine\block\state\BlockStateSerializer;
 use pocketmine\level\Position;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use RuntimeException;
 use function min;
@@ -305,14 +308,25 @@ class BlockFactory{
 	/**
 	 * Returns a new Block instance with the specified ID, meta and position.
 	 */
-	public static function get(string $id, int $meta = 0, Position $pos = null) : Block{
-		if($meta < 0 or $meta > 0x40){
+	public static function get(string $id, int $meta = 0, Position $pos = null, ?CompoundTag $nbt = null) : Block{
+		if($meta < 0 or $meta > 0x1FF){
 			throw new InvalidArgumentException("Block meta value $meta is out of bounds");
 		}
 
 		try{
 			$block = clone (self::$fullList[$id] ?? self::$fullList[BlockIds::UNKNOWN]);
 			$block->setDamage($meta);
+			if ($block instanceof BlockState) {
+				if ($nbt === null) {
+					$nbt = RuntimeBlockMapping::getBedrockKnownStates()[$block->getRuntimeId()] ?? new CompoundTag(
+						"",
+						[new CompoundTag("states")]
+					);
+				}
+
+				$states = BlockStateSerializer::readFromNBT($nbt->getCompoundTag("states"));
+				$block->onSerialize($states);
+			}
 		}catch(RuntimeException $e){
 			throw new InvalidArgumentException("Block ID $id is out of bounds");
 		}

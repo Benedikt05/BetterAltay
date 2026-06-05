@@ -36,6 +36,8 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIds;
 use pocketmine\block\Liquid;
+use pocketmine\block\state\BlockState;
+use pocketmine\block\state\BlockStateSerializer;
 use pocketmine\block\UnknownBlock;
 use pocketmine\block\Water;
 use pocketmine\entity\CreatureType;
@@ -82,6 +84,7 @@ use pocketmine\math\VoxelRayTrace;
 use pocketmine\metadata\BlockMetadataStore;
 use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -1582,6 +1585,7 @@ class Level implements ChunkManager, Metadatable{
 	 * @param bool $addToCache Whether to cache the block object created by this method call.
 	 */
 	public function getBlockAt(int $x, int $y, int $z, bool $cached = true, bool $addToCache = true, int $layer = 0) : Block{
+		$rid = RuntimeBlockMapping::UNKNOWN();
 		$id = BlockIds::UNKNOWN;
 		$meta = 0;
 		$relativeBlockHash = null;
@@ -1607,6 +1611,14 @@ class Level implements ChunkManager, Metadatable{
 		if (isset($this->blockStates[$id])) {
 			$block = clone $this->blockStates[$id];
 			$block->setDamage($meta);
+			if ($block instanceof BlockState) {
+				$nbt = RuntimeBlockMapping::getBedrockKnownStates()[$rid] ?? new CompoundTag(
+					"",
+					[new CompoundTag("states")]
+				);
+				$states = BlockStateSerializer::readFromNBT($nbt->getCompoundTag("states"));
+				$block->onSerialize($states);
+			}
 		} else {
 			$block = new UnknownBlock();
 		}

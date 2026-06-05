@@ -70,7 +70,7 @@ final class RuntimeBlockMapping{
 			self::$bedrockKnownStates[] = $state;
 
 			$name = $state->getString("name");
-			self::$stateToRuntimeMap[self::hashBlockStateNBT($state)] = $rid;
+			self::$stateToRuntimeMap[self::hashBlockStateNBT($name, $state->getCompoundTag("states"))] = $rid;
 			self::registerMapping($name, $metaMap[$rid], $rid);
 
 			if (self::$airRid === -1 && $name === "minecraft:air") {
@@ -118,7 +118,7 @@ final class RuntimeBlockMapping{
 
 	public static function fromBlockStateNBT(CompoundTag $nbt) : int{
 		self::lazyInit();
-		$hash = self::hashBlockStateNBT($nbt);
+		$hash = self::hashBlockStateNBT($nbt->getString("name"), $nbt->getCompoundTag("states"));
 		return self::$stateToRuntimeMap[$hash] ?? self::UNKNOWN();
 	}
 
@@ -133,17 +133,15 @@ final class RuntimeBlockMapping{
 	}
 
 	/**
-	 * @param CompoundTag $blockState
+	 * @param string           $name
+	 * @param CompoundTag|null $blockState
 	 *
 	 * @return string
 	 */
-	private static function hashBlockStateNBT(CompoundTag $blockState) : string{
-		$name = $blockState->getString("name");
-
-		$statesTag = $blockState->getCompoundTag("states");
+	private static function hashBlockStateNBT(string $name, ?CompoundTag $blockState = null) : string{
 		$states = [];
-		if($statesTag !== null){
-			foreach($statesTag->getValue() as $key => $tag){
+		if($blockState !== null){
+			foreach($blockState->getValue() as $key => $tag){
 				$states[$key] = $tag->getValue();
 			}
 			ksort($states);

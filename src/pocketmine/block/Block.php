@@ -28,6 +28,9 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use InvalidArgumentException;
+use pocketmine\block\state\BlockState;
+use pocketmine\block\state\BlockStateSerializer;
+use pocketmine\block\state\StateData;
 use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
@@ -38,6 +41,8 @@ use pocketmine\math\RayTraceResult;
 use pocketmine\math\Vector3;
 use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
@@ -105,6 +110,18 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * @internal
 	 */
 	public function getRuntimeId() : int{
+		if ($this instanceof BlockState) {
+			$states = new StateData();
+			$this->onDeserialize($states);
+
+			$nbt = new CompoundTag("states");
+			BlockStateSerializer::writeToNBT($states, $nbt);
+
+			return RuntimeBlockMapping::fromBlockStateNBT(new CompoundTag("", [
+				new StringTag("name", $this->id),
+				$nbt
+			]));
+		}
 		return RuntimeBlockMapping::toRuntimeId($this->getId(), $this->getDamage());
 	}
 
@@ -113,8 +130,8 @@ class Block extends Position implements BlockIds, Metadatable{
 	}
 
 	final public function setDamage(int $meta) : void{
-		if($meta < 0 or $meta > 0x40){
-			throw new InvalidArgumentException("Block damage values must be 0-64, not $meta");
+		if($meta < 0 or $meta > 0x1FF){
+			throw new InvalidArgumentException("Block damage values must be 0-511, not $meta");
 		}
 		$this->meta = $meta;
 	}
