@@ -111,6 +111,7 @@ class BlockFactory{
 		self::registerWoodenFences();
 		self::registerShulkerBoxes();
 		self::registerFlowerBlocks();
+		self::registerWallBlocks();
 		self::registerBlock(new BrownMushroom());
 		self::registerBlock(new RedMushroom());
 		self::registerBlock(new Gold());
@@ -636,5 +637,29 @@ class BlockFactory{
 		foreach(StoneType::values() as $type){
 			self::registerBlock(new StoneStairs($type));
 		}
+	}
+
+	private static function registerWallBlocks(): void{
+		self::registerBlock(new WallBlock(BlockIds::COBBLESTONE_WALL, "Cobblestone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::MOSSY_COBBLESTONE_WALL, "Mossy Cobblestone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::GRANITE_WALL, "Granite Wall"));
+		self::registerBlock(new WallBlock(BlockIds::DIORITE_WALL, "Diorite Wall"));
+		self::registerBlock(new WallBlock(BlockIds::ANDESITE_WALL, "Andesite Wall"));
+		self::registerBlock(new WallBlock(BlockIds::SANDSTONE_WALL, "Sandstone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::RED_SANDSTONE_WALL, "Red Sandstone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::BRICK_WALL, "Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::STONE_BRICK_WALL, "Stone Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::MOSSY_STONE_BRICK_WALL, "Mossy Stone Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::NETHER_BRICK_WALL, "Nether Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::RED_NETHER_BRICK_WALL, "Red Nether Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::END_STONE_BRICK_WALL, "End Stone Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::PRISMARINE_WALL, "Prismarine Wall"));
+		self::registerBlock(new WallBlock(BlockIds::DEEPSLATE_BRICK_WALL, "Deepslate Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::DEEPSLATE_TILE_WALL, "Deepslate Tile Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_DEEPSLATE_WALL, "Polished Deepslate Wall"));
+		self::registerBlock(new WallBlock(BlockIds::COBBLED_DEEPSLATE_WALL, "Cobbled Deepslate Wall"));
+		self::registerBlock(new WallBlock(BlockIds::BLACKSTONE_WALL, "Blackstone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_BLACKSTONE_WALL, "Polished Blackstone Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_BLACKSTONE_BRICK_WALL, "Polished Blackstone Brick Wall"));
 	}
 }
