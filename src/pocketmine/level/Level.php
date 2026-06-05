@@ -1617,7 +1617,7 @@ class Level implements ChunkManager, Metadatable{
 					[new CompoundTag("states")]
 				);
 				$states = BlockStateSerializer::readFromNBT($nbt->getCompoundTag("states"));
-				$block->onSerialize($states);
+				$block->onDeserialize($states);
 			}
 		} else {
 			$block = new UnknownBlock();

@@ -325,7 +325,7 @@ class BlockFactory{
 				}
 
 				$states = BlockStateSerializer::readFromNBT($nbt->getCompoundTag("states"));
-				$block->onSerialize($states);
+				$block->onDeserialize($states);
 			}
 		}catch(RuntimeException $e){
 			throw new InvalidArgumentException("Block ID $id is out of bounds");
