@@ -86,7 +86,6 @@ use pocketmine\event\player\PlayerTransferEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\form\Form;
 use pocketmine\form\FormValidationException;
-use pocketmine\form\ServerSettingsForm;
 use pocketmine\inventory\CraftingGrid;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\InventoryHolder;
@@ -173,7 +172,6 @@ use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
@@ -4146,16 +4144,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 */
 	public function closeAllForms() : void{
 		$this->sendDataPacket(ClientboundCloseFormPacket::create());
-	}
-
-	public function sendServerSettings(ServerSettingsForm $form){
-		$id = $this->formIdCounter++;
-		$pk = new ServerSettingsResponsePacket();
-		$pk->formId = $id;
-		$pk->formData = json_encode($form);
-		if($this->sendDataPacket($pk)){
-			$this->forms[$id] = $form;
-		}
 	}
 
 	/**
