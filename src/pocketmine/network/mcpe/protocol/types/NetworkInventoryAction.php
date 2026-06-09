@@ -95,31 +95,33 @@ class NetworkInventoryAction{
 	/**
 	 * @return $this
 	 */
-	public function read(NetworkBinaryStream $packet){
+	public function read(NetworkBinaryStream $packet, bool $tr = false) : static{
 		$this->sourceType = $packet->getUnsignedVarInt();
-
-		switch($this->sourceType){
-			case self::SOURCE_CONTAINER:
-				$this->windowId = $packet->getVarInt();
-				break;
-			case self::SOURCE_GLOBAL_INVENTORY: // TODO: find out what this is used for
-				break;
-			case self::SOURCE_WORLD:
-				$this->sourceFlags = $packet->getUnsignedVarInt();
-				break;
-			case self::SOURCE_CREATIVE:
-				break;
-			case self::SOURCE_UNTRACKED_INTERACTION_UI:
-			case self::SOURCE_TODO:
-				$this->windowId = $packet->getVarInt();
-				break;
-			default:
-				throw new UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+		if($tr){
+			$this->windowId = ($packet->getBool() && $packet->getBool()) ? $packet->getByte() : 0;
+			if($packet->getBool() && $packet->getBool()) $this->sourceFlags = $packet->getUnsignedVarInt();
+		}else{
+			switch($this->sourceType){
+				case self::SOURCE_TODO:
+				case self::SOURCE_UNTRACKED_INTERACTION_UI:
+				case self::SOURCE_CONTAINER:
+					$this->windowId = $packet->getVarInt();
+					break;
+				case self::SOURCE_GLOBAL_INVENTORY: // TODO: find out what this is used for
+					break;
+				case self::SOURCE_WORLD:
+					$this->sourceFlags = $packet->getUnsignedVarInt();
+					break;
+				case self::SOURCE_CREATIVE:
+					break;
+				default:
+					throw new UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+			}
 		}
 
 		$this->inventorySlot = $packet->getUnsignedVarInt();
-		$this->oldItem = ItemStackWrapper::read($packet);
-		$this->newItem = ItemStackWrapper::read($packet);
+		$this->oldItem = ItemStackWrapper::read($packet, $tr);
+		$this->newItem = ItemStackWrapper::read($packet, $tr);
 
 		return $this;
 	}
@@ -127,31 +129,44 @@ class NetworkInventoryAction{
 	/**
 	 * @return void
 	 */
-	public function write(NetworkBinaryStream $packet){
+	public function write(NetworkBinaryStream $packet, bool $tr = false) : void{
 		$packet->putUnsignedVarInt($this->sourceType);
-
 		switch($this->sourceType){
+			case self::SOURCE_TODO:
+			case self::SOURCE_UNTRACKED_INTERACTION_UI:
 			case self::SOURCE_CONTAINER:
-				$packet->putVarInt($this->windowId);
+				if($tr){
+					$packet->putBool(true);
+					$packet->putBool(true);
+				}
+				$tr ? $packet->putByte($this->windowId) : $packet->putVarInt($this->windowId);
+				if($tr){
+					$packet->putBool(false);
+				}
 				break;
+			case self::SOURCE_CREATIVE:
 			case self::SOURCE_GLOBAL_INVENTORY:
 				break;
 			case self::SOURCE_WORLD:
+				if($tr){
+					$packet->putBool(false);
+					$packet->putBool(true);
+					$packet->putBool(true);
+				}
 				$packet->putUnsignedVarInt($this->sourceFlags);
 				break;
-			case self::SOURCE_CREATIVE:
-				break;
-			case self::SOURCE_UNTRACKED_INTERACTION_UI:
-			case self::SOURCE_TODO:
-				$packet->putVarInt($this->windowId);
-				break;
 			default:
-				throw new InvalidArgumentException("Unknown inventory action source type $this->sourceType");
+				if($tr){
+					$packet->putBool(false);
+					$packet->putBool(false);
+				}else{
+					throw new InvalidArgumentException("Unknown inventory action source type $this->sourceType");
+				}
 		}
 
 		$packet->putUnsignedVarInt($this->inventorySlot);
-		$this->oldItem->write($packet);
-		$this->newItem->write($packet);
+		$this->oldItem->write($packet, $tr);
+		$this->newItem->write($packet, $tr);
 	}
 
 	/**

@@ -74,20 +74,20 @@ class UseItemOnEntityTransactionData extends TransactionData{
 		return InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY;
 	}
 
-	protected function decodeData(PacketSerializer $stream) : void{
+	protected function decodeData(PacketSerializer $stream, bool $tr = false) : void{
 		$this->entityRuntimeId = $stream->getEntityRuntimeId();
-		$this->actionType = $stream->getUnsignedVarInt();
+		$this->actionType = $tr ? $stream->getVarInt() : $stream->getUnsignedVarInt();
 		$this->hotbarSlot = $stream->getVarInt();
-		$this->itemInHand = ItemStackWrapper::read($stream);
+		$this->itemInHand = ItemStackWrapper::read($stream, $tr);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 	}
 
-	protected function encodeData(PacketSerializer $stream) : void{
+	protected function encodeData(PacketSerializer $stream, bool $tr = false) : void{
 		$stream->putEntityRuntimeId($this->entityRuntimeId);
-		$stream->putUnsignedVarInt($this->actionType);
+		$tr ? $stream->putVarInt($this->actionType) : $stream->putUnsignedVarInt($this->actionType);
 		$stream->putVarInt($this->hotbarSlot);
-		$this->itemInHand->write($stream);
+		$this->itemInHand->write($stream, $tr);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 	}

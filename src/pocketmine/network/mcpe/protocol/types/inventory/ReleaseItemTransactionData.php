@@ -61,17 +61,17 @@ class ReleaseItemTransactionData extends TransactionData{
 		return InventoryTransactionPacket::TYPE_RELEASE_ITEM;
 	}
 
-	protected function decodeData(PacketSerializer $stream) : void{
-		$this->actionType = $stream->getUnsignedVarInt();
+	protected function decodeData(PacketSerializer $stream, bool $tr = false) : void{
+		$this->actionType = $tr ? $stream->getVarInt() : $stream->getUnsignedVarInt();
 		$this->hotbarSlot = $stream->getVarInt();
-		$this->itemInHand = ItemStackWrapper::read($stream);
+		$this->itemInHand = ItemStackWrapper::read($stream, $tr);
 		$this->headPos = $stream->getVector3();
 	}
 
-	protected function encodeData(PacketSerializer $stream) : void{
-		$stream->putUnsignedVarInt($this->actionType);
+	protected function encodeData(PacketSerializer $stream, bool $tr = false) : void{
+		$tr ? $stream->putVarInt($this->actionType) : $stream->putUnsignedVarInt($this->actionType);
 		$stream->putVarInt($this->hotbarSlot);
-		$this->itemInHand->write($stream);
+		$this->itemInHand->write($stream, $tr);
 		$stream->putVector3($this->headPos);
 	}
 
