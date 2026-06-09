@@ -17,25 +17,12 @@
  * @link http://www.pocketmine.net/
  *
  *
-*/
+ */
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\form;
 
-use function defined;
+class FormValidationException extends \RuntimeException{
 
-// composer autoload doesn't use require_once and also pthreads can inherit things
-// TODO: drop this file and use a final class with constants
-if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
-	return;
 }
-const _VERSION_INFO_INCLUDED = true;
-
-const NAME = "BetterAltay";
-//Do not modify this. Change FORK_VERSION instead.
-const BASE_VERSION = "3.28.0";
-const FORK_VERSION = "1.40.3";
-const IS_DEVELOPMENT_BUILD = false;
-const BUILD_CHANNEL = "master";
-

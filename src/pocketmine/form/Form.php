@@ -21,21 +21,23 @@
 
 declare(strict_types=1);
 
-namespace pocketmine;
+namespace pocketmine\form;
 
-use function defined;
+use JsonSerializable;
+use pocketmine\Player;
 
-// composer autoload doesn't use require_once and also pthreads can inherit things
-// TODO: drop this file and use a final class with constants
-if(defined('pocketmine\_VERSION_INFO_INCLUDED')){
-	return;
+/**
+ * Form implementations must implement this interface to be able to utilize the Player form-sending mechanism.
+ * There is no restriction on custom implementations other than that they must implement this.
+ */
+interface Form extends JsonSerializable{
+
+	/**
+	 * Handles a form response from a player.
+	 *
+	 * @param mixed $data
+	 *
+	 * @throws FormValidationException if the data could not be processed
+	 */
+	public function handleResponse(Player $player, $data) : void;
 }
-const _VERSION_INFO_INCLUDED = true;
-
-const NAME = "BetterAltay";
-//Do not modify this. Change FORK_VERSION instead.
-const BASE_VERSION = "3.28.0";
-const FORK_VERSION = "1.40.3";
-const IS_DEVELOPMENT_BUILD = false;
-const BUILD_CHANNEL = "master";
-
