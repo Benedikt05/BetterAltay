@@ -80,7 +80,8 @@ class LevelDB extends BaseLevelProvider{
 	public const GENERATOR_FLAT = 2;
 
 	public const CURRENT_STORAGE_VERSION = 10;
-	public const CURRENT_CHUNK_VERSION = 41;
+	public const v1_21_40_CHUNK_VERSION = 41;
+	public const CURRENT_CHUNK_VERSION = 42;
 	public const CURRENT_SUBCHUNK_VERSION = 8;
 
 	/** @var \LevelDB */
@@ -303,6 +304,7 @@ class LevelDB extends BaseLevelProvider{
 		$hasBeenUpgraded = $chunkVersion < self::CURRENT_CHUNK_VERSION;
 
 		switch($chunkVersion){
+			case self::v1_21_40_CHUNK_VERSION:
 			case self::CURRENT_CHUNK_VERSION:
 				$maxY = Chunk::getMaxSubChunk($dimension);
 				$biomeStream = new BinaryStream();
