@@ -29,6 +29,10 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\utils\AssumptionFailedError;
 use const pocketmine\RESOURCE_PATH;
+use function array_flip;
+use function file_get_contents;
+use function is_array;
+use function json_decode;
 
 class LevelSoundEventPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LEVEL_SOUND_EVENT_PACKET;
@@ -146,7 +150,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RECORD_WARD = 110;
 	public const SOUND_RECORD_11 = 111;
 	public const SOUND_RECORD_WAIT = 112;
-	public const SOUND_STOP_RECORD = 113; //Not really a sound
+	public const SOUND_STOP_RECORD = 113; //Not really a sound, in vanilla they call this SOUND_RECORD_NULL
 	public const SOUND_FLOP = 114;
 	public const SOUND_ELDERGUARDIAN_CURSE = 115;
 	public const SOUND_MOB_WARNING = 116;
