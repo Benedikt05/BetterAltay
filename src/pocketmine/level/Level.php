@@ -444,12 +444,12 @@ class Level implements ChunkManager, Metadatable{
 		$this->provider = $provider;
 
 		$this->displayName = $this->provider->getName();
-		$this->worldMaxHeight = $this->provider->getWorldMaxHeight();
-		$this->worldMinHeight = $this->provider->getWorldMinHeight();
 
 		$this->server->getLogger()->info($this->server->getLanguage()->translateString("pocketmine.level.preparing", [$this->displayName]));
 		$this->generator = GeneratorManager::getGenerator($this->provider->getGenerator(), true);
 		$this->dimension = self::getDimensionFromString($this->provider->getGenerator());
+		$this->worldMaxHeight = $this->provider->getWorldMaxHeight($this->dimension);
+		$this->worldMinHeight = $this->provider->getWorldMinHeight($this->dimension);
 
 		$this->folderName = $name;
 

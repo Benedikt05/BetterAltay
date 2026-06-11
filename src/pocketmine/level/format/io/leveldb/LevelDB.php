@@ -41,6 +41,7 @@ use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryStream;
 use pocketmine\world\format\PalettedBlockArray;
@@ -174,12 +175,19 @@ class LevelDB extends BaseLevelProvider{
 		return "leveldb";
 	}
 
-	public function getWorldMaxHeight() : int{
-		return 320;
+	public function getWorldMaxHeight(int $dimensionId) : int{
+		return match ($dimensionId) {
+			DimensionIds::THE_END => 256,
+			DimensionIds::NETHER => 128,
+			default => 320,
+		};
 	}
 
-	public function getWorldMinHeight() : int{
-		return -64;
+	public function getWorldMinHeight(int $dimensionId) : int{
+		return match ($dimensionId) {
+			DimensionIds::OVERWORLD => -64,
+			default => 0,
+		};
 	}
 
 	public static function isValid(string $path) : bool{

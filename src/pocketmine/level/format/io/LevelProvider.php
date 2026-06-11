@@ -42,12 +42,12 @@ interface LevelProvider{
 	/**
 	 * Gets the build height limit of this world.
 	 */
-	public function getWorldMaxHeight() : int;
+	public function getWorldMaxHeight(int $dimensionId) : int;
 
 	/**
 	 * Gets the minimum build height of this world.
 	 */
-	public function getWorldMinHeight() : int;
+	public function getWorldMinHeight(int $dimensionId) : int;
 
 	public function getPath() : string;
 
