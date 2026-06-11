@@ -32,6 +32,7 @@ use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\types\BossBarColor;
+use pocketmine\network\mcpe\protocol\types\BossBarOverlay;
 use pocketmine\Player;
 
 /*
@@ -187,29 +188,13 @@ class Bossbar extends Vector3{
 	protected function sendBossEventPacket(Player $player, int $eventType) : void{
 		$pk = new BossEventPacket();
 		$pk->bossEid = $this->entityId;
+		$pk->playerEid = $player->getId();
 		$pk->eventType = $eventType;
-
-		switch($eventType){
-			case BossEventPacket::TYPE_SHOW:
-				$pk->title = $this->title;
-				$pk->filteredTitle = $this->title;
-				$pk->healthPercent = $this->healthPercent;
-				$pk->color = $this->color;
-				$pk->overlay = 0;
-				$pk->darkenScreen = 0;
-				break;
-			case BossEventPacket::TYPE_REGISTER_PLAYER:
-			case BossEventPacket::TYPE_UNREGISTER_PLAYER:
-				$pk->playerEid = $player->getId();
-				break;
-			case BossEventPacket::TYPE_TITLE:
-				$pk->title = $this->title;
-				$pk->filteredTitle = $this->title;
-				break;
-			case BossEventPacket::TYPE_HEALTH_PERCENT:
-				$pk->healthPercent = $this->healthPercent;
-				break;
-		}
+		$pk->title = $this->title;
+		$pk->filteredTitle = $this->title;
+		$pk->healthPercent = $this->healthPercent;
+		$pk->color = $this->color;
+		$pk->overlay = BossBarOverlay::PROGRESS;
 
 		$player->sendDataPacket($pk);
 	}

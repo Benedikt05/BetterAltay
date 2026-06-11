@@ -101,15 +101,15 @@ class UseItemTransactionData extends TransactionData{
 		return InventoryTransactionPacket::TYPE_USE_ITEM;
 	}
 
-	protected function decodeData(PacketSerializer $stream) : void{
-		$this->actionType = $stream->getUnsignedVarInt();
-		$this->triggerType = $stream->getUnsignedVarInt();
+	protected function decodeData(PacketSerializer $stream, bool $tr = false) : void{
+		$this->actionType = $tr ? $stream->getVarInt() : $stream->getUnsignedVarInt();
+		$this->triggerType = $tr ? $stream->getByte() : $stream->getUnsignedVarInt();
 		$x = $y = $z = 0;
 		$stream->getBlockPosition($x, $y, $z);
 		$this->blockPos = new Vector3($x, $y, $z);
-		$this->face = $stream->getVarInt();
+		$this->face = $tr ? $stream->getByte() : $stream->getVarInt();
 		$this->hotbarSlot = $stream->getVarInt();
-		$this->itemInHand = ItemStackWrapper::read($stream);
+		$this->itemInHand = ItemStackWrapper::read($stream, $tr);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 		$this->blockRuntimeId = $stream->getUnsignedVarInt();
@@ -117,13 +117,13 @@ class UseItemTransactionData extends TransactionData{
 		$this->clientCooldownState = $stream->getByte();
 	}
 
-	protected function encodeData(PacketSerializer $stream) : void{
-		$stream->putUnsignedVarInt($this->actionType);
-		$stream->putUnsignedVarInt($this->triggerType);
+	protected function encodeData(PacketSerializer $stream, bool $tr = false) : void{
+		$tr ? $stream->putVarInt($this->actionType) : $stream->putUnsignedVarInt($this->actionType);
+		$tr ? $stream->putByte($this->triggerType) : $stream->putUnsignedVarInt($this->triggerType);
 		$stream->putBlockPosition($this->blockPos->x, $this->blockPos->y, $this->blockPos->z);
-		$stream->putVarInt($this->face);
+		$tr ? $stream->putByte($this->face) : $stream->putVarInt($this->face);
 		$stream->putVarInt($this->hotbarSlot);
-		$this->itemInHand->write($stream);
+		$this->itemInHand->write($stream, $tr);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 		$stream->putUnsignedVarInt($this->blockRuntimeId);
@@ -134,7 +134,7 @@ class UseItemTransactionData extends TransactionData{
 	/**
 	 * @param NetworkInventoryAction[] $actions
 	 */
-	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction) : self{
+	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction, int $clientCooldownState) : self{
 		$result = new self;
 		$result->actions = $actions;
 		$result->actionType = $actionType;
@@ -147,6 +147,7 @@ class UseItemTransactionData extends TransactionData{
 		$result->clickPos = $clickPos;
 		$result->blockRuntimeId = $blockRuntimeId;
 		$result->clientPrediction = $clientPrediction;
+		$result->clientCooldownState = $clientCooldownState;
 		return $result;
 	}
 }

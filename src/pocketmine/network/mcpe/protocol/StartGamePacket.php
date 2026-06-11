@@ -113,6 +113,8 @@ class StartGamePacket extends DataPacket{
 
 	public int $chatRestrictionLevel = 0; //None
 	public bool $disablePlayerInteractions = false;
+	public int $serverEditorConnectionPolicy = 0;
+	public bool $allowAnonymousBlockDropsInEditorWorlds = false;
 	public string $levelId = ""; //base64 string, usually the same as world folder name in vanilla
 	public string $worldName;
 	public string $premiumWorldTemplateId = "";
@@ -136,6 +138,7 @@ class StartGamePacket extends DataPacket{
 	public bool $clientSideGeneration = false;
 	public bool $blockNetworkIdsAreHashes = false;
 	public bool $serverAuthSound = true;
+	public bool $isLoggingChat = false;
 	public bool $serverJoinInformation = false;
 	public string $serverId = "";
 	public string $scenarioId = "";
@@ -206,6 +209,8 @@ class StartGamePacket extends DataPacket{
 
 		$this->chatRestrictionLevel = $this->getByte();
 		$this->disablePlayerInteractions = $this->getBool();
+		$this->serverEditorConnectionPolicy = $this->getVarInt();
+		$this->allowAnonymousBlockDropsInEditorWorlds = $this->getBool();
 		$this->levelId = $this->getString();
 		$this->worldName = $this->getString();
 		$this->premiumWorldTemplateId = $this->getString();
@@ -231,6 +236,7 @@ class StartGamePacket extends DataPacket{
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
+		$this->isLoggingChat = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
 		if($this->serverJoinInformation){
 			$this->getBool();
@@ -304,6 +310,8 @@ class StartGamePacket extends DataPacket{
 
 		$this->putByte($this->chatRestrictionLevel);
 		$this->putBool($this->disablePlayerInteractions);
+		$this->putVarInt($this->serverEditorConnectionPolicy);
+		$this->putBool($this->allowAnonymousBlockDropsInEditorWorlds);
 		//Level settings end
 
 		$this->putString($this->levelId);
@@ -331,6 +339,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);	//NetworkPermissions
+		$this->putBool($this->isLoggingChat);
 		$this->putBool($this->serverJoinInformation = false); //make sure this is false for now as we don't have all fields implemented related to this yet
 		if($this->serverJoinInformation){
 			$this->putBool(false); //containsGatheringJoinInfo

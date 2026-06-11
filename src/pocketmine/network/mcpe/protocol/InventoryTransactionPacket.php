@@ -56,49 +56,50 @@ class InventoryTransactionPacket extends DataPacket{
 		$in = $this;
 		$this->requestId = $in->readGenericTypeNetworkId();
 		$this->requestChangedSlots = [];
-		if($this->requestId !== 0){
-			for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
-				$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);
+		if($this->getBool()){
+			if($this->requestId !== 0){
+				for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
+					$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);
+				}
 			}
+		}
+		if(!$in->getBool()){
+			throw new PacketDecodeException("Expected transaction type, but got none");
 		}
 
 		$transactionType = $in->getUnsignedVarInt();
 
-		switch($transactionType){
-			case self::TYPE_NORMAL:
-				$this->trData = new NormalTransactionData();
-				break;
-			case self::TYPE_MISMATCH:
-				$this->trData = new MismatchTransactionData();
-				break;
-			case self::TYPE_USE_ITEM:
-				$this->trData = new UseItemTransactionData();
-				break;
-			case self::TYPE_USE_ITEM_ON_ENTITY:
-				$this->trData = new UseItemOnEntityTransactionData();
-				break;
-			case self::TYPE_RELEASE_ITEM:
-				$this->trData = new ReleaseItemTransactionData();
-				break;
-			default:
-				throw new PacketDecodeException("Unknown transaction type $transactionType");
-		}
+		$this->trData = match ($transactionType) {
+			self::TYPE_NORMAL => new NormalTransactionData(),
+			self::TYPE_MISMATCH => new MismatchTransactionData(),
+			self::TYPE_USE_ITEM => new UseItemTransactionData(),
+			self::TYPE_USE_ITEM_ON_ENTITY => new UseItemOnEntityTransactionData(),
+			self::TYPE_RELEASE_ITEM => new ReleaseItemTransactionData(),
+			default => throw new PacketDecodeException("Unknown transaction type $transactionType"),
+		};
 
-		$this->trData->decode($in);
+		if($this->getBool()){
+			$this->trData->decode($in, true);
+		}
 	}
 
 	protected function encodePayload() : void{
 		$out = $this;
 		$out->writeGenericTypeNetworkId($this->requestId);
 		if($this->requestId !== 0){
+			$this->putBool(true);
 			$out->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlots){
 				$changedSlots->write($out);
 			}
+		}else{
+			$this->putBool(false);
 		}
 
+		$this->putBool(true);
 		$out->putUnsignedVarInt($this->trData->getTypeId());
 
+		$this->putBool(true);
 		$this->trData->encode($out);
 	}
 

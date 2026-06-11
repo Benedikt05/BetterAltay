@@ -25,7 +25,7 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
-use pocketmine\block\BlockIds;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
@@ -45,23 +45,21 @@ class MobArmorEquipmentPacket extends DataPacket{
 
 	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
-		$this->head = ItemStackWrapper::read($this);
-		$this->chest = ItemStackWrapper::read($this);
-		$this->legs = ItemStackWrapper::read($this);
-		$this->feet = ItemStackWrapper::read($this);
-		$this->body = ItemStackWrapper::read($this);
+		$this->head = ItemStackWrapper::read($this, true);
+		$this->chest = ItemStackWrapper::read($this, true);
+		$this->legs = ItemStackWrapper::read($this, true);
+		$this->feet = ItemStackWrapper::read($this, true);
+		$this->body = ItemStackWrapper::read($this, true);
 	}
 
 	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
-		$this->head->write($this);
-		$this->chest->write($this);
-		$this->legs->write($this);
-		$this->feet->write($this);
-		if($this->body === null){
-			$this->body = ItemStackWrapper::legacy(ItemFactory::get(BlockIds::AIR));
-		}
-		$this->body->write($this);
+		$this->head->write($this, true);
+		$this->chest->write($this, true);
+		$this->legs->write($this, true);
+		$this->feet->write($this, true);
+		$this->body ??= ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
+		$this->body->write($this, true);
 	}
 
 	public function handle(NetworkSession $session) : bool{
