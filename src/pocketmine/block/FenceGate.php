@@ -24,13 +24,19 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\block\material\WoodType;
+use pocketmine\block\state\BlockState;
+use pocketmine\block\state\StateData;
 use pocketmine\item\Item;
 use pocketmine\level\sound\DoorSound;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class FenceGate extends Transparent{
+class FenceGate extends Transparent implements BlockState{
+
+	protected string $direction = "south";
+	protected bool $open = false;
+	protected bool $inWall = false;
 
 	public function __construct(private WoodType $material, int $meta = 0){
 		$this->id = "minecraft:" . $this->material->getType() . "_fence_gate";
@@ -50,35 +56,32 @@ class FenceGate extends Transparent{
 	}
 
 	public function isPassable() : bool{
-		return ($this->getDamage() & 0x04) > 0;
+		return $this->open;
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
-
-		if(($this->getDamage() & 0x04) > 0){
+		if($this->open){
 			return null;
 		}
 
-		$i = ($this->getDamage() & 0x03);
-		if($i === 2 or $i === 0){
-			return new AxisAlignedBB(
+		return match ($this->direction) {
+			"north", "south" => new AxisAlignedBB(
 				$this->x,
 				$this->y,
 				$this->z + 0.375,
 				$this->x + 1,
 				$this->y + 1.5,
 				$this->z + 0.625
-			);
-		}else{
-			return new AxisAlignedBB(
+			),
+			default => new AxisAlignedBB(
 				$this->x + 0.375,
 				$this->y,
 				$this->z,
 				$this->x + 0.625,
 				$this->y + 1.5,
 				$this->z + 1
-			);
-		}
+			)
+		};
 	}
 
 	public function getName() : string{
@@ -86,21 +89,62 @@ class FenceGate extends Transparent{
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		$this->meta = ($player instanceof Player ? ($player->getDirection() - 1) & 0x03 : 0);
-		$this->getLevelNonNull()->setBlock($blockReplace, $this, true, true);
+		if($player instanceof Player){
+			$this->direction = match (($player->getDirection() - 1) & 0x03) {
+				0 => "south",
+				1 => "west",
+				2 => "north",
+				3 => "east"
+			};
+		}
 
+		$this->calculateInWallState();
+		$this->getLevelNonNull()->setBlock($blockReplace, $this, true);
 		return true;
 	}
 
-	public function getVariantBitmask() : int{
-		return 0;
+	public function onNearbyBlockChange() : void{
+		if($this->getLevel() === null) return;
+
+		$oldInWall = $this->inWall;
+		$this->calculateInWallState();
+
+		if($oldInWall !== $this->inWall){
+			$this->getLevelNonNull()->setBlock($this, $this, true, false);
+		}
+	}
+
+	public function calculateInWallState() : void{
+		$sides = match ($this->direction) {
+			"north", "south" => [Vector3::SIDE_WEST, Vector3::SIDE_EAST],
+			"east", "west" => [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH]
+		};
+
+		$this->inWall = $this->getSide($sides[0]) instanceof WallBlock
+			|| $this->getSide($sides[1]) instanceof WallBlock;
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		$this->meta = (($this->meta ^ 0x04) & ~0x02);
+		$this->open = !$this->open;
 
-		if($player !== null){
-			$this->meta |= (($player->getDirection() - 1) & 0x02);
+		if($player !== null && $this->open){
+			$playerDir = match (($player->getDirection() - 1) & 0x03) {
+				0 => "south",
+				1 => "west",
+				2 => "north",
+				3 => "east"
+			};
+
+			$opposites = [
+				"north" => "south",
+				"south" => "north",
+				"east" => "west",
+				"west" => "east"
+			];
+
+			if($this->direction === $opposites[$playerDir]){
+				$this->direction = $playerDir;
+			}
 		}
 
 		$this->getLevelNonNull()->setBlock($this, $this, true);
@@ -122,5 +166,19 @@ class FenceGate extends Transparent{
 
 	public function getMaterial() : WoodType{
 		return $this->material;
+	}
+
+	public function onSerialize(StateData $state) : void{
+		$state->setAll([
+			StateData::MINECRAFT_CARDINAL_DIRECTION => $this->direction,
+			StateData::OPEN_BIT => $this->open,
+			StateData::IN_WALL_BIT => $this->inWall
+		]);
+	}
+
+	public function onDeserialize(StateData $state) : void{
+		$this->direction = $state->getString(StateData::MINECRAFT_CARDINAL_DIRECTION, "south");
+		$this->open = $state->getBool(StateData::OPEN_BIT);
+		$this->inWall = $state->getBool(StateData::IN_WALL_BIT);
 	}
 }
