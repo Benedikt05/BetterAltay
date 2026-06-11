@@ -516,6 +516,7 @@ class ItemFactory{
 			ItemIds::MUSIC_DISC_PRECIPICE => [LevelSoundEventPacket::SOUND_RECORD_PRECIPICE, 'Aaron Cherof - Precipice'],
 			ItemIds::MUSIC_DISC_TEARS => [LevelSoundEventPacket::SOUND_RECORD_TEARS, 'Amos Roddy - Tears'],
 			ItemIds::MUSIC_DISC_LAVA_CHICKEN => [LevelSoundEventPacket::SOUND_RECORD_LAVA_CHICKEN, 'Hyper Potions - Lava Chicken'],
+			ItemIds::MUSIC_DISC_BOUNCE => [LevelSoundEventPacket::SOUND_RECORD_BOUNCE, 'fingerspit - Bounce'],
 		];
 
 		foreach($records as $itemId => [$sound, $name]){
