@@ -53,4 +53,18 @@ final class SubChunkPosition{
 		$out->putVarInt($this->y);
 		$out->putVarInt($this->z);
 	}
+
+	public static function readv1001(NetworkBinaryStream $in) : self{
+		$x = $in->getLInt();
+		$y = $in->getLInt();
+		$z = $in->getLInt();
+
+		return new self($x, $y, $z);
+	}
+
+	public function writev1001(NetworkBinaryStream $out) : void{
+		$out->putLInt($this->x);
+		$out->putLInt($this->y);
+		$out->putLInt($this->z);
+	}
 }
