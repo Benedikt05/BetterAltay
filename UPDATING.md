@@ -64,6 +64,7 @@ When Mojang introduces new content, several server-side data files must often be
 * **`stripped_biome_definitions.json`** – Obtainable from [CloudburstMC/Data](https://github.com/CloudburstMC/Data) or generated via ProxyPass.
 
 * **`creative_items.json`** – Can be pulled from [Kaooot/bedrock-network-data](https://github.com/Kaooot/bedrock-network-data/).
+* **`level_sound_id_map.json`** – Either updated by [extract_sound_map.py](https://gist.github.com/Benedikt05/977080670a15c8532ec3f1b82032d1d6) or taken from [pmmp/BedrockData](https://github.com/pmmp/BedrockData).
 
 ---
 

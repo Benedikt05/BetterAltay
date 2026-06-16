@@ -16,6 +16,10 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 class BossBarColor{
 
+	private function __construct(){
+		//NOOP
+	}
+
     public const PINK = 0;
 	public const BLUE = 1;
 	public const RED = 2;
