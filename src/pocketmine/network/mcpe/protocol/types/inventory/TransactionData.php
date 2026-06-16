@@ -63,7 +63,7 @@ abstract class TransactionData{
 	final public function encode(PacketSerializer $stream, bool $tr = false) : void{
 		$stream->putUnsignedVarInt(count($this->actions));
 		foreach($this->actions as $action){
-			$action->write($stream);
+			$action->write($stream, $tr);
 		}
 		$this->encodeData($stream, $tr);
 	}
