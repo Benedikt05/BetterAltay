@@ -45,29 +45,25 @@ class InventoryTransactionPacket extends DataPacket{
 	public const TYPE_USE_ITEM_ON_ENTITY = 3;
 	public const TYPE_RELEASE_ITEM = 4;
 
-	/** @var int */
-	public $requestId;
+	public int $requestId;
 	/** @var InventoryTransactionChangedSlotsHack[] */
-	public $requestChangedSlots;
-	/** @var TransactionData */
-	public $trData;
+	public array $requestChangedSlots;
+	public TransactionData $trData;
 
 	protected function decodePayload() : void{
-		$in = $this;
-		$this->requestId = $in->readGenericTypeNetworkId();
+		$this->requestId = $this->readGenericTypeNetworkId();
 		$this->requestChangedSlots = [];
-		if($this->getBool()){
-			if($this->requestId !== 0){
-				for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
-					$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);
-				}
+		if($this->getBool()){ //hasChangedSlots
+			for($i = 0, $len = $this->getUnsignedVarInt(); $i < $len; ++$i){
+				$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($this);
 			}
 		}
-		if(!$in->getBool()){
+
+		if(!$this->getBool()){
 			throw new PacketDecodeException("Expected transaction type, but got none");
 		}
 
-		$transactionType = $in->getUnsignedVarInt();
+		$transactionType = $this->getUnsignedVarInt();
 
 		$this->trData = match ($transactionType) {
 			self::TYPE_NORMAL => new NormalTransactionData(),
@@ -79,28 +75,25 @@ class InventoryTransactionPacket extends DataPacket{
 		};
 
 		if($this->getBool()){
-			$this->trData->decode($in, true);
+			$this->trData->decode($this, true);
 		}
 	}
 
 	protected function encodePayload() : void{
-		$out = $this;
-		$out->writeGenericTypeNetworkId($this->requestId);
+		$this->writeGenericTypeNetworkId($this->requestId);
+		$this->putBool($this->requestId !== 0);
 		if($this->requestId !== 0){
-			$this->putBool(true);
-			$out->putUnsignedVarInt(count($this->requestChangedSlots));
+			$this->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlots){
-				$changedSlots->write($out);
+				$changedSlots->write($this);
 			}
-		}else{
-			$this->putBool(false);
 		}
 
 		$this->putBool(true);
-		$out->putUnsignedVarInt($this->trData->getTypeId());
+		$this->putUnsignedVarInt($this->trData->getTypeId());
 
 		$this->putBool(true);
-		$this->trData->encode($out);
+		$this->trData->encode($this, true);
 	}
 
 	public function handle(PacketHandlerInterface $session) : bool{
