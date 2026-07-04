@@ -29,15 +29,6 @@ use function count;
 
 final class ItemStackRequest{
 
-	/** @var int */
-	private $requestId;
-	/** @var ItemStackRequestAction[] */
-	private $actions;
-	/**
-	 * @var string[]
-	 * @phpstan-var list<string>
-	 */
-	private $filterStrings;
 
 	/**
 	 * @param ItemStackRequestAction[] $actions
@@ -45,11 +36,12 @@ final class ItemStackRequest{
 	 *
 	 * @phpstan-param list<string>     $filterStrings
 	 */
-	public function __construct(int $requestId, array $actions, array $filterStrings){
-		$this->requestId = $requestId;
-		$this->actions = $actions;
-		$this->filterStrings = $filterStrings;
-	}
+	public function __construct(
+		private int $requestId,
+		private array $actions,
+		private array $filterStrings,
+		private int $filterStringCause
+	){}
 
 	public function getRequestId() : int{ return $this->requestId; }
 
@@ -61,6 +53,8 @@ final class ItemStackRequest{
 	 * @phpstan-return list<string>
 	 */
 	public function getFilterStrings() : array{ return $this->filterStrings; }
+
+	public function getFilterStringCause() : int{ return $this->filterStringCause; }
 
 	private static function readAction(NetworkBinaryStream $in, int $typeId) : ItemStackRequestAction{
 		switch($typeId){
@@ -76,8 +70,8 @@ final class ItemStackRequest{
 				return DestroyStackRequestAction::read($in);
 			case CraftingConsumeInputStackRequestAction::getTypeId():
 				return CraftingConsumeInputStackRequestAction::read($in);
-			case CraftingMarkSecondaryResultStackRequestAction::getTypeId():
-				return CraftingMarkSecondaryResultStackRequestAction::read($in);
+			case CraftingCreateSpecificResultStackRequestAction::getTypeId():
+				return CraftingCreateSpecificResultStackRequestAction::read($in);
 			case LabTableCombineStackRequestAction::getTypeId():
 				return LabTableCombineStackRequestAction::read($in);
 			case BeaconPaymentStackRequestAction::getTypeId():
@@ -115,7 +109,8 @@ final class ItemStackRequest{
 		for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
 			$filterStrings[] = $in->getString();
 		}
-		return new self($requestId, $actions, $filterStrings);
+		$filterStringCause = $in->getLInt();
+		return new self($requestId, $actions, $filterStrings, $filterStringCause);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
@@ -129,5 +124,6 @@ final class ItemStackRequest{
 		foreach($this->filterStrings as $string){
 			$out->putString($string);
 		}
+		$out->putLInt($this->filterStringCause);
 	}
 }

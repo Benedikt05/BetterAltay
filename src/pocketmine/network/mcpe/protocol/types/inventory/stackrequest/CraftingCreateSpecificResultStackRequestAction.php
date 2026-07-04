@@ -26,21 +26,23 @@ namespace pocketmine\network\mcpe\protocol\types\inventory\stackrequest;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
 /**
- * I have no clear idea what this does. It seems to be the client hinting to the server "hey, put a secondary output in
- * X crafting grid slot". This is used for things like buckets.
+ * This action precedes a "take" or "place" action involving the "created item" magic slot. It indicates that the
+ * "created item" output slot now contains output N of a previously specified crafting recipe.
+ * This is only used with crafting recipes that have multiple outputs. For recipes with single outputs, it's assumed
+ * that the content of the "created item" slot is the only output.
+ *
+ * @see ContainerUIIds::CREATED_OUTPUT
+ * @see UIInventorySlotOffset::CREATED_ITEM_OUTPUT
  */
-final class CraftingMarkSecondaryResultStackRequestAction extends ItemStackRequestAction{
+final class CraftingCreateSpecificResultStackRequestAction extends ItemStackRequestAction{
 
-	/** @var int */
-	private $craftingGridSlot;
-
-	public function __construct(int $craftingGridSlot){
-		$this->craftingGridSlot = $craftingGridSlot;
+	public function __construct(private int $resultIndex
+	){
 	}
 
-	public function getCraftingGridSlot() : int{ return $this->craftingGridSlot; }
+	public function getResultIndex() : int{ return $this->resultIndex; }
 
-	public static function getTypeId() : int{ return ItemStackRequestActionType::CRAFTING_MARK_SECONDARY_RESULT_SLOT; }
+	public static function getTypeId() : int{ return ItemStackRequestActionType::CRAFTING_CREATE_SPECIFIC_RESULT; }
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$slot = $in->getByte();
@@ -48,6 +50,6 @@ final class CraftingMarkSecondaryResultStackRequestAction extends ItemStackReque
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putByte($this->craftingGridSlot);
+		$out->putByte($this->resultIndex);
 	}
 }
