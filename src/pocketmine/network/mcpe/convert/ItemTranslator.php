@@ -151,9 +151,9 @@ final class ItemTranslator{
 				//not all items have a legacy mapping - for now, we only support the ones that do
 				continue;
 			}
-			$this->simpleMappings = $simpleMappings;
-			$this->complexMappings = $complexMappings;
 		}
+		$this->simpleMappings = $simpleMappings;
+		$this->complexMappings = $complexMappings;
 	}
 
 	/**
@@ -211,7 +211,7 @@ final class ItemTranslator{
 	 * @return int[]
 	 * @phpstan-return array{int, int}
 	 */
-	public function fromStringId(string $stringId): array {
+	public function fromStringId(string $stringId) : array{
 		if(isset($this->complexMappings[$stringId])){
 			return $this->complexMappings[$stringId];
 		}elseif(isset($this->simpleMappings[$stringId])){
@@ -219,5 +219,21 @@ final class ItemTranslator{
 		}else{
 			return [$this->simpleMappings["minecraft:air"], 0];
 		}
+	}
+
+	public function toStringId(int $id, int $meta = 0) : string{
+		foreach($this->complexMappings as $stringId => [$mappedId, $mappedMeta]){
+			if($mappedId === $id && $mappedMeta === $meta){
+				return $stringId;
+			}
+		}
+
+		foreach($this->simpleMappings as $stringId => $mappedId){
+			if($mappedId === $id){
+				return $stringId;
+			}
+		}
+
+		return "minecraft:air";
 	}
 }

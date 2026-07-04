@@ -85,7 +85,6 @@ use pocketmine\event\player\PlayerTransferEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\form\Form;
 use pocketmine\form\FormValidationException;
-use pocketmine\form\ServerSettingsForm;
 use pocketmine\inventory\CraftingGrid;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\InventoryHolder;
@@ -171,7 +170,6 @@ use pocketmine\network\mcpe\protocol\ResourcePackDataInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePacksInfoPacket;
 use pocketmine\network\mcpe\protocol\ResourcePackStackPacket;
 use pocketmine\network\mcpe\protocol\RespawnPacket;
-use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\ServerToClientHandshakePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
@@ -215,6 +213,7 @@ use pocketmine\network\mcpe\protocol\UpdateAbilitiesPacket;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
+use pocketmine\network\mcpe\protocol\VoxelShapesPacket;
 use pocketmine\network\SourceInterface;
 use pocketmine\permission\PermissibleBase;
 use pocketmine\permission\PermissionAttachment;
@@ -223,6 +222,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
 use pocketmine\resourcepacks\ResourcePack;
 use pocketmine\tile\ItemFrame;
+use pocketmine\tile\Skull;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\timings\Timings;
@@ -1199,6 +1199,19 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->usedChunks[Level::chunkHash($x, $z)] = true;
 		$this->dataPacket($payload);
+
+		$chunk = $this->level->getChunk($x, $z);
+		if($chunk !== null){
+			$blocksToUpdate = [];
+			foreach($chunk->getTiles() as $tile){
+				if($tile instanceof Skull){
+					$blocksToUpdate[] = $tile->getBlock();
+				}
+			}
+			if(count($blocksToUpdate) > 0){
+				$this->getLevel()->sendBlocks([$this], $blocksToUpdate, UpdateBlockPacket::FLAG_ALL_PRIORITY);
+			}
+		}
 
 		if($this->spawned){
 			foreach($this->level->getChunkEntities($x, $z) as $entity){
@@ -2575,6 +2588,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->spawnPosition = $this->level->getSafeSpawn();
 			}
 		}
+
+		$this->sendDataPacket(new VoxelShapesPacket());
 
 		$spawnPosition = $this->getSpawn();
 
@@ -4140,16 +4155,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 */
 	public function closeAllForms() : void{
 		$this->sendDataPacket(ClientboundCloseFormPacket::create());
-	}
-
-	public function sendServerSettings(ServerSettingsForm $form){
-		$id = $this->formIdCounter++;
-		$pk = new ServerSettingsResponsePacket();
-		$pk->formId = $id;
-		$pk->formData = json_encode($form);
-		if($this->sendDataPacket($pk)){
-			$this->forms[$id] = $form;
-		}
 	}
 
 	/**

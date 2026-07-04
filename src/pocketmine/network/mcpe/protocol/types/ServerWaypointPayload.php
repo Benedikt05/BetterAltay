@@ -21,6 +21,7 @@
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use pocketmine\math\Vector2;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
 class ServerWaypointPayload{
@@ -29,9 +30,11 @@ class ServerWaypointPayload{
 		private int $updateFlag,
 		private ?bool $isVisible,
 		private ?WorldPosition $worldPosition,
-		private ?int $textureId,
+		private ?string $texturePath,
+		private ?Vector2 $iconSize,
 		private ?int $color,
-		private ?bool $clientPositionAuthority
+		private ?bool $clientPositionAuthority,
+		private ?int $entityUniqueId,
 	){
 	}
 
@@ -48,8 +51,12 @@ class ServerWaypointPayload{
 		return $this->worldPosition;
 	}
 
-	public function getTextureId() : ?int{
-		return $this->textureId;
+	public function getTexturePath() : ?string{
+		return $this->texturePath;
+	}
+
+	public function getIconSize() : ?Vector2{
+		return $this->iconSize;
 	}
 
 	public function getColor() : ?int{
@@ -60,21 +67,29 @@ class ServerWaypointPayload{
 		return $this->clientPositionAuthority;
 	}
 
+	public function getEntityUniqueId() : ?int{
+		return $this->entityUniqueId;
+	}
+
 	public static function read(NetworkBinaryStream $in) : self{
 		$updateFlag = $in->getLInt();
 		$isVisible = $in->readOptional(fn() => $in->getBool());
 		$worldPosition = $in->readOptional(fn() => WorldPosition::read($in));
-		$textureId = $in->readOptional(fn() => $in->getLInt());
+		$texturePath = $in->readOptional(fn() => $in->getString());
+		$iconSize = $in->readOptional(fn() => $in->getVector2());
 		$color = $in->readOptional(fn() => $in->getLInt());
 		$clientPositionAuthority = $in->readOptional(fn() => $in->getBool());
+		$entityUniqueId = $in->readOptional(fn() => $in->getEntityUniqueId());
 
 		return new self(
 			$updateFlag,
 			$isVisible,
 			$worldPosition,
-			$textureId,
+			$texturePath,
+			$iconSize,
 			$color,
-			$clientPositionAuthority
+			$clientPositionAuthority,
+			$entityUniqueId
 		);
 	}
 
@@ -82,8 +97,10 @@ class ServerWaypointPayload{
 		$out->putLInt($this->updateFlag);
 		$out->writeOptional($this->isVisible, fn() => $out->putBool($this->isVisible));
 		$out->writeOptional($this->worldPosition, fn() => $this->worldPosition->write($out));
-		$out->writeOptional($this->textureId, fn() => $out->putLInt($this->textureId));
+		$out->writeOptional($this->texturePath, fn() => $out->putString($this->texturePath));
+		$out->writeOptional($this->iconSize, fn() => $out->putVector2($this->iconSize));
 		$out->writeOptional($this->color, fn() => $out->putLInt($this->color));
 		$out->writeOptional($this->clientPositionAuthority, fn() => $out->putBool($this->clientPositionAuthority));
+		$out->writeOptional($this->entityUniqueId, fn() => $out->putEntityUniqueId($this->entityUniqueId));
 	}
 }

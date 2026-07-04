@@ -291,6 +291,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_IM_ASSIST_PRIORITY_PRESET_ID = 136; //int
 	public const DATA_AIM_ASSIST_PRIORITY_CATEGORY_ID = 137; //int
 	public const DATA_AIM_ASSIST_PRIORITY_ACTOR_ID = 138; //int
+	public const DATA_RESERVED_139 = 139; //long
+	public const DATA_NAMEPLATE_RENDER_DISTANCE_MAX = 140; //float
 
 	public const DATA_FLAG_ONFIRE = 0;
 	public const DATA_FLAG_SNEAKING = 1;
@@ -421,6 +423,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_BODY_ROTATION_ALWAYS_FOLLOWS_HEAD = 124;
 	public const DATA_FLAG_CAN_USE_VERTICAL_MOVEMENT_ACTION = 125;
 	public const DATA_FLAG_ROTATION_LOCKED_TO_VEHICLE = 126;
+	public const DATA_FLAG_USES_LEGACY_FRICTION = 127;
 
 	public const DATA_PLAYER_FLAG_SLEEP = 1;
 	public const DATA_PLAYER_FLAG_DEAD = 2; //TODO: CHECK

@@ -45,28 +45,22 @@ class InventoryContentPacket extends DataPacket{
 		$this->windowId = $this->getUnsignedVarInt();
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
-			$this->items[] = ItemStackWrapper::read($this);
+			$this->items[] = ItemStackWrapper::read($this, true);
 		}
 		$this->containerName = FullContainerName::read($this);
-		$this->storageItem = ItemStackWrapper::read($this);
+		$this->storageItem = ItemStackWrapper::read($this, true);
 	}
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->windowId);
 		$this->putUnsignedVarInt(count($this->items));
 		foreach($this->items as $item){
-			$item->write($this);
+			$item->write($this, true);
 		}
-		if($this->containerName === null){
-			$this->containerName = new FullContainerName(0);
-		}
+		$this->containerName ??= new FullContainerName(0);
 		$this->containerName->write($this);
-
-		if($this->storageItem === null){
-			$this->storageItem = ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
-		}
-		$this->storageItem->write($this);
-
+		$this->storageItem ??= ItemStackWrapper::legacy(ItemFactory::get(Item::AIR));
+		$this->storageItem->write($this, true);
 	}
 
 	public function handle(NetworkSession $session) : bool{

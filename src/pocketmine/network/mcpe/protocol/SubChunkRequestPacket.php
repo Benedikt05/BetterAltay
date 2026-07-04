@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol;
 
+use UnexpectedValueException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\SubChunkPosition;
 use pocketmine\network\mcpe\protocol\types\SubChunkPositionOffset;
@@ -67,22 +68,25 @@ class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/
 
 	protected function decodePayload() : void{
 		$this->dimension = $this->getVarInt();
-		$this->basePosition = SubChunkPosition::read($this);
-
+		$count = $this->getUnsignedVarInt();
+		if($count > 8192){
+			throw new UnexpectedValueException("Too many sub chunk position offsets: " . $count);
+		}
 		$this->entries = [];
-		for($i = 0, $count = $this->getLInt(); $i < $count; $i++){
+		for($i = 0; $i < $count; $i++){
 			$this->entries[] = SubChunkPositionOffset::read($this);
 		}
+		$this->basePosition = SubChunkPosition::readCereal($this);
+
 	}
 
 	protected function encodePayload() : void{
 		$this->putVarInt($this->dimension);
-		$this->basePosition->write($this);
-
-		$this->putLInt(count($this->entries));
+		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
 			$entry->write($this);
 		}
+		$this->basePosition->writeCereal($this);
 	}
 
 	public function handle(NetworkSession $session) : bool{

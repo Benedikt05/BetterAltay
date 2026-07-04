@@ -27,14 +27,13 @@ class ServerboundDataDrivenScreenClosedPacket extends DataPacket{
 	}
 
 	protected function decodePayload() : void{
-		$this->formId = $this->readOptional(fn() => $this->getLInt());
+		$this->formId = $this->getLInt();
 		$this->closeReason = $this->getString();
 	}
 
 	protected function encodePayload() : void{
-		$this->writeOptional($this->formId, fn(int $formId) => $this->putLInt($formId));
+		$this->putLInt($this->formId);
 		$this->putString($this->closeReason);
-
 	}
 
 	public function handle(NetworkSession $session) : bool{

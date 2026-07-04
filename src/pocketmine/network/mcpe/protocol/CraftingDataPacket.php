@@ -50,8 +50,8 @@ class CraftingDataPacket extends DataPacket{
 
 	public const ENTRY_SHAPELESS = 0;
 	public const ENTRY_SHAPED = 1;
-	public const ENTRY_FURNACE = 2;
-	public const ENTRY_FURNACE_DATA = 3;
+	public const ENTRY_FURNACE = 0;
+	public const ENTRY_FURNACE_DATA = 0;
 	public const ENTRY_MULTI = 4; //TODO
 	public const ENTRY_SHULKER_BOX = 5; //TODO
 	public const ENTRY_SHAPELESS_CHEMISTRY = 6; //TODO
@@ -78,7 +78,7 @@ class CraftingDataPacket extends DataPacket{
 		return parent::clean();
 	}
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->decodedEntries = [];
 		$recipeCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $recipeCount; ++$i){
@@ -128,27 +128,6 @@ class CraftingDataPacket extends DataPacket{
 					$entry["priority"] = $this->getVarInt();
 					$entry["net_id"] = $this->getUnsignedVarInt();
 
-					break;
-				case self::ENTRY_FURNACE:
-				case self::ENTRY_FURNACE_DATA:
-					$inputIdNet = $this->getVarInt();
-					if($recipeType === self::ENTRY_FURNACE){
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, 0x7fff);
-					}else{
-						$inputMetaNet = $this->getVarInt();
-						[$inputId, $inputData] = ItemTranslator::getInstance()->fromNetworkIdWithWildcardHandling($inputIdNet, $inputMetaNet);
-					}
-					$entry["input"] = ItemFactory::get($inputId, $inputData);
-					$entry["output"] = $out = $this->getItemStackWithoutStackId();
-					if($out->getDamage() === 0x7fff){
-						$out->setDamage(0); //TODO HACK: some 1.12 furnace recipe outputs have wildcard damage values
-					}
-					$entry["block"] = $this->getString();
-
-					break;
-				case self::ENTRY_MULTI:
-					$entry["uuid"] = $this->getUUID()->toString();
-					$entry["net_id"] = $this->getUnsignedVarInt();
 					break;
 				default:
 					throw new UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
@@ -200,7 +179,7 @@ class CraftingDataPacket extends DataPacket{
 		}elseif($entry instanceof ShapedRecipe){
 			return self::writeShapedRecipe($entry, $stream, $pos);
 		}elseif($entry instanceof FurnaceRecipe){
-			return self::writeFurnaceRecipe($entry, $stream);
+			return self::writeFurnaceRecipe($entry, $stream, $pos);
 		}
 		//TODO: add MultiRecipe
 
@@ -256,18 +235,19 @@ class CraftingDataPacket extends DataPacket{
 		return CraftingDataPacket::ENTRY_SHAPED;
 	}
 
-	private static function writeFurnaceRecipe(FurnaceRecipe $recipe, NetworkBinaryStream $stream) : int{
-		$input = $recipe->getInput();
-		if($input->hasAnyDamageValue()){
-			[$netId,] = ItemTranslator::getInstance()->toNetworkId($input->getId(), 0);
-			$netData = 0x7fff;
-		}else{
-			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($input->getId(), $input->getDamage());
-		}
-		$stream->putVarInt($netId);
-		$stream->putVarInt($netData);
+	private static function writeFurnaceRecipe(FurnaceRecipe $recipe, NetworkBinaryStream $stream, int $pos) : int{
+		$stream->putString(Binary::writeInt($pos));
+		$stream->putUnsignedVarInt(1);
+		$stream->putRecipeIngredient($recipe->getInput());
+		$stream->putUnsignedVarInt(1);
 		$stream->putItemStackWithoutStackId($recipe->getResult());
+
+		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("furnace"); //TODO: blocktype (no prefix) (this might require internal API breaks)
+		$stream->putVarInt(0); //TODO: priority
+		$stream->putByte(0); //TODO: recipe unlocking requirement - none
+		$stream->putUnsignedVarInt(0); // ingredients size
+		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 		return CraftingDataPacket::ENTRY_FURNACE_DATA;
 	}
 
@@ -292,8 +272,8 @@ class CraftingDataPacket extends DataPacket{
 		$this->entries[] = $recipe;
 	}
 
-	protected function encodePayload(){
-		$this->putUnsignedVarInt(count($this->entries = []));
+	protected function encodePayload() : void{
+		$this->putUnsignedVarInt(count($this->entries));
 
 		$writer = new NetworkBinaryStream();
 		$counter = 0;

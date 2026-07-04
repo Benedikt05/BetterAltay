@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\convert;
 
 use pocketmine\block\BlockIds;
+use pocketmine\item\ItemIds;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
@@ -44,6 +45,7 @@ final class RuntimeBlockMapping{
 	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
+	private static array $skullMapping;
 
 	private function __construct(){
 		//NOOP
@@ -89,7 +91,15 @@ final class RuntimeBlockMapping{
 		 */
 		$idToStatesMap = [];
 		foreach(self::$bedrockKnownStates as $k => $state){
-			$idToStatesMap[$state->getString("name")][] = $k;
+			$name = $state->getString("name");
+			$idToStatesMap[$name][] = $k;
+			if(ItemTranslator::getInstance()->fromStringId($name)[0] === ItemIds::SKULL){
+				$states = $state->getCompoundTag("states");
+				if($states !== null){
+					$facing = $states->getInt("facing_direction", 0);
+					self::$skullMapping[$name][$facing] = $k;
+				}
+			}
 		}
 		foreach($legacyStateMap as $pair){
 			$id = $legacyIdMap[$pair->getId()] ?? null;
@@ -156,5 +166,9 @@ final class RuntimeBlockMapping{
 	public static function getBedrockKnownStates() : array{
 		self::lazyInit();
 		return self::$bedrockKnownStates;
+	}
+
+	public static function getSkullMapping() : array{
+		return self::$skullMapping;
 	}
 }

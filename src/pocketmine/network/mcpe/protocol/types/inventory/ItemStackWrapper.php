@@ -48,9 +48,10 @@ final class ItemStackWrapper{
 
 	public static function read(NetworkBinaryStream $in, bool $net = false) : self{
 		$stackId = 0;
-		$stack = $in->getItemStack(function(NetworkBinaryStream $in) use (&$stackId) : void{
+		$stack = $in->getItemStack(function(NetworkBinaryStream $in, bool $net) use (&$stackId) : void{
 			$hasNetId = $in->getBool();
 			if($hasNetId){
+				if($net) $in->getUnsignedVarInt();
 				$stackId = $in->readGenericTypeNetworkId();
 			}
 		}, $net);
@@ -58,9 +59,10 @@ final class ItemStackWrapper{
 	}
 
 	public function write(NetworkBinaryStream $out, bool $net = false) : void{
-		$out->putItemStack($this->itemStack, function(NetworkBinaryStream $out) : void{
+		$out->putItemStack($this->itemStack, function(NetworkBinaryStream $out, bool $net) : void{
 			$out->putBool($this->stackId !== 0);
 			if($this->stackId !== 0){
+				if($net) $out->putUnsignedVarInt(0); //net id variant
 				$out->writeGenericTypeNetworkId($this->stackId);
 			}
 		}, $net);

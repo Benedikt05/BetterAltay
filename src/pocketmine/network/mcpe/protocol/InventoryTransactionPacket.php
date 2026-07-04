@@ -45,61 +45,55 @@ class InventoryTransactionPacket extends DataPacket{
 	public const TYPE_USE_ITEM_ON_ENTITY = 3;
 	public const TYPE_RELEASE_ITEM = 4;
 
-	/** @var int */
-	public $requestId;
+	public int $requestId;
 	/** @var InventoryTransactionChangedSlotsHack[] */
-	public $requestChangedSlots;
-	/** @var TransactionData */
-	public $trData;
+	public array $requestChangedSlots;
+	public TransactionData $trData;
 
 	protected function decodePayload() : void{
-		$in = $this;
-		$this->requestId = $in->readGenericTypeNetworkId();
+		$this->requestId = $this->readGenericTypeNetworkId();
 		$this->requestChangedSlots = [];
-		if($this->requestId !== 0){
-			for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
-				$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);
+		if($this->getBool()){ //hasChangedSlots
+			for($i = 0, $len = $this->getUnsignedVarInt(); $i < $len; ++$i){
+				$this->requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($this);
 			}
 		}
 
-		$transactionType = $in->getUnsignedVarInt();
-
-		switch($transactionType){
-			case self::TYPE_NORMAL:
-				$this->trData = new NormalTransactionData();
-				break;
-			case self::TYPE_MISMATCH:
-				$this->trData = new MismatchTransactionData();
-				break;
-			case self::TYPE_USE_ITEM:
-				$this->trData = new UseItemTransactionData();
-				break;
-			case self::TYPE_USE_ITEM_ON_ENTITY:
-				$this->trData = new UseItemOnEntityTransactionData();
-				break;
-			case self::TYPE_RELEASE_ITEM:
-				$this->trData = new ReleaseItemTransactionData();
-				break;
-			default:
-				throw new PacketDecodeException("Unknown transaction type $transactionType");
+		if(!$this->getBool()){
+			throw new PacketDecodeException("Expected transaction type, but got none");
 		}
 
-		$this->trData->decode($in);
+		$transactionType = $this->getUnsignedVarInt();
+
+		$this->trData = match ($transactionType) {
+			self::TYPE_NORMAL => new NormalTransactionData(),
+			self::TYPE_MISMATCH => new MismatchTransactionData(),
+			self::TYPE_USE_ITEM => new UseItemTransactionData(),
+			self::TYPE_USE_ITEM_ON_ENTITY => new UseItemOnEntityTransactionData(),
+			self::TYPE_RELEASE_ITEM => new ReleaseItemTransactionData(),
+			default => throw new PacketDecodeException("Unknown transaction type $transactionType"),
+		};
+
+		if($this->getBool()){
+			$this->trData->decode($this, true);
+		}
 	}
 
 	protected function encodePayload() : void{
-		$out = $this;
-		$out->writeGenericTypeNetworkId($this->requestId);
+		$this->writeGenericTypeNetworkId($this->requestId);
+		$this->putBool($this->requestId !== 0);
 		if($this->requestId !== 0){
-			$out->putUnsignedVarInt(count($this->requestChangedSlots));
+			$this->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlots){
-				$changedSlots->write($out);
+				$changedSlots->write($this);
 			}
 		}
 
-		$out->putUnsignedVarInt($this->trData->getTypeId());
+		$this->putBool(true);
+		$this->putUnsignedVarInt($this->trData->getTypeId());
 
-		$this->trData->encode($out);
+		$this->putBool(true);
+		$this->trData->encode($this, true);
 	}
 
 	public function handle(PacketHandlerInterface $session) : bool{

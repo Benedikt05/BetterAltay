@@ -27,6 +27,12 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\utils\AssumptionFailedError;
+use const pocketmine\RESOURCE_PATH;
+use function array_flip;
+use function file_get_contents;
+use function is_array;
+use function json_decode;
 
 class LevelSoundEventPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LEVEL_SOUND_EVENT_PACKET;
@@ -144,7 +150,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RECORD_WARD = 110;
 	public const SOUND_RECORD_11 = 111;
 	public const SOUND_RECORD_WAIT = 112;
-	public const SOUND_STOP_RECORD = 113; //Not really a sound
+	public const SOUND_STOP_RECORD = 113; //Not really a sound, in vanilla they call this SOUND_RECORD_NULL
 	public const SOUND_FLOP = 114;
 	public const SOUND_ELDERGUARDIAN_CURSE = 115;
 	public const SOUND_MOB_WARNING = 116;
@@ -518,9 +524,24 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_RESET_GROWTH = 598;
 	public const SOUND_PUSHED_BY_PLAYER = 599;
 	public const SOUND_BOUNCE = 600;
-	public const SOUND_UNDEFINED = 601;
+	public const SOUND_SLIME_LANDING = 601;
+	public const SOUND_ABSORB_BLOCK = 602;
+	public const SOUND_EJECT_BLOCK = 603;
+	public const SOUND_GEYSER_ERUPTION_START = 604;
+	public const SOUND_GEYSER_ERUPTION_ACTIVE = 605;
+	public const SOUND_RECORD_BOUNCE = 606;
+	public const SOUND_BUCKET_FILL_LAND_ANIMAL = 607;
+	public const SOUND_BUCKET_EMPTY_LAND_ANIMAL = 608;
+	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_START = 609;
+	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_ACTIVE = 610;
+	public const SOUND_UNDEFINED = 611;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1) : self{
+	/** @var array<int, string> */
+	private static array $idToStringMap;
+	/** @var array<string, int> */
+	private static array $stringToIdMap;
+
+	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, int $entityUniqueId = -1, ?Vector3 $fireAtPosition = null) : self{
 		$result = new self;
 		$result->sound = $sound;
 		$result->extraData = $extraData;
@@ -529,6 +550,7 @@ class LevelSoundEventPacket extends DataPacket{
 		$result->entityType = $entityType;
 		$result->isBabyMob = $isBabyMob;
 		$result->entityUniqueId = $entityUniqueId;
+		$result->fireAtPosition = $fireAtPosition;
 		return $result;
 	}
 
@@ -541,26 +563,41 @@ class LevelSoundEventPacket extends DataPacket{
 	public int $entityUniqueId = -1;
 	public ?Vector3 $fireAtPosition = null;
 
+	private static function makeSoundMap() : void{
+		$map = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/level_sound_id_map.json"), true);
+		if(!is_array($map)){
+			throw new AssumptionFailedError("Invalid resource file format");
+		}
+		self::$idToStringMap = array_flip($map);
+		self::$stringToIdMap = $map;
+	}
+
 	protected function decodePayload() : void{
-		$this->sound = $this->getUnsignedVarInt();
+		if(!isset(self::$idToStringMap)){
+			self::makeSoundMap();
+		}
+		$this->sound = self::$stringToIdMap[$this->getString()] ?? -1;
 		$this->position = $this->getVector3();
 		$this->extraData = $this->getVarInt();
 		$this->entityType = $this->getString();
 		$this->isBabyMob = $this->getBool();
 		$this->disableRelativeVolume = $this->getBool();
 		$this->entityUniqueId = $this->getLLong();
-		$this->fireAtPosition = $this->getVector3();
+		$this->fireAtPosition = $this->readOptional(fn() => $this->getVector3());
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt($this->sound);
+		if(!isset(self::$idToStringMap)){
+			self::makeSoundMap();
+		}
+		$this->putString(self::$idToStringMap[$this->sound] ?? "");
 		$this->putVector3($this->position);
 		$this->putVarInt($this->extraData);
 		$this->putString($this->entityType);
 		$this->putBool($this->isBabyMob);
 		$this->putBool($this->disableRelativeVolume);
 		$this->putLLong($this->entityUniqueId);
-		$this->putVector3Nullable($this->fireAtPosition);
+		$this->writeOptional($this->fireAtPosition, fn($fireAtPosition) => $this->putVector3($fireAtPosition));
 	}
 
 	public function handle(NetworkSession $session) : bool{

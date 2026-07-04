@@ -94,6 +94,7 @@ class ActorEventPacket extends DataPacket{
 	public const DRINK_MILK = 78;
 	public const SHAKE_WETNESS_STOP = 79;
 	public const KINETIC_DAMAGE_DEALT = 80;
+	public const HURT_WITHOUT_RECEIVING_DAMAGE = 81;
 
 	//TODO: add more events
 
@@ -106,14 +107,14 @@ class ActorEventPacket extends DataPacket{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->event = $this->getByte();
 		$this->data = $this->getVarInt();
-		$this->fireAtPosition = $this->getVector3();
+		$this->fireAtPosition = $this->readOptional(fn() => $this->getVector3());
 	}
 
 	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putByte($this->event);
 		$this->putVarInt($this->data);
-		$this->putVector3Nullable($this->fireAtPosition);
+		$this->writeOptional($this->fireAtPosition, fn($fireAtPosition) => $this->putVector3($fireAtPosition));
 	}
 
 	public function handle(NetworkSession $session) : bool{
