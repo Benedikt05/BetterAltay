@@ -49,7 +49,7 @@ abstract class TransactionData{
 	final public function decode(PacketSerializer $stream, bool $tr = false) : void{
 		$actionCount = $stream->getUnsignedVarInt();
 		for($i = 0; $i < $actionCount; ++$i){
-			$this->actions[] = (new NetworkInventoryAction())->read($stream, $tr);
+			$this->actions[] = (new NetworkInventoryAction())->read($stream);
 		}
 		$this->decodeData($stream, $tr);
 	}
@@ -63,7 +63,7 @@ abstract class TransactionData{
 	final public function encode(PacketSerializer $stream, bool $tr = false) : void{
 		$stream->putUnsignedVarInt(count($this->actions));
 		foreach($this->actions as $action){
-			$action->write($stream, $tr);
+			$action->write($stream);
 		}
 		$this->encodeData($stream, $tr);
 	}
