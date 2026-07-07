@@ -33,17 +33,17 @@ final class CraftRecipeAutoStackRequestAction extends ItemStackRequestAction{
 
 	final public function __construct(
 		private int $recipeId,
-		private int $repetitions2,
 		private int $repetitions,
+		private int $repetitions2,
 		private array $ingredients
 	){
 	}
 
 	public function getRecipeId() : int{ return $this->recipeId; }
 
-	public function getRepetitions2() : int{ return $this->repetitions2; }
-
 	public function getRepetitions() : int{ return $this->repetitions; }
+
+	public function getRepetitions2() : int{ return $this->repetitions2; }
 
 	public function getIngredients() : array{ return $this->ingredients; }
 
@@ -51,21 +51,21 @@ final class CraftRecipeAutoStackRequestAction extends ItemStackRequestAction{
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$recipeId = $in->readGenericTypeNetworkId();
-		$repetitions2 = $in->getByte();
 		$repetitions = $in->getByte();
+		$repetitions2 = $in->getByte();
 		$ingredients = [];
 		for($i = 0, $count = $in->getByte(); $i < $count; ++$i){
 			$ingredients[] = $in->getRecipeIngredient();
 		}
-		return new self($recipeId, $repetitions2, $repetitions, $ingredients);
+		return new self($recipeId, $repetitions, $repetitions2, $ingredients);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->writeGenericTypeNetworkId($this->recipeId);
-		$out->putByte($this->repetitions2);
 		$out->putByte($this->repetitions);
+		$out->putByte($this->repetitions2);
 		$out->putByte(count($this->ingredients));
-		foreach ($this->ingredients as $ingredient) {
+		foreach($this->ingredients as $ingredient){
 			$out->putRecipeIngredient($ingredient);
 		}
 	}

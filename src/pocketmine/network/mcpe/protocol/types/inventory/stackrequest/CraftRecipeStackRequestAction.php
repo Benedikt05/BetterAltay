@@ -30,23 +30,25 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
  */
 final class CraftRecipeStackRequestAction extends ItemStackRequestAction{
 
-	/** @var int */
-	private $recipeId;
-
-	final public function __construct(int $recipeId){
-		$this->recipeId = $recipeId;
-	}
+	final public function __construct(
+		private int $recipeId,
+		private int $repetitions
+	){}
 
 	public function getRecipeId() : int{ return $this->recipeId; }
+
+	public function getRepetitions() : int{ return $this->repetitions; }
 
 	public static function getTypeId() : int{ return ItemStackRequestActionType::CRAFTING_RECIPE; }
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$recipeId = $in->readGenericTypeNetworkId();
-		return new self($recipeId);
+		$repetitions = $in->getByte();
+		return new self($recipeId, $repetitions);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->writeGenericTypeNetworkId($this->recipeId);
+		$out->putByte($this->repetitions);
 	}
 }

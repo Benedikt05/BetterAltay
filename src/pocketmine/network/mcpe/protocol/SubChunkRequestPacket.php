@@ -76,7 +76,7 @@ class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/
 		for($i = 0; $i < $count; $i++){
 			$this->entries[] = SubChunkPositionOffset::read($this);
 		}
-		$this->basePosition = SubChunkPosition::readv1001($this);
+		$this->basePosition = SubChunkPosition::readCereal($this);
 
 	}
 
@@ -86,7 +86,7 @@ class SubChunkRequestPacket extends DataPacket/* implements ServerboundPacket*/
 		foreach($this->entries as $entry){
 			$entry->write($this);
 		}
-		$this->basePosition->writev1001($this);
+		$this->basePosition->writeCereal($this);
 	}
 
 	public function handle(NetworkSession $session) : bool{
