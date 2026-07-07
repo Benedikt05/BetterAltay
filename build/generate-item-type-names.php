@@ -23,8 +23,6 @@ declare(strict_types=1);
 
 namespace pocketmine\build\generate_item_serializer_ids;
 
-use pocketmine\data\bedrock\item\BlockItemIdMap;
-use pocketmine\errorhandler\ErrorToExceptionHandler;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\convert\ItemTypeDictionary;
 use pocketmine\utils\AssumptionFailedError;

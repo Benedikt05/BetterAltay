@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block\state;
 
-class StateData {
+class StateData{
 	public const ACTIVE = "active";
 	public const AGE = "age";
 	public const AGE_BIT = "age_bit";
@@ -186,30 +186,30 @@ class StateData {
 	/**
 	 * @return array<string, int|bool|string>
 	 */
-	public function getAll(): array {
+	public function getAll() : array{
 		return $this->states;
 	}
 
 	/**
 	 * @param array<string, int|bool|string> $states
 	 */
-	public function setAll(array $states): void {
+	public function setAll(array $states) : void{
 		$this->states = $states;
 	}
 
-	public function getBool(string $name, bool $default = false): bool {
+	public function getBool(string $name, bool $default = false) : bool{
 		return isset($this->states[$name]) ? (bool) $this->states[$name] : $default;
 	}
 
-	public function getInt(string $name, int $default = 0): int {
+	public function getInt(string $name, int $default = 0) : int{
 		return isset($this->states[$name]) ? (int) $this->states[$name] : $default;
 	}
 
-	public function getString(string $name, string $default = ""): string {
+	public function getString(string $name, string $default = "") : string{
 		return isset($this->states[$name]) ? (string) $this->states[$name] : $default;
 	}
 
-	public function set(string $name, int|bool|string $value): void {
+	public function set(string $name, int|bool|string $value) : void{
 		$this->states[$name] = $value;
 	}
 }
