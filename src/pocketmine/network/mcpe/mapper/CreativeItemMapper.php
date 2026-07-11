@@ -90,7 +90,7 @@ class CreativeItemMapper{
 
 			}
 			if($itemValue->getName() !== "Unknown"){
-				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), $itemValue, $item["groupId"]);
+				$this->icons[] = new CreativeItemEntry($this->getNextIconIndex(), ItemStackWrapper::legacy($itemValue), $item["groupId"]);
 			}
 		}
 

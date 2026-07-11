@@ -49,6 +49,7 @@ use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\mapper\CreativeItemMapper;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\Player;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Binary;
@@ -143,7 +144,7 @@ class Item implements ItemIds, JsonSerializable{
 	 * @return void
 	 */
 	public static function addCreativeItem(Item $item, int $group = 0) : void{
-		CreativeItemMapper::getInstance()->addIcon(new CreativeItemEntry(CreativeItemMapper::getInstance()->getNextIconIndex(), $item, $group));
+		CreativeItemMapper::getInstance()->addIcon(new CreativeItemEntry(CreativeItemMapper::getInstance()->getNextIconIndex(), ItemStackWrapper::legacy($item), $group));
 	}
 
 	/**
