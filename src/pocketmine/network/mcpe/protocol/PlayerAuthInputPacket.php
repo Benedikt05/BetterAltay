@@ -40,6 +40,7 @@ use pocketmine\network\mcpe\protocol\types\PlayerBlockActionStopBreak;
 use pocketmine\network\mcpe\protocol\types\PlayerBlockActionWithBlockInfo;
 use pocketmine\network\mcpe\protocol\types\PlayMode;
 use RuntimeException;
+use UnexpectedValueException;
 
 class PlayerAuthInputPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_AUTH_INPUT_PACKET;
@@ -277,6 +278,9 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->moveVecX = $this->getLFloat();
 		$this->moveVecZ = $this->getLFloat();
 		$this->headYaw = $this->getLFloat();
+		if(!$this->getBool()){
+			throw new UnexpectedValueException("missing inputFlags");
+		}
 		$this->inputFlags = BitSet::read($this, 65);
 		$this->inputMode = $this->getUnsignedVarInt();
 		$this->playMode = $this->getUnsignedVarInt();
@@ -284,13 +288,13 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->interactRotation = $this->getVector2();
 		$this->tick = $this->getUnsignedVarLong();
 		$this->delta = $this->getVector3();
-		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_ITEM_INTERACTION)){
+		if($this->getBool() && $this->getBool()){
 			$this->itemInteractionData = ItemInteractionData::read($this);
 		}
-		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_ITEM_STACK_REQUEST)){
+		if($this->getBool() && $this->getBool()){
 			$this->itemStackRequest = ItemStackRequest::read($this);
 		}
-		if($this->inputFlags->get(PlayerAuthInputFlags::PERFORM_BLOCK_ACTIONS)){
+		if($this->getBool() && $this->getBool()){
 			$this->blockActions = [];
 			$max = $this->getVarInt();
 			for($i = 0; $i < $max; ++$i){
@@ -302,7 +306,7 @@ class PlayerAuthInputPacket extends DataPacket{
 				};
 			}
 		}
-		if($this->inputFlags->get(PlayerAuthInputFlags::IN_CLIENT_PREDICTED_VEHICLE)){
+		if($this->getBool() && $this->getBool()){
 			$this->vehicleInfo = PlayerAuthInputVehicleInfo::read($this);
 		}
 		$this->analogMoveVecX = $this->getLFloat();

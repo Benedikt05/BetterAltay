@@ -28,10 +28,8 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 
 final class ItemStackWrapper{
 
-	/** @var int */
-	private $stackId;
-	/** @var Item */
-	private $itemStack;
+	private int $stackId;
+	private Item $itemStack;
 
 	public function __construct(int $stackId, Item $itemStack){
 		$this->stackId = $stackId;

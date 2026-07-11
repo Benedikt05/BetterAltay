@@ -52,6 +52,7 @@ class ResourcePackStackPacket extends DataPacket{
 
 		$this->baseGameVersion = $this->getString();
 		$this->experiments = Experiments::read($this);
+		$this->getBool();
 		$this->includeEditorPacks = $this->getBool();
 	}
 
@@ -67,6 +68,7 @@ class ResourcePackStackPacket extends DataPacket{
 
 		$this->putString($this->baseGameVersion);
 		$this->experiments->write($this);
+		$this->putBool(false); //hasPreviouslyUsedExperiments
 		$this->putBool($this->includeEditorPacks);
 	}
 

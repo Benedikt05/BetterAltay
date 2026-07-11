@@ -270,7 +270,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->createdInEditor);
 		$this->putBool($this->exportedFromEditor);
 		$this->putVarInt($this->time);
-		$this->putVarInt($this->eduEditionOffer);
+		$this->putUnsignedVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
 		$this->putString($this->eduProductUUID);
 		$this->putLFloat($this->rainLevel);
@@ -286,7 +286,7 @@ class StartGamePacket extends DataPacket{
 		$this->experiments->write($this);
 		$this->putBool($this->hasBonusChestEnabled);
 		$this->putBool($this->hasStartWithMapEnabled);
-		$this->putVarInt($this->defaultPlayerPermission);
+		$this->putByte($this->defaultPlayerPermission);
 		$this->putLInt($this->serverChunkTickRadius);
 		$this->putBool($this->hasLockedBehaviorPack);
 		$this->putBool($this->hasLockedResourcePack);
@@ -339,11 +339,8 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);	//NetworkPermissions
-		$this->putBool($this->isLoggingChat);
+		//$this->putBool($this->isLoggingChat); removed?
 		$this->putBool($this->serverJoinInformation = false); //make sure this is false for now as we don't have all fields implemented related to this yet
-		if($this->serverJoinInformation){
-			$this->putBool(false); //containsGatheringJoinInfo
-		}
 		//ServerTelemetryData
 		$this->putString($this->serverId);
 		$this->putString($this->scenarioId);

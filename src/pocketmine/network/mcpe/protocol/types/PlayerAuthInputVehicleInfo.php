@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use UnexpectedValueException;
 
 final class PlayerAuthInputVehicleInfo{
 
@@ -21,15 +22,23 @@ final class PlayerAuthInputVehicleInfo{
 	public function getPredictedVehicleActorUniqueId() : int{ return $this->predictedVehicleActorUniqueId; }
 
 	public static function read(NetworkBinaryStream $in) : self{
+		if(!$in->getBool() || !$in->getBool()){
+			throw new UnexpectedValueException("vehicle rot missing");
+		}
 		$vehicleRotationX = $in->getLFloat();
 		$vehicleRotationZ = $in->getLFloat();
+		if(!$in->getBool() || !$in->getBool()){
+			throw new UnexpectedValueException("predicted Vehicle Actor UniqueId missing");
+		}
 		$predictedVehicleActorUniqueId = $in->getEntityUniqueId();
 
 		return new self($vehicleRotationX, $vehicleRotationZ, $predictedVehicleActorUniqueId);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
+		$out->putBool(true);
 		$out->putLFloat($this->vehicleRotationX);
+		$out->putBool(true);
 		$out->putLFloat($this->vehicleRotationZ);
 		$out->putEntityUniqueId($this->predictedVehicleActorUniqueId);
 	}

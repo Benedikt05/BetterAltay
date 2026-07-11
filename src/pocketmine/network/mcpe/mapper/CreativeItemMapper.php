@@ -12,6 +12,7 @@ use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
 use function json_decode;
@@ -59,7 +60,7 @@ class CreativeItemMapper{
 				"items" => CreativeContentPacket::CATEGORY_ITEMS
 			};
 
-			$this->groups[] = new CreativeGroupEntry($categoryId, $name, $iconValue);
+			$this->groups[] = new CreativeGroupEntry($categoryId, $name, ItemStackWrapper::legacy($iconValue));
 		}
 
 		$items = $data["items"];

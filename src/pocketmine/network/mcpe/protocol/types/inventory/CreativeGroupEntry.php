@@ -12,7 +12,7 @@ final class CreativeGroupEntry{
 	public function __construct(
 		private int $categoryId,
 		private string $categoryName,
-		private Item $icon
+		private ItemStackWrapper $icon
 	){
 	}
 
@@ -20,18 +20,18 @@ final class CreativeGroupEntry{
 
 	public function getCategoryName() : string{ return $this->categoryName; }
 
-	public function getIcon() : Item{ return $this->icon; }
+	public function getIcon() : Item{ return $this->icon->getItemStack(); }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$categoryId = $in->getLInt();
+		$categoryId = $in->getByte();
 		$categoryName = $in->getString();
-		$icon = $in->getItemStackWithoutStackId();
+		$icon = ItemStackWrapper::read($in, true);
 		return new self($categoryId, $categoryName, $icon);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putLInt($this->categoryId);
+		$out->putByte($this->categoryId);
 		$out->putString($this->categoryName);
-		$out->putItemStackWithoutStackId($this->icon);
+		$this->icon->write($out, true);
 	}
 }

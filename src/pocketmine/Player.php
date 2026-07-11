@@ -2202,7 +2202,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 		$this->seenLoginPacket = true;
 
-		if(!self::isValidUserName($packet->username ?? "")){
+		if(!self::isValidUserName($packet->username ?? null)){
 			$this->close("", "disconnectionScreen.invalidName");
 
 			return true;
@@ -2211,10 +2211,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->username = TextFormat::clean($packet->username);
 		$this->displayName = $this->username;
 		$this->iusername = strtolower($this->username);
+		$this->locale = $packet->locale;
 
-		if($packet->locale !== null){
-			$this->locale = $packet->locale;
-		}
 
 		$this->deviceId = $packet->clientData["DeviceId"] ?? null;
 		$this->deviceModel = $packet->clientData["DeviceModel"] ?? null;

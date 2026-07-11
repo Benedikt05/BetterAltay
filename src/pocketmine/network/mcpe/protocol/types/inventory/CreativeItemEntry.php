@@ -8,27 +8,27 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 final class CreativeItemEntry{
 	public function __construct(
 		private int $entryId,
-		private Item $item,
+		private ItemStackWrapper $item,
 		private int $groupId
 	){
 	}
 
 	public function getEntryId() : int{ return $this->entryId; }
 
-	public function getItem() : Item{ return $this->item; }
+	public function getItem() : Item{ return $this->item->getItemStack(); }
 
 	public function getGroupId() : int{ return $this->groupId; }
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$entryId = $in->getUnsignedVarInt();
-		$item = $in->getItemStackWithoutStackId();
+		$item = ItemStackWrapper::read($in, true);
 		$groupId = $in->getUnsignedVarInt();
 		return new self($entryId, $item, $groupId);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putUnsignedVarInt($this->entryId);
-		$out->putItemStackWithoutStackId($this->item);
+		$this->item->write($out, true);
 		$out->putUnsignedVarInt($this->groupId);
 	}
 }

@@ -59,7 +59,7 @@ class MovePlayerPacket extends DataPacket{
 	/** @var int */
 	public $tick = 0;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->position = $this->getVector3();
 		$this->pitch = $this->getLFloat();
@@ -68,14 +68,14 @@ class MovePlayerPacket extends DataPacket{
 		$this->mode = $this->getByte();
 		$this->onGround = $this->getBool();
 		$this->ridingEid = $this->getEntityRuntimeId();
-		if($this->mode === MovePlayerPacket::MODE_TELEPORT){
+		if($this->getBool()){
 			$this->teleportCause = $this->getLInt();
 			$this->teleportItem = $this->getLInt();
 		}
 		$this->tick = $this->getUnsignedVarLong();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putVector3($this->position);
 		$this->putLFloat($this->pitch);
@@ -84,6 +84,7 @@ class MovePlayerPacket extends DataPacket{
 		$this->putByte($this->mode);
 		$this->putBool($this->onGround);
 		$this->putEntityRuntimeId($this->ridingEid);
+		$this->putBool($this->mode === MovePlayerPacket::MODE_TELEPORT);
 		if($this->mode === MovePlayerPacket::MODE_TELEPORT){
 			$this->putLInt($this->teleportCause);
 			$this->putLInt($this->teleportItem);

@@ -38,26 +38,26 @@ class AddItemActorPacket extends DataPacket{
 	public Vector3 $position;
 	public ?Vector3 $motion = null;
 	/**
-	 * @var mixed[][]
+	 * @var array[]
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
 	public array $metadata = [];
 	public bool $isFromFishing = false;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->entityUniqueId = $this->getEntityUniqueId();
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
-		$this->item = ItemStackWrapper::read($this);
+		$this->item = ItemStackWrapper::read($this, true);
 		$this->position = $this->getVector3();
 		$this->motion = $this->getVector3();
 		$this->metadata = $this->getEntityMetadata();
 		$this->isFromFishing = $this->getBool();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putEntityUniqueId($this->entityUniqueId ?? $this->entityRuntimeId);
 		$this->putEntityRuntimeId($this->entityRuntimeId);
-		$this->item->write($this);
+		$this->item->write($this, true);
 		$this->putVector3($this->position);
 		$this->putVector3Nullable($this->motion);
 		$this->putEntityMetadata($this->metadata);
