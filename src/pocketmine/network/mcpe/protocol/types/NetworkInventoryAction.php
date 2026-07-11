@@ -90,7 +90,7 @@ class NetworkInventoryAction{
 	/**
 	 * @return $this
 	 */
-	public function read(NetworkBinaryStream $packet) : static{
+	public function readCereal(NetworkBinaryStream $packet) : static{
 		$this->sourceType = $packet->getUnsignedVarInt();
 		// @phpstan-ignore-next-line
 		if($packet->getBool() && $packet->getBool()){
@@ -109,12 +109,80 @@ class NetworkInventoryAction{
 	}
 
 	/**
+	 * @return $this
+	 */
+	public function read(NetworkBinaryStream $packet, bool $tr) : static{
+		if($tr){
+			return $this->readCereal($packet);
+		}
+		$this->sourceType = $packet->getUnsignedVarInt();
+
+		switch($this->sourceType){
+			case self::SOURCE_TODO:
+			case self::SOURCE_UNTRACKED_INTERACTION_UI:
+			case self::SOURCE_CONTAINER:
+				$this->windowId = $packet->getVarInt();
+				break;
+			case self::SOURCE_GLOBAL_INVENTORY: // TODO: find out what this is used for
+				break;
+			case self::SOURCE_WORLD:
+				$this->sourceFlags = $packet->getUnsignedVarInt();
+				break;
+			case self::SOURCE_CREATIVE:
+				break;
+			default:
+				throw new UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+		}
+
+		$this->inventorySlot = $packet->getUnsignedVarInt();
+		$this->oldItem = ItemStackWrapper::read($packet);
+		$this->newItem = ItemStackWrapper::read($packet);
+
+		return $this;
+	}
+
+
+	/**
+	 * @param NetworkBinaryStream $packet
+	 * @param bool                $tr
+	 *
+	 * @return void
+	 */
+	public function write(NetworkBinaryStream $packet, bool $tr) : void{
+		if($tr){
+			$this->writeCereal($packet);
+			return;
+		}
+		$packet->putUnsignedVarInt($this->sourceType);
+
+		switch($this->sourceType){
+			case self::SOURCE_TODO:
+			case self::SOURCE_UNTRACKED_INTERACTION_UI:
+			case self::SOURCE_CONTAINER:
+				$packet->putVarInt($this->windowId);
+				break;
+			case self::SOURCE_CREATIVE:
+			case self::SOURCE_GLOBAL_INVENTORY:
+				break;
+			case self::SOURCE_WORLD:
+				$packet->putUnsignedVarInt($this->sourceFlags);
+				break;
+			default:
+				throw new InvalidArgumentException("Unknown inventory action source type $this->sourceType");
+		}
+
+		$packet->putUnsignedVarInt($this->inventorySlot);
+		$this->oldItem->write($packet);
+		$this->newItem->write($packet);
+	}
+
+	/**
 	 *
 	 * @param NetworkBinaryStream $packet
 	 *
 	 * @return void
 	 */
-	public function write(NetworkBinaryStream $packet) : void{
+	public function writeCereal(NetworkBinaryStream $packet) : void{
 		$packet->putUnsignedVarInt($this->sourceType);
 		switch($this->sourceType){
 			case self::SOURCE_TODO:
