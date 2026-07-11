@@ -36,25 +36,30 @@ class ResourcePackClientResponsePacket extends DataPacket{
 	public const STATUS_HAVE_ALL_PACKS = 3;
 	public const STATUS_COMPLETED = 4;
 
-	/** @var int */
-	public $status;
+	public int $status;
 	/** @var string[] */
-	public $packIds = [];
+	public array $packIds = [];
 
-	protected function decodePayload(){
-		$this->status = $this->getByte();
-		$entryCount = $this->getLShort();
-		$this->packIds = [];
-		while($entryCount-- > 0){
-			$this->packIds[] = $this->getString();
+	protected function decodePayload() : void{
+		$this->status = $this->getUnsignedVarInt();
+		$this->getString(); //status/response string
+		if($this->status === self::STATUS_SEND_PACKS){
+			$entryCount = $this->getUnsignedVarInt();
+			$this->packIds = [];
+			while($entryCount-- > 0){
+				$this->packIds[] = $this->getString();
+			}
 		}
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->status);
-		$this->putLShort(count($this->packIds));
-		foreach($this->packIds as $id){
-			$this->putString($id);
+	protected function encodePayload() : void{
+		$this->putUnsignedVarInt($this->status);
+		$this->putString("");
+		if($this->status === self::STATUS_SEND_PACKS){
+			$this->putUnsignedVarInt(count($this->packIds));
+			foreach($this->packIds as $id){
+				$this->putString($id);
+			}
 		}
 	}
 

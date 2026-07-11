@@ -50,7 +50,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->worldTemplateUUID = $this->getUUID();
 		$this->worldTemplateVersion = $this->getString();
 
-		$resourcePackCount = $this->getLShort();
+		$resourcePackCount = $this->getUnsignedVarInt();
 		while($resourcePackCount-- > 0){
 			$this->getUUID();
 			$this->getString();
@@ -73,7 +73,7 @@ class ResourcePacksInfoPacket extends DataPacket{
 		$this->putUUID($this->worldTemplateUUID ??= new UUID());
 		$this->putString($this->worldTemplateVersion);
 
-		$this->putLShort(count($this->resourcePackEntries));
+		$this->putUnsignedVarInt(count($this->resourcePackEntries));
 		foreach($this->resourcePackEntries as $entry){
 			$this->putUUID(UUID::fromString($entry->getPackId()));
 			$this->putString($entry->getPackVersion());
