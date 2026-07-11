@@ -42,95 +42,42 @@ class BossEventPacket extends DataPacket{
 	public const TYPE_HEALTH_PERCENT = 4;
 	/* S2C: Sets title of the bar. */
 	public const TYPE_TITLE = 5;
-	/* S2C: Not sure on this. Includes color and overlay fields, plus an unknown short. TODO: check this */
-	public const TYPE_UNKNOWN_6 = 6;
+	/* S2C: Not sure on this. TODO: check this */
+	public const TYPE_UPDATE_PROPERTIES = 6;
 	/* S2C: Not implemented :( Intended to alter bar appearance, but these currently produce no effect on client-side whatsoever. */
 	public const TYPE_TEXTURE = 7;
 	/* C2S: Client asking the server to resend all boss data. */
 	public const TYPE_QUERY = 8;
 
 	public int $bossEid;
-	/** @var int */
 	public int $eventType;
-
-	/** @var int (long) */
 	public int $playerEid;
-	/** @var float */
 	public float $healthPercent;
-	/** @var string */
 	public string $title;
 	public string $filteredTitle = "";
-	/** @var int */
-	public int $darkenScreen;
-	/** @var int */
 	public int $color;
-	/** @var int */
 	public int $overlay;
 
 	protected function decodePayload() : void{
 		$this->bossEid = $this->getEntityUniqueId();
-		$this->eventType = $this->getUnsignedVarInt();
-		switch($this->eventType){
-			case self::TYPE_REGISTER_PLAYER:
-			case self::TYPE_UNREGISTER_PLAYER:
-			case self::TYPE_QUERY:
-				$this->playerEid = $this->getEntityUniqueId();
-				break;
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_SHOW:
-				$this->title = $this->getString();
-				$this->filteredTitle = $this->getString();
-				$this->healthPercent = $this->getLFloat();
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_UNKNOWN_6:
-				$this->darkenScreen = $this->getLShort();
-			case self::TYPE_TEXTURE:
-				$this->color = $this->getUnsignedVarInt();
-				$this->overlay = $this->getUnsignedVarInt();
-				break;
-			case self::TYPE_HEALTH_PERCENT:
-				$this->healthPercent = $this->getLFloat();
-				break;
-			case self::TYPE_TITLE:
-				$this->title = $this->getString();
-				$this->filteredTitle = $this->getString();
-				break;
-			default:
-				break;
-		}
+		$this->playerEid = $this->getEntityUniqueId();
+		$this->eventType = $this->getByte();
+		$this->title = $this->getString();
+		$this->filteredTitle = $this->getString();
+		$this->healthPercent = $this->getLFloat();
+		$this->color = $this->getByte();
+		$this->overlay = $this->getByte();
 	}
 
 	protected function encodePayload() : void{
 		$this->putEntityUniqueId($this->bossEid);
-		$this->putUnsignedVarInt($this->eventType);
-		switch($this->eventType){
-			case self::TYPE_REGISTER_PLAYER:
-			case self::TYPE_UNREGISTER_PLAYER:
-			case self::TYPE_QUERY:
-				$this->putEntityUniqueId($this->playerEid);
-				break;
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_SHOW:
-				$this->putString($this->title);
-				$this->putString($this->filteredTitle);
-				$this->putLFloat($this->healthPercent);
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case self::TYPE_UNKNOWN_6:
-				$this->putLShort($this->darkenScreen);
-			case self::TYPE_TEXTURE:
-				$this->putUnsignedVarInt($this->color);
-				$this->putUnsignedVarInt($this->overlay);
-				break;
-			case self::TYPE_HEALTH_PERCENT:
-				$this->putLFloat($this->healthPercent);
-				break;
-			case self::TYPE_TITLE:
-				$this->putString($this->title);
-				$this->putString($this->filteredTitle);
-				break;
-			default:
-				break;
-		}
+		$this->putEntityUniqueId($this->playerEid);
+		$this->putByte($this->eventType);
+		$this->putString($this->title);
+		$this->putString($this->filteredTitle);
+		$this->putLFloat($this->healthPercent);
+		$this->putByte($this->color);
+		$this->putByte($this->overlay);
 	}
 
 	public function handle(NetworkSession $session) : bool{

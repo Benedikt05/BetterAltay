@@ -648,18 +648,29 @@ class BlockFactory{
 		self::registerBlock(new WallBlock(BlockIds::SANDSTONE_WALL, "Sandstone Wall"));
 		self::registerBlock(new WallBlock(BlockIds::RED_SANDSTONE_WALL, "Red Sandstone Wall"));
 		self::registerBlock(new WallBlock(BlockIds::BRICK_WALL, "Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::MUD_BRICK_WALL, "Mud Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::TUFF_WALL, "Tuff Wall"));
+		self::registerBlock(new WallBlock(BlockIds::SULFUR_WALL, "Sulfur Wall"));
+		self::registerBlock(new WallBlock(BlockIds::CINNABAR_WALL , "Cinnabar Wall"));
 		self::registerBlock(new WallBlock(BlockIds::STONE_BRICK_WALL, "Stone Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::MOSSY_STONE_BRICK_WALL, "Mossy Stone Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::NETHER_BRICK_WALL, "Nether Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::RED_NETHER_BRICK_WALL, "Red Nether Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::END_STONE_BRICK_WALL, "End Stone Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::SULFUR_BRICK_WALL, "Sulfur Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::CINNABAR_BRICK_WALL, "Cinnabar Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::PRISMARINE_WALL, "Prismarine Wall"));
 		self::registerBlock(new WallBlock(BlockIds::DEEPSLATE_BRICK_WALL, "Deepslate Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::TUFF_BRICK_WALL, "Tuff Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::RESIN_BRICK_WALL, "Resin Brick Wall"));
 		self::registerBlock(new WallBlock(BlockIds::DEEPSLATE_TILE_WALL, "Deepslate Tile Wall"));
 		self::registerBlock(new WallBlock(BlockIds::POLISHED_DEEPSLATE_WALL, "Polished Deepslate Wall"));
 		self::registerBlock(new WallBlock(BlockIds::COBBLED_DEEPSLATE_WALL, "Cobbled Deepslate Wall"));
 		self::registerBlock(new WallBlock(BlockIds::BLACKSTONE_WALL, "Blackstone Wall"));
 		self::registerBlock(new WallBlock(BlockIds::POLISHED_BLACKSTONE_WALL, "Polished Blackstone Wall"));
 		self::registerBlock(new WallBlock(BlockIds::POLISHED_BLACKSTONE_BRICK_WALL, "Polished Blackstone Brick Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_TUFF_WALL , "Polished Tuff Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_CINNABAR_WALL , "Polished Cinnabar Wall"));
+		self::registerBlock(new WallBlock(BlockIds::POLISHED_SULFUR_WALL, "Polished Sulfur Wall"));
 	}
 }

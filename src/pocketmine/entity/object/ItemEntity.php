@@ -102,23 +102,24 @@ class ItemEntity extends Entity{
 
 			if($this->ticksLived % 25 === 0){
 				foreach($this->level->getCollidingEntities($this->getBoundingBox()->expandedCopy(0.5, 1, 0.5), $this) as $entity){
-					if($entity instanceof ItemEntity and !$entity->isFlaggedForDespawn()){
+					if($entity instanceof ItemEntity && !$entity->isFlaggedForDespawn() && !$this->isFlaggedForDespawn()){
 						$item = $this->getItem();
-						if($item->getCount() < $item->getMaxStackSize()){
-							if($entity->getItem()->equals($item, true, true)){
-								$nextAmount = $item->getCount() + $entity->getItem()->getCount();
-								if($nextAmount <= $item->getMaxStackSize()){
-									if($this->ticksLived > $entity->ticksLived){
-										$entity->flagForDespawn();
+						$otherItem = $entity->getItem();
 
-										$item->setCount($nextAmount);
-										$this->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
-									}else{
-										$this->flagForDespawn();
+						if($item->getCount() < $item->getMaxStackSize() && $otherItem->equals($item)){
+							$nextAmount = $item->getCount() + $entity->getItem()->getCount();
+							if($nextAmount <= $item->getMaxStackSize()){
+								if($this->ticksLived > $entity->ticksLived){
+									$entity->flagForDespawn();
 
-										$entity->getItem()->setCount($nextAmount);
-										$entity->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
-									}
+									$item->setCount($nextAmount);
+									$this->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
+								}else{
+									$this->flagForDespawn();
+
+									$entity->getItem()->setCount($nextAmount);
+									$entity->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
+									break;
 								}
 							}
 						}
