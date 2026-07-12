@@ -58,7 +58,7 @@ final class Experiments{
 			$enabled = $in->getBool();
 			$experiments[$experimentName] = $enabled;
 		}
-		$hasPreviouslyUsedExperiments = false;//$in->getBool();
+		$hasPreviouslyUsedExperiments = $in->getBool();
 		return new self($experiments, $hasPreviouslyUsedExperiments);
 	}
 
@@ -68,6 +68,7 @@ final class Experiments{
 			$out->putString($experimentName);
 			$out->putBool($enabled);
 		}
+		$out->putBool($this->hasPreviouslyUsedExperiments);
 		//check if this was also removed from rp stack packet
 	}
 }

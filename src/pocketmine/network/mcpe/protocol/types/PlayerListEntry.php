@@ -26,7 +26,6 @@ namespace pocketmine\network\mcpe\protocol\types;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\utils\Color;
 use pocketmine\utils\UUID;
-use function _PHPStan_9815bbba4\Symfony\Component\String\s;
 
 class PlayerListEntry{
 
