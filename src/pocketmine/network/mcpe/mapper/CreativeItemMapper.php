@@ -12,7 +12,6 @@ use pocketmine\network\mcpe\convert\ItemTranslator;
 use pocketmine\network\mcpe\protocol\CreativeContentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeGroupEntry;
 use pocketmine\network\mcpe\protocol\types\inventory\CreativeItemEntry;
-use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
 use function json_decode;
