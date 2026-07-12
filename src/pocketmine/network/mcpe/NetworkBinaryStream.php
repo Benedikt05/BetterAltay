@@ -512,55 +512,45 @@ class NetworkBinaryStream extends BinaryStream{
 	public function putEntityMetadata(array $metadata) : void{
 		$this->putUnsignedVarInt(count($metadata));
 		foreach($metadata as $key => $d){
-			$dataType = $d[0];
-			$value = $d[1];
+			$this->putUnsignedVarInt($key); //data key
+			$this->putUnsignedVarInt($d[0]); //data type
+			$this->putByte($d[0]);
 
-			$this->putUnsignedVarInt($key);
-			$this->putUnsignedVarInt($dataType);
-
-			switch($dataType){
+			switch($d[0]){
 				case Entity::DATA_TYPE_BYTE:
-					$this->putString("byte");
-					$this->putByte($value);
+					$this->putByte($d[1]);
 					break;
 				case Entity::DATA_TYPE_SHORT:
-					$this->putString("short");
-					$this->putLShort($value); //SIGNED short!
+					$this->putLShort($d[1]); //SIGNED short!
 					break;
 				case Entity::DATA_TYPE_INT:
-					$this->putString("int");
-					$this->putVarInt($value);
+					$this->putVarInt($d[1]);
 					break;
 				case Entity::DATA_TYPE_FLOAT:
-					$this->putString("float");
-					$this->putLFloat($value);
+					$this->putLFloat($d[1]);
 					break;
 				case Entity::DATA_TYPE_STRING:
-					$this->putString("string");
-					$this->putString($value);
+					$this->putString($d[1]);
 					break;
 				case Entity::DATA_TYPE_COMPOUND_TAG:
-					$this->putString("compoundtag");
-					$this->put((new NetworkLittleEndianNBTStream())->write($value));
+					$this->put((new NetworkLittleEndianNBTStream())->write($d[1]));
 					break;
 				case Entity::DATA_TYPE_POS:
-					$this->putString("pos");
-					if($value !== null){
-						$this->putBlockPosition($value->x, $value->y, $value->z);
+					$v = $d[1];
+					if($v !== null){
+						$this->putBlockPosition($v->x, $v->y, $v->z);
 					}else{
 						$this->putBlockPosition(0, 0, 0);
 					}
 					break;
 				case Entity::DATA_TYPE_LONG:
-					$this->putString("int64");
-					$this->putVarLong($value);
+					$this->putVarLong($d[1]);
 					break;
 				case Entity::DATA_TYPE_VECTOR3F:
-					$this->putString("vec3");
-					$this->putVector3Nullable($value);
+					$this->putVector3Nullable($d[1]);
 					break;
 				default:
-					throw new UnexpectedValueException("Invalid data type " . $dataType);
+					throw new UnexpectedValueException("Invalid data type " . $d[0]);
 			}
 		}
 	}
