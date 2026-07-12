@@ -23,11 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
+use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\utils\Color;
 use pocketmine\utils\UUID;
+use function _PHPStan_9815bbba4\Symfony\Component\String\s;
 
 class PlayerListEntry{
 
+	public int $type;
 	public UUID $uuid;
 	public int $entityUniqueId;
 	public string $username;
@@ -42,6 +45,7 @@ class PlayerListEntry{
 
 	public static function createRemovalEntry(UUID $uuid) : PlayerListEntry{
 		$entry = new PlayerListEntry();
+		$entry->type = PlayerListPacket::TYPE_REMOVE;
 		$entry->uuid = $uuid;
 
 		return $entry;
@@ -49,6 +53,7 @@ class PlayerListEntry{
 
 	public static function createAdditionEntry(UUID $uuid, int $entityUniqueId, string $username, SkinData $skinData, string $xboxUserId = "", string $platformChatId = "", int $buildPlatform = -1, bool $isTeacher = false, bool $isHost = false, bool $isSubClient = false, ?Color $color = null) : PlayerListEntry{
 		$entry = new PlayerListEntry();
+		$entry->type = PlayerListPacket::TYPE_ADD;
 		$entry->uuid = $uuid;
 		$entry->entityUniqueId = $entityUniqueId;
 		$entry->username = $username;

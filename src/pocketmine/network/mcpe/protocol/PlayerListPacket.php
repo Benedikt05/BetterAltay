@@ -34,8 +34,8 @@ use function rand;
 class PlayerListPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_LIST_PACKET;
 
-	public const TYPE_ADD = 0;
-	public const TYPE_REMOVE = 1;
+	public const TYPE_ADD = 1;
+	public const TYPE_REMOVE = 0;
 
 	/** @var PlayerListEntry[] */
 	public array $entries = [];
@@ -47,12 +47,14 @@ class PlayerListPacket extends DataPacket{
 	}
 
 	protected function decodePayload() : void{
-		$this->type = $this->getByte();
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
-			$entry = new PlayerListEntry();
+			$type = $this->getUnsignedVarInt();
+			$this->getByte(); // legacyId
 
-			if($this->type === self::TYPE_ADD){
+			$entry = new PlayerListEntry();
+			if($type === self::TYPE_ADD){
+				$entry->type = $type;
 				$entry->uuid = $this->getUUID();
 				$entry->entityUniqueId = $this->getEntityUniqueId();
 				$entry->username = $this->getString();
@@ -70,18 +72,15 @@ class PlayerListPacket extends DataPacket{
 
 			$this->entries[$i] = $entry;
 		}
-		if($this->type === self::TYPE_ADD){
-			for($i = 0; $i < $count; ++$i){
-				$this->entries[$i]->skinData->setVerified($this->getBool());
-			}
-		}
 	}
 
 	protected function encodePayload() : void{
-		$this->putByte($this->type);
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
-			if($this->type === self::TYPE_ADD){
+			$this->putUnsignedVarInt($entry->type);
+			$this->putByte($entry->type === self::TYPE_ADD ? 0 : 1);
+
+			if($entry->type === self::TYPE_ADD){
 				$this->putUUID($entry->uuid);
 				$this->putEntityUniqueId($entry->entityUniqueId);
 				$this->putString($entry->username);
@@ -95,11 +94,6 @@ class PlayerListPacket extends DataPacket{
 				$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
 			}else{
 				$this->putUUID($entry->uuid);
-			}
-		}
-		if($this->type === self::TYPE_ADD){
-			foreach($this->entries as $entry){
-				$this->putBool($entry->skinData->isVerified());
 			}
 		}
 	}
