@@ -459,6 +459,8 @@ class NetworkBinaryStream extends BinaryStream{
 		for($i = 0; $i < $count; ++$i){
 			$key = $this->getUnsignedVarInt();
 			$type = $this->getUnsignedVarInt();
+			$this->getByte(); //type
+
 			$value = null;
 			switch($type){
 				case Entity::DATA_TYPE_BYTE:
@@ -481,7 +483,7 @@ class NetworkBinaryStream extends BinaryStream{
 					break;
 				case Entity::DATA_TYPE_POS:
 					$value = new Vector3();
-					$this->getSignedBlockPosition($value->x, $value->y, $value->z);
+					$this->getBlockPosition($value->x, $value->y, $value->z);
 					break;
 				case Entity::DATA_TYPE_LONG:
 					$value = $this->getVarLong();
