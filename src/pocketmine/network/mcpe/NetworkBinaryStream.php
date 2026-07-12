@@ -230,13 +230,15 @@ class NetworkBinaryStream extends BinaryStream{
 			$netId = $this->getVarInt();
 		}
 		if($netId === 0){
+			$this->getLShort(); //count
+			$this->getUnsignedVarInt(); //damage
+			$readStackId($this, $net);
 			if($net){
-				$this->getLShort(); //count
-				$this->getUnsignedVarInt(); //damage
-				$readStackId($this, $net);
 				$this->getUnsignedVarInt(); //blockRuntimeId
-				$this->get($this->getUnsignedVarInt()); //nbt
+			}else{
+				$this->getVarInt(); //blockRuntimeId
 			}
+			$this->get($this->getUnsignedVarInt()); //nbt
 			return ItemFactory::get(0, 0, 0);
 		}
 
@@ -247,7 +249,11 @@ class NetworkBinaryStream extends BinaryStream{
 
 		$readStackId($this, $net);
 
-		$this->getUnsignedVarInt(); //blockRuntimeId
+		if($net){
+			$this->getUnsignedVarInt(); //blockRuntimeId
+		}else{
+			$this->getVarInt(); //blockRuntimeId
+		}
 
 		$extraData = new NetworkBinaryStream($this->getString());
 		return (static function() use ($extraData, $netId, $id, $meta, $cnt) : Item{
@@ -326,7 +332,11 @@ class NetworkBinaryStream extends BinaryStream{
 			$this->putLShort(0); //count
 			$this->putUnsignedVarInt(0); //damage
 			$writeStackId($this, $net);
-			$this->putUnsignedVarInt(0);	//blockRuntimeId
+			if($net){
+				$this->putUnsignedVarInt(0); //blockRuntimeId
+			}else{
+				$this->putVarInt(0); //blockRuntimeId
+			}
 			$this->putUnsignedVarInt(0); //userData Length
 			return;
 		}
@@ -352,8 +362,11 @@ class NetworkBinaryStream extends BinaryStream{
 				$blockRuntimeId = $block->getRuntimeId();
 			}
 		}
-		$this->putUnsignedVarInt($blockRuntimeId);
-
+		if($net){
+			$this->putUnsignedVarInt($blockRuntimeId); //blockRuntimeId
+		}else{
+			$this->putVarInt($blockRuntimeId); //blockRuntimeId
+		}
 		$nbt = null;
 		if($item->hasCompoundTag()){
 			$nbt = clone $item->getNamedTag();
