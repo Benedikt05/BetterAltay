@@ -31,10 +31,10 @@ use function count;
 class ResourcePackClientResponsePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::RESOURCE_PACK_CLIENT_RESPONSE_PACKET;
 
-	public const STATUS_REFUSED = 1;
-	public const STATUS_SEND_PACKS = 2;
-	public const STATUS_HAVE_ALL_PACKS = 3;
-	public const STATUS_COMPLETED = 4;
+	public const STATUS_REFUSED = 0; //cancel
+	public const STATUS_SEND_PACKS = 1; //downloading
+	public const STATUS_HAVE_ALL_PACKS = 2; //downloadingfinished
+	public const STATUS_COMPLETED = 3; //resourcepackstackfinished
 
 	public int $status;
 	/** @var string[] */
