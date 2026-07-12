@@ -320,14 +320,14 @@ class NetworkBinaryStream extends BinaryStream{
 		if($item->getId() === 0){
 			if($net){
 				$this->putLShort(0); //id
-				$this->putLShort(0); //count
-				$this->putUnsignedVarInt(0); //damage
-				$this->putBool(false); //isUsingNetId
-				$this->putUnsignedVarInt(0); //blockRuntimeId
-				$this->putUnsignedVarInt(0); //userData Length
 			}else{
-				$this->putVarInt(0);
+				$this->putVarInt(0); //id
 			}
+			$this->putLShort(0); //count
+			$this->putUnsignedVarInt(0); //damage
+			$writeStackId($this, $net);
+			$this->putUnsignedVarInt(0);	//blockRuntimeId
+			$this->putUnsignedVarInt(0); //userData Length
 			return;
 		}
 

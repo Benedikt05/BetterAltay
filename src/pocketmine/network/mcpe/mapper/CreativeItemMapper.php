@@ -60,7 +60,7 @@ class CreativeItemMapper{
 				"items" => CreativeContentPacket::CATEGORY_ITEMS
 			};
 
-			$this->groups[] = new CreativeGroupEntry($categoryId, $name, ItemStackWrapper::legacy($iconValue));
+			$this->groups[] = new CreativeGroupEntry($categoryId, $name, $iconValue);
 		}
 
 		$items = $data["items"];
