@@ -69,6 +69,5 @@ final class Experiments{
 			$out->putBool($enabled);
 		}
 		$out->putBool($this->hasPreviouslyUsedExperiments);
-		//check if this was also removed from rp stack packet
 	}
 }
