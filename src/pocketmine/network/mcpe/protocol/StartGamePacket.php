@@ -167,7 +167,7 @@ class StartGamePacket extends DataPacket{
 		$this->createdInEditor = $this->getBool();
 		$this->exportedFromEditor = $this->getBool();
 		$this->time = $this->getVarInt();
-		$this->eduEditionOffer = $this->getVarInt();
+		$this->eduEditionOffer = $this->getUnsignedVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
 		$this->eduProductUUID = $this->getString();
 		$this->rainLevel = $this->getLFloat();
@@ -179,11 +179,11 @@ class StartGamePacket extends DataPacket{
 		$this->platformBroadcastMode = $this->getVarInt();
 		$this->commandsEnabled = $this->getBool();
 		$this->isTexturePacksRequired = $this->getBool();
-		$this->gameRules = $this->getGameRules(true);
+		$this->gameRules = $this->getGameRules();
 		$this->experiments = Experiments::read($this);
 		$this->hasBonusChestEnabled = $this->getBool();
 		$this->hasStartWithMapEnabled = $this->getBool();
-		$this->defaultPlayerPermission = $this->getVarInt();
+		$this->defaultPlayerPermission = $this->getByte();
 		$this->serverChunkTickRadius = $this->getLInt();
 		$this->hasLockedBehaviorPack = $this->getBool();
 		$this->hasLockedResourcePack = $this->getBool();
