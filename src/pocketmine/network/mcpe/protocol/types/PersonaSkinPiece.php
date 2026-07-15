@@ -23,31 +23,49 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class PersonaSkinPiece{
+use pocketmine\utils\UUID;
 
-	public const PIECE_TYPE_PERSONA_BODY = "persona_body";
-	public const PIECE_TYPE_PERSONA_BOTTOM = "persona_bottom";
-	public const PIECE_TYPE_PERSONA_EYES = "persona_eyes";
-	public const PIECE_TYPE_PERSONA_FACIAL_HAIR = "persona_facial_hair";
-	public const PIECE_TYPE_PERSONA_FEET = "persona_feet";
-	public const PIECE_TYPE_PERSONA_HAIR = "persona_hair";
-	public const PIECE_TYPE_PERSONA_MOUTH = "persona_mouth";
-	public const PIECE_TYPE_PERSONA_SKELETON = "persona_skeleton";
-	public const PIECE_TYPE_PERSONA_SKIN = "persona_skin";
-	public const PIECE_TYPE_PERSONA_TOP = "persona_top";
+final class PersonaSkinPiece{
+	public const PIECE_TYPE_PERSONA_SKELETON = 0;
+	public const PIECE_TYPE_PERSONA_BODY = 1;
+	public const PIECE_TYPE_PERSONA_SKIN = 2;
+	public const PIECE_TYPE_PERSONA_BOTTOM = 3;
+	public const PIECE_TYPE_PERSONA_FEET = 4;
+	public const PIECE_TYPE_PERSONA_TOP = 6;
+	public const PIECE_TYPE_PERSONA_FACIAL_HAIR = 10;
+	public const PIECE_TYPE_PERSONA_MOUTH = 11;
+	public const PIECE_TYPE_PERSONA_EYES = 12;
+	public const PIECE_TYPE_PERSONA_HAIR = 13;
+	public const PIECE_TYPE_DRESS = 5;
+	public const PIECE_TYPE_HIGH_PANTS = 7;
+	public const PIECE_TYPE_HANDS = 8;
+	public const PIECE_TYPE_OUTERWEAR = 9;
+	public const PIECE_TYPE_HOOD = 14;
+	public const PIECE_TYPE_BACK = 15;
+	public const PIECE_TYPE_FACE_ACCESSORY = 16;
+	public const PIECE_TYPE_HEAD = 17;
+	public const PIECE_TYPE_LEGS = 18;
+	public const PIECE_TYPE_LEFT_LEG = 19;
+	public const PIECE_TYPE_RIGHT_LEG = 20;
+	public const PIECE_TYPE_ARMS = 21;
+	public const PIECE_TYPE_LEFT_ARM = 22;
+	public const PIECE_TYPE_RIGHT_ARM = 23;
+	public const PIECE_TYPE_CAPES = 24;
+	public const PIECE_TYPE_CLASSIC_SKIN = 25;
+	public const PIECE_TYPE_EMOTE = 26;
 
 	/** @var string */
 	private $pieceId;
 	/** @var string */
 	private $pieceType;
-	/** @var string */
+	/** @var UUID */
 	private $packId;
 	/** @var bool */
 	private $isDefaultPiece;
 	/** @var string */
 	private $productId;
 
-	public function __construct(string $pieceId, string $pieceType, string $packId, bool $isDefaultPiece, string $productId){
+	public function __construct(string $pieceId, int $pieceType, UUID $packId, bool $isDefaultPiece, string $productId){
 		$this->pieceId = $pieceId;
 		$this->pieceType = $pieceType;
 		$this->packId = $packId;
@@ -59,11 +77,11 @@ final class PersonaSkinPiece{
 		return $this->pieceId;
 	}
 
-	public function getPieceType() : string{
+	public function getPieceType() : int{
 		return $this->pieceType;
 	}
 
-	public function getPackId() : string{
+	public function getPackId() : UUID{
 		return $this->packId;
 	}
 

@@ -54,7 +54,13 @@ class ResourcePackClientResponsePacket extends DataPacket{
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->status);
-		$this->putString("");
+		$this->putString(match($this->status){
+			self::STATUS_REFUSED => "cancel",
+			self::STATUS_SEND_PACKS => "downloading",
+			self::STATUS_HAVE_ALL_PACKS => "downloadingfinished",
+			self::STATUS_COMPLETED => "resourcepackstackfinished",
+			default => "",
+		});
 		if($this->status === self::STATUS_SEND_PACKS){
 			$this->putUnsignedVarInt(count($this->packIds));
 			foreach($this->packIds as $id){

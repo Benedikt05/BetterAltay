@@ -2244,8 +2244,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		foreach($packet->clientData["PersonaPieces"] as $piece){
 			$personaPieces[] = new PersonaSkinPiece(
 				$piece["PieceId"],
-				$piece["PieceType"],
-				$piece["PackId"],
+				(int)$piece["PieceType"],
+				UUID::fromString($piece["PackId"]),
 				$piece["IsDefault"],
 				$piece["ProductId"]
 			);
@@ -2253,7 +2253,14 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$pieceTintColors = [];
 		foreach($packet->clientData["PieceTintColors"] as $tintColor){
-			$pieceTintColors[] = new PersonaPieceTintColor($tintColor["PieceType"], $tintColor["Colors"]);
+			$colors = [];
+			foreach(array_slice(array_values($tintColor["Colors"]), 0, 4) as $color){
+				$colors[] = SkinData::convertColor($color);
+			}
+			while(count($colors) < 4){
+				$colors[] = 0;
+			}
+			$pieceTintColors[] = new PersonaPieceTintColor($tintColor["PieceType"], $colors);
 		}
 
 		$skinData = new SkinData(
@@ -2275,9 +2282,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			base64_decode($packet->clientData["SkinGeometryDataEngineVersion"] ?? "", true),
 			base64_decode($packet->clientData["SkinAnimationData"] ?? "", true),
 			$packet->clientData["CapeId"] ?? "",
-			null,
-			$packet->clientData["ArmSize"] ?? SkinData::ARM_SIZE_WIDE,
-			$packet->clientData["SkinColor"] ?? "",
+			"",
+			SkinData::convertArmSize($packet->clientData["ArmSize"]),
+			SkinData::convertColor($packet->clientData["SkinColor"]),
 			$personaPieces,
 			$pieceTintColors,
 			true,
@@ -2286,6 +2293,8 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$packet->clientData["CapeOnClassicSkin"] ?? false,
 			true, //assume this is true? there's no field for it ...
 			$packet->clientData["OverrideSkin"] ?? true,
+			$packet->clientData["TrustedSkin"] ? SkinData::TRUSTED_SKIN_FLAG_TRUE : SkinData::TRUSTED_SKIN_FLAG_UNSET,
+			$packet->clientData["ProfileHash"] ?? ""
 		);
 
 		try{
@@ -2660,10 +2669,10 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->sendAllInventories();
 		$this->inventory->sendCreativeContents();
 		$this->inventory->sendHeldItem($this);
-		$this->dataPacket($this->server->getCraftingManager()->getCraftingDataPacket());
+		//$this->dataPacket($this->server->getCraftingManager()->getCraftingDataPacket());
 
-		$this->server->addOnlinePlayer($this);
-		$this->server->sendFullPlayerListData($this);
+		//$this->server->addOnlinePlayer($this);
+		//$this->server->sendFullPlayerListData($this);
 	}
 
 	/**
@@ -2803,7 +2812,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 					$vehicle = $packet->getVehicleInfo();
 
 					if(!$inputFlags->get(PlayerAuthInputFlags::START_JUMPING)){
-						if($ent instanceof Boat && $vehicle !== null && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
+						if($ent instanceof Boat && !$vehicle->isNull() && $vehicle->getPredictedVehicleActorUniqueId() === $ent->getId()){
 							$yaw = fmod($packet->getYaw() + 90, 360);
 							$ent->setClientPositionAndRotation($packet->getPosition(), $yaw, 0, 3, true);
 						}

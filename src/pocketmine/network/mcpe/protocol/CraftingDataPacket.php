@@ -61,6 +61,9 @@ class CraftingDataPacket extends DataPacket{
 
 	/** @var object[] */
 	public array $entries = [];
+	public array $shaplessRecipes = [];
+	public array $shapedRecipes = [];
+	public array $furnaceRecipes = [];
 	/** @var PotionTypeRecipe[] */
 	public array $potionTypeRecipes = [];
 	/** @var PotionContainerChangeRecipe[] */
@@ -212,6 +215,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->putString(Binary::writeInt($pos)); //some kind of recipe ID, doesn't matter what it is as long as it's unique
 		$stream->putVarInt($recipe->getWidth());
 		$stream->putVarInt($recipe->getHeight());
+		$stream->putUnsignedVarInt($recipe->getWidth() * $recipe->getHeight());
 
 		for($z = 0; $z < $recipe->getHeight(); ++$z){
 			for($x = 0; $x < $recipe->getWidth(); ++$x){
@@ -255,21 +259,21 @@ class CraftingDataPacket extends DataPacket{
 	 * @return void
 	 */
 	public function addShapelessRecipe(ShapelessRecipe $recipe){
-		$this->entries[] = $recipe;
+		$this->shapedRecipes[] = $recipe;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function addShapedRecipe(ShapedRecipe $recipe){
-		$this->entries[] = $recipe;
+		$this->shapedRecipes[] = $recipe;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function addFurnaceRecipe(FurnaceRecipe $recipe){
-		$this->entries[] = $recipe;
+		$this->furnaceRecipes[] = $recipe;
 	}
 
 	protected function encodePayload() : void{
@@ -277,7 +281,8 @@ class CraftingDataPacket extends DataPacket{
 
 		$writer = new NetworkBinaryStream();
 		$counter = 0;
-		foreach($this->entries as $d){
+		$this->putUnsignedVarInt(count($this->shapedRecipes));
+		foreach($this->shapedRecipes as $d){
 			$entryType = self::writeEntry($d, $writer, ++$counter);
 			if($entryType >= 0){
 				$this->putVarInt($entryType);
@@ -288,6 +293,28 @@ class CraftingDataPacket extends DataPacket{
 
 			$writer->reset();
 		}
+
+		$counter = 0;
+		$this->putUnsignedVarInt(count($this->shaplessRecipes));
+		foreach($this->shaplessRecipes as $d){
+			$entryType = self::writeEntry($d, $writer, ++$counter);
+			if($entryType >= 0){
+				$this->putVarInt($entryType);
+				$this->put($writer->getBuffer());
+			}else{
+				$this->putVarInt(-1);
+			}
+
+			$writer->reset();
+		}
+
+		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);
+
 		$this->putUnsignedVarInt(count($this->potionTypeRecipes));
 		foreach($this->potionTypeRecipes as $recipe){
 			$this->putVarInt($recipe->getInputItemId());

@@ -69,9 +69,9 @@ class ChunkRequestTask extends AsyncTask{
 			$this->chunkZ,
 			$this->dimensionId,
 			$chunk->getSubChunkSendCount() + ($this->dimensionId === DimensionIds::OVERWORLD ? 4 : 0),
+			null,
 			false,
-			null,
-			null,
+			[],
 			$chunk->networkSerialize($this->tiles, $this->dimensionId)
 		);
 

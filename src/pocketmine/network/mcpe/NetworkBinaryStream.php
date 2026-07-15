@@ -98,13 +98,13 @@ class NetworkBinaryStream extends BinaryStream{
 		$skinPlayFabId = $this->getString();
 		$skinResourcePatch = $this->getString();
 		$skinData = $this->getSkinImage();
-		$animationCount = $this->getLInt();
+		$animationCount = $this->getUnsignedVarInt();
 		$animations = [];
 		for($i = 0; $i < $animationCount; ++$i){
 			$skinImage = $this->getSkinImage();
-			$animationType = $this->getLInt();
+			$animationType = $this->getUnsignedVarInt();
 			$animationFrames = $this->getLFloat();
-			$expressionType = $this->getLInt();
+			$expressionType = $this->getUnsignedVarInt();
 			$animations[] = new SkinAnimation($skinImage, $animationType, $animationFrames, $expressionType);
 		}
 		$capeData = $this->getSkinImage();
@@ -113,26 +113,25 @@ class NetworkBinaryStream extends BinaryStream{
 		$animationData = $this->getString();
 		$capeId = $this->getString();
 		$fullSkinId = $this->getString();
-		$armSize = $this->getString();
-		$skinColor = $this->getString();
-		$personaPieceCount = $this->getLInt();
+		$armSize = $this->getByte();
+		$skinColor = $this->getLInt();
+		$personaPieceCount = $this->getUnsignedVarInt();
 		$personaPieces = [];
 		for($i = 0; $i < $personaPieceCount; ++$i){
 			$pieceId = $this->getString();
-			$pieceType = $this->getString();
-			$packId = $this->getString();
+			$pieceType = $this->getLInt();
+			$packId = $this->getUUID();
 			$isDefaultPiece = $this->getBool();
 			$productId = $this->getString();
 			$personaPieces[] = new PersonaSkinPiece($pieceId, $pieceType, $packId, $isDefaultPiece, $productId);
 		}
-		$pieceTintColorCount = $this->getLInt();
+		$pieceTintColorCount = $this->getUnsignedVarInt();
 		$pieceTintColors = [];
 		for($i = 0; $i < $pieceTintColorCount; ++$i){
 			$pieceType = $this->getString();
-			$colorCount = $this->getLInt();
 			$colors = [];
-			for($j = 0; $j < $colorCount; ++$j){
-				$colors[] = $this->getString();
+			for($j = 0; $j < 4; ++$j){
+				$colors[] = $this->getLInt();
 			}
 			$pieceTintColors[] = new PersonaPieceTintColor(
 				$pieceType,
@@ -144,8 +143,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$capeOnClassic = $this->getBool();
 		$isPrimaryUser = $this->getBool();
 		$override = $this->getBool();
+		$trustedSkinFlag = $this->getString();
+		$profileHash = $this->getString();
 
-		return new SkinData($skinId, $skinPlayFabId, $skinResourcePatch, $skinData, $animations, $capeData, $geometryData, $geometryDataVersion, $animationData, $capeId, $fullSkinId, $armSize, $skinColor, $personaPieces, $pieceTintColors, true, $premium, $persona, $capeOnClassic, $isPrimaryUser, $override);
+		return new SkinData($skinId, $skinPlayFabId, $skinResourcePatch, $skinData, $animations, $capeData, $geometryData, $geometryDataVersion, $animationData, $capeId, $fullSkinId, $armSize, $skinColor, $personaPieces, $pieceTintColors, true, $premium, $persona, $capeOnClassic, $isPrimaryUser, $override, $trustedSkinFlag, $profileHash);
 	}
 
 	/**
@@ -156,12 +157,12 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putString($skin->getPlayFabId());
 		$this->putString($skin->getResourcePatch());
 		$this->putSkinImage($skin->getSkinImage());
-		$this->putLInt(count($skin->getAnimations()));
+		$this->putUnsignedVarInt(count($skin->getAnimations()));
 		foreach($skin->getAnimations() as $animation){
 			$this->putSkinImage($animation->getImage());
-			$this->putLInt($animation->getType());
+			$this->putUnsignedVarInt($animation->getType());
 			$this->putLFloat($animation->getFrames());
-			$this->putLInt($animation->getExpressionType());
+			$this->putUnsignedVarInt($animation->getExpressionType());
 		}
 		$this->putSkinImage($skin->getCapeImage());
 		$this->putString($skin->getGeometryData());
@@ -169,22 +170,21 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putString($skin->getAnimationData());
 		$this->putString($skin->getCapeId());
 		$this->putString($skin->getFullSkinId());
-		$this->putString($skin->getArmSize());
-		$this->putString($skin->getSkinColor());
-		$this->putLInt(count($skin->getPersonaPieces()));
+		$this->putByte($skin->getArmSize());
+		$this->putLInt($skin->getSkinColor());
+		$this->putUnsignedVarInt(count($skin->getPersonaPieces()));
 		foreach($skin->getPersonaPieces() as $piece){
 			$this->putString($piece->getPieceId());
-			$this->putString($piece->getPieceType());
-			$this->putString($piece->getPackId());
+			$this->putLInt($piece->getPieceType());
+			$this->putUUID($piece->getPackId());
 			$this->putBool($piece->isDefaultPiece());
 			$this->putString($piece->getProductId());
 		}
-		$this->putLInt(count($skin->getPieceTintColors()));
+		$this->putUnsignedVarInt(count($skin->getPieceTintColors()));
 		foreach($skin->getPieceTintColors() as $tint){
 			$this->putString($tint->getPieceType());
-			$this->putLInt(count($tint->getColors()));
 			foreach($tint->getColors() as $color){
-				$this->putString($color);
+				$this->putLInt($color);
 			}
 		}
 		$this->putBool($skin->isPremium());
@@ -192,6 +192,8 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putBool($skin->isPersonaCapeOnClassic());
 		$this->putBool($skin->isPrimaryUser());
 		$this->putBool($skin->isOverride());
+		$this->putString($skin->getTrustedSkinFlag());
+		$this->putString($skin->getProfileHash());
 	}
 
 	private function getSkinImage() : SkinImage{
@@ -427,21 +429,22 @@ class NetworkBinaryStream extends BinaryStream{
 
 	public function putRecipeIngredient(Item $item) : void{
 		if($item->isNull()){
-			$this->putBool(false);
+			$this->putUnsignedVarInt(0);
+			$this->putVarInt(-1);
 			$this->putVarInt(0);
 
 			return;
 		}
 
-		$this->putBool(true);
+		$this->putUnsignedVarInt(1);
+		$this->putString("name");
 		if($item->hasAnyDamageValue()){
-			[$netId,] = ItemTranslator::getInstance()->toNetworkId($item->getId(), 0);
 			$netData = 0x7fff;
 		}else{
-			[$netId, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
+			[, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
 		}
-		$this->putLShort($netId);
-		$this->putLShort($netData);
+		$this->putString(ItemTranslator::getInstance()->toStringId($item->getId(), $item->getDamage()));
+		$this->putVarInt($netData);
 		$this->putVarInt($item->getCount());
 	}
 

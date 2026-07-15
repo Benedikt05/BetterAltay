@@ -69,9 +69,9 @@ class Skin{
 	private $premium = false;
 	/** @var Cape */
 	private $cape;
-	/** @var string */
+	/** @var int */
 	private $armSize = SkinData::ARM_SIZE_WIDE;
-	/** @var string */
+	/** @var int */
 	private $skinColor = "";
 	/** @var PersonaSkinPiece[] */
 	private $personaPieces = [];
@@ -260,20 +260,20 @@ class Skin{
 		return $this;
 	}
 
-	public function getArmSize() : string{
+	public function getArmSize() : int{
 		return $this->armSize;
 	}
 
-	public function setArmSize(string $armSize) : Skin{
+	public function setArmSize(int $armSize) : Skin{
 		$this->armSize = $armSize;
 		return $this;
 	}
 
-	public function getSkinColor() : string{
+	public function getSkinColor() : int{
 		return $this->skinColor;
 	}
 
-	public function setSkinColor(string $skinColor) : Skin{
+	public function setSkinColor(int $skinColor) : Skin{
 		$this->skinColor = $skinColor;
 		return $this;
 	}

@@ -48,7 +48,7 @@ class InventoryTransactionPacket extends DataPacket{
 	public int $requestId;
 	/** @var InventoryTransactionChangedSlotsHack[] */
 	public array $requestChangedSlots;
-	public TransactionData $trData;
+	public ?TransactionData $trData;
 
 	protected function decodePayload() : void{
 		$this->requestId = $this->readGenericTypeNetworkId();
@@ -59,8 +59,10 @@ class InventoryTransactionPacket extends DataPacket{
 			}
 		}
 
-		if(!$this->getBool()){
-			throw new PacketDecodeException("Expected transaction type, but got none");
+		$hasTrData = $this->getBool();
+		if(!$hasTrData){
+			$this->trData = null;
+			return;
 		}
 
 		$transactionType = $this->getUnsignedVarInt();
@@ -74,9 +76,7 @@ class InventoryTransactionPacket extends DataPacket{
 			default => throw new PacketDecodeException("Unknown transaction type $transactionType"),
 		};
 
-		if($this->getBool()){
-			$this->trData->decode($this, true);
-		}
+		$this->trData->decode($this, true);
 	}
 
 	protected function encodePayload() : void{
@@ -89,11 +89,11 @@ class InventoryTransactionPacket extends DataPacket{
 			}
 		}
 
-		$this->putBool(true);
-		$this->putUnsignedVarInt($this->trData->getTypeId());
-
-		$this->putBool(true);
-		$this->trData->encode($this, true);
+		$this->putBool($this->trData !== null);
+		if($this->trData !== null){
+			$this->putUnsignedVarInt($this->trData->getTypeId());
+			$this->trData->encode($this, true);
+		}
 	}
 
 	public function handle(PacketHandlerInterface $session) : bool{

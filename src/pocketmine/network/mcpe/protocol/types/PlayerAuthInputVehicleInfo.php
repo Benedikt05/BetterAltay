@@ -10,36 +10,56 @@ use UnexpectedValueException;
 final class PlayerAuthInputVehicleInfo{
 
 	public function __construct(
-		private float $vehicleRotationX,
-		private float $vehicleRotationZ,
-		private int $predictedVehicleActorUniqueId
+		private ?float $vehicleRotationX = null,
+		private ?float $vehicleRotationZ = null,
+		private ?int $predictedVehicleActorUniqueId = null
 	){}
 
-	public function getVehicleRotationX() : float{ return $this->vehicleRotationX; }
 
-	public function getVehicleRotationZ() : float{ return $this->vehicleRotationZ; }
+	public function getVehicleRotationX() : ?float{ return $this->vehicleRotationX; }
 
-	public function getPredictedVehicleActorUniqueId() : int{ return $this->predictedVehicleActorUniqueId; }
+	public function getVehicleRotationZ() : ?float{ return $this->vehicleRotationZ; }
+
+	public function getPredictedVehicleActorUniqueId() : ?int{ return $this->predictedVehicleActorUniqueId; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		if(!$in->getBool() || !$in->getBool()){
-			throw new UnexpectedValueException("vehicle rot missing");
-		}
-		$vehicleRotationX = $in->getLFloat();
-		$vehicleRotationZ = $in->getLFloat();
-		if(!$in->getBool() || !$in->getBool()){
-			throw new UnexpectedValueException("predicted Vehicle Actor UniqueId missing");
-		}
-		$predictedVehicleActorUniqueId = $in->getEntityUniqueId();
+		$self = new self();
 
-		return new self($vehicleRotationX, $vehicleRotationZ, $predictedVehicleActorUniqueId);
+		if($in->getBool()&& $in->getBool()){
+			$self->vehicleRotationX = $in->getLFloat();
+			$self->vehicleRotationZ = $in->getLFloat();
+		}
+
+		if($in->getBool()&& $in->getBool()){
+			$self->predictedVehicleActorUniqueId = $in->getEntityUniqueId();
+		}
+
+		return $self;
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putBool(true);
-		$out->putLFloat($this->vehicleRotationX);
-		$out->putBool(true);
-		$out->putLFloat($this->vehicleRotationZ);
-		$out->putEntityUniqueId($this->predictedVehicleActorUniqueId);
+
+		if ($this->vehicleRotationX !== null && $this->vehicleRotationZ !== null) {
+			$out->putBool(true);
+			$out->putBool(true);
+			$out->putLFloat($this->vehicleRotationX);
+			$out->putLFloat($this->vehicleRotationZ);
+		} else {
+			$out->putBool(false);
+			$out->putBool(false);
+		}
+
+		if ($this->predictedVehicleActorUniqueId !== null) {
+			$out->putBool(true);
+			$out->putBool(true);
+			$out->putEntityUniqueId($this->predictedVehicleActorUniqueId);
+		} else {
+			$out->putBool(false);
+			$out->putBool(false);
+		}
+	}
+
+	public function isNull(): bool{
+		return $this->vehicleRotationX === null && $this->vehicleRotationZ === null && $this->predictedVehicleActorUniqueId === null;
 	}
 }

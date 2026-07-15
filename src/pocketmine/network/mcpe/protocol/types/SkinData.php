@@ -28,8 +28,12 @@ use pocketmine\utils\UUID;
 
 class SkinData{
 
-	public const ARM_SIZE_SLIM = "slim";
-	public const ARM_SIZE_WIDE = "wide";
+	public const ARM_SIZE_SLIM = 0;
+	public const ARM_SIZE_WIDE = 1;
+
+	public const TRUSTED_SKIN_FLAG_UNSET = "unset";
+	public const TRUSTED_SKIN_FLAG_FALSE = "false";
+	public const TRUSTED_SKIN_FLAG_TRUE = "true";
 
 	/** @var string */
 	private $skinId;
@@ -71,13 +75,38 @@ class SkinData{
 	/** @var bool */
 	private $isPrimaryUser;
 	private bool $override;
+	private string $trustedSkinFlag = self::TRUSTED_SKIN_FLAG_UNSET;
+	private string $profileHash = "";
 
 	/**
 	 * @param SkinAnimation[]         $animations
 	 * @param PersonaSkinPiece[]      $personaPieces
 	 * @param PersonaPieceTintColor[] $pieceTintColors
 	 */
-	public function __construct(string $skinId, string $playFabId, string $resourcePatch, SkinImage $skinImage, array $animations = [], SkinImage $capeImage = null, string $geometryData = "", string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK, string $animationData = "", string $capeId = "", ?string $fullSkinId = null, string $armSize = self::ARM_SIZE_WIDE, string $skinColor = "", array $personaPieces = [], array $pieceTintColors = [], bool $isVerified = true, bool $premium = false, bool $persona = false, bool $personaCapeOnClassic = false, bool $isPrimaryUser = true, bool $override = true){
+	public function __construct(string $skinId,
+		string $playFabId,
+		string $resourcePatch,
+		SkinImage $skinImage,
+		array $animations = [],
+		SkinImage $capeImage = null,
+		string $geometryData = "",
+		string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK,
+		string $animationData = "",
+		string $capeId = "",
+		?string $fullSkinId = null,
+		int $armSize = self::ARM_SIZE_WIDE,
+		int $skinColor = 0,
+		array $personaPieces = [],
+		array $pieceTintColors = [],
+		bool $isVerified = true,
+		bool $premium = false,
+		bool $persona = false,
+		bool $personaCapeOnClassic = false,
+		bool $isPrimaryUser = true,
+		bool $override = true,
+		string $trustedSkinFlag = self::TRUSTED_SKIN_FLAG_UNSET,
+		string $profileHash = ""
+	){
 		$this->skinId = $skinId;
 		$this->playFabId = $playFabId;
 		$this->resourcePatch = $resourcePatch;
@@ -100,6 +129,8 @@ class SkinData{
 		$this->personaCapeOnClassic = $personaCapeOnClassic;
 		$this->isPrimaryUser = $isPrimaryUser;
 		$this->override = $override;
+		$this->trustedSkinFlag = $trustedSkinFlag;
+		$this->profileHash = $profileHash;
 	}
 
 	public function getSkinId() : string{
@@ -145,11 +176,11 @@ class SkinData{
 		return $this->fullSkinId;
 	}
 
-	public function getArmSize() : string{
+	public function getArmSize() : int {
 		return $this->armSize;
 	}
 
-	public function getSkinColor() : string{
+	public function getSkinColor() : int {
 		return $this->skinColor;
 	}
 
@@ -191,10 +222,35 @@ class SkinData{
 		return $this->isVerified;
 	}
 
+	public function getTrustedSkinFlag(): string{
+		return $this->trustedSkinFlag;
+	}
+
+	public function getProfileHash(): string{
+		return $this->profileHash;
+	}
+
 	/**
 	 * @internal
 	 */
 	public function setVerified(bool $verified) : void{
 		$this->isVerified = $verified;
+	}
+
+	public static function convertArmSize(string $armSize) : int{
+		return match($armSize){
+			"slim" => SkinData::ARM_SIZE_SLIM,
+			"wide", "" => SkinData::ARM_SIZE_WIDE,
+			default => throw new \InvalidArgumentException("Unknown arm size \"$armSize\"")
+		};
+	}
+
+	public static function convertColor(string $color) : int{
+		$hex = ltrim($color, '#');
+		if ($hex === '' || $hex === '0') {
+			return 0;
+		}
+
+		return (int) hexdec($hex);
 	}
 }

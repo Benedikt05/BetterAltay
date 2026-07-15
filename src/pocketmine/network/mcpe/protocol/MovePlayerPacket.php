@@ -52,10 +52,10 @@ class MovePlayerPacket extends DataPacket{
 	public $onGround = false; //TODO
 	/** @var int */
 	public $ridingEid = 0;
-	/** @var int */
-	public $teleportCause = 0;
-	/** @var int */
-	public $teleportItem = 0;
+	/** @var int|null */
+	public $teleportCause = null;
+	/** @var int|null */
+	public $teleportItem = null;
 	/** @var int */
 	public $tick = 0;
 
@@ -84,8 +84,9 @@ class MovePlayerPacket extends DataPacket{
 		$this->putByte($this->mode);
 		$this->putBool($this->onGround);
 		$this->putEntityRuntimeId($this->ridingEid);
-		$this->putBool($this->mode === MovePlayerPacket::MODE_TELEPORT);
-		if($this->mode === MovePlayerPacket::MODE_TELEPORT){
+		$hasTeleportData = $this->teleportCause !== null && $this->teleportItem !== null;
+		$this->putBool($hasTeleportData);
+		if($hasTeleportData){
 			$this->putLInt($this->teleportCause);
 			$this->putLInt($this->teleportItem);
 		}

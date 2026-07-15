@@ -35,7 +35,7 @@ final class PersonaPieceTintColor{
 	private $colors;
 
 	/**
-	 * @param string[] $colors
+	 * @param int[] $colors
 	 */
 	public function __construct(string $pieceType, array $colors){
 		$this->pieceType = $pieceType;
@@ -47,7 +47,7 @@ final class PersonaPieceTintColor{
 	}
 
 	/**
-	 * @return string[]
+	 * @return int[]
 	 */
 	public function getColors() : array{
 		return $this->colors;
