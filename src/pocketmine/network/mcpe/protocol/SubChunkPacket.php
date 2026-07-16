@@ -61,7 +61,7 @@ class SubChunkPacket extends DataPacket/* implements ClientboundPacket*/
 	protected function decodePayload() : void{
 		$cacheEnabled = $this->getBool();
 		$this->dimension = $this->getVarInt();
-		$this->baseSubChunkPosition = SubChunkPosition::readCereal($this);
+		$this->baseSubChunkPosition = SubChunkPosition::read($this);
 
 		$count = $this->getUnsignedVarInt();
 		if($cacheEnabled){
@@ -82,7 +82,7 @@ class SubChunkPacket extends DataPacket/* implements ClientboundPacket*/
 	protected function encodePayload() : void{
 		$this->putBool($this->entries instanceof ListWithBlobHashes);
 		$this->putVarInt($this->dimension);
-		$this->baseSubChunkPosition->writeCereal($this);
+		$this->baseSubChunkPosition->write($this);
 
 		$this->putUnsignedVarInt(count($this->entries->getEntries()));
 

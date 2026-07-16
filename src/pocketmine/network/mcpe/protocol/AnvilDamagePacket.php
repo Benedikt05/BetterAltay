@@ -34,17 +34,11 @@ class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/
 	private ?int $x = null;
 	private ?int $y = null;
 	private ?int $z = null;
-	private int $damageAmount;
 
-	public static function create(int $x, int $y, int $z, int $damageAmount) : self{
+	public static function create(int $x, int $y, int $z) : self{
 		$result = new self;
 		[$result->x, $result->y, $result->z] = [$x, $y, $z];
-		$result->damageAmount = $damageAmount;
 		return $result;
-	}
-
-	public function getDamageAmount() : int{
-		return $this->damageAmount;
 	}
 
 	public function getX() : int{
@@ -60,12 +54,10 @@ class AnvilDamagePacket extends DataPacket/* implements ServerboundPacket*/
 	}
 
 	protected function decodePayload() : void{
-		$this->damageAmount = $this->getByte();
 		$this->getBlockPosition($this->x, $this->y, $this->z);
 	}
 
 	protected function encodePayload() : void{
-		$this->putByte($this->damageAmount);
 		$this->putBlockPosition($this->x, $this->y, $this->z);
 	}
 
