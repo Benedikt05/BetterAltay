@@ -294,12 +294,15 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->interactRotation = $this->getVector2();
 		$this->tick = $this->getUnsignedVarLong();
 		$this->delta = $this->getVector3();
+		// @phpstan-ignore-next-line
 		if($this->getBool() && $this->getBool()){
 			$this->itemInteractionData = ItemInteractionData::read($this);
 		}
+		// @phpstan-ignore-next-line
 		if($this->getBool() && $this->getBool()){
 			$this->itemStackRequest = ItemStackRequest::read($this);
 		}
+		// @phpstan-ignore-next-line
 		if($this->getBool() && $this->getBool()){
 			$this->blockActions = [];
 			$max = $this->getUnsignedVarInt();

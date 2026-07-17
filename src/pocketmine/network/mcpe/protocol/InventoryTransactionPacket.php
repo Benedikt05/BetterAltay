@@ -59,10 +59,8 @@ class InventoryTransactionPacket extends DataPacket{
 			}
 		}
 
-		$hasTrData = $this->getBool();
-		if(!$hasTrData){
-			$this->trData = null;
-			return;
+		if(!$this->getBool()){
+			throw new PacketDecodeException("Expected transaction type, but got none");
 		}
 
 		$transactionType = $this->getUnsignedVarInt();
@@ -75,7 +73,11 @@ class InventoryTransactionPacket extends DataPacket{
 			self::TYPE_RELEASE_ITEM => new ReleaseItemTransactionData(),
 			default => throw new PacketDecodeException("Unknown transaction type $transactionType"),
 		};
-
+		$hasTrData = $this->getBool();
+		if(!$hasTrData){
+			$this->trData = null;
+			return;
+		}
 		$this->trData->decode($this, true);
 	}
 
