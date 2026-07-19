@@ -27,59 +27,59 @@ use pocketmine\Player;
 
 use function is_bool;
 
-class ModalForm implements Form {
+class ModalForm implements Form{
 
-    private string $title = "";
-    
-    private string $content = "";
-    
-    private string $button1 = "yes";
-    private string $button2 = "no";
-    
-    private \Closure $callback;
+	private string $title = "";
 
-    public function __construct() {
-        $this->callback = function (Player $player, bool $data): void {};
-    }
+	private string $content = "";
 
-    public function setTitle(string $title) : self{
-        $this->title = $title;
-        return $this;
-    }
+	private string $button1 = "yes";
+	private string $button2 = "no";
 
-    public function setContent(string $content) : self{
-        $this->content = $content;
-        return $this;
-    }
+	private \Closure $callback;
 
-    public function setButton1(string $button1) : self{
-        $this->button1 = $button1;
-        return $this;
-    }
+	public function __construct(){
+		$this->callback = function(Player $player, bool $data) : void{ };
+	}
 
-    public function setButton2(string $button2) : self{
-        $this->button2 = $button2;
-        return $this;
-    }
+	public function setTitle(string $title) : self{
+		$this->title = $title;
+		return $this;
+	}
 
-    public function setCallback(\Closure $callback) : self{
-        $this->callback = $callback;
-        return $this;
-    }
+	public function setContent(string $content) : self{
+		$this->content = $content;
+		return $this;
+	}
 
-    public function handleResponse(Player $player, $data) : void{
-        if (is_bool($data)) {
-            ($this->callback)($player, $data);
-        }
-    }
+	public function setButton1(string $button1) : self{
+		$this->button1 = $button1;
+		return $this;
+	}
 
-    public function jsonSerialize() : array{
-        return [
-            "type" => "modal",
-            "title" => $this->title,
-            "content" => $this->content,
-            "button1" => $this->button1,
-            "button2" => $this->button2
-        ];
-    }
+	public function setButton2(string $button2) : self{
+		$this->button2 = $button2;
+		return $this;
+	}
+
+	public function setCallback(\Closure $callback) : self{
+		$this->callback = $callback;
+		return $this;
+	}
+
+	public function handleResponse(Player $player, $data) : void{
+		if(is_bool($data)){
+			($this->callback)($player, $data);
+		}
+	}
+
+	public function jsonSerialize() : array{
+		return [
+			"type" => "modal",
+			"title" => $this->title,
+			"content" => $this->content,
+			"button1" => $this->button1,
+			"button2" => $this->button2
+		];
+	}
 }

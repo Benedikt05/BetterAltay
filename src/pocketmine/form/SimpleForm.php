@@ -25,57 +25,57 @@ namespace pocketmine\form;
 
 use pocketmine\Player;
 
-class SimpleForm implements Form {
-    
-    private string $title = "";
-    
-    private string $content = "";
-    
-    private array $buttons = [];
-    
-    private ?\Closure $callback = null;
+class SimpleForm implements Form{
 
-    public function setTitle(string $title) : self{
-        $this->title = $title;
-        return $this;
-    }
+	private string $title = "";
 
-    public function setContent(string $content) : self{
-        $this->content = $content;
-        return $this;
-    }
+	private string $content = "";
 
-    public function addButton(string $text, int $imageType = -1, string $imagePath = "") : self{
-        $button = ["text" => $text];
+	private array $buttons = [];
 
-        if ($imageType !== -1) {
-            $button["image"] = [
-                "type" => $imageType === 0 ? "path" : "url",
-                "data" => $imagePath
-            ];
-        }
+	private ?\Closure $callback = null;
 
-        $this->buttons[] = $button;
-        return $this;
-    }
+	public function setTitle(string $title) : self{
+		$this->title = $title;
+		return $this;
+	}
 
-    public function setCallback(\Closure $callback) : self{
-        $this->callback = $callback;
-        return $this;
-    }
+	public function setContent(string $content) : self{
+		$this->content = $content;
+		return $this;
+	}
 
-    public function handleResponse(Player $player, $data) : void{
-        if ($this->callback !== null) {
-            ($this->callback)($player, $data);
-        }
-    }
+	public function addButton(string $text, int $imageType = -1, string $imagePath = "") : self{
+		$button = ["text" => $text];
 
-    public function jsonSerialize() : array{
-        return [
-            "type" => "form",
-            "title" => $this->title,
-            "content" => $this->content,
-            "buttons" => $this->buttons
-        ];
-    }
+		if($imageType !== -1){
+			$button["image"] = [
+				"type" => $imageType === 0 ? "path" : "url",
+				"data" => $imagePath
+			];
+		}
+
+		$this->buttons[] = $button;
+		return $this;
+	}
+
+	public function setCallback(\Closure $callback) : self{
+		$this->callback = $callback;
+		return $this;
+	}
+
+	public function handleResponse(Player $player, $data) : void{
+		if($this->callback !== null){
+			($this->callback)($player, $data);
+		}
+	}
+
+	public function jsonSerialize() : array{
+		return [
+			"type" => "form",
+			"title" => $this->title,
+			"content" => $this->content,
+			"buttons" => $this->buttons
+		];
+	}
 }
