@@ -333,12 +333,14 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->putVector2($this->interactRotation);
 		$this->putUnsignedVarLong($this->tick);
 		$this->putVector3($this->delta);
-		if($this->itemInteractionData !== null){
-			$this->itemInteractionData->write($this);
-		}
-		if($this->itemStackRequest !== null){
-			$this->itemStackRequest->write($this);
-		}
+		$this->putBool($this->itemInteractionData !== null);
+		$this->putBool($this->itemInteractionData !== null);
+		$this->itemInteractionData?->write($this);
+		$this->putBool($this->itemStackRequest !== null);
+		$this->putBool($this->itemStackRequest !== null);
+		$this->itemStackRequest?->write($this);
+		$this->putBool($this->blockActions !== null);
+		$this->putBool($this->blockActions !== null);
 		if($this->blockActions !== null){
 			$this->putVarInt(count($this->blockActions));
 			foreach($this->blockActions as $blockAction){

@@ -34,9 +34,7 @@ class LabTablePacket extends DataPacket{
 	public const TYPE_START_REACTION = 1;
 	public const TYPE_RESET = 2;
 
-	/** @var int */
 	public int $type;
-
 	public int $x;
 	public int $y;
 	public int $z;

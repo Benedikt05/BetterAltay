@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
-use UnexpectedValueException;
 
 final class PlayerAuthInputVehicleInfo{
 
