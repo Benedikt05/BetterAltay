@@ -35,27 +35,22 @@ class LabTablePacket extends DataPacket{
 	public const TYPE_RESET = 2;
 
 	/** @var int */
-	public $type;
+	public int $type;
 
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
+	public int $x;
+	public int $y;
+	public int $z;
+	public int $reactionType;
 
-	/** @var int */
-	public $reactionType;
-
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->type = $this->getByte();
-		$this->getSignedBlockPosition($this->x, $this->y, $this->z);
+		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->reactionType = $this->getByte();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putByte($this->type);
-		$this->putSignedBlockPosition($this->x, $this->y, $this->z);
+		$this->putBlockPosition($this->x, $this->y, $this->z);
 		$this->putByte($this->reactionType);
 	}
 

@@ -213,13 +213,13 @@ class NetworkBinaryStream extends BinaryStream{
 	public function getItemStackWithoutStackId() : Item{
 		return $this->getItemStack(function() : void{
 			//NOOP
-		});
+		}, false);
 	}
 
 	public function putItemStackWithoutStackId(Item $item) : void{
 		$this->putItemStack($item, function() : void{
 			//NOOP
-		});
+		}, false);
 	}
 
 	/**
@@ -639,7 +639,7 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * Reads a block position with a signed Y coordinate.
+	 * Reads a block position
 	 *
 	 * @param int $x reference parameter
 	 * @param int $y reference parameter
@@ -652,33 +652,9 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	/**
-	 * Writes a block position with a signed Y coordinate.
+	 * Writes a block position
 	 */
 	public function putBlockPosition(int $x, int $y, int $z) : void{
-		$this->putVarInt($x);
-		$this->putVarInt($y);
-		$this->putVarInt($z);
-	}
-
-	/**
-	 * Reads a block position with a signed Y coordinate.
-	 *
-	 * @param int $x reference parameter
-	 * @param int $y reference parameter
-	 * @param int $z reference parameter
-	 * @deprecated Use {@see getBlockPosition()} instead.
-	 */
-	public function getSignedBlockPosition(&$x, &$y, &$z) : void{
-		$x = $this->getVarInt();
-		$y = $this->getVarInt();
-		$z = $this->getVarInt();
-	}
-
-	/**
-	 * Writes a block position with a signed Y coordinate.
-	 * @deprecated Use {@see putBlockPosition()} instead.
-	 */
-	public function putSignedBlockPosition(int $x, int $y, int $z) : void{
 		$this->putVarInt($x);
 		$this->putVarInt($y);
 		$this->putVarInt($z);
