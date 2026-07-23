@@ -34,59 +34,69 @@ use function count;
 class SetScorePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_SCORE_PACKET;
 
-	public const TYPE_CHANGE = 0;
-	public const TYPE_REMOVE = 1;
-
-	/** @var int */
-	public $type;
 	/** @var ScorePacketEntry[] */
-	public $entries = [];
+	public array $entries = [];
 
-	protected function decodePayload(){
-		$this->type = $this->getByte();
-		for($i = 0, $i2 = $this->getUnsignedVarInt(); $i < $i2; ++$i){
+	protected function decodePayload() : void{
+		$count = $this->getUnsignedVarInt();
+		for($i = 0; $i < $count; ++$i){
 			$entry = new ScorePacketEntry();
+			$entry->type = $this->getUnsignedVarInt();
+			$this->getString();
 			$entry->scoreboardId = $this->getVarLong();
-			$entry->objectiveName = $this->getString();
-			$entry->score = $this->getLInt();
-			if($this->type !== self::TYPE_REMOVE){
-				$entry->type = $this->getByte();
-				switch($entry->type){
-					case ScorePacketEntry::TYPE_PLAYER:
-					case ScorePacketEntry::TYPE_ENTITY:
-						$entry->entityUniqueId = $this->getEntityUniqueId();
-						break;
-					case ScorePacketEntry::TYPE_FAKE_PLAYER:
-						$entry->customName = $this->getString();
-						break;
-					default:
-						throw new UnexpectedValueException("Unknown entry type $entry->type");
-				}
+
+			switch($entry->type){
+				case ScorePacketEntry::TYPE_REMOVE:
+					$entry->objectiveName = $this->readOptional(fn() => $this->getString());
+					break;
+				case ScorePacketEntry::TYPE_PLAYER:
+				case ScorePacketEntry::TYPE_ENTITY:
+					$entry->objectiveName = $this->getString();
+					$entry->score = $this->getLInt();
+					$entry->entityUniqueId = $this->getEntityUniqueId();
+					break;
+				case ScorePacketEntry::TYPE_FAKE_PLAYER:
+					$entry->objectiveName = $this->getString();
+					$entry->score = $this->getLInt();
+					$entry->customName = $this->getString();
+					break;
+				default:
+					throw new InvalidArgumentException("Unknown entry type $entry->type");
 			}
 			$this->entries[] = $entry;
 		}
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->type);
+	protected function encodePayload() : void{
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
+			$this->putUnsignedVarInt($entry->type);
+			$this->putString(match ($entry->type) {
+				ScorePacketEntry::TYPE_REMOVE => "remove",
+				ScorePacketEntry::TYPE_PLAYER => "changeplayer",
+				ScorePacketEntry::TYPE_ENTITY => "changeentity",
+				ScorePacketEntry::TYPE_FAKE_PLAYER => "changefakeplayer",
+				default => throw new InvalidArgumentException("Unknown type $entry->type")
+			});
+
 			$this->putVarLong($entry->scoreboardId);
-			$this->putString($entry->objectiveName);
-			$this->putLInt($entry->score);
-			if($this->type !== self::TYPE_REMOVE){
-				$this->putByte($entry->type);
-				switch($entry->type){
-					case ScorePacketEntry::TYPE_PLAYER:
-					case ScorePacketEntry::TYPE_ENTITY:
-						$this->putEntityUniqueId($entry->entityUniqueId);
-						break;
-					case ScorePacketEntry::TYPE_FAKE_PLAYER:
-						$this->putString($entry->customName);
-						break;
-					default:
-						throw new InvalidArgumentException("Unknown entry type $entry->type");
-				}
+			switch($entry->type){
+				case ScorePacketEntry::TYPE_REMOVE:
+					$this->writeOptional($entry->objectiveName, fn($objectiveName) => $this->putString($objectiveName));
+					break;
+				case ScorePacketEntry::TYPE_PLAYER:
+				case ScorePacketEntry::TYPE_ENTITY:
+					$this->putString($entry->objectiveName ?? throw new InvalidArgumentException("Objective name must be set for player/entity entry"));
+					$this->putLInt($entry->score);
+					$this->putEntityUniqueId($entry->entityUniqueId);
+					break;
+				case ScorePacketEntry::TYPE_FAKE_PLAYER:
+					$this->putString($entry->objectiveName ?? throw new InvalidArgumentException("Objective name must be set for fake player entry"));
+					$this->putLInt($entry->score);
+					$this->putString($entry->customName);
+					break;
+				default:
+					throw new InvalidArgumentException("Unknown entry type $entry->type");
 			}
 		}
 	}
