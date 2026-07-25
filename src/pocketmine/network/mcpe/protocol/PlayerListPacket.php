@@ -25,6 +25,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
+use UnexpectedValueException as PacketDecodeException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\utils\Color;
@@ -39,7 +41,6 @@ class PlayerListPacket extends DataPacket{
 
 	/** @var PlayerListEntry[] */
 	public array $entries = [];
-	public int $type;
 
 	public function clean() : PlayerListPacket{
 		$this->entries = [];
@@ -49,12 +50,11 @@ class PlayerListPacket extends DataPacket{
 	protected function decodePayload() : void{
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
-			$type = $this->getUnsignedVarInt();
+			$entry = new PlayerListEntry();
+			$entry->type = $this->getUnsignedVarInt();
 			$this->getByte(); // legacyId
 
-			$entry = new PlayerListEntry();
-			if($type === self::TYPE_ADD){
-				$entry->type = $type;
+			if($entry->type === self::TYPE_ADD){
 				$entry->uuid = $this->getUUID();
 				$entry->entityUniqueId = $this->getEntityUniqueId();
 				$entry->username = $this->getString();
@@ -66,8 +66,10 @@ class PlayerListPacket extends DataPacket{
 				$entry->isHost = $this->getBool();
 				$entry->isSubClient = $this->getBool();
 				$entry->color = Color::fromARGB($this->getLInt());
-			}else{
+			}elseif($entry->type === self::TYPE_REMOVE){
 				$entry->uuid = $this->getUUID();
+			}else{
+				throw new PacketDecodeException("Unknown player list entry type " . $entry->type);
 			}
 
 			$this->entries[$i] = $entry;
@@ -92,8 +94,10 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
 				$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
-			}else{
+			}elseif($entry->type === self::TYPE_REMOVE){
 				$this->putUUID($entry->uuid);
+			}else{
+				throw new InvalidArgumentException("Unknown player list entry type " . $entry->type);
 			}
 		}
 	}

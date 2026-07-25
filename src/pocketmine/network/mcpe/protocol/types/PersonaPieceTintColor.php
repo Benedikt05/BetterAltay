@@ -29,10 +29,9 @@ final class PersonaPieceTintColor{
 	public const PIECE_TYPE_PERSONA_HAIR = "persona_hair";
 	public const PIECE_TYPE_PERSONA_MOUTH = "persona_mouth";
 
-	/** @var string */
-	private $pieceType;
-	/** @var string[] */
-	private $colors;
+	private string $pieceType;
+	/** @var int[] */
+	private array $colors;
 
 	/**
 	 * @param int[] $colors

@@ -43,7 +43,7 @@ class MapInfo{
 		$this->player = $player;
 	}
 
-	public function getPacket(MapData $mapData){
+	public function getPacket(MapData $mapData) : ?ClientboundMapItemDataPacket{
 		$shouldUpdateDecorations = ($this->packetSendTimer++ % 5) === 0;
 
 		if(!$this->dirty && !$shouldUpdateDecorations){
@@ -57,6 +57,7 @@ class MapInfo{
 		$pk->mapId = $mapData->getId();
 		$pk->decorations = $mapData->getDecorations();
 		$pk->trackedEntities = $mapData->getTrackedObjects();
+		$pk->eids[] = $mapData->getId();
 
 		if($this->dirty){
 			$this->dirty = false;
@@ -68,8 +69,7 @@ class MapInfo{
 				$this->maxY + 1 - $this->minY
 			);
 		}
-		//TODO: fix this
-		//return $pk;
+		return $pk;
 	}
 
 	/**
