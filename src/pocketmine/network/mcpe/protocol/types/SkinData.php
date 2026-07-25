@@ -56,9 +56,9 @@ class SkinData{
 	private $capeId;
 	/** @var string */
 	private $fullSkinId;
-	/** @var string */
+	/** @var int */
 	private $armSize;
-	/** @var string */
+	/** @var int */
 	private $skinColor;
 	/** @var PersonaSkinPiece[] */
 	private $personaPieces;
@@ -75,8 +75,8 @@ class SkinData{
 	/** @var bool */
 	private $isPrimaryUser;
 	private bool $override;
-	private string $trustedSkinFlag = self::TRUSTED_SKIN_FLAG_UNSET;
-	private string $profileHash = "";
+	private string $trustedSkinFlag;
+	private string $profileHash;
 
 	/**
 	 * @param SkinAnimation[]         $animations
@@ -89,7 +89,7 @@ class SkinData{
 		SkinImage $skinImage,
 		array $animations = [],
 		SkinImage $capeImage = null,
-		string $geometryData = "",
+		string $geometryData = "null",
 		string $geometryDataEngineVersion = ProtocolInfo::MINECRAFT_VERSION_NETWORK,
 		string $animationData = "",
 		string $capeId = "",
@@ -104,7 +104,7 @@ class SkinData{
 		bool $personaCapeOnClassic = false,
 		bool $isPrimaryUser = true,
 		bool $override = true,
-		string $trustedSkinFlag = self::TRUSTED_SKIN_FLAG_UNSET,
+		string $trustedSkinFlag = self::TRUSTED_SKIN_FLAG_TRUE,
 		string $profileHash = ""
 	){
 		$this->skinId = $skinId;
@@ -176,11 +176,11 @@ class SkinData{
 		return $this->fullSkinId;
 	}
 
-	public function getArmSize() : int {
+	public function getArmSize() : int{
 		return $this->armSize;
 	}
 
-	public function getSkinColor() : int {
+	public function getSkinColor() : int{
 		return $this->skinColor;
 	}
 
@@ -222,11 +222,11 @@ class SkinData{
 		return $this->isVerified;
 	}
 
-	public function getTrustedSkinFlag(): string{
+	public function getTrustedSkinFlag() : string{
 		return $this->trustedSkinFlag;
 	}
 
-	public function getProfileHash(): string{
+	public function getProfileHash() : string{
 		return $this->profileHash;
 	}
 
@@ -238,7 +238,7 @@ class SkinData{
 	}
 
 	public static function convertArmSize(string $armSize) : int{
-		return match($armSize){
+		return match ($armSize) {
 			"slim" => SkinData::ARM_SIZE_SLIM,
 			"wide", "" => SkinData::ARM_SIZE_WIDE,
 			default => throw new \InvalidArgumentException("Unknown arm size \"$armSize\"")
@@ -247,7 +247,7 @@ class SkinData{
 
 	public static function convertColor(string $color) : int{
 		$hex = ltrim($color, '#');
-		if ($hex === '' || $hex === '0') {
+		if($hex === '' || $hex === '0'){
 			return 0;
 		}
 
