@@ -225,7 +225,7 @@ class NetworkBinaryStream extends BinaryStream{
 	/**
 	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $readStackId
 	 */
-	public function getItemStack(Closure $readStackId, bool $net = false) : Item{
+	public function getItemStack(Closure $readStackId, bool $net) : Item{
 		if($net){
 			$netId = $this->getSignedLShort();
 		}else{
@@ -324,7 +324,7 @@ class NetworkBinaryStream extends BinaryStream{
 	/**
 	 * @phpstan-param Closure(NetworkBinaryStream $stream, bool $net) : void $writeStackId
 	 */
-	public function putItemStack(Item $item, Closure $writeStackId, bool $net = false) : void{
+	public function putItemStack(Item $item, Closure $writeStackId, bool $net) : void{
 		if($item->getId() === 0){
 			if($net){
 				$this->putLShort(0); //id
@@ -416,6 +416,7 @@ class NetworkBinaryStream extends BinaryStream{
 			})());
 	}
 
+	//TODO: this needs to be updated
 	public function getRecipeIngredient() : Item{
 		$netId = $this->getVarInt();
 		if($netId === 0){
@@ -428,23 +429,26 @@ class NetworkBinaryStream extends BinaryStream{
 	}
 
 	public function putRecipeIngredient(Item $item) : void{
+		$this->putUnsignedVarInt($item->isNull() ? 0 : 1);
 		if($item->isNull()){
-			$this->putUnsignedVarInt(0);
-			$this->putVarInt(-1);
-			$this->putVarInt(0);
+			$this->putVarInt(0x7fff);
+			$this->putVarInt(0); //item count
 
 			return;
 		}
 
-		$this->putUnsignedVarInt(1);
-		$this->putString("name");
+		$this->putString("name"); //ItemDescriptorType
+
 		if($item->hasAnyDamageValue()){
 			$netData = 0x7fff;
 		}else{
 			[, $netData] = ItemTranslator::getInstance()->toNetworkId($item->getId(), $item->getDamage());
 		}
+
+		//ItemDescriptor
 		$this->putString(ItemTranslator::getInstance()->toStringId($item->getId(), $item->getDamage()));
 		$this->putVarInt($netData);
+
 		$this->putVarInt($item->getCount());
 	}
 

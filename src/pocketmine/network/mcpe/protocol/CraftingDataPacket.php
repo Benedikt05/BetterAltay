@@ -48,22 +48,17 @@ use function str_repeat;
 class CraftingDataPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
 
-	public const ENTRY_SHAPELESS = 0;
-	public const ENTRY_SHAPED = 1;
-	public const ENTRY_FURNACE = 0;
-	public const ENTRY_FURNACE_DATA = 0;
-	public const ENTRY_MULTI = 4; //TODO
-	public const ENTRY_SHULKER_BOX = 5; //TODO
-	public const ENTRY_SHAPELESS_CHEMISTRY = 6; //TODO
-	public const ENTRY_SHAPED_CHEMISTRY = 7; //TODO
-	public const ENTRY_SMITHING_TRANSFORM = 8; //TODO
-	public const ENTRY_SMITHING_TRIM = 9; //TODO
+	public const ENTRY_SHAPED = 0;
+	public const ENTRY_SHAPELESS = 1;
+	public const ENTRY_MULTI = 2; //TODO
+	public const ENTRY_USER_DATA_SHAPELESS = 3; //TODO
+	public const ENTRY_SHAPELESS_CHEMISTRY = 4; //TODO
+	public const ENTRY_SHAPED_CHEMISTRY = 5; //TODO
+	public const ENTRY_SMITHING_TRANSFORM = 6; //TODO
+	public const ENTRY_SMITHING_TRIM = 7; //TODO
 
-	/** @var object[] */
-	public array $entries = [];
-	public array $shaplessRecipes = [];
+	public array $shapelessRecipes = [];
 	public array $shapedRecipes = [];
-	public array $furnaceRecipes = [];
 	/** @var PotionTypeRecipe[] */
 	public array $potionTypeRecipes = [];
 	/** @var PotionContainerChangeRecipe[] */
@@ -72,17 +67,18 @@ class CraftingDataPacket extends DataPacket{
 	public array $materialReducerRecipes = [];
 	public bool $cleanRecipes = false;
 
-	/** @var mixed[][] */
+	/** @var array[] */
 	public array $decodedEntries = [];
 
-	public function clean(){
-		$this->entries = [];
+	public function clean() : CraftingDataPacket{
+		$this->shapelessRecipes = [];
+		$this->shapedRecipes = [];
 		$this->decodedEntries = [];
 		return parent::clean();
 	}
 
 	protected function decodePayload() : void{
-		$this->decodedEntries = [];
+		/*$this->decodedEntries = [];
 		$recipeCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $recipeCount; ++$i){
 			$entry = [];
@@ -170,13 +166,17 @@ class CraftingDataPacket extends DataPacket{
 			}
 			$this->materialReducerRecipes[] = new MaterialReducerRecipe($inputId, $inputMeta, $outputs);
 		}
-		$this->cleanRecipes = $this->getBool();
+		$this->cleanRecipes = $this->getBool();*/
 	}
 
 	/**
-	 * @param object $entry
+	 * @param object              $entry
+	 * @param NetworkBinaryStream $stream
+	 * @param int                 $pos
+	 *
+	 * @return int
 	 */
-	private static function writeEntry($entry, NetworkBinaryStream $stream, int $pos) : int{
+	private static function writeEntry(object $entry, NetworkBinaryStream $stream, int $pos) : int{
 		if($entry instanceof ShapelessRecipe){
 			return self::writeShapelessRecipe($entry, $stream, $pos);
 		}elseif($entry instanceof ShapedRecipe){
@@ -205,7 +205,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
-		$stream->putByte(1); //TODO: recipe unlocking requirement - always unlocked
+		$stream->putBool(false); //TODO: optional recipe unlocking requirement
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPELESS;
@@ -233,7 +233,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
 		$stream->putBool(true); //TODO: assume symmetry
-		$stream->putByte(1); //TODO: recipe unlocking requirement - always unlocked
+		$stream->putBool(false); //TODO: optional recipe unlocking requirement
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPED;
@@ -249,43 +249,45 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("furnace"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(0); //TODO: priority
-		$stream->putByte(0); //TODO: recipe unlocking requirement - none
-		$stream->putUnsignedVarInt(0); // ingredients size
+		$stream->putBool(false); //TODO: optional recipe unlocking requirement
 		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
-		return CraftingDataPacket::ENTRY_FURNACE_DATA;
+		return CraftingDataPacket::ENTRY_SHAPELESS;
 	}
 
 	/**
+	 * @param ShapelessRecipe $recipe
+	 *
 	 * @return void
 	 */
-	public function addShapelessRecipe(ShapelessRecipe $recipe){
+	public function addShapelessRecipe(ShapelessRecipe $recipe) : void{
+		$this->shapelessRecipes[] = $recipe;
+	}
+
+	/**
+	 * @param ShapedRecipe $recipe
+	 *
+	 * @return void
+	 */
+	public function addShapedRecipe(ShapedRecipe $recipe) : void{
 		$this->shapedRecipes[] = $recipe;
 	}
 
 	/**
+	 * @param FurnaceRecipe $recipe
+	 *
 	 * @return void
 	 */
-	public function addShapedRecipe(ShapedRecipe $recipe){
-		$this->shapedRecipes[] = $recipe;
-	}
-
-	/**
-	 * @return void
-	 */
-	public function addFurnaceRecipe(FurnaceRecipe $recipe){
-		$this->furnaceRecipes[] = $recipe;
+	public function addFurnaceRecipe(FurnaceRecipe $recipe) : void{
+		$this->shapelessRecipes[] = $recipe;
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt(count($this->entries));
-
 		$writer = new NetworkBinaryStream();
 		$counter = 0;
 		$this->putUnsignedVarInt(count($this->shapedRecipes));
 		foreach($this->shapedRecipes as $d){
 			$entryType = self::writeEntry($d, $writer, ++$counter);
 			if($entryType >= 0){
-				$this->putVarInt($entryType);
 				$this->put($writer->getBuffer());
 			}else{
 				$this->putVarInt(-1);
@@ -295,11 +297,10 @@ class CraftingDataPacket extends DataPacket{
 		}
 
 		$counter = 0;
-		$this->putUnsignedVarInt(count($this->shaplessRecipes));
-		foreach($this->shaplessRecipes as $d){
+		$this->putUnsignedVarInt(count($this->shapelessRecipes));
+		foreach($this->shapelessRecipes as $d){
 			$entryType = self::writeEntry($d, $writer, ++$counter);
 			if($entryType >= 0){
-				$this->putVarInt($entryType);
 				$this->put($writer->getBuffer());
 			}else{
 				$this->putVarInt(-1);
@@ -308,12 +309,12 @@ class CraftingDataPacket extends DataPacket{
 			$writer->reset();
 		}
 
-		$this->putUnsignedVarInt(0);
-		$this->putUnsignedVarInt(0);
-		$this->putUnsignedVarInt(0);
-		$this->putUnsignedVarInt(0);
-		$this->putUnsignedVarInt(0);
-		$this->putUnsignedVarInt(0);
+		$this->putUnsignedVarInt(0);//MULTI
+		$this->putUnsignedVarInt(0);//USER_DATA_SHAPELESS
+		$this->putUnsignedVarInt(0);//SHAPELESS_CHEMISTRY
+		$this->putUnsignedVarInt(0);//SHAPED_CHEMISTRY
+		$this->putUnsignedVarInt(0);//SMITHING_TRANSFORM
+		$this->putUnsignedVarInt(0);//SMITHING_TRIM
 
 		$this->putUnsignedVarInt(count($this->potionTypeRecipes));
 		foreach($this->potionTypeRecipes as $recipe){
