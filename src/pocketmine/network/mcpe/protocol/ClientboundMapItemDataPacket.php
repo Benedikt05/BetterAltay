@@ -74,6 +74,22 @@ class ClientboundMapItemDataPacket extends DataPacket{
 		$this->colors = $this->readOptional(fn() => $this->readPixels());
 	}
 
+	protected function encodePayload() : void{
+		$this->putEntityUniqueId($this->mapId);
+		$this->putByte($this->dimensionId);
+		$this->putBool($this->isLocked);
+		$this->putBlockPosition($this->x, $this->y, $this->z); //Origin
+		$this->writeOptional($this->eids, fn($creationMapIds) => $this->writeCreationMapIds($creationMapIds));
+		$this->writeOptional($this->scale, fn($scale) => $this->putByte($scale));
+		$this->writeOptional($this->trackedEntities, fn($entities) => $this->writeTrackedEntities($entities));
+		$this->writeOptional($this->decorations, fn($decorations) => $this->writeDecorations($decorations));
+		$this->writeOptional($this->width, fn($val) => $this->putVarInt($val));
+		$this->writeOptional($this->height, fn($val) => $this->putVarInt($val));
+		$this->writeOptional($this->xOffset, fn($val) => $this->putVarInt($val));
+		$this->writeOptional($this->yOffset, fn($val) => $this->putVarInt($val));
+		$this->writeOptional($this->colors, fn($pixels) => $this->writePixels($pixels));
+	}
+
 	/**
 	 * @return int[]
 	 */
@@ -160,32 +176,16 @@ class ClientboundMapItemDataPacket extends DataPacket{
 		}
 	}
 
-	private function writePixels(): void{
+	private function writePixels(array $colors): void{
 		$this->putUnsignedVarInt($this->width * $this->height); //list count, but we handle it as a 2D array... thanks for the confusion mojang
 
 		for($y = 0; $y < $this->height; ++$y){
 			for($x = 0; $x < $this->width; ++$x){
-				$this->putLInt($this->colors[$y][$x]->toABGR());
+				$this->putLInt($colors[$y][$x]->toABGR());
 			}
 		}
 	}
-
-	protected function encodePayload() : void{
-		$this->putEntityUniqueId($this->mapId);
-		$this->putByte($this->dimensionId);
-		$this->putBool($this->isLocked);
-		$this->putBlockPosition($this->x, $this->y, $this->z); //Origin
-		$this->writeOptional($this->eids, fn($creationMapIds) => $this->writeCreationMapIds($creationMapIds));
-		$this->writeOptional($this->scale, fn($scale) => $this->putByte($scale));
-		$this->writeOptional($this->trackedEntities, fn($entities) => $this->writeTrackedEntities($entities));
-		$this->writeOptional($this->decorations, fn($decorations) => $this->writeDecorations($decorations));
-		$this->writeOptional($this->width, fn($val) => $this->putVarInt($val));
-		$this->writeOptional($this->height, fn($val) => $this->putVarInt($val));
-		$this->writeOptional($this->xOffset, fn($val) => $this->putVarInt($val));
-		$this->writeOptional($this->yOffset, fn($val) => $this->putVarInt($val));
-		$this->writeOptional($this->colors, fn($pixels) => $this->writePixels());
-	}
-
+	
 	/**
 	 * Crops the texture to wanted size
 	 *
