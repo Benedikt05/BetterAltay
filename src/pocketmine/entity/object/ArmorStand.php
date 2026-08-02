@@ -115,7 +115,7 @@ class ArmorStand extends Living{
 			return true;
 		}
 
-		if($this->isValid() and !$player->isSpectator()){
+		if($this->isValid() && !$player->isSpectator()){
 			$targetSlot = EquipmentSlot::MAINHAND;
 			$isArmorSlot = false;
 
@@ -128,16 +128,16 @@ class ArmorStand extends Living{
 			}elseif($item->isNull()){
 				$clickOffset = $clickPos->y - $this->y;
 
-				if($clickOffset >= 0.1 and $clickOffset < 0.55 and !$this->armorInventory->getItem(ArmorInventory::SLOT_FEET)->isNull()){
+				if($clickOffset >= 0.1 && $clickOffset < 0.55 && !$this->armorInventory->getItem(ArmorInventory::SLOT_FEET)->isNull()){
 					$targetSlot = Armor::SLOT_BOOTS;
 					$isArmorSlot = true;
-				}elseif($clickOffset >= 0.9 and $clickOffset < 1.6 and !$this->armorInventory->getItem(ArmorInventory::SLOT_CHEST)->isNull()){
+				}elseif($clickOffset >= 0.9 && $clickOffset < 1.6 && !$this->armorInventory->getItem(ArmorInventory::SLOT_CHEST)->isNull()){
 					$targetSlot = Armor::SLOT_CHESTPLATE;
 					$isArmorSlot = true;
-				}elseif($clickOffset >= 0.4 and $clickOffset < 1.2 and !$this->armorInventory->getItem(ArmorInventory::SLOT_LEGS)->isNull()){
+				}elseif($clickOffset >= 0.4 && $clickOffset < 1.2 && !$this->armorInventory->getItem(ArmorInventory::SLOT_LEGS)->isNull()){
 					$targetSlot = Armor::SLOT_LEGGINGS;
 					$isArmorSlot = true;
-				}elseif($clickOffset >= 1.6 and !$this->armorInventory->getItem(ArmorInventory::SLOT_HEAD)->isNull()){
+				}elseif($clickOffset >= 1.6 && !$this->armorInventory->getItem(ArmorInventory::SLOT_HEAD)->isNull()){
 					$targetSlot = Armor::SLOT_HELMET;
 					$isArmorSlot = true;
 				}
@@ -162,11 +162,11 @@ class ArmorStand extends Living{
 			$this->equipment->setItem($slot, (clone $targetItem)->setCount(1));
 		}
 
-		if(!$targetItem->isNull() and $player->isSurvival()){
+		if(!$targetItem->isNull() && $player->isSurvival()){
 			$targetItem->pop();
 		}
 
-		if(!$targetItem->isNull() and $targetItem->equals($sourceItem)){
+		if(!$targetItem->isNull() && $targetItem->equals($sourceItem) && $targetItem->getCount() < $targetItem->getMaxStackSize()){
 			$targetItem->setCount($targetItem->getCount() + $sourceItem->getCount());
 		}else{
 			$player->getInventory()->addItem($sourceItem);
@@ -258,7 +258,7 @@ class ArmorStand extends Living{
 	public function entityBaseTick(int $tickDiff = 1) : bool{
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
-		if($this->getGenericFlag(self::DATA_FLAG_VIBRATING) and $this->vibrateTimer-- <= 0){
+		if($this->getGenericFlag(self::DATA_FLAG_VIBRATING) && $this->vibrateTimer-- <= 0){
 			$this->setGenericFlag(self::DATA_FLAG_VIBRATING, false);
 		}
 
