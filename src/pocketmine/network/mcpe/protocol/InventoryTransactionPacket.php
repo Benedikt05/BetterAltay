@@ -78,7 +78,7 @@ class InventoryTransactionPacket extends DataPacket{
 			$this->trData = null;
 			return;
 		}
-		$this->trData->decode($this, true);
+		$this->trData->decode($this);
 	}
 
 	protected function encodePayload() : void{
@@ -94,7 +94,7 @@ class InventoryTransactionPacket extends DataPacket{
 		$this->putBool($this->trData !== null);
 		if($this->trData !== null){
 			$this->putUnsignedVarInt($this->trData->getTypeId());
-			$this->trData->encode($this, true);
+			$this->trData->encode($this);
 		}
 	}
 

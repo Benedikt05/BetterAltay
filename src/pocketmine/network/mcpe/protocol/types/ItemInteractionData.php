@@ -46,7 +46,7 @@ final class ItemInteractionData{
 		$transactionData = new UseItemTransactionData();
 		// @phpstan-ignore-next-line
 		if($in->getBool() && $in->getBool()){
-			$transactionData->decode($in, true);
+			$transactionData->decode($in);
 		}
 
 		return new ItemInteractionData($requestId, $requestChangedSlots, $transactionData);
@@ -54,12 +54,16 @@ final class ItemInteractionData{
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putVarInt($this->requestId);
+		$out->putBool($this->requestId !== 0);
 		if($this->requestId !== 0){
 			$out->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlot){
 				$changedSlot->write($out);
 			}
 		}
+
+		$out->putBool(true);
+		$out->putBool(true);
 		$this->transactionData->encode($out);
 	}
 }
