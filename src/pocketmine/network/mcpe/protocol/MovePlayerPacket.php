@@ -36,28 +36,17 @@ class MovePlayerPacket extends DataPacket{
 	public const MODE_TELEPORT = 2;
 	public const MODE_PITCH = 3; //facepalm Mojang
 
-	/** @var int */
-	public $entityRuntimeId;
-	/** @var Vector3 */
-	public $position;
-	/** @var float */
-	public $pitch;
-	/** @var float */
-	public $yaw;
-	/** @var float */
-	public $headYaw;
-	/** @var int */
-	public $mode = self::MODE_NORMAL;
-	/** @var bool */
-	public $onGround = false; //TODO
-	/** @var int */
-	public $ridingEid = 0;
-	/** @var int|null */
-	public $teleportCause = null;
-	/** @var int|null */
-	public $teleportItem = null;
-	/** @var int */
-	public $tick = 0;
+	public int $entityRuntimeId;
+	public Vector3 $position;
+	public float $pitch;
+	public float $yaw;
+	public float $headYaw;
+	public int $mode = self::MODE_NORMAL;
+	public bool $onGround = false; //TODO
+	public int $ridingEid = 0;
+	public ?int $teleportCause = null;
+	public ?int $teleportItem = null;
+	public int $tick = 0;
 
 	protected function decodePayload() : void{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
@@ -84,11 +73,10 @@ class MovePlayerPacket extends DataPacket{
 		$this->putByte($this->mode);
 		$this->putBool($this->onGround);
 		$this->putEntityRuntimeId($this->ridingEid);
-		$hasTeleportData = $this->teleportCause !== null && $this->teleportItem !== null;
-		$this->putBool($hasTeleportData);
-		if($hasTeleportData){
-			$this->putLInt($this->teleportCause);
-			$this->putLInt($this->teleportItem);
+		$this->putBool($isTeleportMode = $this->mode === MovePlayerPacket::MODE_TELEPORT);
+		if($isTeleportMode){
+			$this->putLInt($this->teleportCause ?? 0);
+			$this->putLInt($this->teleportItem ?? 0);
 		}
 		$this->putUnsignedVarLong($this->tick);
 	}
