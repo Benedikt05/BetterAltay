@@ -72,7 +72,7 @@ class Skin{
 	/** @var int */
 	private $armSize = SkinData::ARM_SIZE_WIDE;
 	/** @var int */
-	private $skinColor = "";
+	private $skinColor = 0;
 	/** @var PersonaSkinPiece[] */
 	private $personaPieces = [];
 	/** @var PersonaPieceTintColor[] */
