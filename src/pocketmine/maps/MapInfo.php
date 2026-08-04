@@ -44,36 +44,33 @@ class MapInfo{
 	}
 
 	public function getPacket(MapData $mapData) : ?ClientboundMapItemDataPacket{
-		if($this->dirty){
-			$this->dirty = false;
+		$shouldUpdateDecorations = ($this->packetSendTimer++ % 5) === 0;
 
-			$pk = new ClientboundMapItemDataPacket();
-			$pk->height = $pk->width = 128;
-			$pk->dimensionId = $mapData->getDimension();
-			$pk->scale = $mapData->getScale();
-			$pk->colors = $mapData->getColors();
-			$pk->mapId = $mapData->getId();
-			$pk->decorations = $mapData->getDecorations();
-			$pk->trackedEntities = $mapData->getTrackedObjects();
-
-			$pk->cropTexture($this->minX, $this->minY, $this->maxX + 1 - $this->minX, $this->maxY + 1 - $this->minY);
-
-			return $pk;
-		}elseif(($this->packetSendTimer++ % 5) === 0){ // update decorations
-			$pk = new ClientboundMapItemDataPacket();
-			$pk->height = $pk->width = 128;
-			$pk->dimensionId = $mapData->getDimension();
-			$pk->scale = $mapData->getScale();
-			$pk->mapId = $mapData->getId();
-			$pk->decorations = $mapData->getDecorations();
-			$pk->trackedEntities = $mapData->getTrackedObjects();
-
-			return $pk;
+		if(!$this->dirty && !$shouldUpdateDecorations){
+			return null;
 		}
 
-		return null;
-	}
+		$pk = new ClientboundMapItemDataPacket();
+		$pk->height = $pk->width = 128;
+		$pk->dimensionId = $mapData->getDimension();
+		$pk->scale = $mapData->getScale();
+		$pk->mapId = $mapData->getId();
+		$pk->decorations = $mapData->getDecorations();
+		$pk->trackedEntities = $mapData->getTrackedObjects();
+		$pk->eids[] = $mapData->getId();
 
+		if($this->dirty){
+			$this->dirty = false;
+			$pk->colors = $mapData->getColors();
+			$pk->cropTexture(
+				$this->minX,
+				$this->minY,
+				$this->maxX + 1 - $this->minX,
+				$this->maxY + 1 - $this->minY
+			);
+		}
+		return $pk;
+	}
 
 	/**
 	 * Calculates map canvas

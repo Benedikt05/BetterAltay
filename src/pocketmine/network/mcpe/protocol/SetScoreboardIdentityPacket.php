@@ -35,32 +35,26 @@ class SetScoreboardIdentityPacket extends DataPacket{
 	public const TYPE_REGISTER_IDENTITY = 0;
 	public const TYPE_CLEAR_IDENTITY = 1;
 
-	/** @var int */
-	public $type;
+	public int $type;
 	/** @var ScoreboardIdentityPacketEntry[] */
-	public $entries = [];
+	public array $entries = [];
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->type = $this->getByte();
 		for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 			$entry = new ScoreboardIdentityPacketEntry();
 			$entry->scoreboardId = $this->getVarLong();
-			if($this->type === self::TYPE_REGISTER_IDENTITY){
-				$entry->entityUniqueId = $this->getEntityUniqueId();
-			}
-
+			$entry->entityUniqueId = $this->getEntityUniqueId();
 			$this->entries[] = $entry;
 		}
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putByte($this->type);
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
 			$this->putVarLong($entry->scoreboardId);
-			if($this->type === self::TYPE_REGISTER_IDENTITY){
-				$this->putEntityUniqueId($entry->entityUniqueId);
-			}
+			$this->putEntityUniqueId($entry->entityUniqueId);
 		}
 	}
 

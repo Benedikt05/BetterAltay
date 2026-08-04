@@ -21,16 +21,18 @@ class PlayerLocationPacket extends DataPacket{
 	public ?Vector3 $position;
 
 	protected function decodePayload() : void{
-		$this->packetType = $this->getLInt();
 		$this->entityUniqueId = $this->getEntityUniqueId();
+		$this->packetType = $this->getUnsignedVarInt();
+		$this->getVarInt(); // unknown
 		if($this->packetType === PlayerLocationPacket::PLAYER_LOCATION_COORDINATES){
 			$this->position = $this->getVector3();
 		}
 	}
 
 	protected function encodePayload() : void{
-		$this->putLInt($this->packetType);
 		$this->putEntityUniqueId($this->entityUniqueId);
+		$this->putUnsignedVarInt($this->packetType);
+		$this->putVarInt(0);
 		if($this->packetType === PlayerLocationPacket::PLAYER_LOCATION_COORDINATES){
 			if($this->position === null){
 				throw new LogicException("PlayerLocationPacket with type PLAYER_LOCATION_COORDINATES requires a position to be set");

@@ -34,13 +34,13 @@ class MismatchTransactionData extends TransactionData{
 		return InventoryTransactionPacket::TYPE_MISMATCH;
 	}
 
-	protected function decodeData(PacketSerializer $stream, bool $tr = false) : void{
+	protected function decodeData(PacketSerializer $stream) : void{
 		if(count($this->actions) > 0){
 			throw new PacketDecodeException("Mismatch transaction type should not have any actions associated with it, but got " . count($this->actions));
 		}
 	}
 
-	protected function encodeData(PacketSerializer $stream, bool $tr = false) : void{
+	protected function encodeData(PacketSerializer $stream) : void{
 
 	}
 

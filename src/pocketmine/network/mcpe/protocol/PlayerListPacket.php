@@ -25,6 +25,8 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use InvalidArgumentException;
+use UnexpectedValueException as PacketDecodeException;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\utils\Color;
@@ -34,12 +36,11 @@ use function rand;
 class PlayerListPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::PLAYER_LIST_PACKET;
 
-	public const TYPE_ADD = 0;
-	public const TYPE_REMOVE = 1;
+	public const TYPE_ADD = 1;
+	public const TYPE_REMOVE = 0;
 
 	/** @var PlayerListEntry[] */
 	public array $entries = [];
-	public int $type;
 
 	public function clean() : PlayerListPacket{
 		$this->entries = [];
@@ -47,12 +48,13 @@ class PlayerListPacket extends DataPacket{
 	}
 
 	protected function decodePayload() : void{
-		$this->type = $this->getByte();
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
 			$entry = new PlayerListEntry();
+			$entry->type = $this->getUnsignedVarInt();
+			$this->getByte(); // legacyId
 
-			if($this->type === self::TYPE_ADD){
+			if($entry->type === self::TYPE_ADD){
 				$entry->uuid = $this->getUUID();
 				$entry->entityUniqueId = $this->getEntityUniqueId();
 				$entry->username = $this->getString();
@@ -64,24 +66,23 @@ class PlayerListPacket extends DataPacket{
 				$entry->isHost = $this->getBool();
 				$entry->isSubClient = $this->getBool();
 				$entry->color = Color::fromARGB($this->getLInt());
-			}else{
+			}elseif($entry->type === self::TYPE_REMOVE){
 				$entry->uuid = $this->getUUID();
+			}else{
+				throw new PacketDecodeException("Unknown player list entry type " . $entry->type);
 			}
 
 			$this->entries[$i] = $entry;
 		}
-		if($this->type === self::TYPE_ADD){
-			for($i = 0; $i < $count; ++$i){
-				$this->entries[$i]->skinData->setVerified($this->getBool());
-			}
-		}
 	}
 
 	protected function encodePayload() : void{
-		$this->putByte($this->type);
 		$this->putUnsignedVarInt(count($this->entries));
 		foreach($this->entries as $entry){
-			if($this->type === self::TYPE_ADD){
+			$this->putUnsignedVarInt($entry->type);
+			$this->putByte($entry->type === self::TYPE_ADD ? 0 : 1);
+
+			if($entry->type === self::TYPE_ADD){
 				$this->putUUID($entry->uuid);
 				$this->putEntityUniqueId($entry->entityUniqueId);
 				$this->putString($entry->username);
@@ -93,13 +94,10 @@ class PlayerListPacket extends DataPacket{
 				$this->putBool($entry->isHost);
 				$this->putBool($entry->isSubClient);
 				$this->putLInt(($entry->color ?? new Color(rand(0, 255), rand(0, 255), rand(0, 255)))->toARGB());
-			}else{
+			}elseif($entry->type === self::TYPE_REMOVE){
 				$this->putUUID($entry->uuid);
-			}
-		}
-		if($this->type === self::TYPE_ADD){
-			foreach($this->entries as $entry){
-				$this->putBool($entry->skinData->isVerified());
+			}else{
+				throw new InvalidArgumentException("Unknown player list entry type " . $entry->type);
 			}
 		}
 	}

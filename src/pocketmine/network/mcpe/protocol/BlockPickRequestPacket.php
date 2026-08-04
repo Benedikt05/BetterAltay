@@ -36,14 +36,14 @@ class BlockPickRequestPacket extends DataPacket{
 	public bool $addUserData = false;
 	public int $hotbarSlot;
 
-	protected function decodePayload(){
-		$this->getSignedBlockPosition($this->blockX, $this->blockY, $this->blockZ);
+	protected function decodePayload() : void{
+		$this->getBlockPosition($this->blockX, $this->blockY, $this->blockZ);
 		$this->addUserData = $this->getBool();
 		$this->hotbarSlot = $this->getByte();
 	}
 
-	protected function encodePayload(){
-		$this->putSignedBlockPosition($this->blockX, $this->blockY, $this->blockZ);
+	protected function encodePayload() : void{
+		$this->putBlockPosition($this->blockX, $this->blockY, $this->blockZ);
 		$this->putBool($this->addUserData);
 		$this->putByte($this->hotbarSlot);
 	}

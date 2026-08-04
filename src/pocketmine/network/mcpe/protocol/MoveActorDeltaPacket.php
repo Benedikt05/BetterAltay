@@ -30,79 +30,83 @@ use pocketmine\network\mcpe\NetworkSession;
 class MoveActorDeltaPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::MOVE_ACTOR_DELTA_PACKET;
 
-	public const FLAG_HAS_X = 0x01;
-	public const FLAG_HAS_Y = 0x02;
-	public const FLAG_HAS_Z = 0x04;
-	public const FLAG_HAS_ROT_X = 0x08;
-	public const FLAG_HAS_ROT_Y = 0x10;
-	public const FLAG_HAS_ROT_Z = 0x20;
-	public const FLAG_GROUND = 0x40;
-	public const FLAG_TELEPORT = 0x80;
-	public const FLAG_FORCE_MOVE_LOCAL_ENTITY = 0x100;
-
 	/** @var int */
 	public $entityRuntimeId;
-	/** @var int */
-	public $flags;
-	/** @var float */
-	public $xPos = 0;
-	/** @var float */
-	public $yPos = 0;
-	/** @var float */
-	public $zPos = 0;
-	/** @var float */
-	public $xRot = 0.0;
-	/** @var float */
-	public $yRot = 0.0;
-	/** @var float */
-	public $zRot = 0.0;
+	/** @var float|null */
+	public $xPos = null;
+	/** @var float|null */
+	public $yPos = null;
+	/** @var float|null */
+	public $zPos = null;
+	/** @var float|null */
+	public $xRot = null;
+	/** @var float|null */
+	public $yRot = null;
+	/** @var float|null */
+	public $zRot = null;
+	/** @var bool */
+	public $onGround = false;
+	/** @var bool */
+	public $teleport = false;
+	/** @var bool */
+	public $forceMoveLocalEntity = false;
+	/** @var bool */
+	public $forceCompletion = false;
 
-	private function maybeReadCoord(int $flag) : float{
-		if(($this->flags & $flag) !== 0){
+	private function maybeReadCoord() : ?float{
+		if($this->getBool()){
 			return $this->getLFloat();
 		}
-		return 0;
+		return null;
 	}
 
-	private function maybeReadRotation(int $flag) : float{
-		if(($this->flags & $flag) !== 0){
+	private function maybeReadRotation() : ?float{
+		if($this->getBool()){
 			return $this->getByteRotation();
 		}
-		return 0.0;
+		return null;
 	}
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
-		$this->flags = $this->getLShort();
-		$this->xPos = $this->maybeReadCoord(self::FLAG_HAS_X);
-		$this->yPos = $this->maybeReadCoord(self::FLAG_HAS_Y);
-		$this->zPos = $this->maybeReadCoord(self::FLAG_HAS_Z);
-		$this->xRot = $this->maybeReadRotation(self::FLAG_HAS_ROT_X);
-		$this->yRot = $this->maybeReadRotation(self::FLAG_HAS_ROT_Y);
-		$this->zRot = $this->maybeReadRotation(self::FLAG_HAS_ROT_Z);
+		$this->xPos = $this->maybeReadCoord();
+		$this->yPos = $this->maybeReadCoord();
+		$this->zPos = $this->maybeReadCoord();
+		$this->xRot = $this->maybeReadRotation();
+		$this->yRot = $this->maybeReadRotation();
+		$this->zRot = $this->maybeReadRotation();
+		$this->onGround = $this->getBool();
+		$this->teleport = $this->getBool();
+		$this->forceMoveLocalEntity = $this->getBool();
+		$this->forceCompletion = $this->getBool();
 	}
 
-	private function maybeWriteCoord(int $flag, float $val) : void{
-		if(($this->flags & $flag) !== 0){
+	private function maybeWriteCoord(?float $val) : void{
+		$this->putBool($val !== null);
+		if($val !== null){
 			$this->putLFloat($val);
 		}
 	}
 
-	private function maybeWriteRotation(int $flag, float $val) : void{
-		if(($this->flags & $flag) !== 0){
+	private function maybeWriteRotation(?float $val) : void{
+		$this->putBool($val !== null);
+		if($val !== null){
 			$this->putByteRotation($val);
 		}
 	}
 
 	protected function encodePayload(){
 		$this->putEntityRuntimeId($this->entityRuntimeId);
-		$this->putLShort($this->flags);
-		$this->maybeWriteCoord(self::FLAG_HAS_X, $this->xPos);
-		$this->maybeWriteCoord(self::FLAG_HAS_Y, $this->yPos);
-		$this->maybeWriteCoord(self::FLAG_HAS_Z, $this->zPos);
-		$this->maybeWriteRotation(self::FLAG_HAS_ROT_X, $this->xRot);
-		$this->maybeWriteRotation(self::FLAG_HAS_ROT_Y, $this->yRot);
-		$this->maybeWriteRotation(self::FLAG_HAS_ROT_Z, $this->zRot);
+		$this->maybeWriteCoord($this->xPos);
+		$this->maybeWriteCoord($this->yPos);
+		$this->maybeWriteCoord($this->zPos);
+		$this->maybeWriteRotation($this->xRot);
+		$this->maybeWriteRotation($this->yRot);
+		$this->maybeWriteRotation($this->zRot);
+		$this->putBool($this->onGround);
+		$this->putBool($this->teleport);
+		$this->putBool($this->forceMoveLocalEntity);
+		$this->putBool($this->forceCompletion);
 	}
 
 	public function handle(NetworkSession $session) : bool{

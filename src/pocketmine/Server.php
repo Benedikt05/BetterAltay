@@ -2373,8 +2373,6 @@ class Server{
 	 */
 	public function updatePlayerListData(UUID $uuid, int $entityId, string $name, Skin $skin, string $xboxUserId = "", array $players = null){
 		$pk = new PlayerListPacket();
-		$pk->type = PlayerListPacket::TYPE_ADD;
-
 		$pk->entries[] = PlayerListEntry::createAdditionEntry($uuid, $entityId, $name, SkinAdapterSingleton::get()->toSkinData($skin), $xboxUserId);
 
 		$this->broadcastPacket($players ?? $this->playerList, $pk);
@@ -2387,7 +2385,6 @@ class Server{
 	 */
 	public function removePlayerListData(UUID $uuid, array $players = null){
 		$pk = new PlayerListPacket();
-		$pk->type = PlayerListPacket::TYPE_REMOVE;
 		$pk->entries[] = PlayerListEntry::createRemovalEntry($uuid);
 		$this->broadcastPacket($players ?? $this->playerList, $pk);
 	}
@@ -2397,7 +2394,6 @@ class Server{
 	 */
 	public function sendFullPlayerListData(Player $p){
 		$pk = new PlayerListPacket();
-		$pk->type = PlayerListPacket::TYPE_ADD;
 		foreach($this->playerList as $player){
 			$pk->entries[] = PlayerListEntry::createAdditionEntry($player->getUniqueId(), $player->getId(), $player->getDisplayName(), SkinAdapterSingleton::get()->toSkinData($player->getSkin()), $player->getXuid());
 		}

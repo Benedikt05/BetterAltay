@@ -101,15 +101,15 @@ class UseItemTransactionData extends TransactionData{
 		return InventoryTransactionPacket::TYPE_USE_ITEM;
 	}
 
-	protected function decodeData(PacketSerializer $stream, bool $tr = false) : void{
-		$this->actionType = $tr ? $stream->getVarInt() : $stream->getUnsignedVarInt();
-		$this->triggerType = $tr ? $stream->getByte() : $stream->getUnsignedVarInt();
+	protected function decodeData(PacketSerializer $stream) : void{
+		$this->actionType = $stream->getVarInt();
+		$this->triggerType = $stream->getByte();
 		$x = $y = $z = 0;
 		$stream->getBlockPosition($x, $y, $z);
 		$this->blockPos = new Vector3($x, $y, $z);
-		$this->face = $tr ? $stream->getByte() : $stream->getVarInt();
+		$this->face = $stream->getByte();
 		$this->hotbarSlot = $stream->getVarInt();
-		$this->itemInHand = ItemStackWrapper::read($stream, $tr);
+		$this->itemInHand = ItemStackWrapper::read($stream, true);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
 		$this->blockRuntimeId = $stream->getUnsignedVarInt();
@@ -117,13 +117,13 @@ class UseItemTransactionData extends TransactionData{
 		$this->clientCooldownState = $stream->getByte();
 	}
 
-	protected function encodeData(PacketSerializer $stream, bool $tr = false) : void{
-		$tr ? $stream->putVarInt($this->actionType) : $stream->putUnsignedVarInt($this->actionType);
-		$tr ? $stream->putByte($this->triggerType) : $stream->putUnsignedVarInt($this->triggerType);
+	protected function encodeData(PacketSerializer $stream) : void{
+		$stream->putVarInt($this->actionType);
+		$stream->putByte($this->triggerType);
 		$stream->putBlockPosition($this->blockPos->x, $this->blockPos->y, $this->blockPos->z);
-		$tr ? $stream->putByte($this->face) : $stream->putVarInt($this->face);
+		$stream->putByte($this->face);
 		$stream->putVarInt($this->hotbarSlot);
-		$this->itemInHand->write($stream, $tr);
+		$this->itemInHand->write($stream, true);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
 		$stream->putUnsignedVarInt($this->blockRuntimeId);
