@@ -54,23 +54,13 @@ final class PersonaSkinPiece{
 	public const PIECE_TYPE_CLASSIC_SKIN = 25;
 	public const PIECE_TYPE_EMOTE = 26;
 
-	/** @var string */
-	private $pieceId;
-	/** @var string */
-	private $pieceType;
-	/** @var UUID */
-	private $packId;
-	/** @var bool */
-	private $isDefaultPiece;
-	/** @var string */
-	private $productId;
 
-	public function __construct(string $pieceId, int $pieceType, UUID $packId, bool $isDefaultPiece, string $productId){
-		$this->pieceId = $pieceId;
-		$this->pieceType = $pieceType;
-		$this->packId = $packId;
-		$this->isDefaultPiece = $isDefaultPiece;
-		$this->productId = $productId;
+	public function __construct(
+		private string $pieceId,
+		private int $pieceType,
+		private UUID $packId,
+		private bool $isDefaultPiece,
+		private string $productId){
 	}
 
 	public function getPieceId() : string{
