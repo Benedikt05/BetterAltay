@@ -175,6 +175,7 @@ use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\network\mcpe\protocol\SetTitlePacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
+use pocketmine\network\mcpe\protocol\SyncActorPropertyPacket;
 use pocketmine\network\mcpe\protocol\TextPacket;
 use pocketmine\network\mcpe\protocol\ToastRequestPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
@@ -2633,6 +2634,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->worldTemplateId = new UUID();
 		$this->dataPacket($pk);
 
+		foreach(SyncActorPropertyPacket::fromJson() as $packet){
+			$this->sendDataPacket($packet);
+		}
 		$this->sendDataPacket(ItemRegistryPacket::create(ItemTypeDictionary::getInstance()->getEntries()));
 		$this->sendDataPacket(new AvailableActorIdentifiersPacket());
 		$this->sendDataPacket(BiomeDefinitionListPacket::create());
