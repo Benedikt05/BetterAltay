@@ -308,5 +308,7 @@ interface ItemIds extends BlockIds{
 	public const COPPER_HOE = 797;
 	public const COPPER_NUGGET = 798;
 	public const RECORD_BOUNCE = 799;
+	public const BLUE_EGG = 851;
+	public const BROWN_EGG = 852;
 
 }

@@ -40,6 +40,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\hostile\Skeleton;
 use pocketmine\entity\Tamable;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
@@ -146,5 +147,17 @@ class Wolf extends Tamable{
 		}
 
 		$this->setAttackDamage(4);
+	}
+
+	public function isBreedingItem(Item $item): bool{
+		return match ($item->getId()) {
+			ItemIds::BEEF,
+			ItemIds::CHICKEN,
+			ItemIds::MUTTON,
+			ItemIds::PORKCHOP,
+			ItemIds::RABBIT,
+			ItemIds::ROTTEN_FLESH => true,
+			default => false,
+		};
 	}
 }

@@ -37,6 +37,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
@@ -135,4 +136,13 @@ class Cat extends Tamable{
 			parent::attack($source);
 		}
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::FISH,
+			ItemIds::SALMON => true,
+			default => false,
+		};
+	}
+
 }

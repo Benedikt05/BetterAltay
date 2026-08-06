@@ -37,6 +37,7 @@ use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\inventory\HorseInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
@@ -177,4 +178,13 @@ class Horse extends AbstractHorse implements InventoryHolder{
 			$this->namedtag->setTag($this->inventory->getArmor()->nbtSerialize(-1, "ArmorItem"));
 		}
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::GOLDEN_APPLE,
+			ItemIds::GOLDEN_CARROT => true,
+			default => false,
+		};
+	}
+
 }

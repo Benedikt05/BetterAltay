@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\entity\Animal;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
@@ -33,16 +32,18 @@ use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\ClimateAnimal;
 use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use function boolval;
 use function intval;
 use function rand;
 
-class Pig extends Animal implements PlayerInventoryMount{
+class Pig extends ClimateAnimal implements PlayerInventoryMount{
 
 	public const NETWORK_ID = self::PIG;
 
@@ -121,4 +122,14 @@ class Pig extends Animal implements PlayerInventoryMount{
 	public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
 		return new Vector3(0, 0.63, 0);
 	}
+
+	public function isBreedingItem(Item $item) : bool{
+		return match ($item->getId()) {
+			ItemIds::CARROT,
+			ItemIds::POTATO,
+			ItemIds::BEETROOT => true,
+			default => false,
+		};
+	}
+
 }
