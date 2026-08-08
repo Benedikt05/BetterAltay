@@ -38,6 +38,7 @@ use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
 use pocketmine\entity\Monster;
 use pocketmine\entity\SpawnPlacementTypes;
+use pocketmine\entity\BiommeVariantEntity;
 use pocketmine\entity\WaterAnimal;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\biome\SpawnListEntry;
@@ -125,6 +126,8 @@ class AnimalSpawner{
 
 													if($entity instanceof ClimateEntity){
 														$entity->setClimateVariantFromBiome($level->getBiome($pos1->getFloorX(), $pos1->getFloorZ()));
+													}elseif($entity instanceof BiommeVariantEntity){
+														$entity->setVariantFromBiome($level->getBiome($pos1->getFloorX(), $pos1->getFloorZ()));
 													}
 
 													if($entity instanceof Mob){
@@ -252,6 +255,8 @@ class AnimalSpawner{
 
 							if($entity instanceof ClimateEntity){
 								$entity->setClimateVariantFromBiome($biome);
+							}elseif($entity instanceof BiommeVariantEntity){
+								$entity->setVariantFromBiome($biome);
 							}
 
 							if($entity instanceof Mob){
