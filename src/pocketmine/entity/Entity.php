@@ -2640,9 +2640,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->pitch = $this->pitch;
 		$pk->attributes = $this->attributeMap->getAll();
 		$pk->metadata = $this->propertyManager->getAll();
-		if($this instanceof ClimateAnimal){
+		if($this instanceof ClimateEntity){
 			$pk->entityProperties = new EntityProperties([
-				new IntEntityProperty(0, $this->climateVariant)
+				new IntEntityProperty(0, $this->getClimateVariant())
 			]);
 		}
 
@@ -2809,9 +2809,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk = new SetActorDataPacket();
 		$pk->entityRuntimeId = $this->getId();
 		$pk->metadata = $data ?? $this->propertyManager->getAll();
-		if($this instanceof ClimateAnimal){
+		if($this instanceof ClimateEntity){
 			$pk->entityProperties = new EntityProperties([
-				new IntEntityProperty(0, $this->climateVariant)
+				new IntEntityProperty(0, $this->getClimateVariant())
 			]);
 		}
 

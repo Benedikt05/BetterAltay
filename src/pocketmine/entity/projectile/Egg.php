@@ -43,7 +43,7 @@ class Egg extends Throwable{
 
 		if(mt_rand(1, 8) === 1){
 			$nbt = Entity::createBaseNBT($this);
-			$nbt->setInt("ClimateVariant", $this->namedtag->getInt("ClimateVariant", ClimateVariant::CLIMATE_TEMPERATE));
+			$nbt->setInt("ClimateVariant", $this->namedtag->getInt("ClimateVariant", ClimateVariant::VARIANT_TEMPERATE));
 
 			$chicken = Entity::createEntity("Chicken", $this->level, $nbt);
 

@@ -30,6 +30,7 @@ use pocketmine\block\Leaves;
 use pocketmine\block\Liquid;
 use pocketmine\block\Water;
 use pocketmine\entity\Animal;
+use pocketmine\entity\ClimateEntity;
 use pocketmine\entity\Creature;
 use pocketmine\entity\CreatureType;
 use pocketmine\entity\Entity;
@@ -120,6 +121,10 @@ class AnimalSpawner{
 														$entity = new $class($level, Entity::createBaseNBT($pos1->add(0.5, 0, 0.5)));
 													}catch(Exception $e){
 														return;
+													}
+
+													if($entity instanceof ClimateEntity){
+														$entity->setClimateVariantFromBiome($level->getBiome($pos1->getFloorX(), $pos1->getFloorZ()));
 													}
 
 													if($entity instanceof Mob){
@@ -243,6 +248,10 @@ class AnimalSpawner{
 								$entity = new $class($level, Entity::createBaseNBT($pos->add(0.5, 0, 0.5)));
 							}catch(Exception $e){
 								continue;
+							}
+
+							if($entity instanceof ClimateEntity){
+								$entity->setClimateVariantFromBiome($biome);
 							}
 
 							if($entity instanceof Mob){

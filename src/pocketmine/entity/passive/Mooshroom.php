@@ -33,7 +33,7 @@ use pocketmine\item\Shears;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Mooshroom extends Cow{
+class Mooshroom extends BaseCow{
 
 	public const NETWORK_ID = self::MOOSHROOM;
 
