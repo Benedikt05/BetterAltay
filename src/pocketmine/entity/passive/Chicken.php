@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\entity\Animal;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
@@ -33,6 +32,8 @@ use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\ClimateAnimal;
+use pocketmine\entity\ClimateVariant;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -41,7 +42,7 @@ use function boolval;
 use function intval;
 use function rand;
 
-class Chicken extends Animal{
+class Chicken extends ClimateAnimal{
 
 	public const NETWORK_ID = self::CHICKEN;
 
@@ -136,6 +137,7 @@ class Chicken extends Animal{
 			ItemIds::BEETROOT_SEEDS,
 			ItemIds::TORCHFLOWER_SEEDS,
 			ItemIds::PITCHER_POD => true,
+
 			default => false,
 		};
 	}

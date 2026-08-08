@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\entity\Animal;
 use pocketmine\entity\behavior\FloatBehavior;
 use pocketmine\entity\behavior\FollowParentBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
@@ -33,6 +32,7 @@ use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
+use pocketmine\entity\ClimateAnimal;
 use pocketmine\entity\PlayerInventoryMount;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -43,7 +43,7 @@ use function boolval;
 use function intval;
 use function rand;
 
-class Pig extends Animal implements PlayerInventoryMount{
+class Pig extends ClimateAnimal implements PlayerInventoryMount{
 
 	public const NETWORK_ID = self::PIG;
 

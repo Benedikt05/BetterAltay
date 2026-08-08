@@ -44,17 +44,15 @@ class PlayerSkinPacket extends DataPacket{
 	protected function decodePayload(){
 		$this->uuid = $this->getUUID();
 		$this->skin = $this->getSkin();
-		$this->newSkinName = $this->getString();
 		$this->oldSkinName = $this->getString();
-		$this->skin->setVerified($this->getBool());
+		$this->newSkinName = $this->getString();
 	}
 
 	protected function encodePayload(){
 		$this->putUUID($this->uuid);
 		$this->putSkin($this->skin);
-		$this->putString($this->newSkinName);
 		$this->putString($this->oldSkinName);
-		$this->putBool($this->skin->isVerified());
+		$this->putString($this->newSkinName);
 	}
 
 	public function handle(NetworkSession $session) : bool{

@@ -28,14 +28,14 @@ final class PlayerBlockActionWithBlockInfo implements PlayerBlockAction{
 
 	public static function read(NetworkBinaryStream $in, int $actionType) : self{
 		$x = $y = $z = 0;
-		$in->getSignedBlockPosition($x, $y, $z);
+		$in->getBlockPosition($x, $y, $z);
 		$blockPosition = new Vector3($x, $y, $z);
 		$face = $in->getVarInt();
 		return new self($actionType, $blockPosition, $face);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putSignedBlockPosition($this->blockPosition->x, $this->blockPosition->y, $this->blockPosition->z);
+		$out->putBlockPosition($this->blockPosition->x, $this->blockPosition->y, $this->blockPosition->z);
 		$out->putVarInt($this->face);
 	}
 
@@ -43,6 +43,7 @@ final class PlayerBlockActionWithBlockInfo implements PlayerBlockAction{
 		return match($actionType){
 			PlayerAction::ACTION_ABORT_BREAK,
 			PlayerAction::ACTION_START_BREAK,
+			PlayerAction::ACTION_STOP_BREAK,
 			PlayerAction::ACTION_CRACK_BREAK,
 			PlayerAction::ACTION_PREDICT_DESTROY_BLOCK,
 			PlayerAction::ACTION_CONTINUE_DESTROY_BLOCK => true,

@@ -23,14 +23,14 @@ final class CreativeGroupEntry{
 	public function getIcon() : Item{ return $this->icon; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$categoryId = $in->getLInt();
+		$categoryId = $in->getByte();
 		$categoryName = $in->getString();
 		$icon = $in->getItemStackWithoutStackId();
 		return new self($categoryId, $categoryName, $icon);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putLInt($this->categoryId);
+		$out->putByte($this->categoryId);
 		$out->putString($this->categoryName);
 		$out->putItemStackWithoutStackId($this->icon);
 	}

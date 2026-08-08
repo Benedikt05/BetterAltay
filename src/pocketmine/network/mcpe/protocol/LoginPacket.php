@@ -41,36 +41,27 @@ use function json_decode;
 class LoginPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::LOGIN_PACKET;
 
-	/** @var string */
 	public string $username;
-	/** @var int */
 	public int $protocol;
-	/** @var string */
 	public string $clientUUID;
-	/** @var int */
 	public int $clientId;
-	/** @var string|null */
 	public ?string $xuid = null;
-	/** @var string */
 	public string $identityPublicKey;
-	/** @var string */
 	public string $serverAddress;
-	/** @var string */
 	public string $locale;
 
 	/**
 	 * @var array<string, mixed> Raw login data from the client
-	 * @phpstan-var array{
+	 * @phpstan-var array{}|array{
 	 *   AuthenticationType: int,
-	 *   Certificate: string,
+	 *   Certificate?: string,
 	 *   Token: string
 	 * }
 	 */
 	public array $loginData = [];
-	/** @var string */
 	public string $clientDataJwt;
 	/**
-	 * @var mixed[] decoded payload of the clientData JWT
+	 * @var array decoded payload of the clientData JWT
 	 * @phpstan-var array<string, mixed>
 	 */
 	public array $clientData = [];

@@ -138,7 +138,6 @@ class StartGamePacket extends DataPacket{
 	public bool $clientSideGeneration = false;
 	public bool $blockNetworkIdsAreHashes = false;
 	public bool $serverAuthSound = true;
-	public bool $isLoggingChat = false;
 	public bool $serverJoinInformation = false;
 	public string $serverId = "";
 	public string $scenarioId = "";
@@ -168,7 +167,7 @@ class StartGamePacket extends DataPacket{
 		$this->createdInEditor = $this->getBool();
 		$this->exportedFromEditor = $this->getBool();
 		$this->time = $this->getVarInt();
-		$this->eduEditionOffer = $this->getVarInt();
+		$this->eduEditionOffer = $this->getUnsignedVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
 		$this->eduProductUUID = $this->getString();
 		$this->rainLevel = $this->getLFloat();
@@ -180,11 +179,11 @@ class StartGamePacket extends DataPacket{
 		$this->platformBroadcastMode = $this->getVarInt();
 		$this->commandsEnabled = $this->getBool();
 		$this->isTexturePacksRequired = $this->getBool();
-		$this->gameRules = $this->getGameRules(true);
+		$this->gameRules = $this->getGameRules();
 		$this->experiments = Experiments::read($this);
 		$this->hasBonusChestEnabled = $this->getBool();
 		$this->hasStartWithMapEnabled = $this->getBool();
-		$this->defaultPlayerPermission = $this->getVarInt();
+		$this->defaultPlayerPermission = $this->getByte();
 		$this->serverChunkTickRadius = $this->getLInt();
 		$this->hasLockedBehaviorPack = $this->getBool();
 		$this->hasLockedResourcePack = $this->getBool();
@@ -236,7 +235,6 @@ class StartGamePacket extends DataPacket{
 		$this->clientSideGeneration = $this->getBool();
 		$this->blockNetworkIdsAreHashes = $this->getBool();
 		$this->serverAuthSound = $this->getBool();
-		$this->isLoggingChat = $this->getBool();
 		$this->serverJoinInformation = $this->getBool();
 		if($this->serverJoinInformation){
 			$this->getBool();
@@ -270,7 +268,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->createdInEditor);
 		$this->putBool($this->exportedFromEditor);
 		$this->putVarInt($this->time);
-		$this->putVarInt($this->eduEditionOffer);
+		$this->putUnsignedVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
 		$this->putString($this->eduProductUUID);
 		$this->putLFloat($this->rainLevel);
@@ -282,11 +280,11 @@ class StartGamePacket extends DataPacket{
 		$this->putVarInt($this->platformBroadcastMode);
 		$this->putBool($this->commandsEnabled);
 		$this->putBool($this->isTexturePacksRequired);
-		$this->putGameRules($this->gameRules, true);
+		$this->putGameRules($this->gameRules);
 		$this->experiments->write($this);
 		$this->putBool($this->hasBonusChestEnabled);
 		$this->putBool($this->hasStartWithMapEnabled);
-		$this->putVarInt($this->defaultPlayerPermission);
+		$this->putByte($this->defaultPlayerPermission);
 		$this->putLInt($this->serverChunkTickRadius);
 		$this->putBool($this->hasLockedBehaviorPack);
 		$this->putBool($this->hasLockedResourcePack);
@@ -339,11 +337,7 @@ class StartGamePacket extends DataPacket{
 		$this->putBool($this->clientSideGeneration);
 		$this->putBool($this->blockNetworkIdsAreHashes);
 		$this->putBool($this->serverAuthSound);	//NetworkPermissions
-		$this->putBool($this->isLoggingChat);
 		$this->putBool($this->serverJoinInformation = false); //make sure this is false for now as we don't have all fields implemented related to this yet
-		if($this->serverJoinInformation){
-			$this->putBool(false); //containsGatheringJoinInfo
-		}
 		//ServerTelemetryData
 		$this->putString($this->serverId);
 		$this->putString($this->scenarioId);

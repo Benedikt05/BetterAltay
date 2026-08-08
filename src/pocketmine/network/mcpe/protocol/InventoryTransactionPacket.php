@@ -48,7 +48,7 @@ class InventoryTransactionPacket extends DataPacket{
 	public int $requestId;
 	/** @var InventoryTransactionChangedSlotsHack[] */
 	public array $requestChangedSlots;
-	public TransactionData $trData;
+	public ?TransactionData $trData;
 
 	protected function decodePayload() : void{
 		$this->requestId = $this->readGenericTypeNetworkId();
@@ -73,10 +73,12 @@ class InventoryTransactionPacket extends DataPacket{
 			self::TYPE_RELEASE_ITEM => new ReleaseItemTransactionData(),
 			default => throw new PacketDecodeException("Unknown transaction type $transactionType"),
 		};
-
-		if($this->getBool()){
-			$this->trData->decode($this, true);
+		$hasTrData = $this->getBool();
+		if(!$hasTrData){
+			$this->trData = null;
+			return;
 		}
+		$this->trData->decode($this);
 	}
 
 	protected function encodePayload() : void{
@@ -89,11 +91,11 @@ class InventoryTransactionPacket extends DataPacket{
 			}
 		}
 
-		$this->putBool(true);
-		$this->putUnsignedVarInt($this->trData->getTypeId());
-
-		$this->putBool(true);
-		$this->trData->encode($this, true);
+		$this->putBool($this->trData !== null);
+		if($this->trData !== null){
+			$this->putUnsignedVarInt($this->trData->getTypeId());
+			$this->trData->encode($this);
+		}
 	}
 
 	public function handle(PacketHandlerInterface $session) : bool{

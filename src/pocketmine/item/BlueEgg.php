@@ -23,31 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
-use pocketmine\entity\ClimateVariant;
-use pocketmine\nbt\tag\CompoundTag;
-
-class Egg extends ProjectileItem{
+class BlueEgg extends Egg{
 	public function __construct(int $meta = 0){
-		parent::__construct(self::EGG, $meta, "Egg");
-	}
-
-	public function getMaxStackSize() : int{
-		return 16;
-	}
-
-	public function getProjectileEntityType() : string{
-		return "Egg";
-	}
-
-	public function getThrowForce() : float{
-		return 1.5;
-	}
-
-	protected function addExtraTags(CompoundTag $tag) : void{
-		$tag->setInt("ClimateVariant", match ($this->getId()) {
-			self::BLUE_EGG => ClimateVariant::CLIMATE_COLD,
-			self::BROWN_EGG => ClimateVariant::CLIMATE_WARM,
-			default => ClimateVariant::CLIMATE_TEMPERATE
-		});
+		parent::__construct( $meta);
+		$this->id = self::BLUE_EGG;
+		$this->name = "Blue Egg";
 	}
 }

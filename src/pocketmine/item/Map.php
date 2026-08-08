@@ -52,8 +52,8 @@ class Map extends Item{
 
 				$data->updateVisiblePlayers($player, $this);
 
-				if($pk = $data->getMapInfo($player)->getPacket($data)){
-					$player->sendDataPacket($pk);
+				if($pk = $data->getMapInfo($player)->getPacket($data)){//TODO: fix this
+					//$player->sendDataPacket($pk);
 				}
 			}
 		}

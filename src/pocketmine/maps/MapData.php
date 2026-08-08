@@ -321,7 +321,7 @@ class MapData{
 
 			$mo = new MapTrackedObject();
 			$mo->entityUniqueId = $player->getId();
-			$mo->type = MapTrackedObject::TYPE_PLAYER;
+			$mo->type = MapTrackedObject::TYPE_ENTITY;
 			$this->trackedObjects[$player->getName()] = $mo;
 		}
 		return $this->playersMap[spl_object_hash($player)];
@@ -361,7 +361,7 @@ class MapData{
 			$this->playersMap[$hash] = new MapInfo($player);
 			$mo = new MapTrackedObject();
 			$mo->entityUniqueId = $player->getId();
-			$mo->type = MapTrackedObject::TYPE_PLAYER;
+			$mo->type = MapTrackedObject::TYPE_ENTITY;
 			$this->trackedObjects[$player->getName()] = $mo;
 		}
 

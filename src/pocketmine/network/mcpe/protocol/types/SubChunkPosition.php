@@ -41,20 +41,6 @@ final class SubChunkPosition{
 	public function getZ() : int{ return $this->z; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$x = $in->getVarInt();
-		$y = $in->getVarInt();
-		$z = $in->getVarInt();
-
-		return new self($x, $y, $z);
-	}
-
-	public function write(NetworkBinaryStream $out) : void{
-		$out->putVarInt($this->x);
-		$out->putVarInt($this->y);
-		$out->putVarInt($this->z);
-	}
-
-	public static function readCereal(NetworkBinaryStream $in) : self{
 		$x = $in->getLInt();
 		$y = $in->getLInt();
 		$z = $in->getLInt();
@@ -62,7 +48,7 @@ final class SubChunkPosition{
 		return new self($x, $y, $z);
 	}
 
-	public function writeCereal(NetworkBinaryStream $out) : void{
+	public function write(NetworkBinaryStream $out) : void{
 		$out->putLInt($this->x);
 		$out->putLInt($this->y);
 		$out->putLInt($this->z);

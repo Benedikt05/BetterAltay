@@ -110,6 +110,8 @@ use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
 use pocketmine\network\mcpe\protocol\StopSoundPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entityProperty\EntityProperties;
+use pocketmine\network\mcpe\protocol\types\entityProperty\IntEntityProperty;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
@@ -2646,6 +2648,11 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->pitch = $this->pitch;
 		$pk->attributes = $this->attributeMap->getAll();
 		$pk->metadata = $this->propertyManager->getAll();
+		if($this instanceof ClimateAnimal){
+			$pk->entityProperties = new EntityProperties([
+				new IntEntityProperty(0, $this->climateVariant)
+			]);
+		}
 
 		if(!empty($this->passengers)){
 			foreach($this->getPassengers() as $passenger){
@@ -2810,6 +2817,11 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk = new SetActorDataPacket();
 		$pk->entityRuntimeId = $this->getId();
 		$pk->metadata = $data ?? $this->propertyManager->getAll();
+		if($this instanceof ClimateAnimal){
+			$pk->entityProperties = new EntityProperties([
+				new IntEntityProperty(0, $this->climateVariant)
+			]);
+		}
 
 		foreach($player as $p){
 			if($p === $this){

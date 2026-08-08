@@ -170,6 +170,8 @@ class ItemFactory{
 		//TODO: CHEST_MINECART
 
 		self::registerItem(new Egg());
+		self::registerItem(new BrownEgg());
+		self::registerItem(new BlueEgg());
 		self::registerItem(new Compass());
 		self::registerItem(new FishingRod());
 		self::registerItem(new Clock());

@@ -534,7 +534,10 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_BUCKET_EMPTY_LAND_ANIMAL = 608;
 	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_START = 609;
 	public const SOUND_GEYSER_CONTINUOUS_ERUPTION_ACTIVE = 610;
-	public const SOUND_UNDEFINED = 611;
+	public const SOUND_MOUNT = 611;
+	public const SOUND_DISMOUNT = 612;
+	public const SOUND_STRAW_BED_BREAK_LEAVE = 613;
+	public const SOUND_UNDEFINED = 614;
 
 	/** @var array<int, string> */
 	private static array $idToStringMap;

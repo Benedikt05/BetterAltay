@@ -31,30 +31,41 @@ use function count;
 class ResourcePackClientResponsePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::RESOURCE_PACK_CLIENT_RESPONSE_PACKET;
 
-	public const STATUS_REFUSED = 1;
-	public const STATUS_SEND_PACKS = 2;
-	public const STATUS_HAVE_ALL_PACKS = 3;
-	public const STATUS_COMPLETED = 4;
+	public const STATUS_REFUSED = 0; //cancel
+	public const STATUS_SEND_PACKS = 1; //downloading
+	public const STATUS_HAVE_ALL_PACKS = 2; //downloadingfinished
+	public const STATUS_COMPLETED = 3; //resourcepackstackfinished
 
-	/** @var int */
-	public $status;
+	public int $status;
 	/** @var string[] */
-	public $packIds = [];
+	public array $packIds = [];
 
-	protected function decodePayload(){
-		$this->status = $this->getByte();
-		$entryCount = $this->getLShort();
-		$this->packIds = [];
-		while($entryCount-- > 0){
-			$this->packIds[] = $this->getString();
+	protected function decodePayload() : void{
+		$this->status = $this->getUnsignedVarInt();
+		$this->getString(); //status/response string
+		if($this->status === self::STATUS_SEND_PACKS){
+			$entryCount = $this->getUnsignedVarInt();
+			$this->packIds = [];
+			while($entryCount-- > 0){
+				$this->packIds[] = $this->getString();
+			}
 		}
 	}
 
-	protected function encodePayload(){
-		$this->putByte($this->status);
-		$this->putLShort(count($this->packIds));
-		foreach($this->packIds as $id){
-			$this->putString($id);
+	protected function encodePayload() : void{
+		$this->putUnsignedVarInt($this->status);
+		$this->putString(match($this->status){
+			self::STATUS_REFUSED => "cancel",
+			self::STATUS_SEND_PACKS => "downloading",
+			self::STATUS_HAVE_ALL_PACKS => "downloadingfinished",
+			self::STATUS_COMPLETED => "resourcepackstackfinished",
+			default => "",
+		});
+		if($this->status === self::STATUS_SEND_PACKS){
+			$this->putUnsignedVarInt(count($this->packIds));
+			foreach($this->packIds as $id){
+				$this->putString($id);
+			}
 		}
 	}
 

@@ -3644,14 +3644,14 @@
             "block_state_b64": "CgAAAwgAYmxvY2tfaWRDBQAACAQAbmFtZRAAbWluZWNyYWZ0OnN1bGZ1cgQJAG5hbWVfaGFzaCN+t2Hu6rHYAwoAbmV0d29ya19pZNiNZS0KBgBzdGF0ZXMAAwcAdmVyc2lvbiE8FQEA"
         },
         {
-            "id": "minecraft:polished_sulfur",
-            "groupId": 27,
-            "block_state_b64": "CgAAAwgAYmxvY2tfaWRIBQAACAQAbmFtZRkAbWluZWNyYWZ0OnBvbGlzaGVkX3N1bGZ1cgQJAG5hbWVfaGFzaBw8CnPc8T0IAwoAbmV0d29ya19pZKTrH8gKBgBzdGF0ZXMAAwcAdmVyc2lvbiE8FQEA"
-        },
-        {
             "id": "minecraft:potent_sulfur",
             "groupId": 27,
             "block_state_b64": "CgAAAwgAYmxvY2tfaWRTBQAACAQAbmFtZRcAbWluZWNyYWZ0OnBvdGVudF9zdWxmdXIECQBuYW1lX2hhc2gQceqavaD5lgMKAG5ldHdvcmtfaWRrI6XYCgYAc3RhdGVzCBMAcG90ZW50X3N1bGZ1cl9zdGF0ZQMAZHJ5AAMHAHZlcnNpb24hPBUBAA=="
+        },
+        {
+            "id": "minecraft:polished_sulfur",
+            "groupId": 27,
+            "block_state_b64": "CgAAAwgAYmxvY2tfaWRIBQAACAQAbmFtZRkAbWluZWNyYWZ0OnBvbGlzaGVkX3N1bGZ1cgQJAG5hbWVfaGFzaBw8CnPc8T0IAwoAbmV0d29ya19pZKTrH8gKBgBzdGF0ZXMAAwcAdmVyc2lvbiE8FQEA"
         },
         {
             "id": "minecraft:gravel",

@@ -22,22 +22,22 @@ class GameTestRequestPacket extends DataPacket{
 	public int $testsPerRow;
 	public string $testName;
 
-	protected function decodePayload(){
+	protected function decodePayload() : void{
 		$this->maxTestsPerBatch = $this->getVarInt();
 		$this->repeatCount = $this->getVarInt();
 		$this->rotation = $this->getByte();
 		$this->stopOnFailure = $this->getBool();
-		$this->getSignedBlockPosition($this->x, $this->y, $this->z);
+		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->testsPerRow = $this->getVarInt();
 		$this->testName = $this->getString();
 	}
 
-	protected function encodePayload(){
+	protected function encodePayload() : void{
 		$this->putVarInt($this->maxTestsPerBatch);
 		$this->putVarInt($this->repeatCount);
 		$this->putByte($this->rotation);
 		$this->putBool($this->stopOnFailure);
-		$this->putSignedBlockPosition($this->x, $this->y, $this->z);
+		$this->putBlockPosition($this->x, $this->y, $this->z);
 		$this->putVarInt($this->testsPerRow);
 		$this->putString($this->testName);
 	}

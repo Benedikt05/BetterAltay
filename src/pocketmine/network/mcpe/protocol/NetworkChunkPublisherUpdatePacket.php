@@ -30,17 +30,13 @@ use pocketmine\network\mcpe\NetworkSession;
 class NetworkChunkPublisherUpdatePacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET;
 
-	/** @var int */
-	public $x;
-	/** @var int */
-	public $y;
-	/** @var int */
-	public $z;
-	/** @var int */
-	public $radius;
+	public int $x;
+	public int $y;
+	public int $z;
+	public int $radius;
 
-	protected function decodePayload(){
-		$this->getSignedBlockPosition($this->x, $this->y, $this->z);
+	protected function decodePayload() : void{
+		$this->getBlockPosition($this->x, $this->y, $this->z);
 		$this->radius = $this->getUnsignedVarInt();
 		for($i = 0, $count = $this->getLInt(); $i < $count; $i++){
 			$this->getVarInt();
@@ -48,8 +44,8 @@ class NetworkChunkPublisherUpdatePacket extends DataPacket{
 		}
 	}
 
-	protected function encodePayload(){
-		$this->putSignedBlockPosition($this->x, $this->y, $this->z);
+	protected function encodePayload() : void{
+		$this->putBlockPosition($this->x, $this->y, $this->z);
 		$this->putUnsignedVarInt($this->radius);
 		$this->putLInt(0); //Saved chunks
 	}
