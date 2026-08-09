@@ -100,8 +100,8 @@ class Chicken extends Animal implements ClimateEntity{
 	}
 
 	public function getDrops() : array{
-		return [
-			($this->isOnFire() ? ItemFactory::get(Item::COOKED_CHICKEN, 0, 1) : ItemFactory::get(Item::RAW_CHICKEN, 0, 1)),
+		return $this->isBaby() ? [] : [
+			($this->isOnFire() ? ItemFactory::get(Item::COOKED_CHICKEN) : ItemFactory::get(Item::RAW_CHICKEN)),
 			ItemFactory::get(Item::FEATHER, 0, rand(0, 2))
 		];
 	}
