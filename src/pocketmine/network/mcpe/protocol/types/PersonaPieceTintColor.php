@@ -39,6 +39,7 @@ final class PersonaPieceTintColor{
 		"top" => 6,
 		"high_pants" => 7,
 		"hands" => 8,
+		"hand" => 8,
 		"outerwear" => 9,
 		"facial_hair" => 10,
 		"mouth" => 11,
@@ -67,7 +68,7 @@ final class PersonaPieceTintColor{
 	 * @param int[] $colors
 	 */
 	public function __construct(int|string $pieceType, array $colors){
-		$this->serializeName = $this->resolveSerializeName($pieceType);
+		$this->serializeName = self::resolveSerializeName($pieceType);
 		$this->colors = $colors;
 	}
 

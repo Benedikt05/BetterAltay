@@ -86,6 +86,7 @@ final class PersonaSkinPiece{
 			"top" => 7,
 			"high_pants" => 8,
 			"hands" => 9,
+			"hand" => 9,
 			"outerwear" => 10,
 			"facialhair" => 11,
 			"facial_hair" => 11,
