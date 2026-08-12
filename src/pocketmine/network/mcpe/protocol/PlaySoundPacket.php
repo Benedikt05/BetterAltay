@@ -37,7 +37,9 @@ class PlaySoundPacket extends DataPacket{
 	public float $volume;
 	public float $pitch;
 	public int $loopCount = 0;
+	public bool $bypassListenerRangeCheck = false;
 	public ?int $serverSoundHandle = null;
+	public ?float $playbackPositionSeconds = null;
 
 	protected function decodePayload() : void{
 		$this->soundName = $this->getString();
@@ -48,7 +50,9 @@ class PlaySoundPacket extends DataPacket{
 		$this->volume = $this->getLFloat();
 		$this->pitch = $this->getLFloat();
 		$this->loopCount = $this->getVarInt();
+		$this->bypassListenerRangeCheck = $this->getBool();
 		$this->serverSoundHandle = $this->readOptional(fn() => $this->getLLong());
+		$this->playbackPositionSeconds = $this->readOptional(fn() => $this->getLFloat());
 	}
 
 	protected function encodePayload() : void{
@@ -57,7 +61,9 @@ class PlaySoundPacket extends DataPacket{
 		$this->putLFloat($this->volume);
 		$this->putLFloat($this->pitch);
 		$this->putVarInt($this->loopCount);
+		$this->putBool($this->bypassListenerRangeCheck);
 		$this->writeOptional($this->serverSoundHandle, fn(int $serverSoundHandle) => $this->putLLong($serverSoundHandle));
+		$this->writeOptional($this->playbackPositionSeconds, fn(int $playbackPositionSeconds) => $this->putLFloat($playbackPositionSeconds));
 	}
 
 	public function handle(NetworkSession $session) : bool{
