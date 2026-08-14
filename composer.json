@@ -41,7 +41,7 @@
       "pocketmine/classloader": "^0.1.0",
       "pocketmine/log": "^0.2.0",
       "pocketmine/log-pthreads": "^0.1.0",
-      "pocketmine/math": "^0.2.0",
+      "pocketmine/math": "^1.0.0",
       "pocketmine/raklib": "^0.12.7",
       "pocketmine/snooze": "^0.1.0",
       "pocketmine/spl": "^0.4.0"
