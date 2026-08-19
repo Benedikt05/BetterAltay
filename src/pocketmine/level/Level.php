@@ -1976,7 +1976,6 @@ class Level implements ChunkManager, Metadatable{
 		foreach($affectedBlocks as $t){
 			$this->destroyBlockInternal($t, $item, $player, $createParticles);
 		}
-		$this->broadcastLevelSoundEvent($target, LevelSoundEventPacket::SOUND_BREAK, RuntimeBlockMapping::toStaticRuntimeHash($target->getRuntimeId()));
 
 		$item->onDestroyBlock($target);
 

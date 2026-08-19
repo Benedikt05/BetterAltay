@@ -37,8 +37,8 @@ class SubChunkPacketHeightMapInfo{
 	 * @phpstan-param list<int> $heights
 	 */
 	public function __construct(private array $heights){
-		if(count($heights) !== 256){
-			throw new InvalidArgumentException("Expected exactly 256 heightmap values");
+		if(count($heights) !== 272){
+			throw new InvalidArgumentException("Expected exactly 272 heightmap values");
 		}
 	}
 
@@ -51,24 +51,24 @@ class SubChunkPacketHeightMapInfo{
 
 	public static function read(NetworkBinaryStream $in) : self{
 		$heights = [];
-		for($i = 0; $i < 256; ++$i){
+		for($i = 0; $i < 272; ++$i){
 			$heights[] = Binary::signByte($in->getByte());
 		}
 		return new self($heights);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		for($i = 0; $i < 256; ++$i){
+		for($i = 0; $i < 272; ++$i){
 			$out->putByte(Binary::unsignByte($this->heights[$i]));
 		}
 	}
 
 	public static function allTooLow() : self{
-		return new self(array_fill(0, 256, -1));
+		return new self(array_fill(0, 272, -1));
 	}
 
 	public static function allTooHigh() : self{
-		return new self(array_fill(0, 256, 16));
+		return new self(array_fill(0, 272, 16));
 	}
 
 	public function isAllTooLow() : bool{
