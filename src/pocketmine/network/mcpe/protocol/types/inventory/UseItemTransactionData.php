@@ -77,6 +77,10 @@ class UseItemTransactionData extends TransactionData{
 		return $this->hotbarSlot;
 	}
 
+	public function getHandSlot() : int{
+		return $this->handSlot;
+	}
+
 	public function getItemInHand() : ItemStackWrapper{
 		return $this->itemInHand;
 	}
