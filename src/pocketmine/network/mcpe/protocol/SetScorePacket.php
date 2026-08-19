@@ -47,7 +47,9 @@ class SetScorePacket extends DataPacket{
 
 			switch($entry->type){
 				case ScorePacketEntry::TYPE_REMOVE:
-					$entry->objectiveName = $this->readOptional(fn() => $this->getString());
+					if($this->getBool()){
+						$entry->objectiveName = $this->readOptional(fn() => $this->getString());
+					}
 					break;
 				case ScorePacketEntry::TYPE_PLAYER:
 				case ScorePacketEntry::TYPE_ENTITY:
@@ -83,6 +85,7 @@ class SetScorePacket extends DataPacket{
 			$objectiveName = $entry->objectiveName === "" ? " " : $entry->objectiveName;
 			switch($entry->type){
 				case ScorePacketEntry::TYPE_REMOVE:
+					$this->putBool(true);
 					$this->writeOptional($objectiveName, fn($objectiveName) => $this->putString($objectiveName));
 					break;
 				case ScorePacketEntry::TYPE_PLAYER:
