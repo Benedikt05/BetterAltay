@@ -37,7 +37,7 @@ final class ItemInteractionData{
 	public static function read(NetworkBinaryStream $in) : self{
 		$requestId = $in->getVarInt();
 		$requestChangedSlots = [];
-		if($requestId !== 0){
+		if($in->getBool()){
 			$len = $in->getUnsignedVarInt();
 			for($i = 0; $i < $len; ++$i){
 				$requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);

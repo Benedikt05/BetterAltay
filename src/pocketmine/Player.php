@@ -2634,10 +2634,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->playerMovementSettings = new PlayerMovementSettings(0, false);
 		$pk->serverSoftwareVersion = sprintf("%s %s", NAME, VERSION);
 		$pk->propertyData = new CompoundTag();
-		$pk->blockPalette = [];
-		foreach(RuntimeBlockMapping::getBedrockKnownStates() as $state){
-			$pk->blockPalette[] = new BlockPaletteEntry($state->getString("name"), $state->getCompoundTag("states"));
-		}
 		$pk->blockPaletteChecksum = 0;
 		$pk->blockNetworkIdsAreHashes = true;
 		$pk->worldTemplateId = new UUID();
