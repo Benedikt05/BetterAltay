@@ -40,7 +40,6 @@ class MoveActorDeltaPacket extends DataPacket{
 	public bool $onGround = false;
 	public bool $teleport = false;
 	public bool $forceMoveLocalEntity = false;
-	/** @var bool */
 	public bool $forceCompletion = false;
 	public int $ticks = 0;
 

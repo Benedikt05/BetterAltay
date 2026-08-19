@@ -51,6 +51,7 @@ final class ItemInteractionData{
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putVarInt($this->requestId);
+		$out->putBool($this->requestId !== 0);
 		if($this->requestId !== 0){
 			$out->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlot){

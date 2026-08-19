@@ -229,6 +229,8 @@ class PacketPool{
 		static::registerPacket(new ResourcePacksReadyForValidationPacket());
 		static::registerPacket(new ServerboundDataDrivenScreenClosedPacket());
 		static::registerPacket(new PartyChangedPacket());
+		static::registerPacket(new SetPlayerFurnaceOptionsPacket());
+		static::registerPacket(new RecordStartedPacket());
 	}
 
 	/**

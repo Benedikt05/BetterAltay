@@ -257,4 +257,6 @@ interface ProtocolInfo{
 	/**
 	 * public const SYNC_WORLD_CLOCKS_PACKET = 0x158; //344
 	 */
+	public const SET_PLAYER_FURNACE_OPTIONS_PACKET = 0x15f;
+	public const RECORD_STARTED_PACKET = 0x160;
 }

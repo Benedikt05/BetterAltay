@@ -142,6 +142,7 @@ use pocketmine\network\mcpe\protocol\PlayStatusPacket;
 use pocketmine\network\mcpe\protocol\PositionTrackingDBClientRequestPacket;
 use pocketmine\network\mcpe\protocol\PositionTrackingDBServerBroadcastPacket;
 use pocketmine\network\mcpe\protocol\PurchaseReceiptPacket;
+use pocketmine\network\mcpe\protocol\RecordStartedPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\RemoveVolumeEntityPacket;
@@ -175,6 +176,7 @@ use pocketmine\network\mcpe\protocol\SetHealthPacket;
 use pocketmine\network\mcpe\protocol\SetHudPacket;
 use pocketmine\network\mcpe\protocol\SetLastHurtByPacket;
 use pocketmine\network\mcpe\protocol\SetLocalPlayerAsInitializedPacket;
+use pocketmine\network\mcpe\protocol\SetPlayerFurnaceOptionsPacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\SetPlayerInventoryOptionsPacket;
 use pocketmine\network\mcpe\protocol\SetScoreboardIdentityPacket;
@@ -995,4 +997,13 @@ abstract class NetworkSession{
 	public function handleLocatorBar(LocatorBarPacket $packet) : bool{
 		return false;
 	}
+
+	public function handleSetPlayerFurnaceOptions(SetPlayerFurnaceOptionsPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleRecordStarted(RecordStartedPacket $packet) : bool{
+		return false;
+	}
+
 }
