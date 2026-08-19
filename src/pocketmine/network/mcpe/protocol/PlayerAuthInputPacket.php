@@ -277,16 +277,15 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->headYaw = $this->getLFloat();
 
 		$this->inputFlags = new BitSet(66);
-		if($this->getBool()){
-			$count = $this->getUnsignedVarInt();
-			for($i = 0; $i < $count; ++$i){
-				$flag = $this->getVarInt();
-				if($flag < 0 || $flag >= 66){
-					throw new UnexpectedValueException("Unknown input flag $flag");
-				}
-				$this->inputFlags->set($flag, true);
+		$count = $this->getUnsignedVarInt();
+		for($i = 0; $i < $count; ++$i){
+			$flag = $this->getVarInt();
+			if($flag < 0 || $flag >= 66){
+				throw new UnexpectedValueException("Unknown input flag $flag");
 			}
+			$this->inputFlags->set($flag, true);
 		}
+
 
 		$this->inputMode = $this->getUnsignedVarInt();
 		$this->playMode = $this->getUnsignedVarInt();
@@ -294,16 +293,13 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->interactRotation = $this->getVector2();
 		$this->tick = $this->getUnsignedVarLong();
 		$this->delta = $this->getVector3();
-		// @phpstan-ignore-next-line
-		if($this->getBool() && $this->getBool()){
+		if($this->getBool()){
 			$this->itemInteractionData = ItemInteractionData::read($this);
 		}
-		// @phpstan-ignore-next-line
-		if($this->getBool() && $this->getBool()){
+		if($this->getBool()){
 			$this->itemStackRequest = ItemStackRequest::read($this);
 		}
-		// @phpstan-ignore-next-line
-		if($this->getBool() && $this->getBool()){
+		if($this->getBool()){
 			$this->blockActions = [];
 			$max = $this->getUnsignedVarInt();
 			for($i = 0; $i < $max; ++$i){
@@ -334,12 +330,9 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->putUnsignedVarLong($this->tick);
 		$this->putVector3($this->delta);
 		$this->putBool($this->itemInteractionData !== null);
-		$this->putBool($this->itemInteractionData !== null);
 		$this->itemInteractionData?->write($this);
 		$this->putBool($this->itemStackRequest !== null);
-		$this->putBool($this->itemStackRequest !== null);
 		$this->itemStackRequest?->write($this);
-		$this->putBool($this->blockActions !== null);
 		$this->putBool($this->blockActions !== null);
 		if($this->blockActions !== null){
 			$this->putVarInt(count($this->blockActions));

@@ -37,24 +37,20 @@ final class ItemInteractionData{
 	public static function read(NetworkBinaryStream $in) : self{
 		$requestId = $in->getVarInt();
 		$requestChangedSlots = [];
-		if($in->getBool()){
+		if($requestId !== 0){
 			$len = $in->getUnsignedVarInt();
 			for($i = 0; $i < $len; ++$i){
 				$requestChangedSlots[] = InventoryTransactionChangedSlotsHack::read($in);
 			}
 		}
 		$transactionData = new UseItemTransactionData();
-		// @phpstan-ignore-next-line
-		if($in->getBool() && $in->getBool()){
-			$transactionData->decode($in);
-		}
+		$transactionData->decode($in);
 
 		return new ItemInteractionData($requestId, $requestChangedSlots, $transactionData);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
 		$out->putVarInt($this->requestId);
-		$out->putBool($this->requestId !== 0);
 		if($this->requestId !== 0){
 			$out->putUnsignedVarInt(count($this->requestChangedSlots));
 			foreach($this->requestChangedSlots as $changedSlot){
@@ -62,8 +58,6 @@ final class ItemInteractionData{
 			}
 		}
 
-		$out->putBool(true);
-		$out->putBool(true);
 		$this->transactionData->encode($out);
 	}
 }

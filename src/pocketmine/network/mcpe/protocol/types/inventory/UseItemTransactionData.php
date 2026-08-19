@@ -38,6 +38,9 @@ class UseItemTransactionData extends TransactionData{
 	public const TRIGGER_PLAYER_INPUT = 1;
 	public const TRIGGER_SIMULATION_TICK = 2;
 
+	public const HAND_SLOT_MAIN_HAND = 0;
+	public const HAND_SLOT_OFF_HAND = 1;
+
 	public const CLIENT_PREDICTION_FAILURE = 0;
 	public const CLIENT_PREDICTION_SUCCESS = 1;
 
@@ -46,6 +49,7 @@ class UseItemTransactionData extends TransactionData{
 	private Vector3 $blockPos;
 	private int $face;
 	private int $hotbarSlot;
+	private int $handSlot;
 	private ItemStackWrapper $itemInHand;
 	private Vector3 $playerPos;
 	private Vector3 $clickPos;
@@ -109,6 +113,7 @@ class UseItemTransactionData extends TransactionData{
 		$this->blockPos = new Vector3($x, $y, $z);
 		$this->face = $stream->getByte();
 		$this->hotbarSlot = $stream->getVarInt();
+		$this->handSlot = $stream->getByte();
 		$this->itemInHand = ItemStackWrapper::read($stream, true);
 		$this->playerPos = $stream->getVector3();
 		$this->clickPos = $stream->getVector3();
@@ -123,6 +128,7 @@ class UseItemTransactionData extends TransactionData{
 		$stream->putBlockPosition($this->blockPos->x, $this->blockPos->y, $this->blockPos->z);
 		$stream->putByte($this->face);
 		$stream->putVarInt($this->hotbarSlot);
+		$stream->putByte($this->handSlot);
 		$this->itemInHand->write($stream, true);
 		$stream->putVector3($this->playerPos);
 		$stream->putVector3($this->clickPos);
@@ -134,7 +140,7 @@ class UseItemTransactionData extends TransactionData{
 	/**
 	 * @param NetworkInventoryAction[] $actions
 	 */
-	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction, int $clientCooldownState) : self{
+	public static function new(array $actions, int $actionType, int $triggerType, Vector3 $blockPos, int $face, int $hotbarSlot, int $handSlot, ItemStackWrapper $itemInHand, Vector3 $playerPos, Vector3 $clickPos, int $blockRuntimeId, int $clientPrediction, int $clientCooldownState) : self{
 		$result = new self;
 		$result->actions = $actions;
 		$result->actionType = $actionType;
@@ -142,6 +148,7 @@ class UseItemTransactionData extends TransactionData{
 		$result->blockPos = $blockPos;
 		$result->face = $face;
 		$result->hotbarSlot = $hotbarSlot;
+		$result->handSlot = $handSlot;
 		$result->itemInHand = $itemInHand;
 		$result->playerPos = $playerPos;
 		$result->clickPos = $clickPos;
