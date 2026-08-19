@@ -46,7 +46,7 @@ class SubChunkPacketHeightMapInfo{
 	public function getHeights() : array{ return $this->heights; }
 
 	public function getHeight(int $x, int $z) : int{
-		return $this->heights[(($z & 0xf) << 4) | ($x & 0xf)];
+		return $this->heights[($z << 4) + $z + $x];
 	}
 
 	public static function read(NetworkBinaryStream $in) : self{

@@ -60,11 +60,11 @@ final class GatheringJoinInfo{
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->putUUID($this->experienceId);
-		$out->putString($this->experienceName);
+		$out->writeOptional($this->experienceId, fn($experienceId) => $out->putUUID($experienceId));
+		$out->writeOptional($this->experienceName, fn($experienceName) => $out->putString($experienceName));
 		$out->putUUID($this->experienceWorldId);
 		$out->putString($this->experienceWorldName);
-		$out->putString($this->creatorId);
+		$out->writeOptional($this->creatorId, fn($creatorId) => $out->putString($creatorId));
 		$out->putUUID($this->targetId);
 		$out->putString($this->scenarioId);
 		$out->putString($this->serverId);
