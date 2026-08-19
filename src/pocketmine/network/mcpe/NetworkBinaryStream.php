@@ -361,7 +361,7 @@ class NetworkBinaryStream extends BinaryStream{
 		if($isBlockItem){
 			$block = $item->getBlock();
 			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = $block->getRuntimeId();
+				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($block->getRuntimeId());
 			}
 		}
 		if($net){

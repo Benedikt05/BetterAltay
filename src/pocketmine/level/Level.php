@@ -1084,6 +1084,7 @@ class Level implements ChunkManager, Metadatable{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
 				}
+				$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($pk->blockRuntimeId);
 
 				$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
 
@@ -1106,6 +1107,7 @@ class Level implements ChunkManager, Metadatable{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
 				}
+				$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($pk->blockRuntimeId);
 
 				$pk->flags = $flags;
 
@@ -1974,6 +1976,7 @@ class Level implements ChunkManager, Metadatable{
 		foreach($affectedBlocks as $t){
 			$this->destroyBlockInternal($t, $item, $player, $createParticles);
 		}
+		$this->broadcastLevelSoundEvent($target, LevelSoundEventPacket::SOUND_BREAK, RuntimeBlockMapping::toStaticRuntimeHash($target->getRuntimeId()));
 
 		$item->onDestroyBlock($target);
 
@@ -2122,7 +2125,7 @@ class Level implements ChunkManager, Metadatable{
 		}
 
 		if($playSound){
-			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, $hand->getRuntimeId());
+			$this->broadcastLevelSoundEvent($hand, LevelSoundEventPacket::SOUND_PLACE, RuntimeBlockMapping::toStaticRuntimeHash($hand->getRuntimeId()));
 		}
 
 		$item->pop();

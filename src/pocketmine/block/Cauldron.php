@@ -43,6 +43,7 @@ use pocketmine\item\SplashPotion;
 use pocketmine\item\TieredTool;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
@@ -373,7 +374,7 @@ class Cauldron extends Solid{
 		$pk->x = $this->x;
 		$pk->y = $this->y;
 		$pk->z = $this->z;
-		$pk->blockRuntimeId = $this->getRuntimeId();
+		$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($this->getRuntimeId());
 		$pk->dataLayerId = UpdateBlockPacket::DATA_LAYER_LIQUID;
 		$pk->flags = UpdateBlockPacket::FLAG_ALL_PRIORITY;
 

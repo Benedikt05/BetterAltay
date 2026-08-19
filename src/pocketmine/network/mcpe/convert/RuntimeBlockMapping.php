@@ -45,6 +45,9 @@ final class RuntimeBlockMapping{
 	private static $runtimeToLegacyMap = [];
 	/** @var CompoundTag[]|null */
 	private static $bedrockKnownStates = null;
+	/** @var int[]|null runtime id -> block state network hash (from the game's own data) */
+	private static $runtimeToHashMap = null;
+	private static $unknownRid = 0;
 	private static array $skullMapping;
 
 	private function __construct(){
@@ -62,6 +65,13 @@ final class RuntimeBlockMapping{
 			$list[] = $stream->getNbtCompoundRoot();
 		}
 		self::$bedrockKnownStates = $list;
+
+		foreach(self::$bedrockKnownStates as $k => $state){
+			if($state->getString("name") === "minecraft:info_update"){
+				self::$unknownRid = $k;
+				break;
+			}
+		}
 
 		self::setupLegacyMappings();
 	}
@@ -143,7 +153,7 @@ final class RuntimeBlockMapping{
 		 * if not found, try id+0 (strip meta)
 		 * if still not found, return update! block
 		 */
-		return self::$legacyToRuntimeMap[($id << 4) | $meta] ?? self::$legacyToRuntimeMap[$id << 4] ?? self::$legacyToRuntimeMap[BlockIds::INFO_UPDATE << 4];
+		return self::$legacyToRuntimeMap[($id << 4) | $meta] ?? self::$legacyToRuntimeMap[$id << 4] ?? self::$unknownRid;
 	}
 
 	/**
@@ -151,7 +161,7 @@ final class RuntimeBlockMapping{
 	 */
 	public static function fromStaticRuntimeId(int $runtimeId) : array{
 		self::lazyInit();
-		$v = self::$runtimeToLegacyMap[$runtimeId];
+		$v = self::$runtimeToLegacyMap[$runtimeId] ?? (BlockIds::INFO_UPDATE << 4);
 		return [$v >> 4, $v & 0xf];
 	}
 
@@ -170,5 +180,14 @@ final class RuntimeBlockMapping{
 
 	public static function getSkullMapping() : array{
 		return self::$skullMapping;
+	}
+
+	public static function toStaticRuntimeHash(int $runtimeId) : int{
+		self::lazyInit();
+		if(self::$runtimeToHashMap === null){
+			$map = json_decode(file_get_contents(RESOURCE_PATH . "vanilla/runtime_to_current_hash_map.json"), true);
+			self::$runtimeToHashMap = is_array($map) ? $map : [];
+		}
+		return self::$runtimeToHashMap[$runtimeId] ?? $runtimeId;
 	}
 }
