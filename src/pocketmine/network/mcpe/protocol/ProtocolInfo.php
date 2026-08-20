@@ -256,7 +256,11 @@ interface ProtocolInfo{
 	public const SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED_PACKET = 0x157; //343
 	/**
 	 * public const SYNC_WORLD_CLOCKS_PACKET = 0x158; //344
+	 * public const CLIENTBOUND_ATTRIBUTE_LAYER_SYNC_PACKET = 0x159;
+	 * public const SERVER_STORE_INFO_PACKET = 0x15a;
+	 * public const SERVER_PRESENCE_INFO_PACKET = 0x15b;
 	 */
+	public const CLIENTBOUND_UPDATE_SOUND_DATA_PACKET = 0x15c;
 	public const SET_PLAYER_FURNACE_OPTIONS_PACKET = 0x15f;
 	public const RECORD_STARTED_PACKET = 0x160;
 }

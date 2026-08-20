@@ -26,20 +26,15 @@ namespace pocketmine\item;
 
 class Record extends Item{
 
-	/** @var int */
-	protected $soundId;
-
-	public function __construct(int $id, int $soundId){
+	public function __construct(int $id, protected string $soundId){
 		parent::__construct($id, 0, "Music Disc");
-
-		$this->soundId = $soundId;
 	}
 
 	public function getMaxStackSize() : int{
 		return 1;
 	}
 
-	public function getSoundId() : int{
+	public function getSoundId() : string{
 		return $this->soundId;
 	}
 }

@@ -27,7 +27,11 @@ namespace pocketmine\tile;
 use pocketmine\item\Item;
 use pocketmine\item\Record;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, TextPacket};
+use pocketmine\network\mcpe\protocol\{ClientboundUpdateSoundDataPacket,
+	PlaySoundPacket,
+	TextPacket,
+	types\SoundData,
+	types\SoundDataType};
 use pocketmine\Player;
 
 class Jukebox extends Spawnable{
@@ -48,7 +52,7 @@ class Jukebox extends Spawnable{
 
 	public function playDisc(?Player $player = null) : void{
 		if($this->getRecordItem() instanceof Record){
-			$this->level->broadcastLevelSoundEvent($this, $this->getRecordItem()->getSoundId());
+			$this->level->broadcastPlaySound($this, $this->getRecordItem()->getSoundId(), 1 , 1, true, 1);
 
 			if($player instanceof Player){
 				$pk = new TextPacket();
@@ -57,10 +61,10 @@ class Jukebox extends Spawnable{
 				$pk->message = "record.nowPlaying";
 				$pk->parameters = [
 					ucwords(str_ireplace([
-						"record", "."
+						"record", ".", "_"
 					], [
-						"", ""
-					], (string) $this->getRecordItem()->getSoundId()))
+						"", "", " "
+					], $this->getRecordItem()->getSoundId()))
 				];
 				$player->sendDataPacket($pk);
 			}
@@ -71,7 +75,7 @@ class Jukebox extends Spawnable{
 
 	public function stopDisc() : void{
 		if($this->getRecordItem() instanceof Record){
-			$this->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_STOP_RECORD);
+			$this->level->broadcastPacketToViewers($this, ClientboundUpdateSoundDataPacket::create(1, SoundData::stop()));
 		}
 	}
 
@@ -111,12 +115,21 @@ class Jukebox extends Spawnable{
 
 	public function spawnTo(Player $player) : bool{
 		if($this->hasRecordItem()){
-			$pk = new LevelSoundEventPacket();
-			$pk->sound = $this->getRecordItem()->getSoundId();
-			$pk->position = $this;
-
-			$player->sendDataPacket($pk);
+			$this->playSound($player);
 		}
 		return parent::spawnTo($player);
+	}
+
+	public function playSound(Player $player) : void{
+		$pk = new PlaySoundPacket();
+		$pk->soundName = $this->getRecordItem()->getSoundId();
+		$pk->x = $this->x;
+		$pk->y = $this->y;
+		$pk->z = $this->z;
+		$pk->volume = 1;
+		$pk->pitch = 1;
+		$pk->bypassListenerRangeCheck = true;
+		$pk->serverSoundHandle = 1;
+		$player->sendDataPacket($pk);
 	}
 }

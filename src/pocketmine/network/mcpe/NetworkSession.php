@@ -57,6 +57,7 @@ use pocketmine\network\mcpe\protocol\ClientboundDataStorePacket;
 use pocketmine\network\mcpe\protocol\ClientboundDebugRendererPacket;
 use pocketmine\network\mcpe\protocol\ClientboundMapItemDataPacket;
 use pocketmine\network\mcpe\protocol\ClientboundTextureShiftPacket;
+use pocketmine\network\mcpe\protocol\ClientboundUpdateSoundDataPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheBlobStatusPacket;
 use pocketmine\network\mcpe\protocol\ClientCacheMissResponsePacket;
 use pocketmine\network\mcpe\protocol\ClientCacheStatusPacket;
@@ -995,6 +996,10 @@ abstract class NetworkSession{
 	}
 
 	public function handleLocatorBar(LocatorBarPacket $packet) : bool{
+		return false;
+	}
+
+	public function handleClientboundUpdateSoundData(ClientboundUpdateSoundDataPacket $packet) : bool{
 		return false;
 	}
 

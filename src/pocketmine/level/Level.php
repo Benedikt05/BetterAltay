@@ -88,6 +88,7 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\GameRulesChangedPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
 use pocketmine\network\mcpe\protocol\SetTimePacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
@@ -632,6 +633,20 @@ class Level implements ChunkManager, Metadatable{
 		$pk->position = $pos->asVector3();
 		$pk->entityUniqueId = $entityUniqueId;
 		$pk->fireAtPosition = $fireAtPosition;
+		$this->broadcastPacketToViewers($pos, $pk);
+	}
+
+
+	public function broadcastPlaySound(Vector3 $pos, string $soundName, int $volume = 1, int $pitch = 1, bool $bypassListenerRangeCheck = false, int $serverSoundHandle = 0): void{
+		$pk = new PlaySoundPacket();
+		$pk->soundName = $soundName;
+		$pk->x = $pos->x;
+		$pk->y = $pos->y;
+		$pk->z = $pos->z;
+		$pk->volume = $volume;
+		$pk->pitch = $pitch;
+		$pk->bypassListenerRangeCheck = $bypassListenerRangeCheck;
+		$pk->serverSoundHandle = $serverSoundHandle;
 		$this->broadcastPacketToViewers($pos, $pk);
 	}
 
