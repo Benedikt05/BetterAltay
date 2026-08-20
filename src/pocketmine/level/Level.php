@@ -1099,7 +1099,6 @@ class Level implements ChunkManager, Metadatable{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
 				}
-				$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($pk->blockRuntimeId);
 
 				$pk->flags = $first ? $flags : UpdateBlockPacket::FLAG_NONE;
 
@@ -1122,7 +1121,6 @@ class Level implements ChunkManager, Metadatable{
 					$fullBlock = $this->getFullBlock($b->x, $b->y, $b->z);
 					$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeId($fullBlock >> 4, $fullBlock & 0xf);
 				}
-				$pk->blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($pk->blockRuntimeId);
 
 				$pk->flags = $flags;
 

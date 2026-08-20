@@ -361,13 +361,13 @@ class NetworkBinaryStream extends BinaryStream{
 		if($isBlockItem){
 			$block = $item->getBlock();
 			if($block->getId() !== BlockIds::AIR){
-				$blockRuntimeId = RuntimeBlockMapping::toStaticRuntimeHash($block->getRuntimeId());
+				$blockRuntimeId = $block->getRuntimeId();
 			}
 		}
 		if($net){
-			$this->putUnsignedVarInt($blockRuntimeId); //blockRuntimeId
+			$this->putUnsignedVarInt(RuntimeBlockMapping::toStaticRuntimeHash($blockRuntimeId)); //blockRuntimeId
 		}else{
-			$this->putVarInt($blockRuntimeId); //blockRuntimeId
+			$this->putVarInt(RuntimeBlockMapping::toStaticRuntimeHash($blockRuntimeId)); //blockRuntimeId
 		}
 		$nbt = null;
 		if($item->hasCompoundTag()){
