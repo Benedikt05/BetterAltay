@@ -147,8 +147,8 @@ class PlayerAuthInputPacket extends DataPacket{
 		Vector3 $cameraOrientation,
 		Vector2 $rawMove
 	) : self{
-		if($inputFlags->getLength() !== 65){
-			throw new \InvalidArgumentException("Input flags must be 65 bits long");
+		if($inputFlags->getLength() !== PlayerAuthInputFlags::NUMBER_OF_FLAGS){
+			throw new \InvalidArgumentException("Input flags must be " . PlayerAuthInputFlags::NUMBER_OF_FLAGS . " bits long");
 		}
 
 		$inputFlags->set(PlayerAuthInputFlags::PERFORM_ITEM_STACK_REQUEST, $itemStackRequest !== null);
@@ -276,16 +276,15 @@ class PlayerAuthInputPacket extends DataPacket{
 		$this->moveVecZ = $this->getLFloat();
 		$this->headYaw = $this->getLFloat();
 
-		$this->inputFlags = new BitSet(66);
+		$this->inputFlags = new BitSet(PlayerAuthInputFlags::NUMBER_OF_FLAGS);
 		$count = $this->getUnsignedVarInt();
 		for($i = 0; $i < $count; ++$i){
 			$flag = $this->getVarInt();
-			if($flag < 0 || $flag >= 66){
+			if($flag < 0 || $flag >= PlayerAuthInputFlags::NUMBER_OF_FLAGS){
 				throw new UnexpectedValueException("Unknown input flag $flag");
 			}
 			$this->inputFlags->set($flag, true);
 		}
-
 
 		$this->inputMode = $this->getUnsignedVarInt();
 		$this->playMode = $this->getUnsignedVarInt();
